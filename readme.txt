@@ -57,7 +57,9 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 
 == Screenshots ==
 
-1. ***Setting Page***
+1. ***Task Listing Table***
+2. ***Wizard***
+3. ***Settings***
 
 
 == Changelog ==
