@@ -1,7 +1,7 @@
 === Task Scheduler ===
 Contributors: Michael Uno, miunosoft
 Donate link: http://en.michaeluno.jp/donate
-Tags: access, tool, background, server, admin, task, management, system
+Tags: access, tool, background, backend, server, admin, task, management, system, event, scheduler,
 Requires at least: 3.7
 Tested up to: 3.9.1
 Stable tag: 1.0.0
@@ -43,7 +43,7 @@ If you need a custom module, let us know it!
 
 = How to Use =  
 1. Define a `Task` via **Dashboard** -> **Task Scheduler** -> **Add New Task**
-2. In the beat listing table, toggle on and off.
+2. In the task listing table, toggle on and off.
 
 == Other Notes ==
 
