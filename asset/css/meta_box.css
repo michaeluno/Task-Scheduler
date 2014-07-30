@@ -1,0 +1,53 @@
+/* .task-scheduler-module-options {
+	line-height: 1.4em;
+}
+.task-scheduler-module-options li ul {
+	margin-left: 2em;
+} */
+
+ul.key-value-container {
+	margin-top: 0;
+	margin-bottom: 0;
+} 
+.key-value-container .key_label {
+	min-width: 80px;
+	display: inline-block;	
+	vertical-align: top;
+}
+.key-value-container .key-value-container {
+	display: inline-block;
+}
+.task-scheduler-module-options-title-container {
+	min-width: 210px;
+	min-height: 36px;
+	float:	left;
+	display: inline-block;
+	padding-top: 0.2em;
+}
+.task-scheduler-module-options-value-container {
+	float:	left;
+	display: inline-block;
+	margin-bottom: 0;
+	padding-left: 1em;
+	padding-bottom: 0;
+}
+.task-scheduler-module-options-title-container .field-title {
+	
+	line-height: 1.3;
+	font-weight: 600;
+}
+
+textarea[readonly] {
+	background-color: #eee;
+}
+
+/* #fieldrow-separator {
+	padding-top: 0.8em;
+}
+#fieldrow-separator th, 
+#fieldrow-separator td
+{
+	border-bottom: 1px solid #ddd;
+	padding: 0.4em;
+}
+  */

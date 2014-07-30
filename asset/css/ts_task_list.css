@@ -1,0 +1,50 @@
+.widefat tbody th, .widefat tfoot th, .widefat thead th {
+	padding: 11px 0 0 3px;
+	padding: 8px 10px;
+}
+.widefat thead th {
+	border-bottom: 1px solid #e1e1e1;
+}
+.widefat .column-description { 
+	width: 32%; 
+}
+.widefat .column-status {
+	width: 12%; 
+}
+.widefat .column-time {
+	width: 28%; 
+}
+.widefat .column-last_run,
+.widefat .column-next_run
+{
+	width: 15%; 
+}
+.description-label {
+	min-width: 88px; 
+	display:inline-block; 
+}
+.id-label {
+	min-width: 10px; 
+	display:inline-block; 
+	text-align: right;
+}
+.task-listing-table.id-label-container {
+	float:right;
+}
+.routine-id-container {
+	float: right;
+	clear: both;
+}
+.routine-id {
+	/* min-width: 50px;  */
+	padding-left: 1em;
+	display:inline-block; 
+	text-align: right;
+}
+
+.running {
+	color: green;
+}
+.not-running {
+	color: red;
+}
