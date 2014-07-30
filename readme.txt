@@ -52,6 +52,9 @@ If you need a custom module, let us know it!
 = Why Do I need this? =
 This is mostly for site admins who need total control over the server behavior. If you use WordPress just to publish articles, you won't need this.
 
+= Found a bug. Where can I report? =
+Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler) of this plugin.
+
 == Screenshots ==
 
 1. ***Setting Page***

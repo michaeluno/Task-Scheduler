@@ -333,18 +333,30 @@ TaskScheduler_Debug::log( $_sID . ' sleeping: ' . $_nSleepDuration . ' cache dur
 				$_iTransientDuration = ( int ) floor( $_nSleepDuration );
 				if ( $_iTransientDuration ) {					
 					set_transient( self::$sTransientKey_Sleep, $_sID, $_iTransientDuration );	
+					add_action( 'shutdown', array( get_class(), '_replyToDeleteSleepTransient' ), 1 );
 				}
 				usleep( $_nSleepDuration * 1000000 ); 
-				
-				// Do not delete the transient in case multiple pulses have run. If that happens the other will delete another. 
-		
+						
 			} 
 
 			add_action( 'shutdown', array( get_class(), '_replyToPulsate' ) );
-			die();			
+			exit();			
 			
 		} 
-
+			/**
+			 * Deletes the sleep lock transient.
+			 */
+			static public function _replyToDeleteSleepTransient() {				
+			
+				// If the transient ID is different, it means another different heartbeat is pulsating.
+				$_sSleepID = get_transient( self::$sTransientKey_Sleep );
+				if ( false !== $_sSleepID && self::getID() !== $_sSleepID ) {
+					self::$_bStop = true;
+					return;
+				}			
+				delete_transient( self::$sTransientKey_Sleep );				
+				
+			}
 		/**
 		 * Does beat.
 		 * 
@@ -360,9 +372,8 @@ TaskScheduler_Debug::log( $_sID . ' sleeping: ' . $_nSleepDuration . ' cache dur
 			$_bIsCalled = true;	
 					
 			// For a safety net
-			$_sID = self::getID();
 			self::_scheduleToCheckBeat();
-
+			
 $_iSetInterval	= self::getInterval();
 $_iActualInterval	= self::_getInfo( 'last_beat_time' ) - self::_getInfo( 'second_last_beat_time' ); 
 TaskScheduler_Debug::log( 'beat! The actual interval is : ' . $_iActualInterval );

@@ -34,7 +34,6 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
 				'title'				=>	__( 'Exit Code', 'task-scheduler' ),
 				'type'				=>	'text',
 			),		
-// TODO: for the editing page, retrieve the editing post ID and do not let it choose in the autocomplete field.
 			array(	
 				'field_id'			=>	'task_ids',
 				'title'				=>	__( 'Tasks', 'task-scheduler' ),
@@ -44,14 +43,37 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
 				'settings2'			=>	array(	// equivalent to the second parameter of the tokenInput() method
 					// 'tokenLimit'		=>	1,
 					'preventDuplicates'	=>	true,
+					'hintText'	=>	__( 'Type a task name.', 'task-scheduler' ),
 					// 'theme'				=>	'facebook',	
-					'searchDelay'		=>	50,	// 50 milliseconds. Default: 300
+					'searchDelay'		=>	5,	// 50 milliseconds. Default: 300
+					// 'prePopulate' => $this->_getPrepopuratedPosts(),
 				),				
 			),						
 		);
 		
 	}	
-
+		/**
+		 * 
+		 * @depreacated
+		 */
+		private function _getPrepopuratedPosts() {
+			
+			$_aArgs = array(
+				'posts_per_page'	=>	20,
+				'fields'			=>	'object',
+			);
+			$_oResults = TaskScheduler_TaskUtility::find( $_aArgs );
+			$_aPostTitles = array();			
+			foreach( $_oResults->posts as $_iIndex => $_oPost ) {
+				$_aPostTitles[] = array( 
+					'id'	=>	 $_oPost->ID,
+					'name'	=>	$_oPost->post_title,
+				);
+			}
+			return $_aPostTitles;			
+			
+		}
+		
 	public function validateSettings( $aInput, $aOldInput, $oAdminPage ) { 
 		
 		$_bIsValid = true;
@@ -83,8 +105,8 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
 		
 		unset( $aInput['submit'] );
 		
-		// Now these options will be stored in the 'exit_code' meta key. However, the exit code event handler needs the meta data being saved in the top level
-		// to perform the query and process the tasks with the 'exit_code' occurrence type.
+		// Now these options will be stored in the 'on_exit_code' meta key. However, the exit code event handler needs the meta data being saved in the top level
+		// to perform the query and process the tasks with the 'on_exit_code' occurrence type.
 		$this->_aSubmit = $aInput;
 		add_filter( "task_scheduler_admin_filter_saving_wizard_options", array( $this, '_replyToSetTopLevelMetaData' ), 10, 3 );
 		
