@@ -99,9 +99,9 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
 		 * 
 		 * @return	float	The required sleep duration in seconds.
 		 */
-		private function _getRequiredSleepSeconds( $iNextRunTimeStamp ) {
+		private function _getRequiredSleepSeconds( $nNextRunTimeStamp ) {
 			
-			$_nSleepSeconds = $iNextRunTimeStamp - microtime( true );
+			$_nSleepSeconds = ( $nNextRunTimeStamp - microtime( true ) ) + 0;	// plus zero will convert the value to numeric.
 			$_nSleepSeconds = $_nSleepSeconds <= 0 ? 0 : $_nSleepSeconds;			
 			return $_nSleepSeconds;
 			
