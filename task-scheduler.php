@@ -5,7 +5,7 @@
 	Description: Creates unattended periodic access to the site.
 	Author: miunosoft (Michael Uno)
 	Author URI: http://michaeluno.jp
-	Version: 1.0.0b02
+	Version: 1.0.0b03
 	Requirements: PHP 5.2.4 or above, WordPress 3.3 or above. MySQL above 5.5.24  
 */
 

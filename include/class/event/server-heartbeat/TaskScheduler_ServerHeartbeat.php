@@ -214,14 +214,14 @@ final class TaskScheduler_ServerHeartbeat {
 			if ( $_bIsLoaded ) { return; }
 			$_bIsLoaded = true;
 			
-			// Set a value to the ID so that the page load will be regarded as a background call.
+			// Set an empty value to the ID so that the page load will be regarded as a background call.
 			self::loadPage( '', array(), 'beat' );
 							
 		}
 		
 	
 	/**
-	 * Keeps the beat.
+	 * Keeps beating.
 	 *  
 	 * It is assumed that every page load calls this method so that the heartbeat keeps going.
 	 * 
@@ -251,18 +251,17 @@ final class TaskScheduler_ServerHeartbeat {
 			self::stop();
 			exit;	// do not even let it continue.
 		}
-				
 
-		$_iInterval = self::getInterval();
-		if ( ! $_iInterval ) {
-			return;
-		}
+		// $_iInterval = self::getInterval();
+		// if ( ! $_iInterval ) {
+			// return;
+		// }
 		
 		// Save the last beat time, the interval, and heartbeat ID etc.
 		self::_saveInfo();			
 		
 		// Set the sleep transient and go sleep.
-		set_transient( self::$sTransientKey_Sleep, self::getID(), ceil( ( int ) $_iInterval ) + 1 );
+		// set_transient( self::$sTransientKey_Sleep, self::getID(), ceil( ( int ) $_iInterval ) + 1 );
 		add_action( 'wp_loaded', array( $_sClassName, '_replyToSleepAndExit' ), 20 );
 				
 	}
