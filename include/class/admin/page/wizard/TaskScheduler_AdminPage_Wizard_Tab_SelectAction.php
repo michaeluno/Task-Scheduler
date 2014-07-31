@@ -39,9 +39,9 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
 			array(
 				'field_id'			=>	'routine_action',
 				'title'				=>	__( 'Action', 'task-scheduler' ),
-				'type'				=>	'select',
+				'type'				=>	'revealer',
 				'label'				=>	array(),	// will be redefined in the field_definition_{...} callback
-				'description'		=>	__( 'Select the one to perform when the time comes', 'task-scheduler' ),
+				// 'description'		=>	__( 'Select the action which runs at the scheduled time', 'task-scheduler' ),
 			),
 			array(
 				'field_id'			=>	'custom_action',
@@ -79,20 +79,49 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
 	 * If the saved action slug is not listed in the label array, it forces to select -1 to let it set a custom action slug.
 	 */	 
 	public function field_definition_TaskScheduler_AdminPage_Wizard_wizard_select_action_routine_action( $aField ) {
-		
-		$_sRoutineActionSlug	= $this->_getWizardOptions( 'routine_action' );
-		$aField['label']		= apply_filters( 
-			'task_scheduler_admin_filter_field_labels_wizard_action', 
-			array(
-				-1	=>	'--- ' . __( 'Select Action', 'task-scheduler' ) . ' ---',
-			) 
-		);
-		if ( ! array_key_exists ( $_sRoutineActionSlug, $aField['label'] ) ) {
-			$aField['value']	= -1;
-		}
-		return $aField;
+	
+		return $this->_getRoutineActionField( $aField );
 		
 	}	
+		/**
+		 * Get the redefined routine action field definition array.
+		 * 
+		 * @remark	The scope is protected because the extending Edit Module class also uses it.
+		 */
+		protected function _getRoutineActionField( array $aField ) {
+			
+			$_sRoutineActionSlug	= $this->_getWizardOptions( 'routine_action' );
+			$aField['label']		= apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_action', array() );
+			
+			// Set the default value.
+			$aField['value'] = array_key_exists ( $_sRoutineActionSlug, $aField['label'] )
+				? "#description-{$_sRoutineActionSlug}"
+				: -1;
+				
+			// Convert the keys to the 'revealer' field type specification.
+			$_aLabels = array(
+				-1	=>	'--- ' . __( 'Select Action', 'task-scheduler' ) . ' ---',
+			);
+			$_aDescriptions = array();
+			foreach( $aField['label'] as $_sSlug => $_sLabel ) {
+				
+				$_aLabels[ "#description-{$_sSlug}" ] = $_sLabel;
+				
+				// Create action description hidden elements.
+				$_sDescription	= apply_filters( "task_scheduler_filter_description_action_{$_sSlug}", '' );
+				if ( ! $_sDescription ) { continue; }
+				$_sDisplay = $_sSlug === $_sRoutineActionSlug ? '' : 'display:none;';
+				$_aDescriptions[] = "<p id='description-{$_sSlug}' style='{$_sDisplay}'>"
+					. $_sDescription
+				 . "</p>";			
+				 
+			}
+			
+			$aField['label'] = $_aLabels;
+			$aField['after_fieldset'] = implode( PHP_EOL, $_aDescriptions );	
+			return $aField;
+			
+		}
 	
 	/**
 	 * Redefines the 'custom_action' field of the 'wizard_select_action' section.
@@ -162,7 +191,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
 			$this->_saveWizardOptions( $aInput['transient_key'], $aInput );
 			return array();
 			
-		}
+		}	
 		
 		if ( ! $this->_getWizardOptions( 'post_title' )  ) {
 			$this->setSettingNotice( __( 'The wizard session has been expired. Please start from the beginning.', 'task-scheduler' ) );
@@ -171,7 +200,10 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
 		
 		// Drop the 'custom_action' key and unity the values into the 'routine_action' key.
 		$aInput['routine_action'] = '-1' !== ( string ) $aInput['routine_action'] ? $aInput['routine_action'] : $aInput['custom_action'];
-
+		
+		// Remove the prefix of the selector of the action slug.
+		$aInput['routine_action'] = preg_replace( '/^#description-/', '', $aInput['routine_action'] );
+		
 		// Modify the wizard options.
 		$_aWizardOptions = $aInput;			
 		$_aWizardOptions['action_label'] = apply_filters( "task_scheduler_filter_label_action_" . $aInput['routine_action'], $aInput['routine_action'] );

@@ -22,10 +22,15 @@ class TaskScheduler_Occurrence_ExitCode extends TaskScheduler_Occurrence_Base {
 	/**
 	 * Returns the label for the slug.
 	 */
-	public function getLabel( $sSlug ) {
-		
-		return __( 'Exit Code', 'task-scheduler' );
-		
+	public function getLabel( $sSlug ) {		
+		return __( 'Exit Code', 'task-scheduler' );	
+	}		
+	
+	/**
+	 * Returns the description of the module.
+	 */
+	public function getDescription( $sDescription ) {
+		return __( 'Triggers actions when the specified exit code is received.', 'task-scheduler' );
 	}		
 	
 	/**

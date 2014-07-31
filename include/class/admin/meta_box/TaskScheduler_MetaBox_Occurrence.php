@@ -54,6 +54,7 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
 		$_aModularFields = apply_filters( "task_scheduler_filter_fields_{$this->_oTask->occurrence}", array() );
 		$_aModularOptions = $this->_oTask->{$this->_oTask->occurrence};
 		if ( empty( $_aModularOptions ) ) {
+			$aAllFields['_default'][ 'wizard_redirect_button_occurrence' ] = $this->_getModuleEditButtonField( 'wizard_redirect_button_occurrence' );
 			return  $aAllFields;
 		}		
 		
@@ -89,27 +90,34 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
 			$aAllFields['_default'][ $_aModularField['field_id'] ] = $_aModularField;
 			
 		}
-		
-		$_sModuleEditPageURL = TaskScheduler_PluginUtility::getModuleEditPageURL(
-			array(
-				'transient_key'	=>	TaskScheduler_Registry::TransientPrefix . uniqid(),
-				'tab'			=>	'edit_occurrence',
-				'post'			=>	isset( $_GET['post'] ) ? $_GET['post'] : 0,
-			)
-		);		
-		$aAllFields['_default'][ 'wizard_redirect_button_occurrence' ] = array(
-			'field_id'		=>	'wizard_redirect_button_occurrence',
-			'type'			=>	'hidden',
-			// 'hidden'		=>	true,
-			'value'			=>	'',
-			'before_fieldset'=>	"<div style='float:right;'><a class='button button-secondary button-large' href='{$_sModuleEditPageURL}'>" . __( 'Change', 'task-scheduler' ) .  "</a></div>",
-			'attributes'	=>	array(
-				'name'		=>	'',
-			),				
-		);
+		$aAllFields['_default'][ 'wizard_redirect_button_occurrence' ] = $this->_getModuleEditButtonField( 'wizard_redirect_button_occurrence' );
 		return $aAllFields;
 		
 	}	
+		private function _getModuleEditButtonField( $sFieldID ) {
+	
+			$_sModuleEditPageURL = TaskScheduler_PluginUtility::getModuleEditPageURL(
+				array(
+					'transient_key'	=>	TaskScheduler_Registry::TransientPrefix . uniqid(),
+					'tab'			=>	'edit_occurrence',
+					'post'			=>	isset( $_GET['post'] ) ? $_GET['post'] : 0,
+				)
+			);	
+			return array(
+				'field_id'		=>	$sFieldID,
+				'type'			=>	'hidden',
+				'value'			=>	'',
+				'before_field'	=>	"<div style='float:right;'>"
+					. "<a class='button button-secondary button-large' href='{$_sModuleEditPageURL}'>" 
+						. __( 'Change', 'task-scheduler' ) 
+						. "</a>"
+					. "</div>",
+				'attributes'	=>	array(
+					'name'		=>	'',
+				),									
+			);		
+			
+		}
 		/**
 		 * Returns the field type for displaying field values.
 		 */

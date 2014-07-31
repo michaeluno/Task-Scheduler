@@ -12,7 +12,8 @@
 /**
  * The factory class for plugin extensions.
  * 
- * @filter		add			task_scheduler_filter_label_{option type}_{slug}
+ * @filter		add			task_scheduler_filter_label_{module type}_{slug}
+ * @filter		add			task_scheduler_filter_description_{module type}_{slug}
  */
 abstract class TaskScheduler_Module_Factory {
 		
@@ -53,6 +54,7 @@ abstract class TaskScheduler_Module_Factory {
 		$this->_sClassName	= get_class( $this );
 		
 		add_filter( "task_scheduler_filter_label_" . $this->_sModuleType . "_" . $this->sSlug, array( $this, 'getLabel' ) );
+		add_filter( "task_scheduler_filter_description_" . $this->_sModuleType . "_" . $this->sSlug, array( $this, 'getDescription' ) );
 		if ( is_admin() ) {			
 			add_filter( 'task_scheduler_admin_filter_wizard_options', array( $this, '_replyToModifyDefaultOptions' ), 20, 1 );
 			add_filter( "task_scheduler_admin_filter_wizard_options_{$this->sSlug}", array( $this, '_replyToGetWizardOptions' ) );
@@ -193,6 +195,13 @@ abstract class TaskScheduler_Module_Factory {
 	public function getLabel( $sSlug ) {
 		return $this->sSlug;
 	}	
+	
+	/**
+	 * Returns the module description.
+	 */
+	public function getDescription( $sDescription )  {
+		return $sDescription;
+	}
 	
 	/*
 	 * Extensible methods.

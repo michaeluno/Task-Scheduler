@@ -23,10 +23,15 @@ class TaskScheduler_Occurrence_FixedInterval extends TaskScheduler_Occurrence_Ba
 	 * Returns the label for the slug.
 	 */
 	public function getLabel( $sSlug ) {
-		
 		return __( 'Fixed Interval', 'task-scheduler' );
-		
 	}		
+	
+	/**
+	 * Returns the description of the module.
+	 */
+	public function getDescription( $sDescription ) {
+		return __( 'Triggers actions at the set interval.', 'task-scheduler' );
+	}	
 	
 	/**
 	 * Do something when the task finishes.

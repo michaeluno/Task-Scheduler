@@ -56,7 +56,7 @@ class TaskScheduler_Event_Routine {
 		$oRoutine->setMeta( '_is_spawned',		true );			// used to determine scheduled routines
 		$oRoutine->setMeta( '_spawned_time',	$_nCurrentMicroTime );	// used to cancel the routine and to detect the hung 
 		$oRoutine->setMeta( '_count_call',	$oRoutine->getMeta( '_count_call' ) + 1 );
-		
+
 		if ( $oRoutine->isTask() ) {
 			
 			// Pass the spawned time and the thread will compare the passed spawned time and the currently set spawned time 

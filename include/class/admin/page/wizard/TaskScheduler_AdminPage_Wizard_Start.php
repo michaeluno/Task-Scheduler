@@ -50,6 +50,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Start extends TaskScheduler_AdminP
 			new TaskScheduler_TimeCustomFieldType( $_sClassName );		
 			new TaskScheduler_DateCustomFieldType( $_sClassName );		
 			new TaskScheduler_AutoCompleteCustomFieldType( $_sClassName );		
+			new TaskScheduler_RevealerCustomFieldType( $_sClassName );	
 		
 		}
 			

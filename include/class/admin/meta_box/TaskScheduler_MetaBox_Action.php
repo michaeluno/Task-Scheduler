@@ -15,6 +15,14 @@ class TaskScheduler_MetaBox_Action extends TaskScheduler_MetaBox_Base {
 		$this->_oTask = isset( $_GET['post'] )
 			? TaskScheduler_Routine::getInstance( $_GET['post'] )
 			: null;		
+
+		$_sModuleEditPageURL = TaskScheduler_PluginUtility::getModuleEditPageURL(
+			array(
+				'transient_key'	=>	TaskScheduler_Registry::TransientPrefix . uniqid(),
+				'tab'			=>	'edit_action',
+				'post'			=>	isset( $_GET['post'] ) ? $_GET['post'] : 0,
+			)
+		);
 			
 		$this->addSettingFields(
 			array(
@@ -60,6 +68,7 @@ class TaskScheduler_MetaBox_Action extends TaskScheduler_MetaBox_Base {
 		$_aModularFields = apply_filters( "task_scheduler_filter_fields_{$this->_oTask->routine_action}", array() );
 		$_aModularOptions = $this->_oTask->{$this->_oTask->routine_action};
 		if ( empty( $_aModularOptions ) ) {
+			$aAllFields['_default'][ 'wizard_redirect_button_action' ] = $this->_getModuleEditButtonField( 'wizard_redirect_button_action' );
 			return  $aAllFields;
 		}		
 		$_aModularFields = isset( $_aModularFields[ $this->_oTask->routine_action ] ) ? $_aModularFields[ $this->_oTask->routine_action ] : array();
@@ -95,26 +104,34 @@ class TaskScheduler_MetaBox_Action extends TaskScheduler_MetaBox_Base {
 			$aAllFields['_default'][ $_aModularField['field_id'] ] = $_aModularField;
 			
 		}
-		
-		$_sModuleEditPageURL = TaskScheduler_PluginUtility::getModuleEditPageURL(
-			array(
-				'transient_key'	=>	TaskScheduler_Registry::TransientPrefix . uniqid(),
-				'tab'			=>	'edit_action',
-				'post'			=>	isset( $_GET['post'] ) ? $_GET['post'] : 0,
-			)
-		);
-		$aAllFields['_default'][ 'wizard_redirect_button_action' ] = array(
-			'field_id'		=>	'wizard_redirect_button_action',
-			'type'			=>	'hidden',
-			'value'			=>	'',
-			'before_field'	=>	"<div style='float:right;'><a class='button button-secondary button-large' href='{$_sModuleEditPageURL}'>" . __( 'Change', 'task-scheduler' ) .  "</a></div>",
-			'attributes'	=>	array(
-				'name'		=>	'',
-			),				
-		);
+		$aAllFields['_default'][ 'wizard_redirect_button_action' ] = $this->_getModuleEditButtonField( 'wizard_redirect_button_action' );
 		return $aAllFields;
 		
 	}
+		private function _getModuleEditButtonField( $sFieldID ) {
+	
+			$_sModuleEditPageURL = TaskScheduler_PluginUtility::getModuleEditPageURL(
+				array(
+					'transient_key'	=>	TaskScheduler_Registry::TransientPrefix . uniqid(),
+					'tab'			=>	'edit_action',
+					'post'			=>	isset( $_GET['post'] ) ? $_GET['post'] : 0,
+				)
+			);
+			return array(
+				'field_id'		=>	$sFieldID,
+				'type'			=>	'hidden',
+				'value'			=>	'',
+				'before_field'	=>	"<div style='float:right;'>"
+					. "<a class='button button-secondary button-large' href='{$_sModuleEditPageURL}'>" 
+						. __( 'Change', 'task-scheduler' ) 
+						. "</a>"
+					. "</div>",
+				'attributes'	=>	array(
+					'name'		=>	'',
+				),				
+			);		
+			
+		}
 		/**
 		 * Returns the field type for displaying field values.
 		 */

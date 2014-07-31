@@ -28,6 +28,13 @@ class TaskScheduler_Action_Debug extends TaskScheduler_Action_Base {
 	}
 	
 	/**
+	 * Returns the description of the module.
+	 */
+	public function getDescription( $sDescription ) {
+		return __( 'Creates a log file in the wp-content folder.', 'task-scheduler' );
+	}
+	
+	/**
 	 * Defines the behavior of the action.
 	 */
 	public function doAction( $isExitCode, $oTask ) {

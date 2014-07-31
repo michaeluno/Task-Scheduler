@@ -33,6 +33,13 @@ class TaskScheduler_Action_Email extends TaskScheduler_Action_Base {
 	public function getLabel( $sLabel ) {
 		return __( 'Send Emails', 'task-scheduler' );
 	}
+	
+	/**
+	 * Returns the description of the module.
+	 */
+	public function getDescription( $sDescription ) {
+		return __( 'Sends an email to specified email addresses.', 'task-scheduler' );
+	}	
 		
 	/**
 	 * Defines the behavior of the task action.

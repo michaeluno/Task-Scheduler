@@ -46,7 +46,8 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_Wizard extends TaskScheduler_A
 				'field_id'				=>	'occurrence',
 				'title'					=>	__( 'Occurrence', 'task-scheduler' ),
 				'type'					=>	'radio',
-				'label'					=>	array(),
+				'label_min_width'		=>	'100%',
+				'label'					=>	array(),	// redefined in the 'field_definition_{...}' callback.
 			),	
 			array(	
 				'field_id'			=>	'submit',
@@ -70,6 +71,14 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_Wizard extends TaskScheduler_A
 	
 		// Set the first item as the default.
 		$aField['label'] = apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_occurrence', $aField['label'] );	
+		foreach( $aField['label'] as $_sSlug => $_sLabel ) {
+			$_sDescription = apply_filters( "task_scheduler_filter_description_occurrence_{$_sSlug}", '' );
+			if ( $_sDescription ) {
+				$aField['label'][ $_sSlug ] = $_sLabel . ' - ' . "<span class='description'>" . $_sDescription . "</span>";
+			}			
+		}
+		
+		// Set the default.
 		$_aLabels = array_keys( $aField['label'] );	// Avoid the PHP strict standard warning			
 		$aField['default'] =  array_shift( $_aLabels );		
 		return $aField;

@@ -30,6 +30,13 @@ class TaskScheduler_Occurrence_Constant extends TaskScheduler_Occurrence_Base {
 	}			
 	
 	/**
+	 * Returns the description of the module.
+	 */
+	public function getDescription( $sDescription ) {
+		return __( 'Triggers actions constantly, used by system internal routines.', 'task-scheduler' );
+	}			
+	
+	/**
 	 * Deletes stored tasks.
 	 */
 	public function doAfterAction( $oTask, $isExitCode ) {}

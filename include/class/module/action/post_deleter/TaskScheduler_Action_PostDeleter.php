@@ -36,6 +36,13 @@ class TaskScheduler_Action_PostDeleter extends TaskScheduler_Action_Base {
 	}
 
 	/**
+	 * Returns the description of the module.
+	 */
+	public function getDescription( $sDescription ) {
+		return __( 'Deletes posts by post type, taxonomy, and taxonomy terms.', 'task-scheduler' );
+	}	
+	
+	/**
 	 * Defines the behavior of the task action.
 	 * 
 	 * Required arguments: 

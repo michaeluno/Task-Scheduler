@@ -44,6 +44,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
 				'field_id'				=>	'occurrence',
 				'title'					=>	__( 'Occurrence', 'task-scheduler' ),
 				'type'					=>	'radio',
+				'label_min_width'		=>	'100%',				
 				'label'					=>	array(),
 			),			
 			array(	
@@ -75,9 +76,13 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
 	 */
 	public function field_definition_TaskScheduler_AdminPage_EditModule_edit_occurrence_occurrence( $aField ) {
 	
-		// Set the first item as the default.
 		$aField['label']	= apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_occurrence', $aField['label'] );	
-		$_aLabels			= array_keys( $aField['label'] );	// Avoid the PHP strict standard warning			
+		foreach( $aField['label'] as $_sSlug => $_sLabel ) {
+			$_sDescription = apply_filters( "task_scheduler_filter_description_occurrence_{$_sSlug}", '' );
+			if ( $_sDescription ) {
+				$aField['label'][ $_sSlug ] = $_sLabel . ' - ' . "<span class='description'>" . $_sDescription . "</span>";
+			}			
+		}		
 		return $aField;
 		
 	}	

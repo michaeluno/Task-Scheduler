@@ -28,6 +28,13 @@ class TaskScheduler_Occurrence_Volatile extends TaskScheduler_Occurrence_Base {
 	public function getLabel( $sSlug ) {
 		return __( 'Volatile', 'task-scheduler' );
 	}			
+
+	/**
+	 * Returns the description of the module.
+	 */
+	public function getDescription( $sDescription ) {
+		return __( 'Triggers actions only once, used mostly by threads.', 'task-scheduler' );
+	}		
 	
 	/**
 	 * Deletes stored tasks.

@@ -23,10 +23,15 @@ class TaskScheduler_Occurrence_SpecificTime extends TaskScheduler_Occurrence_Bas
 	 * Returns the label for the slug.
 	 */
 	public function getLabel( $sSlug ) {
-		
 		return __( 'Specific Time', 'task-scheduler' );
-		
 	}		
+	
+	/**
+	 * Returns the description of the module.
+	 */
+	public function getDescription( $sDescription ) {
+		return __( 'Triggers actions at the specified time.', 'task-scheduler' );
+	}
 		
 	/**
 	 * Do something when the task finishes.
