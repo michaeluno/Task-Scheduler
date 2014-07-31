@@ -251,17 +251,11 @@ final class TaskScheduler_ServerHeartbeat {
 			self::stop();
 			exit;	// do not even let it continue.
 		}
-
-		// $_iInterval = self::getInterval();
-		// if ( ! $_iInterval ) {
-			// return;
-		// }
 		
 		// Save the last beat time, the interval, and heartbeat ID etc.
 		self::_saveInfo();			
 		
 		// Set the sleep transient and go sleep.
-		// set_transient( self::$sTransientKey_Sleep, self::getID(), ceil( ( int ) $_iInterval ) + 1 );
 		add_action( 'wp_loaded', array( $_sClassName, '_replyToSleepAndExit' ), 20 );
 				
 	}
