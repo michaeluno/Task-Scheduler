@@ -1,6 +1,6 @@
 <?php
 if ( ! class_exists( 'TaskScheduler_RevealerCustomFieldType' ) ) :
-class TaskScheduler_RevealerCustomFieldType extends AdminPageFramework_FieldType {
+class TaskScheduler_RevealerCustomFieldType extends TaskScheduler_AdminPageFramework_FieldType {
 		
 	/**
 	 * Defines the field type slugs used for this field type.
