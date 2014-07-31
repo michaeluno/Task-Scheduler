@@ -46,33 +46,11 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
 					'hintText'	=>	__( 'Type a task name.', 'task-scheduler' ),
 					// 'theme'				=>	'facebook',	
 					'searchDelay'		=>	5,	// 50 milliseconds. Default: 300
-					// 'prePopulate' => $this->_getPrepopuratedPosts(),
 				),				
 			),						
 		);
 		
 	}	
-		/**
-		 * 
-		 * @depreacated
-		 */
-		private function _getPrepopuratedPosts() {
-			
-			$_aArgs = array(
-				'posts_per_page'	=>	20,
-				'fields'			=>	'object',
-			);
-			$_oResults = TaskScheduler_TaskUtility::find( $_aArgs );
-			$_aPostTitles = array();			
-			foreach( $_oResults->posts as $_iIndex => $_oPost ) {
-				$_aPostTitles[] = array( 
-					'id'	=>	 $_oPost->ID,
-					'name'	=>	$_oPost->post_title,
-				);
-			}
-			return $_aPostTitles;			
-			
-		}
 		
 	public function validateSettings( $aInput, $aOldInput, $oAdminPage ) { 
 		
@@ -137,7 +115,6 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
 		if ( empty( $aWizardOptions[ '__on_exit_code_task_ids' ] ) ) {
 			unset( $aWizardOptions[ '__on_exit_code_task_ids' ] );
 		}
-TaskScheduler_Debug::log( $aWizardOptions );	
 		return $aWizardOptions;
 				
 	}
