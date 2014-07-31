@@ -70,21 +70,17 @@ final class TaskScheduler_ServerHeartbeat {
 	static public function isAlive() {
 
 		if ( wp_next_scheduled( self::$sServerHeartbeatActionHook ) ) {
-TaskScheduler_Debug::log( 'Heartbeat is Alive because checking event is scheduled.' );
 			return true;
 		}
 		
 		if ( self::isSleeping() ) {
-TaskScheduler_Debug::log( 'Heartbeat is Alive because it is sleeping.' );			
 			return true;
 		}
 		
 		$_iLastBeatTime	= self::getLastBeatTime();
 		$_iInterval		= self::getInterval();
 		$_bIsAlive = ( $_iLastBeatTime + $_iInterval > microtime( true ) );
-TaskScheduler_Debug::log( 'Heartbeat is ' . ( $_bIsAlive ? 'Alive' : 'Dead' ) . ', by comparing the current time and the last run time + interval.' );
-		return $_bIsAlive;
-			
+		return $_bIsAlive;		
 		
 	}	
 	
@@ -142,8 +138,6 @@ TaskScheduler_Debug::log( 'Heartbeat is ' . ( $_bIsAlive ? 'Alive' : 'Dead' ) . 
 				$_aInfo['id']						=	self::getID();
 			}
 			$_aInfo = $aSettings + array_filter( $_aInfo ); // drop non-true values.
-// TaskScheduler_Debug::log( 'saving info' );
-// TaskScheduler_Debug::log( $_aInfo );
 			set_transient( self::$sTransientKey, $_aInfo );	// made it not vanish by itself
 			
 		}	
@@ -168,13 +162,9 @@ TaskScheduler_Debug::log( 'Heartbeat is ' . ( $_bIsAlive ? 'Alive' : 'Dead' ) . 
 		self::_scheduleToCheckBeat();
 		
 		// If it is alive, do nothing.
-		if ( $_bIsAlive ) {
-TaskScheduler_Debug::log( 'heartbeat is alive so not performing the beat.' );
-			return false;
-		} 		
+		if ( $_bIsAlive ) { return false; } 		
 		
 		// Start the beat.	
-TaskScheduler_Debug::log( 'The heartbeat is resumed / started.' );		
 		add_action( 'shutdown', array( get_class(), '_replyToStart' ) );
 		return true;
 		
@@ -253,13 +243,11 @@ TaskScheduler_Debug::log( 'The heartbeat is resumed / started.' );
 		
 		// Another heartbeat is already running. (this sometimes occurs but not sure why )
 		if ( self::isSleeping() ) {
-TaskScheduler_Debug::log( 'Another heartbeat is already running' );			
 			return;
 		}
 				
 		// If the transient does not exists, it means the user has stopped the beat.
 		if ( false === self::_getInfo() ) {
-TaskScheduler_Debug::log( 'it seems the user has stopped the beat: ' . self::getID() );
 			self::stop();
 			exit;	// do not even let it continue.
 		}
@@ -267,7 +255,6 @@ TaskScheduler_Debug::log( 'it seems the user has stopped the beat: ' . self::get
 
 		$_iInterval = self::getInterval();
 		if ( ! $_iInterval ) {
-TaskScheduler_Debug::log( 'Could not retrieve the interval.' );
 			return;
 		}
 		
@@ -300,16 +287,6 @@ TaskScheduler_Debug::log( 'Could not retrieve the interval.' );
 			$_nElapsedTime		= timer_stop( 0, 6 );
 			$_nSleepDuration	= $_iInterval - $_nElapsedTime;
 			$_nSleepDuration	= $_nSleepDuration < 0 ? 0 : $_nSleepDuration;	// avoid the PHP error by passing a negative value.
-
-$_aInfo = array(
-	'id'		=>	$_sID,
-	'interval'	=>	$_iInterval,
-	'elapsed'	=>	$_nElapsedTime,
-	'sleep'		=>	$_nSleepDuration,
-	'context'	=>	isset( $_COOKIE['server_heartbeat_context'] ) ? $_COOKIE['server_heartbeat_context'] : '',
-);
-
-TaskScheduler_Debug::log( 'Info: ' . http_build_query( $_aInfo, '', ', ' ) );		
 			
 			// If the interval is longer then the PHP max-execution time, attempt to override it.
 			$_iMaxExecutionTime = function_exists( 'ini_get' ) ? ini_get( 'max_execution_time' ) : 25;
@@ -327,7 +304,6 @@ TaskScheduler_Debug::log( 'Info: ' . http_build_query( $_aInfo, '', ', ' ) );
 			
 			// Give the interval - for example, to wait for 2 seconds, pass 2000000. 
 			if ( $_nSleepDuration > 0 ) {
-TaskScheduler_Debug::log( $_sID . ' sleeping: ' . $_nSleepDuration . ' cache duration: ' . ( ( int ) ceil( $_nSleepDuration ) ) );
 
 				// Be careful not to set 0 for the cache duration.
 				$_iTransientDuration = ( int ) floor( $_nSleepDuration );
@@ -373,18 +349,7 @@ TaskScheduler_Debug::log( $_sID . ' sleeping: ' . $_nSleepDuration . ' cache dur
 					
 			// For a safety net
 			self::_scheduleToCheckBeat();
-			
-$_iSetInterval	= self::getInterval();
-$_iActualInterval	= self::_getInfo( 'last_beat_time' ) - self::_getInfo( 'second_last_beat_time' ); 
-TaskScheduler_Debug::log( 'beat! The actual interval is : ' . $_iActualInterval );
-if ( $_iActualInterval + 1 < $_iSetInterval ) {
-	TaskScheduler_Debug::log( 
-		'The observed interval is shorter than the set interval: ' . $_iActualInterval . ' set interval: ' . $_iSetInterval,
-		WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'ServerHeartbeat_Warnings' . '_' . date( "Ymd" ) . '.log'
-	);
-	
-}
-			
+						
 			// Load the page in the background
 			self::loadPage();
 
