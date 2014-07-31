@@ -52,8 +52,6 @@ abstract class TaskScheduler_TaskUtility_Add extends TaskScheduler_TaskUtility_G
 	static public function create( array $aTaskOptions, array $aSystemTaxonomyTerms=array(), $bAllowDuplicate=false ) {
 		
 		if ( ! $bAllowDuplicate && self::hasSameTask( $aTaskOptions, $aSystemTaxonomyTerms ) ) {
-TaskScheduler_Debug::log( 'the same task already exists.' );
-TaskScheduler_Debug::log( $aTaskOptions );
 			return 0;
 		}
 
@@ -169,7 +167,6 @@ TaskScheduler_Debug::log( $aTaskOptions );
 		if ( ! empty( $_aSystemInternalTerms ) ) {
 			wp_set_object_terms( $_iTaskID, $_aSystemInternalTerms, TaskScheduler_Registry::Taxonomy_SystemLabel, true );
 		} 
-// TaskScheduler_Debug::log( $aTaskOptions );		
 		return $_iTaskID;
 					
 	}

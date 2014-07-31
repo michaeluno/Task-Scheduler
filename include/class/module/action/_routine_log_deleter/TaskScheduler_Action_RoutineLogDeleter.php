@@ -48,16 +48,8 @@ class TaskScheduler_Action_RoutineLogDeleter extends TaskScheduler_Action_Base {
 		if ( $_iRootLogs <= $_iRemain ) {
 			// Exit code: passing 'DELETE' will tell the system to delete the task.
 			// This task is a system internal task and the 'constant' occurrence type is automatically set when this routine is created.
-TaskScheduler_Debug::log(  'finished the task. This should be deleted: ' . $oTask->iD );			
 			return 'DELETE';	
 		}
-		
-TaskScheduler_Debug::log( 
-	'the number of root logs of ' . $_iTargetTaskID . ' is '  . $_iRootLogs . '.' 
-);
-TaskScheduler_Debug::log( 
-	'the number of root logs to remain: ' . $_iRemain
-);
 		
 		$_aThreadOptions = array(
 		

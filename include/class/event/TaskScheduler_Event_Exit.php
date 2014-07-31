@@ -61,7 +61,7 @@ class TaskScheduler_Event_Exit {
 	/**
 	 * Performs pre-defined exit code commands.
 	 * 
-	 * Curently there is only the 'DELETE' command.
+	 * Currently there is only the 'DELETE' command.
 	 * 
 	 */
 	private function _doExitCode( $isExitCode, $oRoutine ) {
@@ -78,9 +78,6 @@ class TaskScheduler_Event_Exit {
 	private function _doTasksOnExitCode( $isExitCode, $oRoutine ) {
 		
 		$_aFoundTasks = $this->_getTasksOnExitCode( $isExitCode, $oRoutine->ID );
-
-// TaskScheduler_Debug::log( 'exit code: ' . $isExitCode . ' routine id: ' . $oRoutine->ID );
-// TaskScheduler_Debug::log( $_aFoundTasks );
 		foreach( $_aFoundTasks as $_iTaskID ) {
 			do_action( 'task_scheduler_action_spawn_routine', $_iTaskID, microtime( true ) );
 		}		

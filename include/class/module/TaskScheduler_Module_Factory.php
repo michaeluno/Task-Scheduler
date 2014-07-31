@@ -116,8 +116,6 @@ abstract class TaskScheduler_Module_Factory {
 					$aOptions[ $_sSlug ] = $_aModuleWizardOptions;
 				}
 			}
-// TaskScheduler_Debug::log( $_aWizardSlugs );
-// TaskScheduler_Debug::log( $aOptions );
 			return $aOptions;
 			
 		}		
@@ -155,7 +153,6 @@ abstract class TaskScheduler_Module_Factory {
 				'instance'		=>	$_oWizardScreen,
 				'is_main'		=>	$_bIsFirst,
 			);
-// TaskScheduler_Debug::log( $sWizardClassName . '  is main:' . $_bIsFirst );	
 			if ( $_bIsFirst ) { return; }
 			
 			// At this point, the added wizard screen is not the first one. 

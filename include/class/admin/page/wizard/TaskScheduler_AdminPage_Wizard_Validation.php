@@ -43,11 +43,9 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
 		 */
 		protected function _saveValidatedWizardOptions( array $aWizardOptions ) {
 
-	// TaskScheduler_Debug::log( $aWizardOptions );	
 			if ( ! isset( $_GET['transient_key'] ) ) {
 				return;
-			}
-			
+			}		
 			set_transient( $_GET['transient_key'], apply_filters( 'task_scheduler_admin_filter_saving_wizard_options', $aWizardOptions ), 30*60 );
 				
 		}

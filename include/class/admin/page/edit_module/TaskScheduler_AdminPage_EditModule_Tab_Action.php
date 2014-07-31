@@ -138,7 +138,6 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
 			unset( $aInput['custom_action'] );	// remove one of these and leave the other.
 			
 		}				
-TaskScheduler_Debug::log( $aInput );
 		
 		if ( ! $_bIsValid ) {
 
@@ -190,7 +189,5 @@ TaskScheduler_Debug::log( $aInput );
 			return $_sRedirectURL;			
 			
 		}
-	
-	
 
 }

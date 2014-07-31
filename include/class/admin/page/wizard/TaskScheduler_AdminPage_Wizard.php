@@ -34,7 +34,6 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
 		
 		// Since the wizard options do not have section dimension (in the first depth), store the options in each section.
 		$_aOptions = apply_filters( 'task_scheduler_admin_filter_wizard_options', $this->_getWizardOptions() );
-TaskScheduler_Debug::log( $_aOptions );
 		return array(
 			// section id	=> field values.
 			'wizard'				=>	$_aOptions,	// the first wizard tab
@@ -105,7 +104,7 @@ TaskScheduler_Debug::log( $_aOptions );
 	 * 
 	 */
 	public function _replyToGetWizardOptions( $vDefault, $sKey='' ) {
-// TaskScheduler_Debug::log( $vDefault );
+
 		$_vReturn = $this->_getWizardOptions( $sKey );
 		if ( is_null( $_vReturn ) ) {
 			return $vDefault;

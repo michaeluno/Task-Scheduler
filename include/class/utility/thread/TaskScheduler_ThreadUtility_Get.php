@@ -35,11 +35,7 @@ abstract class TaskScheduler_ThreadUtility_Get extends TaskScheduler_ThreadUtili
 			'fields'			=>	'ids',	// return only post IDs
 		);
 
-		$_oResults = new WP_Query( $_aArgs );
-// TaskScheduler_Debug::log( $_aArgs );
-// TaskScheduler_Debug::log( $_oResults->posts );
-		return $_oResults;		
-		// return $_oResults->posts;		
+		return new WP_Query( $_aArgs );
 		
 	}		
 		
@@ -77,4 +73,3 @@ abstract class TaskScheduler_ThreadUtility_Get extends TaskScheduler_ThreadUtili
 	}	
 	
 }
-

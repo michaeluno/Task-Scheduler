@@ -52,19 +52,14 @@ class TaskScheduler_Action_Email_Thread extends TaskScheduler_Action_Base {
 				$_aThreadMeta['email_message']				
 			) 
 		) {
-TaskScheduler_Debug::log( 'the email thread failed due to missing required keys.' );		
 			return 0;	// failed
 		}
 		
-		$isExitCode = wp_mail( 
+		return wp_mail( 
 			$_aThreadMeta[ 'email_address' ],	// email address
 			apply_filters( 'task_scheduler_filter_task_email_subject', $_aThreadMeta['email_title'], $oThread ),	// subject 
 			apply_filters( 'task_scheduler_filter_task_email_body', $_aThreadMeta['email_message'], $oThread )		// message
 		);		
-TaskScheduler_Debug::log( 'Sending the email is done. Exit Code: ' . $isExitCode );					
-TaskScheduler_Debug::log( $_aThreadMeta );					
-		return $isExitCode;	
-		
 	
 	}
 			

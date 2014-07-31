@@ -36,10 +36,7 @@ abstract class TaskScheduler_TaskUtility_Get extends TaskScheduler_TaskUtility_E
 		);
 
 		$_oResults = new WP_Query( $_aArgs );
-// TaskScheduler_Debug::log( $_aArgs );
-// TaskScheduler_Debug::log( $_oResults->posts );
 		return $_oResults;		
-		// return $_oResults->posts;		
 		
 	}	
 	

@@ -97,8 +97,6 @@ abstract class TaskScheduler_PostType_Log_Base extends TaskScheduler_AdminPageFr
 			// 'order' value can be ASC or DESC
 			$oWPQuery->set( 'order', 'DESC' );
 			
-// TaskScheduler_Debug::log( $oWPQuery );
-		  
 		}		
 		/**
 		 * Adds custom CSS rules to the listing table page.

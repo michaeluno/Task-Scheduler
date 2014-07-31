@@ -37,7 +37,6 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
 	 * Return 'NOT_DELETE' not to delete the thread to continue, otherwise to delete the thread.
 	 */
 	public function doAction( $isExitCode, $oThread ) {
-TaskScheduler_Debug::log( 'deleting posts' );			
 		
 		$_oTask = $oThread->getOwner();
 		if ( ! is_object( $_oTask ) ) { return 1; }
@@ -51,7 +50,6 @@ TaskScheduler_Debug::log( 'deleting posts' );
 				$_aThreadMeta[ 'term_ids_of_deleting_posts' ]
 			)
 		) {
-TaskScheduler_Debug::log( 'required keys missing' );
 			$_oTask->log( 'Required keys are missing.', $oThread->parent_routine_log_id );
 			return 1;	// failed
 		}
@@ -66,7 +64,6 @@ TaskScheduler_Debug::log( 'required keys missing' );
 		
 		// If not found, finish the task.
 		if ( ! count( $_aPostIDsToDelete ) ) {
-TaskScheduler_Debug::log( 'no more post ids' );
 			$_oTask->log( 'No more post IDs found to to delete.', $oThread->parent_routine_log_id );
 			return 1;
 		}
@@ -125,8 +122,6 @@ TaskScheduler_Debug::log( 'no more post ids' );
 			}
 
 			$_oResults = new WP_Query( $_aQueryArgs );
-	// TaskScheduler_Debug::log( $_aQueryArgs );
-	// TaskScheduler_Debug::log( $_oResults->posts );
 			return $_oResults->posts;		
 						
 		}

@@ -49,8 +49,6 @@ final class TaskScheduler_Occurrence_FixedInterval_Wizard extends TaskScheduler_
 		$_aErrors = array();
 		
 		if ( ! isset( $aInput['interval'][ 0 ] ) || ! $aInput['interval'][ 0 ] ) {
-// TaskScheduler_Debug::log( 'invalid' )	;
-// TaskScheduler_Debug::log( $aInput )	;
 			// $aVariable[ 'sectioni_id' ]['field_id']
 			$_aErrors[ $this->_sSectionID ][ 'interval' ] = __( 'The interval must be greater than 0.', 'task-scheduler' );
 			$_bIsValid = false;			

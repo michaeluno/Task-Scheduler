@@ -183,7 +183,7 @@ abstract class TaskScheduler_PostType_Task_Base extends TaskScheduler_AdminPageF
 			if ( $this->oUtil->getCurrentPostType() != $this->oProp->sPostType ) {
 				return $aActions;
 			}
-// TaskScheduler_Debug::log( $aActions );
+
 			unset( $aActions['inline hide-if-no-js'] );		
 
 			$aActions['run_now'] = "<a href=''>" . __( 'Run Now', 'task-scheduler' ) . "</a>";

@@ -13,14 +13,14 @@ class TaskScheduler_Event {
 		
 	public function __construct() {
 	
-		// Occurrence definitions.
+		// Occurrence modules.
 		new TaskScheduler_Occurrence_FixedInterval( 'fixed_interval', 'TaskScheduler_Occurrence_FixedInterval_Wizard' );
 		new TaskScheduler_Occurrence_SpecificTime( 'specific_time', 'TaskScheduler_Occurrence_SpecificTime_Wizard' );
 		new TaskScheduler_Occurrence_ExitCode( 'on_exit_code', 'TaskScheduler_Occurrence_ExitCode_Wizard' );
 		new TaskScheduler_Occurrence_Volatile( 'volatile' );
 		new TaskScheduler_Occurrence_Constant( 'constant' );
 		
-		// Action definitions.
+		// Action modules.
 		new TaskScheduler_Action_PostDeleter( 
 			'task_scheduler_action_delete_post', 
 			array(

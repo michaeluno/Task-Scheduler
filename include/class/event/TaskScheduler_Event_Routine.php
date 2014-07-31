@@ -57,13 +57,11 @@ class TaskScheduler_Event_Routine {
 		$oRoutine->setMeta( '_spawned_time',	$_nCurrentMicroTime );	// used to cancel the routine and to detect the hung 
 		$oRoutine->setMeta( '_count_call',	$oRoutine->getMeta( '_count_call' ) + 1 );
 		
-TaskScheduler_Debug::log( 'spawned a task: ' . $oRoutine->ID );		
 		if ( $oRoutine->isTask() ) {
 			
 			// Pass the spawned time and the thread will compare the passed spawned time and the currently set spawned time 
 			// to identify the dealing task is the one that needs to be taken cared of as there is a possibility that forced execution 
 			// spawns multiple instances of routines.
-TaskScheduler_Debug::log( 'adding a hung handler thread: ' . $oRoutine->post_title );					
 			do_action( 'task_scheduler_action_add_hung_routine_handler_thread', $oRoutine );
 			
 		}
@@ -82,7 +80,6 @@ TaskScheduler_Debug::log( 'adding a hung handler thread: ' . $oRoutine->post_tit
 		$_sPreviousTaskStatus	= get_transient( $_sTransientKey );
 		if ( $_sPreviousTaskStatus ) {
 			$oRoutine->setMeta( '_routine_status', $_sPreviousTaskStatus );
-TaskScheduler_Debug::log( 'Reverted the task status to ' . $_sPreviousTaskStatus );					
 		}
 		$oRoutine->deleteMeta( '_is_spawned' );
 		delete_transient( $_sTransientKey );

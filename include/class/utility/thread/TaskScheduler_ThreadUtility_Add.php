@@ -42,8 +42,6 @@ abstract class TaskScheduler_ThreadUtility_Add extends TaskScheduler_ThreadUtili
 		if ( ! self::doesPostExist( $iOwnerTaskID ) ) { return 0; }
 		
 		if ( ! $bAllowDuplicate && self::hasSameTask( $aThreadOptions, $aSystemTaxonomyTerms ) ) {
-TaskScheduler_Debug::log( 'the same task already exists.' );
-TaskScheduler_Debug::log( $aThreadOptions );
 			return 0;
 		}
 

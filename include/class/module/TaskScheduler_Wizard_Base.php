@@ -366,8 +366,6 @@ abstract class TaskScheduler_Wizard_Base {
 		}
 		
 		// Retrieve the wizard options.
-// TODO: use the cache by using the filter.		
-		// $_aWizardOptions = get_transient( $this->_sTransientKey );
 		$_aWizardOptions = apply_filters( 'task_scheduler_admin_filter_get_wizard_options', array() );
 				
 		// Set the values of the wizard options to the fields
@@ -397,17 +395,6 @@ abstract class TaskScheduler_Wizard_Base {
 			
 
 		}
-// TaskScheduler_Debug::log( '$_aWizardOptions' );		
-// TaskScheduler_Debug::log( $_aWizardOptions );
-// TaskScheduler_Debug::log( 'field definition array' );		
-// TaskScheduler_Debug::log( $aAllFields[ $this->_sSectionID ] );
-// TaskScheduler_Debug::log( 'called' );			
-// TaskScheduler_Debug::log( $aAllFields[ $this->_sSectionID ] );			
-		// Decide whether the Back button should appear.
-		// if ( ! $this->_bIsAddNew && $this->sSlug === $this->sMainWizardSlug ) {
-			// unset( $aAllFields[ $this->_sSectionID ][ 'submit' ][ 0 ] );
-			// return $aAllFields;
-		// }
 
 		// Set the Back button's url.
 		$_sCurrentURLKey = remove_query_arg( array( 'transient_key', 'settings-notice', 'settings-updated' ) );
@@ -423,7 +410,7 @@ abstract class TaskScheduler_Wizard_Base {
 	 * The callback function for adding in-page tabs.
 	 */
 	public function _replyToAddInPageTab( $aTabs ) {
-TaskScheduler_Debug::log( $this->sSlug );
+
 		$aTabs[ $this->sSlug ] = array(
 			'page_slug'			=>	"tabs_{$this->_sMainAdminPageClassName}_{$this->_sMainAdminPageSlug}" === current_filter() 
 				? $this->_sMainAdminPageSlug
@@ -440,14 +427,11 @@ TaskScheduler_Debug::log( $this->sSlug );
 	/**
 	 * The callback function for tab settings validation.
 	 */
-	public function _replytToValidateTabSettings( $aInput, $aOldInput, $oAdminPage ) {
-// TaskScheduler_Debug::log( $aInput );				
+	public function _replytToValidateTabSettings( $aInput, $aOldInput, $oAdminPage ) {	
 
 		$_aWizardOptions = array( 
 			'previous_urls' => apply_filters( 'task_scheduler_admin_filter_get_wizard_options', array(), 'previous_urls' ),
-		);
-
-TaskScheduler_Debug::log( $_aWizardOptions );						
+		);				
 		
 		// If the user wants an error to be displayed without saving the options, an empty array will be returned.
 		if ( ! $oAdminPage->hasSettingNotice( 'error' ) ) {	
@@ -466,13 +450,10 @@ TaskScheduler_Debug::log( $_aWizardOptions );
 		}
 
 		// The '_wizard_options' element will be extracted and saved as the wizard options in the wizard admin page class.
-		$aInput['_wizard_options'] = $_aWizardOptions;
-// TaskScheduler_Debug::log( $aInput );				
-TaskScheduler_Debug::log( $aInput[ '_wizard_options' ] );				
+		$aInput['_wizard_options'] = $_aWizardOptions;		
 
 		// Return the wizard options. The wizard admin page class will take care of the rest.
 		return $aInput;
-
 		
 	}
 	
@@ -508,6 +489,5 @@ TaskScheduler_Debug::log( $aInput[ '_wizard_options' ] );
 	public function validateSettings( $aInput, $aOldInput, $oAdminPage ) { return $aInput; }
 
 	public function construct() {}
-	
 	
 }

@@ -22,9 +22,7 @@ final class TaskScheduler_LogUtility extends TaskScheduler_LogUtility_Get {
 		foreach( self::getChildLogIDs( $iRootLogID ) as $_iChildLogID ) {
 			
 			// Once it happened that an array is passed 
-			if ( ! is_numeric( $_iChildLogID ) ) {
-TaskScheduler_Debug::log( 'warning non numeric value is passed: ' );
-TaskScheduler_Debug::log( $_iChildLogID );				
+			if ( ! is_numeric( $_iChildLogID ) ) {		
 				continue;
 			}
 			
@@ -39,4 +37,3 @@ TaskScheduler_Debug::log( $_iChildLogID );
 	}	
 	
 }
-

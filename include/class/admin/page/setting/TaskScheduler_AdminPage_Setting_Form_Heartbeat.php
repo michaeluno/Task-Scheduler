@@ -11,7 +11,6 @@
 
 abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskScheduler_AdminPage_Setting_Form_Task {
 
-	
 	/**
 	 * Defines the settings form.
 	 */
@@ -137,7 +136,6 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskSchedu
 			&& $aInput['power'] 
 			&& $aInput['interval']
 		) {
-TaskScheduler_Debug::log( 'calling the server heartbeat run method' );
 			
 			$_sTargetURL = $aInput['query_string'][ 0 ] && $aInput['query_string'][ 1 ]
 				? add_query_arg(
@@ -152,16 +150,11 @@ TaskScheduler_Debug::log( 'calling the server heartbeat run method' );
 		if ( isset( $aInput['power'], $aInput['interval'] ) 
 			&& ( ! $aInput['power'] || ! $aInput['interval'] )
 		) {
-TaskScheduler_Debug::log( 'calling the server heartbeat stop method' );						
-			TaskScheduler_ServerHeartbeat::stop();
-			
+			TaskScheduler_ServerHeartbeat::stop();			
 		}
-		
-TaskScheduler_Debug::log( $aInput );
-				
+						
 		return $aInput;
 		
 	}
-		
-	
+
 }

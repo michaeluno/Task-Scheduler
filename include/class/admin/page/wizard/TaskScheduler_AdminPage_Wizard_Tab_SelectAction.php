@@ -151,7 +151,6 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
 			unset( $aInput['custom_action'] );	// remove one of these and leave the other.
 			
 		}				
-TaskScheduler_Debug::log( $aInput );
 
 		$aInput['argument'] = array_values( $aInput['argument'] );
 		

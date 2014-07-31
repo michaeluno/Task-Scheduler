@@ -35,11 +35,7 @@ abstract class TaskScheduler_RoutineUtility_Get extends TaskScheduler_RoutineUti
 			'fields'			=>	'ids',	// return only post IDs by default.
 		);
 
-		$_oResults = new WP_Query( $_aArgs );
-// TaskScheduler_Debug::log( $_aArgs );
-// TaskScheduler_Debug::log( $_oResults->posts );
-		return $_oResults;		
-		// return $_oResults->posts;		
+		return new WP_Query( $_aArgs );
 		
 	}	
 		
@@ -71,8 +67,6 @@ abstract class TaskScheduler_RoutineUtility_Get extends TaskScheduler_RoutineUti
 			),
 		);		
 		$_oResults = self::find( $_aArgs );
-// TaskScheduler_Debug::log( 'next scheduled', true );
-// TaskScheduler_Debug::log( $_oResults->posts, true );
 		return $_oResults->posts;			
 		
 	}
@@ -111,14 +105,9 @@ abstract class TaskScheduler_RoutineUtility_Get extends TaskScheduler_RoutineUti
 		);		
 		
 		$_oResults = self::find( $_aArgs );
-// TaskScheduler_Debug::log( 'next scheduled', true );
-// TaskScheduler_Debug::log( $_oResults->posts, true );
 		return $_oResults->posts;			
 		
 	}
-	
 
-			
-	
 }
 

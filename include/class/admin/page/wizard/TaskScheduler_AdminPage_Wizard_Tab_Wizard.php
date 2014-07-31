@@ -128,7 +128,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_Wizard extends TaskScheduler_A
 		$aInput['occurrence_label'] = apply_filters( "task_scheduler_filter_label_occurrence_" . $aInput['occurrence'], $aInput['occurrence'] );
 
 		$this->_saveWizardOptions( $aInput['transient_key'], $aInput );
-// TaskScheduler_Debug::log( $aInput );	
+
 		// Go to the next page.
 		exit( wp_safe_redirect( $_sRedirectURL ) );
 		

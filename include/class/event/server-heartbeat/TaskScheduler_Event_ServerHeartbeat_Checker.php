@@ -23,8 +23,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 			TaskScheduler_ServerHeartbeat::isBackground() 
 			&& ! isset( $_COOKIE[ 'server_heartbeat_action' ] )
 		) {
-// TaskScheduler_Debug::log( 'checking next scheduled tasks' );
-			
+		
 			// Letting the site load and wait till the 'wp_loaded' hook is required to load the custom taxonomy that the plugin uses.
 			add_action( 'wp_loaded', array( $this, '_replyToSpawnRoutines' ), 1 );	// set the high priority because the sleep sub-routine also hooks the same action.
 			return;
@@ -43,36 +42,15 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 		$_iProcessingCount				= TaskScheduler_RoutineUtility::getProcessingCount();
 		$_iAllowedNumberOfRoutines		= $_iMaxAllowedNumberOfRoutines - $_iProcessingCount;
 		$_aScheduledRoutines			= array_slice( $_aScheduledRoutines, 0, $_iAllowedNumberOfRoutines );
-$_aInfo = array(
-	'Heartbeat_ID' => $_COOKIE['server_heartbeat_id'],
-	'Context' => $_COOKIE['server_heartbeat_context'],
-	'Max_Allowed_Routine_Count' => $_iMaxAllowedNumberOfRoutines,
-	'Found_Scheduled' => ( count( $_aScheduledRoutines ) ),
-	'Processing_Count' => $_iProcessingCount,
-	'Allowed_Number_of_Routines' => $_iAllowedNumberOfRoutines,
-	'Spawning_Count' => count( $_aScheduledRoutines ),
-);
-TaskScheduler_Debug::log( 'Querying routines: ' . http_build_query( $_aInfo, '', ', ' ) );		
+
 		foreach ( $_aScheduledRoutines as $_iRoutineID ) {		
 		
 			$_oTask = TaskScheduler_Routine::getInstance( $_iRoutineID );
 			if ( ! is_object( $_oTask ) ) { continue; }	
 			if ( ! $_oTask->_force_execution && ! in_array( $_oTask->_routine_status, array( 'inactive', 'queued' ) )  ) { continue; }
 			
-if ( $_oTask->isTask() ) {	
-	$_aInfo = array(
-		'task id'			=>	'ID: ' . $_oTask->ID,
-		'thread exists' 	=>	'Type: ' . ( $_oTask->isThread() ? 'Thread' : 'Task' ),
-		'status'			=>	'Status: ' . $_oTask->_routine_status,
-		'next_run_readable'	=>	'Next Time: ' . TaskScheduler_WPUtility::getSiteReadableDate( $_oTask->_next_run_time, 'Y/m/d G:i:s', true ),
-	);
-	TaskScheduler_Debug::log( 
-		'Spawning the task: ' . implode( ', ', $_aInfo )
-	);
-}
 			// Check if the owner task exists or not. If not, delete the thread and skip the iteration.
 			if ( $_oTask->isThread() && ! is_object( TaskScheduler_Routine::getInstance( $_oTask->owner_routine_id ) ) ) {
-TaskScheduler_Debug::log( 'the parsed thread does not have an owner so deleting: ' . $_oTask->ID );
 				$_oTask->delete();	
 				continue;				
 			}

@@ -50,9 +50,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModule extends TaskS
 		// Drop unnecessary form elements. The method is defined in the base class.
 		$_bUpdateSchedule	= isset( $_aWizardOptions['_update_next_schedule'] ) ? $_aWizardOptions['_update_next_schedule'] : false;
 		$_aWizardOptions	= $this->_dropUnnecessaryWizardOptions( $_aWizardOptions );
-						
-TaskScheduler_Debug::log( $_aWizardOptions );
-		
+							
 		// Update the meta.
 		TaskScheduler_WPUtility::updatePostMeta( $_GET['post'], $_aWizardOptions );		
 		if ( $_bUpdateSchedule ) {			

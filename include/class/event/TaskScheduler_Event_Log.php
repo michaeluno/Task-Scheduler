@@ -11,6 +11,8 @@
 
 /**
  * 
+ * @action	add	before_delete_post							Triggered when a post is about to be deleted.
+ * @action	add	task_scheduler_action_add_log_deletion_task	
  */
 class TaskScheduler_Event_Log {
 		
@@ -23,7 +25,6 @@ class TaskScheduler_Event_Log {
 		add_action( 'task_scheduler_action_add_log_deletion_task', array( $this, '_replyToAddLogDeletionTask' ) );
 		
 	}
-
 		
 	/**
 	 * Creates a system internal task that deletes all the logs associated with the task.
@@ -73,7 +74,7 @@ class TaskScheduler_Event_Log {
 					'_target_routine_id'		=>	$iTargetTaskID,
 					'_max_root_log_count_of_the_target'	=> $iMaxRootLogCountOfTheSubjectTask,
 				),
-				array( 'system', 'delete_log' )
+				array( 'system', 'delete_log' )	// taxonomy terms.
 			);
 			if ( $_iTaskID ) {
 				$_oTask	= TaskScheduler_Routine::getInstance( $_iTaskID );

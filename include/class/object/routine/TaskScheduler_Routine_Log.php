@@ -42,16 +42,6 @@ abstract class TaskScheduler_Routine_Log extends TaskScheduler_Routine_Meta {
 		// If so, check the given parent log ID's owner can accept a log.
 		$_iTargetTaskID = ! $iParentLogID ? $this->ID : get_post_meta( $iParentLogID, '_routine_id', true );		
 		if ( ! $this->canLog( $_iTargetTaskID ) ) {
-TaskScheduler_Debug::log( 'cannot log' );
-// TaskScheduler_Debug::log( 
-	// array(
-		// 'routine ID'		=> $this->ID,
-		// 'post title'		=> $this->post_title,
-		// 'routine type'		=> $this->isThread() ? 'Thread' : 'Task',
-		// 'target task ID'	=> $_iTargetTaskID,
-		// 'parent log ID'		=> $iParentLogID,
-	// )
-// );		
 			return 0;
 		}
 		
@@ -59,17 +49,7 @@ TaskScheduler_Debug::log( 'cannot log' );
 		if ( ! $iParentLogID && $this->isThread() ) {
 			$iParentLogID = $this->parent_routine_log_id ? $this->parent_routine_log_id : 0;
 		}
-TaskScheduler_Debug::log( 'Logging' );		
-TaskScheduler_Debug::log( 
-	array(
-		'current hook'		=> current_filter(),
-		'routine ID'		=> $this->ID,
-		'post title'		=> $this->post_title,
-		'routine type'		=> $this->isThread() ? 'Thread' : 'Task',
-		'target task ID'	=> $_iTargetTaskID,
-		'parent log ID'		=> $iParentLogID,
-	)
-);		
+	
 		$_iLogID = TaskScheduler_LogUtility::log( $iParentLogID ? $iParentLogID : $this->ID , $asLog );
 		if ( $bUpdateMeta ) {
 			$this->setMeta( 'log_id', $_iLogID );
