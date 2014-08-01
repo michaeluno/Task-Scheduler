@@ -274,51 +274,59 @@ final class TaskScheduler_ServerHeartbeat {
 		 */
 		static public function _replyToSleepAndExit() {
 						
-			$_sID 		= self::getID();
-			$_iInterval = self::getInterval();
-						
-			$_nElapsedTime		= timer_stop( 0, 6 );
-			$_nSleepDuration	= $_iInterval - $_nElapsedTime;
-			$_nSleepDuration	= $_nSleepDuration < 0 ? 0 : $_nSleepDuration;	// avoid the PHP error by passing a negative value.
+			$_iInterval					= self::getInterval();
+			$_iReservedSeconds			= 3;	// wp_remove_get() sometimes stalls
+			$_nElapsedTime				= timer_stop( 0, 6 );
+			$_nSleepDuration			= ( $_iInterval - $_nElapsedTime ) < 0 ? 0 : $_iInterval - $_nElapsedTime;	// to not allow a negative value.
+			$_iMaxExecutionTime 		= function_exists( 'ini_get' ) ? ini_get( 'max_execution_time' ) : 25;
+			$_iSecondsToLimit			= $_iMaxExecutionTime - ceil( $_nElapsedTime );
+			$_nEstimatedRequiredTime	= $_nSleepDuration + $_iReservedSeconds;
 			
-			// If the interval is longer then the PHP max-execution time, attempt to override it.
-			$_iMaxExecutionTime = function_exists( 'ini_get' ) ? ini_get( 'max_execution_time' ) : 25;
-			$_iSecondsToLimit = $_iMaxExecutionTime - ceil( $_nElapsedTime );
-			if ( $_iSecondsToLimit < $_nSleepDuration ) {
-				// Some servers disable this function.
-				if ( function_exists( 'ini_set' ) ) {
+			// If the estimated required time for the rest of the script execution is longer then the PHP max-execution time, 
+			// attempt to override it.
+			if ( $_iSecondsToLimit < $_nEstimatedRequiredTime ) {
+				
+				if ( function_exists( 'ini_set' ) ) {	// Some servers disable this function.
 					// Make the execution time longer.
-					@ini_set( 'max_execution_time', ceil( $_nSleepDuration + $_nElapsedTime ) + 10  );
+					@ini_set( 'max_execution_time', ceil( $_nEstimatedRequiredTime + $_nElapsedTime ) + 10 );
 				} else {
 					// Shorten the sleep time.
-					$_nSleepDuration = $_iSecondsToLimit - 1;	
+					$_nSleepDuration = $_iSecondsToLimit - $_iReservedSeconds;	
 				}		
 			} 							
 			
-			// Give the interval - for example, to wait for 2 seconds, pass 2000000. 
-			if ( $_nSleepDuration > 0 ) {
-
-				// Be careful not to set 0 for the cache duration.
-				$_iTransientDuration = ( int ) floor( $_nSleepDuration );
-				if ( $_iTransientDuration ) {					
-					set_transient( self::$sTransientKey_Sleep, $_sID, $_iTransientDuration );	
-					add_action( 'shutdown', array( get_class(), '_replyToDeleteSleepTransient' ), 1 );
-				}
-				usleep( $_nSleepDuration * 1000000 ); 
-						
-			} 
-
-			add_action( 'shutdown', array( get_class(), '_replyToPulsate' ) );
+			self::_sleep( $_nSleepDuration );
+			self::_pulsate();
 			exit();			
 			
 		} 
 			/**
+			 * Sleeps.
+			 */
+			static private function _sleep( $nSleepDuration ) {
+				
+				// Give the interval - for example, to wait for 2 seconds, pass 2000000. 
+				if ( $nSleepDuration <= 0 ) { return; }
+
+				// Be careful not to set 0 for the cache duration.
+				$_iTransientDuration = ( int ) floor( $nSleepDuration );
+				if ( $_iTransientDuration ) {					
+					set_transient( self::$sTransientKey_Sleep, self::getID(), $_iTransientDuration );						
+				}
+				usleep( $nSleepDuration * 1000000 ); 
+				if ( $_iTransientDuration )	 {
+					self::_deleteSleepTransient();
+				}
+			
+			}
+			/**
 			 * Deletes the sleep lock transient.
 			 */
-			static public function _replyToDeleteSleepTransient() {				
+			static private function _deleteSleepTransient() {				
 			
 				// If the transient ID is different, it means another different heartbeat is pulsating.
-				$_sSleepID = get_transient( self::$sTransientKey_Sleep );
+				// $_sSleepID = get_transient( self::$sTransientKey_Sleep );
+				$_sSleepID = self::_getSleepLock();
 				if ( false !== $_sSleepID && self::getID() !== $_sSleepID ) {
 					self::$_bStop = true;
 					return;
@@ -326,12 +334,33 @@ final class TaskScheduler_ServerHeartbeat {
 				delete_transient( self::$sTransientKey_Sleep );				
 				
 			}
+			/**
+			 * Retrieve the sleep transient value directly from the database.
+			 */
+			static private function _getSleepLock() {
+			
+				if ( wp_using_ext_object_cache() ) {
+					// Skip local cache and force re-fetch of doing_cron transient in case
+					// another processes updated the cache
+					return wp_cache_get( self::$sTransientKey_Sleep, 'transient', true );
+				} 			
+			
+				global $wpdb;			
+				$_oRow = $wpdb->get_row( 
+					$wpdb->prepare( 
+						"SELECT option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1",
+						'_transient_' . self::$sTransientKey_Sleep
+					) 
+				);
+				return is_object( $_oRow ) ? $_oRow->option_value: false;
+				
+			}
+			
+			
 		/**
-		 * Does beat.
-		 * 
-		 * This should be called with the 'shutdown' hook.
+		 * Pulsates.
 		 */
-		static public function _replyToPulsate() {
+		static private function _pulsate() {
 							
 			if ( self::$_bStop ) { return; }	
 					

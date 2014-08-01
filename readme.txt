@@ -1,7 +1,7 @@
 === Task Scheduler ===
 Contributors: Michael Uno, miunosoft
 Donate link: http://en.michaeluno.jp/donate
-Tags: access, tool, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post
+Tags: access, tool, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation
 Requires at least: 3.7
 Tested up to: 3.9.1
 Stable tag: 1.0.0b03
@@ -64,10 +64,13 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 
 == Changelog ==
 
-= 1.0.0b03 - 2014/07/31 =
+= 1.0.0b04 - 2014/08/02 =
+- Fixed an issue that multiple server heartbeat instances could run. 
+
+= 1.0.0b03 - 2014/08/01 =
 - Changed it to display module description in the form field.
 - Fixed an issue that the `Change` button did not appear when the `Debug` action is selected.
-- Optimized the server heartbeat functionality.
+- Optimized the server heartbeat.
 
 = 1.0.0b02 - 2014/07/31 =
 - Initial release.
