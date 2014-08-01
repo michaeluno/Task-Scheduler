@@ -31,6 +31,7 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
 			
 		// Tell WordPress this is a background routine by setting the Cron flag.
 		if ( ! defined( 'DOING_CRON' ) ) { define( 'DOING_CRON', true ); }				
+		ignore_user_abort( true );
 	
 		// Let other third-party scripts load their necessary components by hooking the 'init' action instead of calling the method right here.
 		// Also the Admin Page Framework library adds user defined custom posts and custom taxonomies at the 'init' hook.

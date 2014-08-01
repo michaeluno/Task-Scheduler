@@ -240,6 +240,7 @@ final class TaskScheduler_ServerHeartbeat {
 		
 		// At this point, the page is loaded in the background. Tell WordPress this is a background task by setting the Cron flag.
 		if ( ! defined( 'DOING_CRON' ) ) { define( 'DOING_CRON', true ); }				
+		ignore_user_abort( true );
 		
 		// Another heartbeat is already running. (this sometimes occurs but not sure why )
 		if ( self::isSleeping() ) {
