@@ -13,6 +13,7 @@
 /**
  * 
  * @action		schedule	task_scheduler_action_check_heartbeat_hourly	Scheduled via the activation hook.
+ * @action		do			task_scheduler_action_after_loading_plugin		Triggered when all the plugin components are loaded. Extension plugins should use this hook to add modules.
  */
 final class TaskScheduler_Bootstrap {
 	
@@ -230,6 +231,8 @@ final class TaskScheduler_Bootstrap {
 			$this->_registerMetaBoxes();
 			
 		}			
+		
+		do_action( 'task_scheduler_action_after_loading_plugin' );
 		
 	}
 		/**
