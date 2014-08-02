@@ -250,7 +250,10 @@ final class TaskScheduler_ServerHeartbeat {
 		// If the transient does not exists, it means the user has stopped the beat.
 		if ( false === self::_getInfo() ) {
 			self::stop();
-			exit;	// do not even let it continue.
+			
+			// Do not call exit() here because when the server heartbeat is disabled but the user wants to check actions manually, 
+			// the action checker class needs to be loaded.
+			return;	
 		}
 		
 		// Save the last beat time, the interval, and heartbeat ID etc.
@@ -406,7 +409,7 @@ final class TaskScheduler_ServerHeartbeat {
 		$_sID		= $_sID ? $_sID : uniqid();
 		$sTargetURL = apply_filters(
 			'task_scheduler_filter_serverheartbeat_target_url', 
-			$sTargetURL ? $sTargetURL : add_query_arg( array( 'doing_server_heartbeat' => microtime( true ), 'id' => $_sID ), trailingslashit( site_url() ) ), // the Apache log indicates that if a trailing slash misses, it redirects to the url WITH it.
+			$sTargetURL ? $sTargetURL : add_query_arg( array( 'doing_server_heartbeat' => microtime( true ), 'id' => $_sID, 'context' => $sContext ), trailingslashit( site_url() ) ), // the Apache log indicates that if a trailing slash misses, it redirects to the url WITH it.
 			$sContext 
 		);		
 

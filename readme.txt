@@ -52,6 +52,14 @@ If you need a custom module, let us know it!
 = Why Do I need this? =
 This is mostly for site admins who need total control over the server behavior. If you use WordPress just to publish articles, you won't need this.
 
+= Is it possible to trigger actions while disabling the server heartbeat? =
+Yes. In that case, you need to set up your own Cron job that accesses the site with the `task_scheduler_checking_actions` query string in the request url.
+
+e.g.
+`/usr/local/bin/curl --silent http://your-site/?task_scheduler_checking_actions=1`
+
+`/usr/local/bin/wget http://your-site/?task_scheduler_checking_actions=1`
+
 = Found a bug. Where can I report? =
 Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler) of this plugin.
 
@@ -63,6 +71,9 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 
 
 == Changelog ==
+
+= 1.0.0b05 - 2014/08/03 =
+- Made it possible to trigger actions without the server heartbeat.
 
 = 1.0.0b04 - 2014/08/02 =
 - Fixed an issue that multiple server heartbeat instances could run. 

@@ -15,21 +15,48 @@
 class TaskScheduler_Event_ServerHeartbeat_Checker {
 		
 	public function __construct() {
-		
+
 		add_action( 'task_scheduler_action_spawn_routine', array( $this, '_replyToSpawnRoutine' ), 10, 2 );
 		
-		// If this is a server-heartbeat background page load and not doing actions, spawn tasks.
+		// If doing actions, return.
+		if ( isset( $_COOKIE[ 'server_heartbeat_action' ] ) ) {
+			return;
+		}
+		
+		// Do not check actions in certain pages.
+		if ( isset( $GLOBALS['pagenow'] ) && in_array( $GLOBALS['pagenow'], array( 'admin-ajax.php', ) ) ) {
+			return;
+		}
+		
+		// If this is a server-heartbeat background page load and 
 		if ( 
 			TaskScheduler_ServerHeartbeat::isBackground() 
-			&& ! isset( $_COOKIE[ 'server_heartbeat_action' ] )
+			|| $this->_isManualPageLoad()
 		) {
-		
+
 			// Letting the site load and wait till the 'wp_loaded' hook is required to load the custom taxonomy that the plugin uses.
 			add_action( 'wp_loaded', array( $this, '_replyToSpawnRoutines' ), 1 );	// set the high priority because the sleep sub-routine also hooks the same action.
 			return;
 			
-		} 	
+		}
+		
 	}	
+	
+		/**
+		 * Checks if the page is loaded by manually to check actions.
+		 * 
+		 * When the user disables the server heartbeat and uses own Cron jobs to check actions, 
+		 * the user accesses the site with the 'task_scheduler_checking_actions' key in the request url.
+		 */
+		private function _isManualPageLoad() {
+			
+			// Check if the server heartbeat is on.
+			if ( TaskScheduler_Option::get( array( 'server_heartbeat', 'power' ) ) ) {
+				return false;
+			}			
+			return isset( $_REQUEST['task_scheduler_checking_actions'] ) && $_REQUEST['task_scheduler_checking_actions'];
+			
+		}
 
 	/**
 	 * Spawns scheduled tasks.
