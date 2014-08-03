@@ -1,3 +1,9 @@
 .description-label {
 	min-width: 120px; display:inline-block; 
 }
+p.warning {
+	padding-bottom: 1em;
+}
+.warning {
+	color: red;
+}

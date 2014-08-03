@@ -46,12 +46,25 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskSchedu
 				),
 				'description'		=>	__( 'Decide whether the server checks the tasks in the background.', 'task-scheduler' ),
 			),			
+			array(
+				'field_id'			=>	'instruction',
+				'type'				=>	'text',
+				'if'				=>	! TaskScheduler_Option::get( array( 'server_heartbeat', 'power' ) ),
+				'attributes'		=>	array(
+					'readonly'	=>	'ReadOnly',
+					'name'		=>	'',	// dummy
+					'size'		=>	60,
+				),
+				'value'				=>	site_url( '/?task_scheduler_checking_actions=1' ),
+				'before_fieldset'	=>	'<p class="warning">' . '* ' . __( 'Set up a Cron job that accesses the following url to check scheduled actions.', 'task-scheduler' ) . '</p>',	
+			),
 			array(	
 				'field_id'			=>	'status',
 				'title'				=>	__( 'Status', 'task-scheduler' ),
 				'type'				=>	'text',
 				'attributes'		=>	array(
 					'readonly'	=>	'ReadOnly',
+					'name'		=>	'',	// dummy
 				),
 				array(),	// sub-field to show last checked time
 			),			
