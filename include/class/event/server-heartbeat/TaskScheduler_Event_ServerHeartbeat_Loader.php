@@ -68,7 +68,12 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
 	 * @return	void
 	 */	
 	private function _doRoutine( $oRoutine, $nScheduledTime=null ) {
-		
+					
+		// Set the max execution time and wait until the exact time.
+		$_nSleepSeconds			= $this->_getRequiredSleepSeconds( $nScheduledTime ? $nScheduledTime : ( int ) $oRoutine->_next_run_time );	
+		$_iActionLockDuration	= $this->_setMaxExecutionTime( $oRoutine, $_nSleepSeconds );
+		$this->_sleep( $_nSleepSeconds );
+	
 		// Check the action lock.
 		$_sActionLockKey = $this->_sTransientPrefix . $oRoutine->ID;
 		if ( get_transient( $_sActionLockKey ) ) { 
@@ -76,11 +81,6 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
 			do_action( "task_scheduler_action_cancel_routine" , $oRoutine );
 			return; 
 		}
-				
-		// Set the max execution time and wait until the exact time.
-		$_nSlepSeconds			= $this->_getRequiredSleepSeconds( $nScheduledTime ? $nScheduledTime : ( int ) $oRoutine->_next_run_time );	
-		$_iActionLockDuration	= $this->_setMaxExecutionTime( $oRoutine, $_nSlepSeconds );
-		$this->_sleep( $_nSlepSeconds );
 	
 		// Lock the action.
 		do_action( "task_scheduler_action_before_doing_routine", $oRoutine );
