@@ -153,7 +153,7 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
 		 */
 		private function _getHeartbeatStatus() {
 			
-			$_fIsAlive = TaskScheduler_ServerHeartbeat::isAlive(); 
+			$_fIsAlive = TaskScheduler_Option::get( array( 'server_heartbeat', 'power' ) ) && TaskScheduler_ServerHeartbeat::isAlive(); 
 			$_sStatus = $_fIsAlive
 				? "<span class='running'>" . __( 'Running', 'task-scheduler' ) . "</span>"
 				: "<span class='not-running'>" . __( 'Not Running', 'task-scheduler' ) . "</span>";

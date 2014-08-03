@@ -105,7 +105,6 @@ class TaskScheduler_ListTable extends TaskScheduler_ListTable_Views {
 		
 		$sURL = $sURL ? $sURL : $_SERVER['REQUEST_URI'];
 		$_sModifiedURL = add_query_arg( $aKeyValues, $sURL );
-// return 	$_sModifiedURL;
 		$_aDisallowedQueryKeys = array_diff( $this->_aDisallowedQueryKeys, array_keys( $aKeyValues ) );
 
 		return remove_query_arg( $_aDisallowedQueryKeys, $_sModifiedURL );
