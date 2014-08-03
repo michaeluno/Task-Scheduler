@@ -16,9 +16,17 @@ class TaskScheduler_Event_ServerHeartbeat_Option {
 		
 	public function __construct() {
 
-		add_filter( 'task_scheduler_filter_serverheartbeat_interval', array( $this, '_replyToModifyServerHeartbeatInterval' ) );
-		add_filter( 'task_scheduler_filter_serverheartbeat_target_url', array( $this, '_replyToModifyServerHeartbeatTargetURL' ), 10, 2 );
+		add_filter( 'task_scheduler_filter_serverheartbeat_interval',	array( $this, '_replyToModifyServerHeartbeatInterval' ) );
+		add_filter( 'task_scheduler_filter_serverheartbeat_target_url',	array( $this, '_replyToModifyServerHeartbeatTargetURL' ), 10, 2 );
+		add_filter( 'task_scheduler_filter_serverheartbeat_power',		array( $this, '_replyToReturnServerHeartbeatPoswerStatus' ) );
 		
+	}
+	
+	/**
+	 * Returns the status(enabled or disabled) of the server heartbeat.
+	 */
+	public function _replyToReturnServerHeartbeatPoswerStatus( $bIsEnabled ) {
+		return TaskScheduler_Option::get( array( 'server_heartbeat', 'power' ) );
 	}
 	
 	/**

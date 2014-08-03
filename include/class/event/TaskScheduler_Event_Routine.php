@@ -31,7 +31,7 @@ class TaskScheduler_Event_Routine {
 		add_action( 'task_scheduler_action_before_calling_routine',	array( $this, '_replyToSpawnRoutine' ) );
 		add_action( 'task_scheduler_action_cancel_routine', 		array( $this, '_replyToCancelRoutine' ) );
 		add_action( 'task_scheduler_action_before_doing_routine', 	array( $this, '_replyToDoBeforeRoutine' ) );
-		add_action( 'task_scheduler_action_do_routine', 			array( $this, '_replyToDoRoutine' ), 10, 2 ); // set a higher priority as it creates a log line.
+		add_action( 'task_scheduler_action_do_routine', 			array( $this, '_replyToDoRoutine' ), 10, 2 );
 		add_action( 'task_scheduler_action_after_doing_routine',	array( $this, '_replyToCompleteRoutine' ) );
 		
 	}
@@ -43,10 +43,10 @@ class TaskScheduler_Event_Routine {
 		
 		if ( ! is_object( $oRoutine ) ) { return; }
 		$oRoutine->deleteMeta( '_eixt_code' );
-		$_sPreviousTaskStatus = $oRoutine->_routine_status;
+		$_sPreviousTaskStatus	= $oRoutine->_routine_status;
 		
-		$_iMaxTaskExecutionTime = ( int ) $oRoutine->_max_execution_time;
-		$_nCurrentMicroTime = microtime( true );
+		$_iMaxTaskExecutionTime	= ( int ) $oRoutine->_max_execution_time;
+		$_nCurrentMicroTime		= microtime( true );
 		
 		// Store the previous task status in a transient. This is used to cancel a routine.
 		$_sLoadID = TaskScheduler_Registry::TransientPrefix . md5( $_nCurrentMicroTime );
@@ -67,7 +67,6 @@ class TaskScheduler_Event_Routine {
 		}
 		
 	}
-
 	
 	/**
 	 * Gets triggered when a routine is canceled.
@@ -105,12 +104,9 @@ class TaskScheduler_Event_Routine {
 	 */
 	public function _replyToDoRoutine( $oRoutine, $nNextScheduledTime=0 )	 {
 
-		// Do actions.		
-		$_bIsThread = $oRoutine->isThread();
-		$_sThreadOrTask = $_bIsThread ? 'thread' : 'task';
-		
-		// Log
-		$_iLogID = $oRoutine->log( $this->_getLogText( $oRoutine ), 0, true ); 
+		$_bIsThread		= $oRoutine->isThread();
+		$_sThreadOrTask	= $_bIsThread ? 'thread' : 'task';
+		$_iLogID		= $oRoutine->log( $this->_getLogText( $oRoutine ), 0, true ); 
 				
 		do_action( "task_scheduler_action_before_doing_{$_sThreadOrTask}" , $oRoutine );
 
@@ -147,6 +143,7 @@ class TaskScheduler_Event_Routine {
 			return $_aLogs;
 		
 		}
+
 	/**
 	 * Deals with cleaning up the routine.
 	 */

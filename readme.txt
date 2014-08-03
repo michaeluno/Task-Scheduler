@@ -72,6 +72,10 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 
 == Changelog ==
 
+= 1.0.0b06 - 2014/08/03 =
+- Fixed a bug that when disabling the server heartbeat and a task is triggered at the exact same time from multiple simultaneous page loads, the task action lock did not take effect.
+- Added a description in the setting page that appears when the server heartbeat is disabled.
+
 = 1.0.0b05 - 2014/08/03 =
 - Made it possible to trigger actions without the server heartbeat.
 

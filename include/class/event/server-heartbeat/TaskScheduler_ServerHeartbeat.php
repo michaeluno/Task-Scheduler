@@ -16,6 +16,7 @@
   * @filter		apply			task_scheduler_filter_serverheartbeat_interval
   * @filter		apply			task_scheduler_filter_serverheartbeat_target_url
   * @filter		apply			task_scheduler_filter_serverheartbeat_cookies
+  * @filter		apply			task_scheduler_filter_serverheartbeat_power			
   * 
   */
 final class TaskScheduler_ServerHeartbeat {
@@ -268,6 +269,9 @@ final class TaskScheduler_ServerHeartbeat {
 		 * Checks the heart beat.
 		 */
 		static public function _replyToCheck() {
+			if ( ! apply_filters( 'task_scheduler_filter_serverheartbeat_power', true ) ) {
+				return;
+			}
 			self::run();
 		}		
 		
@@ -386,6 +390,7 @@ final class TaskScheduler_ServerHeartbeat {
 		 */
 		static private function _scheduleToCheckBeat() {
 			
+			if ( self::$_bStop ) { return; }	
 			if ( wp_next_scheduled( self::$sServerHeartbeatActionHook ) ) { return; }
 			wp_schedule_single_event( time() + self::getInterval() + 1, self::$sServerHeartbeatActionHook );
 			
