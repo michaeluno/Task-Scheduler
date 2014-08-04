@@ -16,10 +16,6 @@
 class TaskScheduler_Event_ServerHeartbeat_Resumer {
 		
 	public function __construct() {
-
-		// Check if the server heart beat is enabled
-		$_bIsEnabled = TaskScheduler_Option::get( array( 'server_heartbeat', 'power' ), true ) ;
-		if ( ! $_bIsEnabled ) { return; }
 		
 		add_action( 'task_scheduler_action_check_heartbeat_hourly', array( $this, 'task_scheduler_action_check_heartbeat_hourly' ) );
 		
@@ -40,6 +36,10 @@ class TaskScheduler_Event_ServerHeartbeat_Resumer {
 	 */
 	static public function resume() {
 
+		// Check if the server heart beat is enabled
+		$_bIsEnabled = TaskScheduler_Option::get( array( 'server_heartbeat', 'power' ), true ) ;
+		if ( ! $_bIsEnabled ) { return; }
+	
 		$_bIsAlive = TaskScheduler_ServerHeartbeat::isAlive();
 		if ( $_bIsAlive ) { return; }
 
