@@ -68,7 +68,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModule extends TaskS
 		/**
 		 * Drops unnecessary elements from the wizard options array.
 		 */
-		protected function _dropUnnecessaryWizardOptions( $aWizardOptions ) {
+		protected function _dropUnnecessaryWizardOptions( array $aWizardOptions ) {
 			
 			unset( 
 				// The WordPress core adds these meta data but the plugin does not need these.
