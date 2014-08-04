@@ -50,6 +50,10 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 		 */
 		private function _isManualPageLoad() {
 			
+			if ( isset( $GLOBALS['pagenow'] ) && in_array( $GLOBALS['pagenow'], array( 'wp-cron.php' ) ) ) {
+				return false;
+			}
+			
 			// Check if the server heartbeat is on.
 			if ( TaskScheduler_Option::get( array( 'server_heartbeat', 'power' ) ) ) {
 				return false;

@@ -68,7 +68,7 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
 	 * @return	void
 	 */	
 	private function _doRoutine( $oRoutine, $nScheduledTime=null ) {
-					
+
 		// Set the max execution time and wait until the exact time.
 		$_nSleepSeconds			= $this->_getRequiredSleepSeconds( $nScheduledTime ? $nScheduledTime : ( int ) $oRoutine->_next_run_time );	
 		$_iActionLockDuration	= $this->_setMaxExecutionTime( $oRoutine, $_nSleepSeconds );
