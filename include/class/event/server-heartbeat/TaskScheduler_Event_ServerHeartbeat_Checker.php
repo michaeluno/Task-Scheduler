@@ -48,7 +48,6 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 		}
 		
 		// At this point, the page load deserves spawning routines.		
-TaskScheduler_Debug::log( 'spawning routines' );
 		// Letting the site load and wait till the 'wp_loaded' hook is required to load the custom taxonomy that the plugin uses.
 		add_action( 'wp_loaded', array( $this, '_replyToSpawnRoutines' ), 1 );	// set the high priority because the sleep sub-routine also hooks the same action.
 		return;
@@ -85,7 +84,6 @@ TaskScheduler_Debug::log( 'spawning routines' );
 		$_iSecondsFromNow				= TaskScheduler_Utility::canUseIniSet() ? TaskScheduler_Option::get( array( 'server_heartbeat', 'interval' ) ) : 0; // if the maximum execution time cannot be changed, only pick ones that exceeds the scheduled time.
 		$_iMaxAllowedNumberOfRoutines	= TaskScheduler_Option::get( array( 'routine', 'max_background_routine_count' ) );
 		$_aScheduledRoutines			= TaskScheduler_RoutineUtility::getScheduled( $_iSecondsFromNow, $_iMaxAllowedNumberOfRoutines );
-TaskScheduler_Debug::log( $_aScheduledRoutines );
 		$_iProcessingCount				= TaskScheduler_RoutineUtility::getProcessingCount();
 		$_iAllowedNumberOfRoutines		= $_iMaxAllowedNumberOfRoutines - $_iProcessingCount;
 		$_aScheduledRoutines			= array_slice( $_aScheduledRoutines, 0, $_iAllowedNumberOfRoutines );

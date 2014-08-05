@@ -74,9 +74,7 @@ final class TaskScheduler_Bootstrap {
 		
 		// Schedule to register regular classes when all the plugins are loaded. This allows other scripts to modify the loading class files.
 		add_action( 'plugins_loaded', array( $this, '_replyToRegisterOtherClasses' ) );		
-		
-		TaskScheduler_Registry::setUp( $sFilePath );
-		
+				
 	}
 		/**
 		 * Registers regular classes to be auto loaded.
@@ -102,12 +100,12 @@ final class TaskScheduler_Bootstrap {
 			$this->_sFilePath,
 			array(
 				'php' => array(
-					'version' => '5.2.4',
-					'error' => __( 'The plugin requires the PHP version %1$s or higher.', 'task-scheduler' ),
+					'version'	=>	TaskScheduler_Registry::RequiredPHPVersion,
+					'error'		=>	__( 'The plugin requires the PHP version %1$s or higher.', 'task-scheduler' ),
 				),
 				'wordpress' => array(
-					'version' => '3.7',
-					'error' => __( 'The plugin requires the WordPress version %1$s or higher.', 'task-scheduler' ),
+					'version'	=>	TaskScheduler_Registry::RequiredWordPressVersion,
+					'error'		=>	__( 'The plugin requires the WordPress version %1$s or higher.', 'task-scheduler' ),
 				),
 				// 'mysql'	=>	array(
 					// 'version'	=>	'5.5.24',
@@ -198,8 +196,8 @@ final class TaskScheduler_Bootstrap {
 	public function _replyToLoadPluginComponents() {
 
 		// Load Necessary libraries
-		include_once( TaskScheduler_Registry::$sPluginDirPath . '/include/library/admin-page-framework/task-scheduler-admin-page-framework.min.php' );
-		new TaskScheduler_AutoLoad( TaskScheduler_Registry::$sPluginDirPath . '/include/library/admin-page-framework/' );	// for custom field types
+		include_once( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/task-scheduler-admin-page-framework.min.php' );
+		new TaskScheduler_AutoLoad( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/' );	// for custom field types
 	
 		// 1. Events - handles background processes and some hooks. This should be loaded earlier than the admin classes as some callbacks use the hooks of the admin page framework.
 		new TaskScheduler_Event;	
@@ -232,6 +230,7 @@ final class TaskScheduler_Bootstrap {
 			
 		}			
 		
+		// Modules should use this hook.
 		do_action( 'task_scheduler_action_after_loading_plugin' );
 		
 	}
