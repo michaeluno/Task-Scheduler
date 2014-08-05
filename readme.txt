@@ -72,6 +72,9 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 
 == Changelog ==
 
+= 1.0.0b07 - 2014/08/05 =
+- Fixed a bug that the same task could be wedged in the queue of spawning tasks while another page load is spawning tasks.
+
 = 1.0.0b06 - 2014/08/05 =
 - Fixed a bug that the server heartbeat got resumed upon plugin activation even when it is disabled.
 - Added a description in the setting page that appears when the server heartbeat is disabled.

@@ -13,10 +13,16 @@
   * 
   */
 class TaskScheduler_Event_ServerHeartbeat_Checker {
+	
+	/**
+	 * The check-action transient key.
+	 */
+	static public $sCheckActionTransientKey = 'TS_checking_actions';
 		
 	public function __construct() {
 
 		add_action( 'task_scheduler_action_spawn_routine', array( $this, '_replyToSpawnRoutine' ), 10, 2 );
+		add_action( 'task_scheduler_action_check_shceduled_actions', array( $this, '_replyToCheckScheduledActions' ) );
 		
 		// If doing actions, return.
 		if ( isset( $_COOKIE[ 'server_heartbeat_action' ] ) ) {
@@ -28,17 +34,26 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 			return;
 		}
 		
-		// If this is a server-heartbeat background page load and 
+		// If this is not a server-heartbeat background page load or a page load to check scheduled actions manually
 		if ( 
-			TaskScheduler_ServerHeartbeat::isBackground() 
-			|| $this->_isManualPageLoad()
+			! ( TaskScheduler_ServerHeartbeat::isBackground() 
+			|| $this->_isManualPageLoad() )
 		) {
-
-			// Letting the site load and wait till the 'wp_loaded' hook is required to load the custom taxonomy that the plugin uses.
-			add_action( 'wp_loaded', array( $this, '_replyToSpawnRoutines' ), 1 );	// set the high priority because the sleep sub-routine also hooks the same action.
 			return;
-			
 		}
+		
+		// Check a check-action lock - this prevents that while checking and spawning routines, another page load do the same and triggers the same tasks at the same time.
+		if ( TaskScheduler_WPUtility::getTransientWithoutCache( self::$sCheckActionTransientKey ) ) {
+			return;
+		}
+		
+		// At this point, the page load deserves spawning routines.		
+TaskScheduler_Debug::log( 'spawning routines' );
+		// Letting the site load and wait till the 'wp_loaded' hook is required to load the custom taxonomy that the plugin uses.
+		add_action( 'wp_loaded', array( $this, '_replyToSpawnRoutines' ), 1 );	// set the high priority because the sleep sub-routine also hooks the same action.
+		return;
+		
+	
 		
 	}	
 	
@@ -70,10 +85,14 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 		$_iSecondsFromNow				= TaskScheduler_Utility::canUseIniSet() ? TaskScheduler_Option::get( array( 'server_heartbeat', 'interval' ) ) : 0; // if the maximum execution time cannot be changed, only pick ones that exceeds the scheduled time.
 		$_iMaxAllowedNumberOfRoutines	= TaskScheduler_Option::get( array( 'routine', 'max_background_routine_count' ) );
 		$_aScheduledRoutines			= TaskScheduler_RoutineUtility::getScheduled( $_iSecondsFromNow, $_iMaxAllowedNumberOfRoutines );
+TaskScheduler_Debug::log( $_aScheduledRoutines );
 		$_iProcessingCount				= TaskScheduler_RoutineUtility::getProcessingCount();
 		$_iAllowedNumberOfRoutines		= $_iMaxAllowedNumberOfRoutines - $_iProcessingCount;
 		$_aScheduledRoutines			= array_slice( $_aScheduledRoutines, 0, $_iAllowedNumberOfRoutines );
-
+				
+		// Set a check-action lock 
+		set_transient( self::$sCheckActionTransientKey, microtime( true ), 60 );
+		
 		foreach ( $_aScheduledRoutines as $_iRoutineID ) {		
 		
 			$_oTask = TaskScheduler_Routine::getInstance( $_iRoutineID );
@@ -85,14 +104,15 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 				$_oTask->delete();	
 				continue;				
 			}
-			
+TaskScheduler_Debug::log( 'spawned: ' . $_iRoutineID . ' ' . $_oTask->post_title );
 			do_action( 'task_scheduler_action_spawn_routine', $_iRoutineID );
 			
 		}
 		
+		delete_transient( self::$sCheckActionTransientKey );
+		
 	}
-	
-	
+		
 	/**
 	 * Spawns the given routine.
 	 * 
@@ -121,5 +141,20 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 		// This is because the action will be called in the next page load and it is not called yet.
 	
 	}	
+
+	/**
+	 * Checks scheduled actions in a background page load.
+	 * 
+	 * If there are scheduled ones and reach the scheduled time, they will be spawned.
+	 * 
+	 */
+	public function _replyToCheckScheduledActions() {
+		
+		if ( get_transient( self::$sCheckActionTransientKey ) ) {
+			return;
+		}
+		TaskScheduler_ServerHeartbeat::beat();
+		
+	}
 	
 }

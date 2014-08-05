@@ -68,7 +68,7 @@ class TaskScheduler_Action_RoutineLogDeleter extends TaskScheduler_Action_Base {
 		TaskScheduler_ThreadUtility::add( $oTask->ID, $_aThreadOptions );	// be careful not to pass the target task ID here.
 		
 		// Check actions in the background.
-		TaskScheduler_ServerHeartbeat::beat();
+		do_action( 'task_scheduler_action_check_shceduled_actions' );
 		return 1;	// exit code. Returning a value will make the task status inactive from processing.
 				
 	}	

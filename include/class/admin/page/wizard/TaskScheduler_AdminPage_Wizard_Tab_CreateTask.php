@@ -47,7 +47,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskSchedul
 			$_oTask	= TaskScheduler_Routine::getInstance( $_iPostID );
 			$_oTask->setNextRunTime();
 // TODO: beat only if the next scheduled time is very close.
-			TaskScheduler_ServerHeartbeat::beat();
+			do_action( 'task_scheduler_action_check_shceduled_actions' );
 			$this->setSettingNotice( __( 'A task has been created.', 'task-scheduler' ), 'updated' );
 		}
 		

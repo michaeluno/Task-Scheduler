@@ -79,7 +79,7 @@ class TaskScheduler_Event_Log {
 			if ( $_iTaskID ) {
 				$_oTask	= TaskScheduler_Routine::getInstance( $_iTaskID );
 				$_oTask->setNextRunTime();
-				TaskScheduler_ServerHeartbeat::beat();
+				do_action( 'task_scheduler_action_check_shceduled_actions' );
 			}		
 
 		}

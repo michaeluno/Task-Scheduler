@@ -94,7 +94,7 @@ class TaskScheduler_Action_PostDeleter extends TaskScheduler_Action_Base {
 
 		// Check actions in the background.
 		if ( $_iThreadTaskID ) {			
-			TaskScheduler_ServerHeartbeat::beat();
+			do_action( 'task_scheduler_action_check_shceduled_actions' );
 		}
 		
 		return null;	// exit code: do not log; it will be, when the threads finish.

@@ -88,7 +88,7 @@ class TaskScheduler_Action_Email extends TaskScheduler_Action_Base {
 		
 		// Check actions in the background.
 		if ( $_iThreads ) {
-			TaskScheduler_ServerHeartbeat::beat();
+			do_action( 'task_scheduler_action_check_shceduled_actions' );
 		}
 		
 		return null;	// exit code: do not log; it will be, when the threads finish.

@@ -60,7 +60,7 @@ class TaskScheduler_Event_Task {
 		$_iHeartbeatInterval = ( int ) TaskScheduler_Option::get( array( 'server_heartbeat', 'interval' ) );
 		$_nSum	= microtime( true ) + $_iHeartbeatInterval;
 		if ( $_nSum > $oTask->_next_run_time ) {
-			TaskScheduler_ServerHeartbeat::beat();
+			do_action( 'task_scheduler_action_check_shceduled_actions' );
 		}
 		
 	}
