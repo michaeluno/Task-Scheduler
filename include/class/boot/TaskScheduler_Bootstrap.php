@@ -27,7 +27,7 @@ final class TaskScheduler_Bootstrap {
 		// $this->_defineConstants();
 		
 		// 2. Set global variables.
-		$this->_setGlobalVariables();
+		// $this->_setGlobalVariables();
 		
 		// 3. Set up auto-load classes.
 		$this->_loadClasses( $this->_sFilePath );
@@ -238,6 +238,10 @@ final class TaskScheduler_Bootstrap {
 		 * Registers meta boxes.
 		 */
 		protected function _registerMetaBoxes() {
+			
+			if ( ! isset( $GLOBALS['pagenow'] ) || 'post.php' !== $GLOBALS['pagenow'] ) {
+				return;
+			}
 			
 			new TaskScheduler_MetaBox_Main(
 				'task_scheduler_meta_box_main',
