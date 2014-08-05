@@ -53,6 +53,12 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
 			exit();		
 		}		
 
+		// Check the spawned time in case simultaneous page loads triggered the same task.
+		$_nSpawnedTime = isset( $_COOKIE['server_heartbeat_spawned_time'] ) ? $_COOKIE['server_heartbeat_spawned_time'] : null;
+		if ( $_nSpawnedTime !== $_oRoutine->_spawned_time ) {
+			exit();
+		}
+		
 		do_action( 'task_scheduler_action_after_calling_routine', $_oRoutine );
 		$this->_doRoutine( 
 			$_oRoutine,

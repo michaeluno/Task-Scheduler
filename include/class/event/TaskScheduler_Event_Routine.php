@@ -28,7 +28,7 @@ class TaskScheduler_Event_Routine {
 	 */
 	public function __construct() {
 
-		add_action( 'task_scheduler_action_before_calling_routine',	array( $this, '_replyToSpawnRoutine' ) );
+		add_action( 'task_scheduler_action_before_calling_routine',	array( $this, '_replyToSpawnRoutine' ), 10, 2 );
 		add_action( 'task_scheduler_action_cancel_routine', 		array( $this, '_replyToCancelRoutine' ) );
 		add_action( 'task_scheduler_action_before_doing_routine', 	array( $this, '_replyToDoBeforeRoutine' ) );
 		add_action( 'task_scheduler_action_do_routine', 			array( $this, '_replyToDoRoutine' ), 10, 2 );
@@ -39,22 +39,21 @@ class TaskScheduler_Event_Routine {
 	/**
 	 * Called when the task is about to be spawned.
 	 */
-	public function _replyToSpawnRoutine( $oRoutine ) {
+	public function _replyToSpawnRoutine( $oRoutine, $nSpawnedTime ) {
 		
 		if ( ! is_object( $oRoutine ) ) { return; }
 		$oRoutine->deleteMeta( '_eixt_code' );
 		$_sPreviousTaskStatus	= $oRoutine->_routine_status;
 		
 		$_iMaxTaskExecutionTime	= ( int ) $oRoutine->_max_execution_time;
-		$_nCurrentMicroTime		= microtime( true );
 		
 		// Store the previous task status in a transient. This is used to cancel a routine.
-		$_sLoadID = TaskScheduler_Registry::TransientPrefix . md5( $_nCurrentMicroTime );
+		$_sLoadID = TaskScheduler_Registry::TransientPrefix . md5( $nSpawnedTime );
 		set_transient( $_sLoadID, $_sPreviousTaskStatus, $_iMaxTaskExecutionTime ? $_iMaxTaskExecutionTime : 30 );	// avoid setting 0 for the expiration duration.
 		
 		$oRoutine->setMeta( '_routine_status', 'awaiting' );	// the 'Force Execution' task option will ignore this status if enabled. Otherwise, it is used to determine scheduled routines.
 		$oRoutine->setMeta( '_is_spawned',		true );			// used to determine scheduled routines
-		$oRoutine->setMeta( '_spawned_time',	$_nCurrentMicroTime );	// used to cancel the routine and to detect the hung 
+		$oRoutine->setMeta( '_spawned_time',	$nSpawnedTime );	// used to cancel the routine and to detect the hung 
 		$oRoutine->setMeta( '_count_call',	$oRoutine->getMeta( '_count_call' ) + 1 );
 
 		if ( $oRoutine->isTask() ) {

@@ -117,11 +117,14 @@ TaskScheduler_Debug::log( 'spawned: ' . $_iRoutineID . ' ' . $_oTask->post_title
 	 * Spawns the given routine.
 	 * 
 	 * @param	integer	$iRoutineID		The routine ID
-	 * @param	numeric	$nScheduledTime	The scheduled run time. This is also used to determine whether the call is made manually or automatically.
+	 * @param	numeric	$nScheduledTime	The scheduled run time. This is also used to determine whether the call is made manually or automatically. 
+	 * If the server heartbeat is running and pulsates, it does not the scheduled time but if the user presses the 'Run Now' link in the task listing table,
+	 * it sets the scheduled time.
 	 */
 	public function _replyToSpawnRoutine( $iRoutineID, $nScheduledTime=null ) {
-
-		do_action( 'task_scheduler_action_before_calling_routine', TaskScheduler_Routine::getInstance( $iRoutineID ) );
+		
+		$_nCurrentMicrotime = microtime( true );
+		do_action( 'task_scheduler_action_before_calling_routine', TaskScheduler_Routine::getInstance( $iRoutineID ), $_nCurrentMicrotime );
 		
 		$_aDebugInfo = defined( 'WP_DEBUG' ) && WP_DEBUG
 			? array( 'spawning_routine' => $iRoutineID )
@@ -133,6 +136,7 @@ TaskScheduler_Debug::log( 'spawned: ' . $_iRoutineID . ' ' . $_oTask->post_title
 				'server_heartbeat_id'				=>	'',	// do not set the id so that the server heartbeat does not think it is a background call.
 				'server_heartbeat_action'			=>	$iRoutineID,
 				'server_heartbeat_scheduled_time'	=>	$nScheduledTime,
+				'server_heartbeat_spawned_time'		=>	$_nCurrentMicrotime,
 			),
 			'spawn_routine'
 		);		
