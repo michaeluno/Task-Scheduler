@@ -29,7 +29,7 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskSchedu
 			array(
 				'section_id'	=>	'server_heartbeat',
 				'tab_slug'		=>	'server_heartbeat',
-				'title'			=>	__( 'Heartbeat', 'task-scheduler' ),
+				'title'			=>	__( 'Server Heartbeat', 'task-scheduler' ),
 			)			
 		);		
 		
@@ -37,7 +37,7 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskSchedu
 			'server_heartbeat',	// the target section ID
 			array(	
 				'field_id'			=>	'power',
-				'title'				=>	__( 'Heartbeat', 'task-scheduler' ),
+				'title'				=>	__( 'Server Heartbeat', 'task-scheduler' ),
 				'type'				=>	'radio',
 				'default'			=>	1,
 				'label'				=>	array(
@@ -74,7 +74,7 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskSchedu
 				'type'				=>	'number',
 				'after_label'		=>	' ' . __( 'second(s)', 'task-scheduler' ),
 				'description'		=>	__( 'Set the interval in seconds that the plugin checks the tasks in the background.', 'task-scheduler' )
-					. ' ' . __( 'This may not take effect if the server has a restriction on PHP\'s maximum execution time and <code>ini_set()</code> function.' ),	//'
+					. ' ' . __( 'This may not take effect if the server has a restriction on PHP\'s maximum execution time and the <code>ini_set()</code> function.' ),	//'
 				'attributes'		=>	array(
 					'min'	=>	0,
 					'step'	=>	1,
@@ -88,7 +88,7 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskSchedu
 				'title'				=>	__( 'URL', 'task-scheduler' ),
 				'type'				=>	'checkbox',
 				'default'			=>	true,
-				'label'				=>	__( 'Show the query string in the request URL of the background page-load that to indicate the server heartbeat.', 'task-scheduler' ),
+				'label'				=>	__( 'Show the query string in the request URL of the background page-load to indicate the server heartbeat.', 'task-scheduler' ),
 				array(
 					'type'		=>	'text',
 					'label'		=>	__( 'Key', 'task-scheduler' ),
