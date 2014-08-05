@@ -145,6 +145,8 @@ abstract class TaskScheduler_Wizard_Base {
 		add_filter( "field_definition_{$this->_sMainAdminPageClassName}", array( $this, '_replyToRedefineFields' ), 10, 1 );
 		add_filter( "validation_{$this->_sMainAdminPageClassName}_{$this->_sSectionID}", array( $this, 'validateSettings' ), 10, 3 );
 		add_filter( "validation_{$this->_sMainAdminPageSlug}_{$this->sSlug}", array( $this, '_replytToValidateTabSettings' ), 10, 3 );	// sSlug is used as the tab slug also.
+		// add_filter( "validation_saved_options_{$this->_sMainAdminPageSlug}", '__return_empty_array' );
+		// add_filter( "validation_saved_options_{$this->_sMainAdminPageSlug}_{$this->sSlug}", '__return_empty_array' );
 
 		/// The Edit Module wizard
 		add_filter( "tabs_{$this->_sEditAdminPageClassName}_{$this->_sEditAdminPageSlug}", array( $this, '_replyToAddInPageTab' ) );
@@ -153,6 +155,8 @@ abstract class TaskScheduler_Wizard_Base {
 		add_filter( "field_definition_{$this->_sEditAdminPageClassName}", array( $this, '_replyToRedefineFields' ), 10, 1 );
 		add_filter( "validation_{$this->_sEditAdminPageClassName}_{$this->_sSectionID}", array( $this, 'validateSettings' ), 10, 3 );
 		add_filter( "validation_{$this->_sEditAdminPageSlug}_{$this->sSlug}", array( $this, '_replytToValidateTabSettings' ), 10, 3 );	// sSlug is used as the tab slug also.
+		// add_filter( "validation_saved_options_{$this->_sEditAdminPageSlug}", '__return_empty_array' );
+		// add_filter( "validation_saved_options_{$this->_sEditAdminPageSlug}_{$this->sSlug}", '__return_empty_array' );
 		
 		// Plugin specific hooks
 		add_filter( "task_scheduler_admin_filter_field_labels_wizard_" . $this->_sModuleType, array( $this, '_replyToAddActionLabel' ) );
@@ -456,7 +460,7 @@ abstract class TaskScheduler_Wizard_Base {
 		return $aInput;
 		
 	}
-	
+		
 	/**
 	 * Inserts a label item for this option.
 	 */

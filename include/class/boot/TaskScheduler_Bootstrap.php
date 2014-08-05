@@ -227,7 +227,7 @@ final class TaskScheduler_Bootstrap {
 			
 			// 3.6. Meta Boxes for task editing page (post.php).
 			$this->_registerMetaBoxes();
-			
+				
 		}			
 		
 		// Modules should use this hook.
@@ -242,7 +242,7 @@ final class TaskScheduler_Bootstrap {
 			if ( ! isset( $GLOBALS['pagenow'] ) || 'post.php' !== $GLOBALS['pagenow'] ) {
 				return;
 			}
-			
+						
 			new TaskScheduler_MetaBox_Main(
 				'task_scheduler_meta_box_main',
 				__( 'Main', 'task-scheduler' ),
@@ -271,7 +271,14 @@ final class TaskScheduler_Bootstrap {
 				'advanced',	// context
 				'default'
 			);
+			new TaskScheduler_MetaBox_Submit(
+				'task_scheduler_meta_box_submit',
+				__( 'Update', 'task-scheduler' ),
+				array( TaskScheduler_Registry::PostType_Task, TaskScheduler_Registry::PostType_Thread ),
+				'side',
+				'high'
+			);
 		
 		} 
-	
+		
 }

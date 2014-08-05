@@ -73,6 +73,7 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 == Changelog ==
 
 = 1.0.0b07 - 2014/08/05 =
+- Fixed a bug that editing a disable task made the task not accessible from the task listing table.
 - Fixed a bug that the same task could be triggered when simultaneous page loads that checks the scheduled actions are made at the exact the same time.
 - Fixed a bug that the same task could be wedged in the queue of spawning tasks while another page load is spawning tasks.
 

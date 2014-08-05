@@ -94,9 +94,9 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
 	/**
 	 * Returns the url of the task listing page.
 	 */
-	static public function getTaskListingPageURL() {
+	static public function getTaskListingPageURL( array $aQueryArgs=array() ) {
 		return add_query_arg( 
-			array( 
+			$aQueryArgs + array( 
 				'page'		=>	TaskScheduler_Registry::AdminPage_TaskList,
 			), 
 			admin_url( 'admin.php' ) 

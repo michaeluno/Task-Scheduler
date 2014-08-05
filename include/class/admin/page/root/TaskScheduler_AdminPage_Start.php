@@ -53,7 +53,11 @@ abstract class TaskScheduler_AdminPage_Start extends TaskScheduler_AdminPageFram
 
 		$_sPostType = get_post_type( $iPostID );
 		if ( in_array( $_sPostType, array( TaskScheduler_Registry::PostType_Task, TaskScheduler_Registry::PostType_Thread ) ) ) {
-			return TaskScheduler_PluginUtility::getTaskListingPageURL();
+			
+			$_oRoutine = TaskScheduler_Routine::getInstance( $iPostID );
+			$_aQueryArgs = ! $_oRoutine->isEnabled() ? array( 'status' => 'disabled' ) : array();
+			return TaskScheduler_PluginUtility::getTaskListingPageURL( $_aQueryArgs );
+			
 		}
 		return $sURL;
 	}
