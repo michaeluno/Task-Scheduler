@@ -20,7 +20,7 @@ Currently, with WP Cron, if you register 1000 tasks to run immediately and one o
 The goal of this plugin is to resolve such issues and become the perfect solution for WordPress powered back-end application servers to provide full-brown API functionalities.
 
 <h4>What it does</h4>
-- creates periodic background access to the site.
+- creates periodic background access to the site (optional). 
 - triggers tasks registered by the site owner at desired time.
 
 <h4>Built-in Actions</h4>
@@ -59,6 +59,25 @@ e.g.
 `/usr/local/bin/curl --silent http://your-site/?task_scheduler_checking_actions=1`
 
 `/usr/local/bin/wget http://your-site/?task_scheduler_checking_actions=1`
+
+= Is it possible to send an email when a particular task completes? =
+Yes. Create a task with the `Exit Code` occurrence type and the `Send Email` action. The `Exit Code` occurrence type lets you choose which task and what exit code should trigger an email to be sent.
+
+= How can I know an action returns what exit code? =
+The most built-in actions return `1` when they succeed and `0` on frailer. You can check what exit code will be returned by enabling the log. 
+
+To enable the log, go to **Dashboard** -> **Task Scheduler** -> **Manage Tasks** and click on the **Edit** link of the task. Set a number in the **Max Count of Log Entries** option. `50` would be sufficient to check exit codes.
+
+After the task runs, click on the **View** link of the task listing table of the task. The log page will open and it should tell what exit code the action returns.
+
+= How can I create a module? =
+The tutorials are in preparation. It requires a basic PHP skill and an understanding of object oriented programming. 
+
+There are mainly two types of modules you can make, `action` and `occurrence`. Most of the time, you will want action modules.
+
+If you are interested, open the `include/class/module/action` folder and you'll see some built-in action modules. If you open some of the files, you'll notice that each of them are very short. What it does is basically extend a base module class like `TaskScheduler_Action_Base` and insert code in the methods predefined by the base class.
+
+If you are comfortable reading PHP code, it should not be hard to figure out. Give it a try. If you get a question, don't hesitate to post a question about it.
 
 = Found a bug. Where can I report? =
 Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler) of this plugin.
