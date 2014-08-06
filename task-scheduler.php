@@ -1,11 +1,11 @@
 <?php
 /* 
-	Plugin Name:	Task Scheduler
+	Plugin Name:	Task Scheduler (beta)
 	Plugin URI:		http://en.michaeluno.jp/
 	Description:	Provides a task management system.
 	Author:			miunosoft (Michael Uno)
 	Author URI:		http://michaeluno.jp
-	Version:		1.0.0b07
+	Version:		1.0.0b08
 */
 
 final class TaskScheduler_Registry {
@@ -20,7 +20,7 @@ final class TaskScheduler_Registry {
 	
 	// The plugin itself uses these values.
 	const OptionKey					= 'ts_option';
-	const TransientPrefix			= 'TS_';	// Up to 8 as transient name allows 45 characters or less ( 40 for site transients ) so that md5 (32 characters) can be added
+	const TransientPrefix			= 'TS_';	// Up to 8 characters as transient name allows 45 characters or less ( 40 for site transients ) so that md5 (32 characters) can be added
 	const AdminPage_Root			= 'TaskScheduler_AdminPage';	// the root menu page slug
 	const AdminPage_TaskList		= 'ts_task_list';
 	const AdminPage_AddNew			= 'ts_add_new';
@@ -35,7 +35,7 @@ final class TaskScheduler_Registry {
 	const RequiredPHPVersion		= '5.2.1';
 	const RequiredWordPressVersion	= '3.7';
 		
-	// These properties will be defined when performing setUp() method.
+	// These properties will be defined in the setUp() method.
 	static public $sFilePath	= '';
 	static public $sDirPath		= '';
 	static public $sFileURI		= '';
