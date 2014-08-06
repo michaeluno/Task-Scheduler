@@ -74,6 +74,7 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 
 = 1.0.0b07 - 2014/08/06 =
 - Added a new meta box in task edition page that includes the `Update` submit button, some time indications, and the switch option of `Enabled` or `Disabled`.
+- Tweaked the mechanism of checking routines.
 - Tweaked the Delete Posts action module not to insert a taxonomy query argument when the taxonomy slug is not selected.
 - Fixed a bug that repeatable fields could not be properly updated in wizards.
 - Fixed a bug that editing a disable task made the task not accessible from the task listing table.

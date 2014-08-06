@@ -17,7 +17,8 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 	/**
 	 * The check-action transient key.
 	 */
-	static public $sCheckActionTransientKey = 'TS_checking_actions';
+	static public $sCheckActionTransientKey		= 'TS_checking_actions';
+	static public $sRecheckActionTransientKey	= 'TS_rechecking_actions';
 		
 	public function __construct() {
 
@@ -87,9 +88,11 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 		$_iProcessingCount				= TaskScheduler_RoutineUtility::getProcessingCount();
 		$_iAllowedNumberOfRoutines		= $_iMaxAllowedNumberOfRoutines - $_iProcessingCount;
 		$_aScheduledRoutines			= array_slice( $_aScheduledRoutines, 0, $_iAllowedNumberOfRoutines );
-				
+		$_nNow							= microtime( true );
+
 		// Set a check-action lock 
-		set_transient( self::$sCheckActionTransientKey, microtime( true ), 60 );
+		delete_transient( self::$sRecheckActionTransientKey );
+		set_transient( self::$sCheckActionTransientKey, $_nNow, 60 );
 		
 		foreach ( $_aScheduledRoutines as $_iRoutineID ) {		
 		
@@ -108,6 +111,12 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 		}
 		
 		delete_transient( self::$sCheckActionTransientKey );
+		
+		// If the transient value is different from the set one right before the loop, it means that another process has requested a check.
+		if ( TaskScheduler_WPUtility::getTransientWithoutCache( self::$sRecheckActionTransientKey ) ) {
+			delete_transient( self::$sRecheckActionTransientKey );
+			TaskScheduler_ServerHeartbeat::beat();
+		}		
 		
 	}
 		
@@ -153,6 +162,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 	public function _replyToCheckScheduledActions() {
 		
 		if ( get_transient( self::$sCheckActionTransientKey ) ) {
+			set_transient( self::$sRecheckActionTransientKey, microtime( true ), 60 );
 			return;
 		}
 		TaskScheduler_ServerHeartbeat::beat();
