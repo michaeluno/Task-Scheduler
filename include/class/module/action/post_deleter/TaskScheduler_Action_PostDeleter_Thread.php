@@ -53,7 +53,7 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
 			$_oTask->log( 'Required keys are missing.', $oThread->parent_routine_log_id );
 			return 1;	// failed
 		}
-		
+
 		$_aPostIDsToDelete = $this->_getPostIDs(
 			$_aThreadMeta[ 'post_type_of_deleting_posts' ],
 			$_aThreadMeta[ 'post_statuses_of_deleting_posts' ],
@@ -99,7 +99,7 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
 		/**
 		 * Returns an array of post IDs 
 		 */
-		private function _getPostIDs( $asPostType, $asPostStatus, $sTaxonomy='', $aTerms=array(), $iLimit=200 ) {
+		private function _getPostIDs( $asPostType, $asPostStatus, $sTaxonomy=-1, $aTerms=array(), $iLimit=200 ) {
 			
 			// Construct the query argument array.
 			$_aQueryArgs = array(
@@ -110,7 +110,7 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
 				'order'				=>	'ASC', // DESC: the newest comes first, 'ASC' : the oldest comes first
 				'fields'			=>	'ids',	// return only post IDs by default.
 			);
-			if ( $sTaxonomy && ! empty( $aTerms ) ) {
+			if ( $sTaxonomy && '-1' !== ( string ) $sTaxonomy && ! empty( $aTerms ) ) {
 				$_aQueryArgs['tax_query'] = array(
 					'relation'	=>	'AND',
 					array(

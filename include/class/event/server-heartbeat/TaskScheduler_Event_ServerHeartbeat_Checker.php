@@ -102,7 +102,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 				$_oTask->delete();	
 				continue;				
 			}
-TaskScheduler_Debug::log( 'spawned: ' . $_iRoutineID . ' ' . $_oTask->post_title );
+
 			do_action( 'task_scheduler_action_spawn_routine', $_iRoutineID );
 			
 		}

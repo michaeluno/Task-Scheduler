@@ -54,7 +54,14 @@ final class TaskScheduler_Action_PostDeleter_Wizard_2 extends TaskScheduler_Wiza
 	}	
 		
 	public function validateSettings( $aInput, $aOldInput, $oAdminPage ) { 
-	
+
+		// The Admin Page Framework inserts some keys into the $aInput array that it thinks 
+		// the keys may be of higher capability users. So here ensure these keys won't be sent.
+		unset( 
+			$aInput['post_statuses_of_deleting_posts'],
+			$aInput['post_type_label_of_deleting_posts']
+		);
+		
 		return $aInput; 		
 
 	}

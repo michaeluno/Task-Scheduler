@@ -54,6 +54,7 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
 		$_aSavingOptions = array_filter( $_aSavingOptions );
 		unset( $_aSavingOptions['submit'] );
 		set_transient( $sTransientKey, $_aSavingOptions, 30*60 );	// 30 minutes		
+		return $_aSavingOptions;
 		
 	}
 	

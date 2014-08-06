@@ -17,12 +17,12 @@ abstract class TaskScheduler_AdminPage_EditModule_Validation extends TaskSchedul
 	public function validation_TaskScheduler_AdminPage_EditModule( $aInput, $aOldInput, $oAdminPage ) {
 
 		$_aWizardOptions = isset( $aInput[ '_wizard_options' ] ) ? $aInput[ '_wizard_options' ] : array();
-			
+
 		// The wizard options are stored in the '_wizard_options' element
 		if ( ! empty( $_aWizardOptions ) ) {
-			$this->_saveValidatedWizardOptions( $_aWizardOptions );	
+			$_aSavedValues = $this->_saveValidatedWizardOptions( $_aWizardOptions );	
 		}
-		
+
 		// Passing a dummy value will prevent the framework from displaying an admin notice.
 		return array( 'dummy value' );	
 		

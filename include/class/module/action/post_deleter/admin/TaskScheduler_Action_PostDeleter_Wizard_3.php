@@ -68,10 +68,17 @@ final class TaskScheduler_Action_PostDeleter_Wizard_3 extends TaskScheduler_Wiza
 
 		$_bIsValid = true;
 		$_aErrors = array();	
-
+	
+		// Ensure to remove unnecessary elements.
+		unset( 
+			$aInput['post_type_label_of_deleting_posts'],
+			$aInput['post_statuses_of_deleting_posts'],
+			$aInput['taxonomy_label_of_deleting_posts']
+		);
+		
 		$_aCheckedPostStatuses = isset( $aInput['term_ids_of_deleting_posts'] ) ? $aInput['term_ids_of_deleting_posts'] : array();
 		$_aCheckedPostStatuses = array_filter( $_aCheckedPostStatuses );	// drop unchecked items.
-		if (  isset( $aInput['term_ids_of_deleting_posts'] ) && empty( $_aCheckedPostStatuses ) ) {
+		if ( isset( $aInput['term_ids_of_deleting_posts'] ) && empty( $_aCheckedPostStatuses ) ) {
 
 			// $aVariable[ 'sectioni_id' ]['field_id']
 			$_aErrors[ $this->_sSectionID ][ 'term_ids_of_deleting_posts' ] = __( 'At least one item needs to be checked.', 'task-scheduler' );
@@ -87,7 +94,6 @@ final class TaskScheduler_Action_PostDeleter_Wizard_3 extends TaskScheduler_Wiza
 			
 		}			
 		
-
 		return $aInput; 		
 
 	}

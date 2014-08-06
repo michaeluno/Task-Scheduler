@@ -29,6 +29,5 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
 		
 		wp_enqueue_style( 'task_scheduler_meta_box_css', TaskScheduler_Registry::getPluginURL( 'asset/css/meta_box.css' ) );
 		
-		
 	}
 }

@@ -29,7 +29,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
 		}		
 		
 		// The wizard options are stored in the '_wizard_options' element
-		$this->_saveValidatedWizardOptions( $_aWizardOptions );	
+		$_aSavedValues = $this->_saveValidatedWizardOptions( $_aWizardOptions );
 		
 		// Passing a dummy value will prevent the framework from displaying an admin notice.
 		return array( 'dummy value' );	
@@ -45,9 +45,12 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
 
 			if ( ! isset( $_GET['transient_key'] ) ) {
 				return;
-			}		
-			set_transient( $_GET['transient_key'], apply_filters( 'task_scheduler_admin_filter_saving_wizard_options', $aWizardOptions ), 30*60 );
-				
+			}	
+
+			$aWizardOptions = apply_filters( 'task_scheduler_admin_filter_saving_wizard_options', $aWizardOptions );
+			set_transient( $_GET['transient_key'], $aWizardOptions, 30*60 );
+			return $aWizardOptions;
+			
 		}
 	
 }

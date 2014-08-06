@@ -40,7 +40,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskSchedul
 		$_aWizardOptions['_max_root_log_count'] = TaskScheduler_Option::get( array( 'task_default', 'max_root_log_count' ) );
 		$_aWizardOptions['_max_execution_time']	= TaskScheduler_Option::get( array( 'task_default', 'max_execution_time' ) );
 		$_aWizardOptions['_force_execution']	= false;
-		
+
 		// Create a task as post and schedule the next run time.
 		$_iPostID = TaskScheduler_TaskUtility::add( $_aWizardOptions );
 		if ( $_iPostID ) {

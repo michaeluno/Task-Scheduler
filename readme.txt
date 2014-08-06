@@ -72,7 +72,10 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 
 == Changelog ==
 
-= 1.0.0b07 - 2014/08/05 =
+= 1.0.0b07 - 2014/08/06 =
+- Added a new meta box in task edition page that includes the `Update` submit button, some time indications, and the switch option of `Enabled` or `Disabled`.
+- Tweaked the Delete Posts action module not to insert a taxonomy query argument when the taxonomy slug is not selected.
+- Fixed a bug that repeatable fields could not be properly updated in wizards.
 - Fixed a bug that editing a disable task made the task not accessible from the task listing table.
 - Fixed a bug that the same task could be triggered when simultaneous page loads that checks the scheduled actions are made at the exact the same time.
 - Fixed a bug that the same task could be wedged in the queue of spawning tasks while another page load is spawning tasks.

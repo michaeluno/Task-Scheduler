@@ -145,8 +145,7 @@ abstract class TaskScheduler_Wizard_Base {
 		add_filter( "field_definition_{$this->_sMainAdminPageClassName}", array( $this, '_replyToRedefineFields' ), 10, 1 );
 		add_filter( "validation_{$this->_sMainAdminPageClassName}_{$this->_sSectionID}", array( $this, 'validateSettings' ), 10, 3 );
 		add_filter( "validation_{$this->_sMainAdminPageSlug}_{$this->sSlug}", array( $this, '_replytToValidateTabSettings' ), 10, 3 );	// sSlug is used as the tab slug also.
-		// add_filter( "validation_saved_options_{$this->_sMainAdminPageSlug}", '__return_empty_array' );
-		// add_filter( "validation_saved_options_{$this->_sMainAdminPageSlug}_{$this->sSlug}", '__return_empty_array' );
+		add_filter( "validation_saved_options_{$this->_sMainAdminPageSlug}_{$this->sSlug}", array( $this, '_replyToModifySavedTabOptions' ), 10, 2 );
 
 		/// The Edit Module wizard
 		add_filter( "tabs_{$this->_sEditAdminPageClassName}_{$this->_sEditAdminPageSlug}", array( $this, '_replyToAddInPageTab' ) );
@@ -155,8 +154,7 @@ abstract class TaskScheduler_Wizard_Base {
 		add_filter( "field_definition_{$this->_sEditAdminPageClassName}", array( $this, '_replyToRedefineFields' ), 10, 1 );
 		add_filter( "validation_{$this->_sEditAdminPageClassName}_{$this->_sSectionID}", array( $this, 'validateSettings' ), 10, 3 );
 		add_filter( "validation_{$this->_sEditAdminPageSlug}_{$this->sSlug}", array( $this, '_replytToValidateTabSettings' ), 10, 3 );	// sSlug is used as the tab slug also.
-		// add_filter( "validation_saved_options_{$this->_sEditAdminPageSlug}", '__return_empty_array' );
-		// add_filter( "validation_saved_options_{$this->_sEditAdminPageSlug}_{$this->sSlug}", '__return_empty_array' );
+		add_filter( "validation_saved_options_{$this->_sEditAdminPageSlug}_{$this->sSlug}", array( $this, '_replyToModifySavedTabOptions' ), 10, 2 );
 		
 		// Plugin specific hooks
 		add_filter( "task_scheduler_admin_filter_field_labels_wizard_" . $this->_sModuleType, array( $this, '_replyToAddActionLabel' ) );
@@ -436,17 +434,18 @@ abstract class TaskScheduler_Wizard_Base {
 		$_aWizardOptions = array( 
 			'previous_urls' => apply_filters( 'task_scheduler_admin_filter_get_wizard_options', array(), 'previous_urls' ),
 		);				
-		
+
 		// If the user wants an error to be displayed without saving the options, an empty array will be returned.
 		if ( ! $oAdminPage->hasSettingNotice( 'error' ) ) {	
 			$_sNextURLKey	= remove_query_arg( array( 'transient_key', 'settings-notice', 'settings-updated' ), add_query_arg( array( 'tab' => $this->sNextTabSlug ) ) );
 			$_aWizardOptions[ 'previous_urls' ][ $_sNextURLKey ] = add_query_arg( array() );	// store the current url.			
 		}
-				
-		// Insert the wizard section. If multiple wizard screens are registered to this module, merge their options.
-		$_aWizardOptions[ $this->_sSectionID ] = apply_filters( "task_scheduler_admin_filter_wizard_options_{$this->sMainWizardSlug}", $aInput[ $this->_sSectionID ] );
-		unset( $_aWizardOptions[ $this->_sSectionID ]['submit'] );
 		
+		// Insert the wizard section. If multiple wizard screens are registered to this module, merge their options.
+		$_aWizardOptions[ $this->_sSectionID ] = apply_filters( "task_scheduler_admin_filter_wizard_options_{$this->sMainWizardSlug}", $aInput[ $this->_sSectionID ] ) 
+			+ ( isset( $aOldInput['_wizard_options'][ $this->sMainWizardSlug ] ) ? $aOldInput['_wizard_options'][ $this->sMainWizardSlug ] : array() );
+		unset( $_aWizardOptions[ $this->_sSectionID ]['submit'] );
+	
 		/// The other grouped sections should be updated to the merged input array.
 		$_aSlugs = apply_filters( "task_scheduler_admin_filter_wizard_slugs_{$this->sMainWizardSlug}", array() );
 		foreach( $_aSlugs as $_sSlug ) {
@@ -458,6 +457,18 @@ abstract class TaskScheduler_Wizard_Base {
 
 		// Return the wizard options. The wizard admin page class will take care of the rest.
 		return $aInput;
+		
+	}
+	
+	/**
+	 * Drops the module element from the saved options that merges with the user form input array.
+	 * 
+	 * This is needed to preserve newly updated repeatable field values.
+	 */
+	public function _replyToModifySavedTabOptions( $aSavedOptions, $oAdminPage ) {
+		
+		unset( $aSavedOptions[ '_wizard_options' ][ $this->sSlug ] );
+		return $aSavedOptions;
 		
 	}
 		

@@ -63,7 +63,7 @@ final class TaskScheduler_Action_PostDeleter_Wizard extends TaskScheduler_Wizard
 			$oAdminPage->setSettingNotice( __( 'Please try again.', 'task-scheduler' ) );
 			
 		}			
-		
+
 		return $aInput; 		
 
 	}

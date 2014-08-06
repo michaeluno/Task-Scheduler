@@ -40,7 +40,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModule extends TaskS
 
 		$_aWizardOptions = $this->_getWizardOptions();
 		$this->_deleteWizardOptions();
-		
+
 		// Check the required keys - the user may comeback to the page from the browser's Back button.
 		if ( ! isset( $_GET['post'] ) ) {
 			$this->setSettingNotice( __( 'The wizard session has been expired. Please start from the beginning.', 'task-scheduler' ) );
@@ -50,7 +50,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModule extends TaskS
 		// Drop unnecessary form elements. The method is defined in the base class.
 		$_bUpdateSchedule	= isset( $_aWizardOptions['_update_next_schedule'] ) ? $_aWizardOptions['_update_next_schedule'] : false;
 		$_aWizardOptions	= $this->_dropUnnecessaryWizardOptions( $_aWizardOptions );
-							
+
 		// Update the meta.
 		TaskScheduler_WPUtility::updatePostMeta( $_GET['post'], $_aWizardOptions );		
 		if ( $_bUpdateSchedule ) {			
@@ -78,7 +78,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModule extends TaskS
 			);
 			
 			return parent::_dropUnnecessaryWizardOptions( $aWizardOptions );
-			
-		}
+
+		}		
 	
 }

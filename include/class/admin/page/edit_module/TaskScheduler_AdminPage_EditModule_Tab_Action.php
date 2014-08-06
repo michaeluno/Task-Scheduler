@@ -168,7 +168,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
 		$_aWizardOptions['previous_urls'] = is_array( $_aWizardOptions['previous_urls'] ) ? $_aWizardOptions['previous_urls'] : array();
 		$_aWizardOptions['previous_urls'][ $_sNextURLURLKey ] = add_query_arg( array( 'transient_key'	=>	$aInput['transient_key'], ) );
 		
-		$this->_saveWizardOptions( $_aWizardOptions['transient_key'], $_aWizardOptions );
+		$_aSavedValue = $this->_saveWizardOptions( $_aWizardOptions['transient_key'], $_aWizardOptions );
 		
 		// Go to the next page
 		exit( wp_safe_redirect( $_sNextPageURL ) );
