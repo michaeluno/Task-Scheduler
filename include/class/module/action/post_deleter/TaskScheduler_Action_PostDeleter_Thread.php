@@ -54,12 +54,17 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
 			return 1;	// failed
 		}
 
+		// Processes up to 20 posts by default.
+		$_iNumberOfPostsToDelete = isset( $_aThreadMeta[ 'number_of_posts_to_delete_per_routine' ] )
+			? $_aThreadMeta[ 'number_of_posts_to_delete_per_routine' ]
+			: 20;
+			
 		$_aPostIDsToDelete = $this->_getPostIDs(
 			$_aThreadMeta[ 'post_type_of_deleting_posts' ],
 			$_aThreadMeta[ 'post_statuses_of_deleting_posts' ],
 			$_aThreadMeta[ 'taxonomy_of_deleting_posts' ],
 			$_aThreadMeta[ 'term_ids_of_deleting_posts' ],
-			21	// retrieves up to 20 posts
+			$_iNumberOfPostsToDelete + 1	
 		);
 		
 		// If not found, finish the task.
@@ -68,8 +73,8 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
 			return 1;
 		}
 		
-		// Divide the found posts by 20 - this should creates two chunks, the first 20 to delete and 1 to check if there are remained posts.
-		$_aChunks_PostIDs	= array_chunk( $_aPostIDsToDelete, 20 );
+		// Divide the found posts by 20 - this should creates two chunks, the first part to delete and the rest to check if there are remained posts.
+		$_aChunks_PostIDs	= array_chunk( $_aPostIDsToDelete, $_iNumberOfPostsToDelete );
 		$_bHasRemain		= isset( $_aChunks_PostIDs[ 1 ] ) && 0 < count( $_aChunks_PostIDs[ 1 ] );
 		
 		// Do delete posts - we are going to delete up to 20 items to prevent exhausting the PHP max execution time.

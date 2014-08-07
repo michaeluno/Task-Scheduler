@@ -89,6 +89,7 @@ class TaskScheduler_Action_PostDeleter extends TaskScheduler_Action_Base {
 				'post_statuses_of_deleting_posts'	=>	$_aRoutineArguments['post_statuses_of_deleting_posts'],
 				'taxonomy_of_deleting_posts'		=>	$_aRoutineArguments['taxonomy_of_deleting_posts'],
 				'term_ids_of_deleting_posts'		=>	isset( $_aRoutineArguments['term_ids_of_deleting_posts'] ) ? $_aRoutineArguments['term_ids_of_deleting_posts'] : null,
+				'number_of_posts_to_delete_per_routine'	=> $_aRoutineArguments['number_of_posts_to_delete_per_routine'] ? $_aRoutineArguments['number_of_posts_to_delete_per_routine'] : null,
 			)			
 		);
 

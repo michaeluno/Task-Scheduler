@@ -36,7 +36,7 @@ final class TaskScheduler_Action_PostDeleter_Wizard extends TaskScheduler_Wizard
 				'type'				=>	'checkbox',
 				'label'				=>	TaskScheduler_WPUtility::getRegisteredPostStatusLabels(),
 				'default'			=>	array( 'trash' => 1 ),				
-			),	
+			),			
 		);
 		
 	}	

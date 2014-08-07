@@ -59,7 +59,6 @@ abstract class TaskScheduler_Module_Factory {
 			add_filter( 'task_scheduler_admin_filter_wizard_options', array( $this, '_replyToModifyDefaultOptions' ), 20, 1 );
 			add_filter( "task_scheduler_admin_filter_wizard_options_{$this->sSlug}", array( $this, '_replyToGetWizardOptions' ) );
 			add_filter( "task_scheduler_admin_filter_wizard_slugs_{$this->sSlug}", array( $this, '_replyToGetWizardSlugs' ) );
-			
 		}
 		
 		// Instantiate the wizard class if exists.
@@ -77,7 +76,7 @@ abstract class TaskScheduler_Module_Factory {
 		 * Returns the slugs used for the wizard group.
 		 */
 		public function _replyToGetWizardSlugs( $aSlugs ) {
-			return $this->getWizardScreenSlugs();
+			return $this->getWizardScreenSlugs( $aSlugs );
 		}
 	
 		/**
@@ -121,13 +120,12 @@ abstract class TaskScheduler_Module_Factory {
 			return $aOptions;
 			
 		}		
-			private function getWizardScreenSlugs() {
+			private function getWizardScreenSlugs( $aSlugs=array() ) {
 				
-				$_aSlugs =  array();
 				foreach( $this->aWizardScreens as $_aWizardScreen ) {
-					$_aSlugs[] = $_aWizardScreen['slug'];
+					$aSlugs[] = $_aWizardScreen['slug'];
 				}
-				return $_aSlugs;
+				return array_unique( $aSlugs );
 				
 			}
 		

@@ -60,6 +60,17 @@ final class TaskScheduler_Action_PostDeleter_Wizard_3 extends TaskScheduler_Wiza
 				'if'				=>	$_bIsTaxonomySet,
 							 
 			),	
+			array(	
+				'field_id'			=>	'number_of_posts_to_delete_per_routine',
+				'title'				=>	__( 'Number of Posts to Process per Routine', 'task-scheduler' ),
+				'type'				=>	'number',
+				'default'			=>	20,
+				'description'		=>	__( 'This determines how many posts will be processed per a page load. Set a smaller number if the task gets hung.', 'task-scheduler' ),
+				'attributes'		=>	array(
+					'min'	=>	1,
+					'step'	=>	1,
+				),
+			),					
 		);
 		
 	}	
@@ -93,6 +104,9 @@ final class TaskScheduler_Action_PostDeleter_Wizard_3 extends TaskScheduler_Wiza
 			$oAdminPage->setSettingNotice( __( 'Please try again.', 'task-scheduler' ) );
 			
 		}			
+		
+		// Fix a number 
+		$aInput['number_of_posts_to_delete_per_routine']	= $oAdminPage->oUtil->fixNumber( $aInput['number_of_posts_to_delete_per_routine'], 20, 1 );
 		
 		return $aInput; 		
 
