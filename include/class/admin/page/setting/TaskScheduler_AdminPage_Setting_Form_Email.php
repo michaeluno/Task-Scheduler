@@ -12,12 +12,11 @@
 abstract class TaskScheduler_AdminPage_Setting_Form_Email extends TaskScheduler_AdminPage_Setting_Form_Reset {
 
 	/**
-	 * Defines the settings form.
 	 * 
-	 * @deprecated	Will be implemented in the future.
+	 * @deprecated
 	 */
-	protected function __defineForm() {
-
+	public function __setUp() {
+		
 		$this->addInPageTabs(
 			TaskScheduler_Registry::AdminPage_Setting,	// the target page slug 
 			array(
@@ -25,7 +24,17 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Email extends TaskScheduler_
 				'title'		=>	__( 'Email', 'task-scheduler' ),
 			)
 		);
-	
+		parent::setUp();
+		
+	}
+
+	/**
+	 * Defines the settings form.
+	 * 
+	 * @deprecated	Will be implemented in the future.
+	 */
+	protected function __defineForm() {
+
 		$this->addSettingSections(
 			TaskScheduler_Registry::AdminPage_Setting,	// the target page slug
 			array(

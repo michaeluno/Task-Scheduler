@@ -22,10 +22,20 @@ final class TaskScheduler_AdminPage_Setting extends TaskScheduler_AdminPage_Sett
 		);		
 			
 		$this->_defineStyles();	
-		$this->_defineForm();
+			
+		add_action( "load_" . TaskScheduler_Registry::AdminPage_Setting, array( $this, '_replyToLoadSettingPage' ) );	
+		parent::setUp();		
 
 	}
 	
+	/**
+	 * Gets triggered when the page gets loaded. 
+	 * 
+	 * Used to define form elements.
+	 */
+	public function _replyToLoadSettingPage( $oAdminPage ) {
+		$this->_defineForm();	
+	}
 	
 		/**
 		 * Defines the styling of the admin pages.

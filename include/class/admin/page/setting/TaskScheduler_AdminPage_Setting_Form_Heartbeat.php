@@ -11,10 +11,7 @@
 
 abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskScheduler_AdminPage_Setting_Form_Task {
 
-	/**
-	 * Defines the settings form.
-	 */
-	protected function _defineForm() {
+	public function setUp() {
 		
 		$this->addInPageTabs(
 			TaskScheduler_Registry::AdminPage_Setting,	// the target page slug 
@@ -22,8 +19,16 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskSchedu
 				'tab_slug'	=>	'server_heartbeat',	// avoid hyphen(dash), dots, and white spaces
 				'title'		=>	__( 'Server Heartbeat', 'task-scheduler' ),
 			)
-		);
-	
+		);		
+		parent::setUp();
+		
+	}
+
+	/**
+	 * Defines the settings form.
+	 */
+	protected function _defineForm() {
+			
 		$this->addSettingSections(
 			TaskScheduler_Registry::AdminPage_Setting,	// the target page slug
 			array(
