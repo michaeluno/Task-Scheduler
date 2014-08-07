@@ -16,6 +16,9 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
 	 */
 	public function load_ts_task_list() {	// load_{page slug}
 
+		// Define the form.
+		$this->_setTaskListingTableForm();
+	
 		$this->_oTaskListTable = new TaskScheduler_ListTable;
 		$this->_oTaskListTable->process_bulk_action();			// do this before fetching posts
 

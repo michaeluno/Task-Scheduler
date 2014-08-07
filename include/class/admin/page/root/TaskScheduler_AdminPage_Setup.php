@@ -21,9 +21,6 @@ abstract class TaskScheduler_AdminPage_Setup extends TaskScheduler_AdminPage_For
 		
 		// 2. Define the styling
 		$this->_defineStyles();
-
-		// 3. Define the form.
-		$this->_setTaskListingTableForm();
 							
 	}
 	
