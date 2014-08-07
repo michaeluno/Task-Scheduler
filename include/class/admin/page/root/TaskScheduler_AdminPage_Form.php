@@ -15,7 +15,7 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
 	 * The callback function triggered when the page loads.
 	 */
 	public function load_ts_task_list() {	// load_{page slug}
-		
+
 		$this->_oTaskListTable = new TaskScheduler_ListTable;
 		$this->_oTaskListTable->process_bulk_action();			// do this before fetching posts
 
@@ -122,20 +122,34 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
 			TaskScheduler_Registry::AdminPage_TaskList,	// the target page slug
 			array(
 				'section_id'	=>	'task_listing_table',
-				// 'tab_slug'		=>	'current_tasks',
-				'title'			=>	__( 'Tasks', 'task-scheduler' ),
+				// 'title'			=>	__( 'Tasks', 'task-scheduler' ),
 			)			
 		);		
 		$this->addSettingFields(
-			'task_listing_table',	// the target section ID		
-			array(	
-				'field_id'			=>	'hidden',
-				'type'				=>	'hidden',
-				'label_min_width'	=>	0,
-				'hidden'			=>	true,
-			)				
+			'task_listing_table',	// the target section ID			
+			array(
+				'field_id'			=>	'check_actions_now',
+				'type'				=>	'submit',
+				// 'label_min_width'	=>	0,
+				'value'				=>	__( 'Check Actions Now', 'task-scheduler' ),
+				'attributes'		=>	array(
+					'field'	=>	array(
+						'style'	=>	'float:right; clear:none; display: inline;',
+					),				
+					'class'	=>	'button button-secondary',
+				),
+			)
 		);	
 					
+	}
+	/**
+	 * Triggered when the 'check_actions_now' submit button is pressed.
+	 */
+	public function submit_TaskScheduler_AdminPage_task_listing_table_check_actions_now() {	// submit_{instantiated class name}_{section id}_{field id}
+		
+		do_action( 'task_scheduler_action_check_shceduled_actions' );
+		$this->setSettingNotice( __( 'Checking actions now.', 'task-scheduler' ), 'updated' );
+		
 	}
 	
 	/**
@@ -144,8 +158,9 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
 	public function content_ts_task_list( $sHTML ) {	// content_{page slug}
 
 		return $this->_getHeartbeatStatus()
-			. $this->_getTableOutput();
-			
+			. $this->_getTableOutput()
+			. $sHTML;	// $sHTML this includes the output of framework form fields.
+		
 	}	
 
 		/**

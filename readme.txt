@@ -92,13 +92,15 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 == Changelog ==
 
 = 1.0.0b08 =
+- Added the `Check Action Now` button in the task listing table page.
 - Added the `Number of Posts to Process per Routine` option to the `Delete Posts` action module.
+- Tweaked the `Delete Posts` action module to load threads smoothly for sites disabling the server heartbeat.
 - Changed the meta box output of modules to display stored module option values from all wizard screens if the module uses multiple wizard screens.
 
 = 1.0.0b07 - 2014/08/06 =
 - Added a new meta box in task edition page that includes the `Update` submit button, some time indications, and the switch option of `Enabled` or `Disabled`.
 - Tweaked the mechanism of checking routines.
-- Tweaked the Delete Posts action module not to insert a taxonomy query argument when the taxonomy slug is not selected.
+- Tweaked the `Delete Posts` action module not to insert a taxonomy query argument when the taxonomy slug is not selected.
 - Fixed a bug that repeatable fields could not be properly updated in wizards.
 - Fixed a bug that editing a disable task made the task not accessible from the task listing table.
 - Fixed a bug that the same task could be triggered when simultaneous page loads that checks the scheduled actions are made at the exact the same time.

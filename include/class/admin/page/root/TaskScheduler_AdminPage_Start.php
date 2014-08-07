@@ -10,6 +10,7 @@
  */
 
 abstract class TaskScheduler_AdminPage_Start extends TaskScheduler_AdminPageFramework {
+// abstract class TaskScheduler_AdminPage_Start extends AdminPageFramework {
 	
 	public function start() {
 		

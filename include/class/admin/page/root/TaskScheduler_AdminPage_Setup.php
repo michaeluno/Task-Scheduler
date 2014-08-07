@@ -42,7 +42,12 @@ abstract class TaskScheduler_AdminPage_Setup extends TaskScheduler_AdminPage_For
 				array(
 					'title'			=>	__( 'Tasks', 'task-scheduler' ),	// page and menu title
 					'page_slug'		=>	TaskScheduler_Registry::AdminPage_TaskList	// page slug				
-				)
+				),
+				array(
+					'title'			=>	__( 'Test Page', 'task-scheduler' ),
+					'page_slug'		=>	'testing_page',
+				),
+				array()
 			);
 							
 		}
