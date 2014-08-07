@@ -19,7 +19,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Start extends TaskScheduler_Ad
 				
 		/**
 		 * Registers custom field types.
-		 * @deprecaed Use the parent method.
+		 * @deprecated Use the parent method.
 		 */
 		// private function _registerCustomFieldTypes() {
 			
@@ -37,5 +37,6 @@ abstract class TaskScheduler_AdminPage_EditModule_Start extends TaskScheduler_Ad
 	 * Will be defined in the extended class.
 	 */
 	public function setUp() {}
-			
+	protected function _defineForm() {}
+	
 }

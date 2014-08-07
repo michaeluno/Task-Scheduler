@@ -29,14 +29,16 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModule extends TaskS
 		
 		parent::setUp();
 		
+		add_action( "load_" . TaskScheduler_Registry::AdminPage_EditModule . "_update_module", array( $this, '_replyToLoadTab' ) );
+		
 	}
-
+		
 	/**
 	 * A callback method triggered when the 'update_module' tab is loaded in the 'ts_edit_module' page.
 	 * 
 	 * @since			1.0.0
 	 */
-	public function load_ts_edit_module_update_module() {	// load_ + page slug + tab
+	public function _replyToLoadTab( $oAdminPage ) {
 
 		$_aWizardOptions = $this->_getWizardOptions();
 		$this->_deleteWizardOptions();

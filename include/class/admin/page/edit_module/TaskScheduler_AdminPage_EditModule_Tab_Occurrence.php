@@ -22,7 +22,13 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
 				'show_in_page_tab'	=>	false,
 			)
 		);
+				
+		parent::setUp();
 		
+	}
+	
+	protected function _defineForm() {
+	
 		$this->addSettingSections(
 			TaskScheduler_Registry::AdminPage_EditModule,	// the target page slug
 			array(
@@ -66,8 +72,8 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
 				), 				
 			)	
 		);
-		
-		parent::setUp();
+
+		parent::_defineForm();
 		
 	}
 	

@@ -39,8 +39,19 @@ abstract class TaskScheduler_AdminPage_EditModule_Setup extends TaskScheduler_Ad
 		
 		$this->_sTransientKey = isset( $_GET['transient_key'] ) && $_GET['transient_key'] ? $_GET['transient_key'] : TaskScheduler_Registry::TransientPrefix . uniqid();
 		$this->_defineStyles();	// the method is defined in one of the base classes.
-			
+		
+		add_action( "load_" . TaskScheduler_Registry::AdminPage_EditModule, array( $this, '_replyToDefineFormElements' ) );
+		
 		parent::setUp();
+		
+	}
+	
+	/**
+	 * Called when the framework page loads.
+	 */
+	public function _replyToDefineFormElements( $oAdminPage ) {
+		
+		$this->_defineForm();
 		
 	}
 
