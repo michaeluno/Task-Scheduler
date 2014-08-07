@@ -48,15 +48,19 @@ abstract class TaskScheduler_AdminPage_Wizard_Setup extends TaskScheduler_AdminP
 			)
 		);				
 		
-		$this->_defineStyles();
-		
-		
+		$this->_defineStyles();	
 		$this->_sTransientKey = isset( $_GET['transient_key'] ) && $_GET['transient_key'] ? $_GET['transient_key'] : TaskScheduler_Registry::TransientPrefix . uniqid();
-		$this->_setWizard( $this->_sTransientKey );
-		$this->_setWizard_SelectAction( $this->_sTransientKey );
-				
+		
+		add_action( "load_" . TaskScheduler_Registry::AdminPage_AddNew, array( $this, '_replyToDefineForms' ) );
+						
 	}
 	
+	public function _replyToDefineForms( $oAdminPage ) {
+
+		$this->_setWizard( $this->_sTransientKey );
+		$this->_setWizard_SelectAction( $this->_sTransientKey );
+	
+	}
 	
 	/**
 	 * Defines the styling of the admin pages.
