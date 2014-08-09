@@ -65,7 +65,7 @@ class TaskScheduler_MetaBox_Action extends TaskScheduler_MetaBox_Base {
 		if ( ! isset( $aAllFields['_default'] ) || ! is_array( $aAllFields['_default'] ) ) { return $aAllFields; }
 		
 		$aAllFields['_default'] = $aAllFields['_default'] 
-			+ $this->_getModuleFields( $this->_oTask->routine_action, $this->_oTask->{$this->_oTask->routine_action} )
+			+ $this->_getModuleFields( $this->_oTask->routine_action, ( array ) $this->_oTask->{$this->_oTask->routine_action} )
 			+ array( 'wizard_redirect_button_action' => $this->_getModuleEditButtonField( 'wizard_redirect_button_action', 'edit_action' ) );
 		
 		return $aAllFields;
