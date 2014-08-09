@@ -8,14 +8,6 @@
 	Version:		1.0.0b09
 */
 
-/* 
- * Script Procedure  
- * 1. Define the base registry class.
- * 2. Define the registry class.
- * 3. Include files.
- * 4. Perform the bootstrap script.
- */
-
 /* 1. Define the base registry class. */
 /**
  * The base class of the registry class which provides basic plugin information.
@@ -24,7 +16,7 @@
  */
 class TaskScheduler_Registry_Base {
 
-	const Version		= '1.0.0b08';
+	const Version		= '1.0.0b09';	// <--- DON'T FORGET TO CHANGE THIS AS WELL!!
 	const Name			= 'Task Scheduler';
 	const Description	= 'Provides an enhanced task management system for WordPress.';
 	const URI			= 'http://en.michaeluno.jp/';
@@ -93,8 +85,6 @@ TaskScheduler_Registry::setUp( __FILE__ );
 
 /* 3. Include files. */
 
-// $_nNow = microtime( true );
-
 // If the debug mode is on, include individual files; otherwise, include the minified file as it reduces the speed more than x2.
 if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 	
@@ -119,8 +109,6 @@ if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 	include( dirname( __FILE__ ) . '/include/task-scheduler-classes.min.php' );
 	
 }
-
-// TaskScheduler_Debug::log( ( microtime( true ) - $_nNow  )  );
 
 /* 4. Perform the bootstrap. */
 new TaskScheduler_Bootstrap( __FILE__ );
