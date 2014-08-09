@@ -55,16 +55,19 @@ abstract class TaskScheduler_Module_Factory {
 		
 		add_filter( "task_scheduler_filter_label_" . $this->_sModuleType . "_" . $this->sSlug, array( $this, 'getLabel' ) );
 		add_filter( "task_scheduler_filter_description_" . $this->_sModuleType . "_" . $this->sSlug, array( $this, 'getDescription' ) );
-		if ( is_admin() ) {			
+		
+		if ( is_admin() && isset( $_GET['page'] ) && in_array( $_GET['page'], array( TaskScheduler_Registry::AdminPage_AddNew, TaskScheduler_Registry::AdminPage_EditModule ) ) ) {
+		
 			add_filter( 'task_scheduler_admin_filter_wizard_options', array( $this, '_replyToModifyDefaultOptions' ), 20, 1 );
 			add_filter( "task_scheduler_admin_filter_wizard_options_{$this->sSlug}", array( $this, '_replyToGetWizardOptions' ) );
 			add_filter( "task_scheduler_admin_filter_wizard_slugs_{$this->sSlug}", array( $this, '_replyToGetWizardSlugs' ) );
-		}
 		
-		// Instantiate the wizard class if exists.
-		$_aWizardClasses = is_array( $asWizardClasses ) ? $asWizardClasses : array( $asWizardClasses );
-		foreach( $_aWizardClasses as $_sWizardClass ) {
-			$this->addWizardScreen( $_sWizardClass, $this->sSlug );
+			// Instantiate the wizard class if exists.
+			$_aWizardClasses = is_array( $asWizardClasses ) ? $asWizardClasses : array( $asWizardClasses );
+			foreach( $_aWizardClasses as $_sWizardClass ) {
+				$this->addWizardScreen( $_sWizardClass, $this->sSlug );
+			}
+			
 		}
 		
 		// Call the user constructor
@@ -140,35 +143,32 @@ abstract class TaskScheduler_Module_Factory {
 	 */
 	public function addWizardScreen( $sWizardClassName, $sSlug='' ) {
 		
-		if ( class_exists( $sWizardClassName ) ) {
+		if ( ! class_exists( $sWizardClassName ) ) { return; }
 
-			$_bIsFirst			= empty( $this->aWizardScreens );
-			$_iNth				= count( $this->aWizardScreens ) + 1;
-			$_sMainWizardSlug	= $this->_getMainWizardSlug( $sSlug );
-			$sSlug				= $_bIsFirst ? $sSlug : $_sMainWizardSlug . '_' . $_iNth;
-			$_oWizardScreen 	= new $sWizardClassName( $sSlug, $_sMainWizardSlug );
-			$this->aWizardScreens[] =  array(
-				'class_name'	=>	$sWizardClassName,
-				'slug'			=>	$sSlug,
-				'instance'		=>	$_oWizardScreen,
-				'is_main'		=>	$_bIsFirst,
-			);
-			if ( $_bIsFirst ) { return; }
-			
-			// At this point, the added wizard screen is not the first one. 
-			
-			/// Disable the label so that the default slug will be only used.
-			$_oWizardScreen->bAddToLabelList = false;	
-			$_oWizardScreen->sMainWizardSlug = $_sMainWizardSlug;
-			
-			/// So modify the destination screen of the previous one.
-			$_oPreviousWizardScreen = isset( $this->aWizardScreens[ $_iNth - 2 ] ) ? $this->aWizardScreens[ $_iNth - 2 ][ 'instance' ] : null;
-			if ( is_object( $_oPreviousWizardScreen ) ) {
-				$_oPreviousWizardScreen->sNextTabSlug = $sSlug;
-			}
+		$_bIsFirst			= empty( $this->aWizardScreens );
+		$_iNth				= count( $this->aWizardScreens ) + 1;
+		$_sMainWizardSlug	= $this->_getMainWizardSlug( $sSlug );
+		$sSlug				= $_bIsFirst ? $sSlug : $_sMainWizardSlug . '_' . $_iNth;
+		$_oWizardScreen 	= new $sWizardClassName( $sSlug, $_sMainWizardSlug );
+		$this->aWizardScreens[] =  array(
+			'class_name'	=>	$sWizardClassName,
+			'slug'			=>	$sSlug,
+			'instance'		=>	$_oWizardScreen,
+			'is_main'		=>	$_bIsFirst,
+		);
+		if ( $_bIsFirst ) { return; }
 		
-		}		
+		// At this point, the added wizard screen is not the first one. 
 		
+		/// Disable the label so that the default slug will be only used.
+		$_oWizardScreen->bAddToLabelList = false;	
+		$_oWizardScreen->sMainWizardSlug = $_sMainWizardSlug;
+		
+		/// So modify the destination screen of the previous one.
+		$_oPreviousWizardScreen = isset( $this->aWizardScreens[ $_iNth - 2 ] ) ? $this->aWizardScreens[ $_iNth - 2 ][ 'instance' ] : null;
+		if ( is_object( $_oPreviousWizardScreen ) ) {
+			$_oPreviousWizardScreen->sNextTabSlug = $sSlug;
+		}	
 		
 	}
 		/**

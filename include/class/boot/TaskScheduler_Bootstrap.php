@@ -8,7 +8,7 @@
  * @authorurl	http://michaeluno.jp
  * @since		1.0.0
  * 
-*/
+ */
 
 /**
  * 
@@ -28,10 +28,10 @@ final class TaskScheduler_Bootstrap {
 		
 		// 2. Set global variables.
 		// $this->_setGlobalVariables();
-		
+			
 		// 3. Set up auto-load classes.
 		$this->_loadClasses( $this->_sFilePath );
-		
+
 		// 4. Set up activation hook.
 		register_activation_hook( $this->_sFilePath, array( $this, '_replyToDoWhenPluginActivates' ) );
 		
@@ -64,32 +64,36 @@ final class TaskScheduler_Bootstrap {
 		
 		$_sPluginDir =  dirname( $sFilePath );
 		
-		// Auto-loads classes placed in the finals folder.
-		if ( ! class_exists( 'TaskScheduler_AutoLoad' ) ) {
-			include_once( $_sPluginDir . '/include/class/boot/TaskScheduler_AutoLoad.php' );	
+		// If the include script fails, the auto loader class is not defined.
+		if ( class_exists( 'TaskScheduler_AutoLoad' ) ) {
+			return;
 		}
 		
-		// Register the classes for boot now.
-		new TaskScheduler_AutoLoad( $_sPluginDir . '/include/class/boot' );
+		// These lines should only be read if the inclusion script or the minified class file is disabled manually.
+		$this->_includeLibraries();							
+		include( $_sPluginDir . '/include/class/boot/TaskScheduler_AutoLoad.php' );	
 		
-		// Schedule to register regular classes when all the plugins are loaded. This allows other scripts to modify the loading class files.
-		add_action( 'plugins_loaded', array( $this, '_replyToRegisterOtherClasses' ) );		
+		// Register the classes.
+		new TaskScheduler_AutoLoad( $_sPluginDir . '/include/class' );	
 				
 	}
 		/**
-		 * Registers regular classes to be auto loaded.
-		 * 
+		 * Includes third-party libraries.
 		 */
-		public function _replyToRegisterOtherClasses() {
-			
-			$_sIncludeDir = dirname( $this->_sFilePath ) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'class';
-			new TaskScheduler_AutoLoad( 
-				$_sIncludeDir, 
-				array(), 
-				array( 'exclude_dirs' => $_sIncludeDir . DIRECTORY_SEPARATOR . '/boot' )
-			);
+		protected function _includeLibraries() {
+					
+			include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/task-scheduler-admin-page-framework.min.php' );
+			include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/autocomplete-custom-field-type/TaskScheduler_AutoCompleteCustomFieldType.php' );
+			include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/date-time-custom-field-types/TaskScheduler_DateRangeCustomFieldType.php' );
+			include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/date-time-custom-field-types/TaskScheduler_DateTimeCustomFieldType.php' );
+			include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/date-time-custom-field-types/TaskScheduler_DateTimeRangeCustomFieldType.php' );
+			include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/date-time-custom-field-types/TaskScheduler_DateCustomFieldType.php' );
+			include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/date-time-custom-field-types/TaskScheduler_TimeCustomFieldType.php' );
+			include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/date-time-custom-field-types/TaskScheduler_TimeRangeCustomFieldType.php' );
+			include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/revealer-custom-field-type/TaskScheduler_RevealerCustomFieldType.php' );
 						
-		}
+		}	
+
 	/**
 	 * 
 	 * @since			2.1
@@ -145,7 +149,6 @@ final class TaskScheduler_Bootstrap {
 	}
 		public function _replyToStartServerHeartbeat() {
 
-			$this->_replyToRegisterOtherClasses();
 			$this->_replyToLoadPluginComponents();
 			TaskScheduler_Event_ServerHeartbeat_Resumer::resume();
 			
@@ -195,24 +198,20 @@ final class TaskScheduler_Bootstrap {
 	 */
 	public function _replyToLoadPluginComponents() {
 
-		// Load Necessary libraries
-		include_once( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/task-scheduler-admin-page-framework.min.php' );
-		new TaskScheduler_AutoLoad( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/' );	// for custom field types
-	
-		// 1. Events - handles background processes and some hooks. This should be loaded earlier than the admin classes as some callbacks use the hooks of the admin page framework.
+		// 1. Events - handles background processes and hooks. This should be loaded earlier than the admin classes as some callbacks use the hooks of the admin page framework.
 		new TaskScheduler_Event;	
-	
+
 		// 2. Post types - we have three custom post types. One is for tasks, another is for threads, and the last is for logs.
 		new TaskScheduler_PostType_Task( TaskScheduler_Registry::PostType_Task, null, $this->_sFilePath );
 		new TaskScheduler_PostType_Thread( TaskScheduler_Registry::PostType_Thread, null, $this->_sFilePath );
 		new TaskScheduler_PostType_Log( TaskScheduler_Registry::PostType_Log, null, $this->_sFilePath );
-			
+		
 		// 3. Admin pages
 		if ( $this->_bIsAdmin ) {
-			
+
 			// 3.1. Root
 			$this->oAdminPage = new TaskScheduler_AdminPage( '', $this->_sFilePath );
-			
+
 			// 3.2. Add New
 			new TaskScheduler_AdminPage_Wizard( '', $this->_sFilePath );		// passing an empty string will disable saving options.
 			
@@ -227,13 +226,14 @@ final class TaskScheduler_Bootstrap {
 			
 			// 3.6. Meta Boxes for task editing page (post.php).
 			$this->_registerMetaBoxes();
-				
+		
 		}			
 		
 		// Modules should use this hook.
 		do_action( 'task_scheduler_action_after_loading_plugin' );
 		
 	}
+
 		/**
 		 * Registers meta boxes.
 		 */

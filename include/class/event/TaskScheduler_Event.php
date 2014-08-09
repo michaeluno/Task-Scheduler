@@ -20,7 +20,7 @@ class TaskScheduler_Event {
 		new TaskScheduler_Occurrence_Volatile( 'volatile' );
 		new TaskScheduler_Occurrence_Constant( 'constant' );
 		
-		// Action modules.
+ 		// Action modules.
 		new TaskScheduler_Action_PostDeleter( 
 			'task_scheduler_action_delete_post', 
 			array(

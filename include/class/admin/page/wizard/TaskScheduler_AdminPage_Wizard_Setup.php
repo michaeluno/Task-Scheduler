@@ -57,10 +57,29 @@ abstract class TaskScheduler_AdminPage_Wizard_Setup extends TaskScheduler_AdminP
 	
 	public function _replyToDefineForms( $oAdminPage ) {
 
+		$this->_registerCustomFieldTypes();
 		$this->_setWizard( $this->_sTransientKey );
 		$this->_setWizard_SelectAction( $this->_sTransientKey );
 	
 	}
+	
+		/**
+		 * Registers custom field types.
+		 * 
+		 * @remark	The scope is 'protected' because the extending Edit Module class will use this method.
+		 */
+		protected function _registerCustomFieldTypes() {
+			
+			if ( ! $this->oProp->bIsAdmin ) { return; }
+			
+			$_sClassName = get_class( $this );
+			new TaskScheduler_DateTimeCustomFieldType( $_sClassName );		
+			new TaskScheduler_TimeCustomFieldType( $_sClassName );		
+			new TaskScheduler_DateCustomFieldType( $_sClassName );		
+			new TaskScheduler_AutoCompleteCustomFieldType( $_sClassName );		
+			new TaskScheduler_RevealerCustomFieldType( $_sClassName );	
+		
+		}	
 	
 	/**
 	 * Defines the styling of the admin pages.

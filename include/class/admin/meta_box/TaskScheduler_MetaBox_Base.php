@@ -9,14 +9,25 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
 		
 	public function start() {
 		
+		if ( isset( $GLOBALS['pagenow'] ) && 'post.php' === $GLOBALS['pagenow'] ) {
+			add_action( 'current_screen', array( $this, '_replyToRegisterFieldTypes' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, '_replyToAddCSS' ), 10, 1 );
+		}
+		
+	}
+			
+	public function _replyToRegisterFieldTypes( $oScreen ) {
+		
+		if ( ! in_array( $oScreen->post_type, array( TaskScheduler_Registry::PostType_Task, TaskScheduler_Registry::PostType_Thread ) ) ) { 
+			return; 
+		}	
+		
 		// Register custom field types
-
 		$_sClassName = get_class( $this );
 		new TaskScheduler_DateTimeCustomFieldType( $_sClassName );		
 		new TaskScheduler_TimeCustomFieldType( $_sClassName );		
-		new TaskScheduler_DateCustomFieldType( $_sClassName );				
-				
-		add_action( 'admin_enqueue_scripts', array( $this, '_replyToAddCSS' ), 10, 1 );
+		new TaskScheduler_DateCustomFieldType( $_sClassName );					
+		
 		
 	}
 			

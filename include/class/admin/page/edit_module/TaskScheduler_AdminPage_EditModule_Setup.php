@@ -51,6 +51,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Setup extends TaskScheduler_Ad
 	 */
 	public function _replyToDefineFormElements( $oAdminPage ) {
 		
+		$this->_registerCustomFieldTypes();
 		$this->_defineForm();
 		
 	}
