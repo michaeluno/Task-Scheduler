@@ -93,6 +93,7 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 
 = 1.0.0b09 - 2014/08/09 =
 - Refined the minifier and inclusion script creator scripts.
+- Fixed a bug that a page created for debugging was remaining.
 - Fixed a bug that module options were not displayed in the task editing page.
 
 = 1.0.0b08 - 2014/08/09 =
