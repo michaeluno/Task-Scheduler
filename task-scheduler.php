@@ -5,7 +5,7 @@
 	Description:	Provides an enhanced task management system for WordPress.
 	Author:			miunosoft (Michael Uno)
 	Author URI:		http://michaeluno.jp
-	Version:		1.0.0b08
+	Version:		1.0.0b09
 */
 
 /* 

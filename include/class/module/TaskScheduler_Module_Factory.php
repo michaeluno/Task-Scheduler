@@ -56,7 +56,13 @@ abstract class TaskScheduler_Module_Factory {
 		add_filter( "task_scheduler_filter_label_" . $this->_sModuleType . "_" . $this->sSlug, array( $this, 'getLabel' ) );
 		add_filter( "task_scheduler_filter_description_" . $this->_sModuleType . "_" . $this->sSlug, array( $this, 'getDescription' ) );
 		
-		if ( is_admin() && isset( $_GET['page'] ) && in_array( $_GET['page'], array( TaskScheduler_Registry::AdminPage_AddNew, TaskScheduler_Registry::AdminPage_EditModule ) ) ) {
+		if ( 
+			is_admin() 
+			&& (
+				isset( $_GET['page'] ) && in_array( $_GET['page'], array( TaskScheduler_Registry::AdminPage_AddNew, TaskScheduler_Registry::AdminPage_EditModule ) )
+				|| isset( $GLOBALS['pagenow'] ) && in_array( $GLOBALS['pagenow'], array( 'post.php' ) )
+			)
+		) {
 		
 			add_filter( 'task_scheduler_admin_filter_wizard_options', array( $this, '_replyToModifyDefaultOptions' ), 20, 1 );
 			add_filter( "task_scheduler_admin_filter_wizard_options_{$this->sSlug}", array( $this, '_replyToGetWizardOptions' ) );
