@@ -6,6 +6,7 @@ $sCarriageReturn = $bIsCLI ? PHP_EOL : '<br />';
 if ( ! $bIsCLI ) { exit; }
 
 /* Include necessary files */
+require( dirname( dirname( __FILE__ ) ) . '/php_class_files_script_creator/PHP_Class_Files_Script_Creator_Base.php' );
 require( dirname( __FILE__ ) . '/class/PHP_Class_Files_Minifier.php' );
 
 /* Set necessary paths */
@@ -30,7 +31,7 @@ new PHP_Class_Files_Minifier(
 	$sTargetDir, 
 	$sResultFilePath, 
 	array(
-		'header_class'		=>	'TaskScheduler_MinifiedVersionHeader',
+		'header_class_name'	=>	'TaskScheduler_MinifiedVersionHeader',
 		'output_buffer'		=>	true,
 		'header_type'		=>	'CONSTANTS',	
 		'exclude_classes'	=>	array(

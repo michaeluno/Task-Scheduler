@@ -3,9 +3,10 @@
 $bIsCLI = php_sapi_name() == 'cli';
 $sCarriageReturn = $bIsCLI ? PHP_EOL : '<br />';
 
-// if ( $bIsCLI ) { exit; }
+if ( ! $bIsCLI ) { exit; }
 
 /* Include necessary files */
+require( dirname( dirname( __FILE__ ) ) . '/php_class_files_script_creator/PHP_Class_Files_Script_Creator_Base.php' );
 require( dirname( __FILE__ ) . '/class/PHP_Class_Files_Inclusion_Script_Creator.php' );
 
 /* Set necessary paths */
@@ -28,15 +29,15 @@ if (
 echo 'Started...' . $sCarriageReturn;
 
 // for the front-end
-new PHP_Class_Files_Inclusion_Script_Creator( 
+new PHP_Class_Files_Inclusion_Script_Creator(
 	$sTargetBaseDir,
 	array( $sTargetBaseDir . '/include/library', $sTargetBaseDir . '/include/class' ), 	// scan directory paths
 	$sResultFilePath, 
 	array(
-		'header_class'		=>	'TaskScheduler_InclusionScriptHeader',
+		'header_class_name'	=>	'TaskScheduler_InclusionScriptHeader',
 		'output_buffer'		=>	true,
 		'header_type'		=>	'CONSTANTS',	
-		'exclude_classes'	=>	array(),
+		'exclude_classes'	=>	array( 'TaskScheduler_InclusionScriptHeader', 'TaskScheduler_MinifiedVersionHeader' ),
 		'include_function'	=>	'include',
 		'base_dir_var'  	=>	'TaskScheduler_Registry::$sDirPath',
 		'search'			=>	array(
@@ -53,10 +54,10 @@ new PHP_Class_Files_Inclusion_Script_Creator(
 	array( $sTargetBaseDir . '/include/class/admin' ), 	// scan directory paths
 	$sResultFilePath_2, 
 	array(
-		'header_class'		=>	'TaskScheduler_InclusionScriptHeader',
+		'header_class_path'	=>	$sTargetBaseDir . '/include/class/TaskScheduler_InclusionScriptHeader.php',
 		'output_buffer'		=>	true,
 		'header_type'		=>	'CONSTANTS',	
-		'exclude_classes'	=>	array(),
+		'exclude_classes'	=>	array( 'TaskScheduler_InclusionScriptHeader', 'TaskScheduler_MinifiedVersionHeader' ),
 		'base_dir_var'  	=>	'TaskScheduler_Registry::$sDirPath',
 		'include_function'	=>	'include',
 		'search'			=>	array(

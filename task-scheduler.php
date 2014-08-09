@@ -84,7 +84,6 @@ if ( ! defined( 'ABSPATH' ) ) { return; }
 TaskScheduler_Registry::setUp( __FILE__ );
 
 /* 3. Include files. */
-
 // If the debug mode is on, include individual files; otherwise, include the minified file as it reduces the speed more than x2.
 if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 	
@@ -95,6 +94,7 @@ if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 	
 } else {
 	
+	// Include the library files.
 	include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/task-scheduler-admin-page-framework.min.php' );
 	include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/autocomplete-custom-field-type/TaskScheduler_AutoCompleteCustomFieldType.php' );
 	include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/date-time-custom-field-types/TaskScheduler_DateRangeCustomFieldType.php' );

@@ -91,7 +91,11 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 
 == Changelog ==
 
-= 1.0.0b08 =
+= 1.0.0b09 - 2014/08/09 =
+- Refined the minifier and inclusion script creator scripts.
+- Fixed a bug that module options were not displayed in the task editing page.
+
+= 1.0.0b08 - 2014/08/09 =
 - Added the `Check Action Now` button in the task listing table page.
 - Added the `Number of Posts to Process per Routine` option to the `Delete Posts` action module.
 - Tweaked the method of including PHP files to improve performance. 
