@@ -20,18 +20,19 @@ final class TaskScheduler_AutoLoad {
 	 * Represents the structure of the recursive option array.
 	 * 
 	 */
-	static protected $_aStructure_RecursiveOptions = array(
+	static protected $_aStructure_Options = array(
 		'is_recursive'			=>	true,
 		'exclude_dir_paths'		=>	array(),
 		'exclude_dir_names'		=>	array( 'asset', 'assets', 'css', 'js', 'image', 'images', 'license', 'document', 'documents' ),
 		'allowed_extensions'	=>	array( 'php', ),	// 'inc'
+		'include_function'		=>	'include',
 	);
 	
 	/**
 	 * Sets up properties and performs registering classes.
 	 * 
-	 * param			array			$sClassDirPath		the target directory path to scan	 * 
-	 * param			array			$aSearchOptions		The recursive settings
+	 * param			array|string	$asScanDirPath		the target directory path to scan
+	 * param			array			$aOptions			The settings argument
 	 * 		array(
 	 * 			'is_recursive'	=> true,		// determines whether the scan should be performed recursively.
 	 * 			'exclude_dir_paths' => array(),		// set excluding directory paths without ending slash with numeric keys.
@@ -46,19 +47,31 @@ final class TaskScheduler_AutoLoad {
 	 * )
 	 * @remark			The directory paths set for the 'exclude_dir_paths' option should use the system directory separator.
 	 */
-	function __construct( $sClassDirPath, array $aSearchOptions=array(), array $aClasses=array() ) {
-			
-		$this->_aClasses = $aClasses + $this->_constructClassArray( $sClassDirPath, $aSearchOptions + self::$_aStructure_RecursiveOptions );
-		$this->_registerClasses();
+	function __construct( $asScanDirPaths, array $aOptions=array(), array $aClasses=array() ) {
 		
+		$_aOptions = $aOptions + self::$_aStructure_Options;
+		$this->_aClasses			= $aClasses + $this->_constructClassArray( $asScanDirPaths, $_aOptions );
+		$_sIncludeFunciton	= in_array( $_aOptions['include_function'], array( 'require', 'require_once', 'include', 'include_once' ) )
+			? $_aOptions['include_function']
+			: 'include';	// default		
+		$this->_registerClasses( $_sIncludeFunciton );
+			
 	}
 	
 	/**
 	 * Sets up the array consisting of class paths with the key of file name w/o extension.
 	 */
-	protected function _constructClassArray( $sClassDirPath, array $aSearchOptions ) {
-				
-		$_aFilePaths = $this->getFilePaths( $sClassDirPath, $aSearchOptions );
+	protected function _constructClassArray( $asScanDirPaths, array $aOptions ) {
+		
+		if ( empty( $asScanDirPaths ) ) {
+			return array();
+		}
+		$_aFilePaths = array();
+		foreach( ( array ) $asScanDirPaths as $_sClassDirPath ) {
+			if ( realpath( $_sClassDirPath ) ) {
+				$_aFilePaths = array_merge( $this->getFilePaths( $_sClassDirPath, $aOptions ), $_aFilePaths );
+			}
+		}
 		$_aClasses = array();
 		foreach( $_aFilePaths as $_sFilePath ) {
 			$_aClasses[ pathinfo( $_sFilePath, PATHINFO_FILENAME ) ] = $_sFilePath;	// the file name without extension will be assigned to the key
@@ -78,13 +91,13 @@ final class TaskScheduler_AutoLoad {
 			  ...
 		 * 
 		 */
-		protected function getFilePaths( $sClassDirPath, array $aSearchOptions ) {
+		protected function getFilePaths( $sClassDirPath, array $aOptions ) {
 			
 			$sClassDirPath			= rtrim( $sClassDirPath, '\\/' ) . DIRECTORY_SEPARATOR;	// ensures the trailing (back/)slash exists. 
-			$_aAllowedExtensions	= $aSearchOptions['allowed_extensions'];
-			$_aExcludeDirPaths		= ( array ) $aSearchOptions['exclude_dir_paths'];
-			$_aExcludeDirNames		= ( array ) $aSearchOptions['exclude_dir_names'];
-			$_bIsRecursive			= $aSearchOptions[ 'is_recursive' ];
+			$_aAllowedExtensions	= $aOptions['allowed_extensions'];
+			$_aExcludeDirPaths		= ( array ) $aOptions['exclude_dir_paths'];
+			$_aExcludeDirNames		= ( array ) $aOptions['exclude_dir_names'];
+			$_bIsRecursive			= $aOptions[ 'is_recursive' ];
 			
 			if ( defined( 'GLOB_BRACE' ) ) {	// in some OSes this flag constant is not available.
 				$_aFilePaths = $_bIsRecursive
@@ -144,20 +157,26 @@ final class TaskScheduler_AutoLoad {
 	 * This registers the method to be triggered when an unknown class is instantiated. 
 	 * 
 	 */
-	protected function _registerClasses() {
-		spl_autoload_register( array( $this, '_replyToAutoLoad' ) );
+	protected function _registerClasses( $sIncludeFunction ) {
+		spl_autoload_register( array( $this, '_replyToAutoLoad_' . $sIncludeFunction ) );
 	}	
 		/**
 		 * Responds to the PHP auto-loader and includes the passed class based on the previously stored path associated with the class name in the constructor.
 		 */
-		public function _replyToAutoLoad( $sCalledUnknownClassName ) {			
-			if ( ! array_key_exists( $sCalledUnknownClassName, $this->_aClasses ) ) {
-				return;
-			}
-			if ( ! file_exists( $this->_aClasses[ $sCalledUnknownClassName ] ) ) {
-				return;
-			}
+		public function _replyToAutoLoad_include( $sCalledUnknownClassName ) {			
+			if ( ! isset( $this->_aClasses[ $sCalledUnknownClassName ] ) ) { return; }
 			include( $this->_aClasses[ $sCalledUnknownClassName ] );
 		}
-	
+		public function _replyToAutoLoad_include_once( $sCalledUnknownClassName ) {			
+			if ( ! isset( $this->_aClasses[ $sCalledUnknownClassName ] ) ) { return; }
+			include_once( $this->_aClasses[ $sCalledUnknownClassName ] );
+		}		
+		public function _replyToAutoLoad_require( $sCalledUnknownClassName ) {			
+			if ( ! isset( $this->_aClasses[ $sCalledUnknownClassName ] ) ) { return; }
+			require( $this->_aClasses[ $sCalledUnknownClassName ] );
+		}		
+		public function _replyToAutoLoad_require_once( $sCalledUnknownClassName ) {			
+			if ( ! isset( $this->_aClasses[ $sCalledUnknownClassName ] ) ) { return; }
+			require_once( $this->_aClasses[ $sCalledUnknownClassName ] );
+		}				
 }

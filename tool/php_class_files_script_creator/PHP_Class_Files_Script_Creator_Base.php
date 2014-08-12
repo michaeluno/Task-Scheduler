@@ -2,13 +2,15 @@
 /**
  * Provides basic methods for PHP Class Files Script Creator.
  * 
- * @author				Michael Uno <michael@michaeluno.jp>
- * @copyright			2013-2014 (c) Michael Uno
- * @license				MIT	<http://opensource.org/licenses/MIT>
+ * @author		Michael Uno <michael@michaeluno.jp>
+ * @copyright	2013-2014 (c) Michael Uno
+ * @license		MIT	<http://opensource.org/licenses/MIT>
  */
  
 /**
  * The base class of script creator.
+ * 
+ * @version		1.0.1
  */
 abstract class PHP_Class_Files_Script_Creator_Base {
 
@@ -175,7 +177,7 @@ abstract class PHP_Class_Files_Script_Creator_Base {
 		 * Retrieves PHP code from the given path.
 		 */
 		protected function getPHPCode( $sFilePath ) {
-			$_sCode = php_strip_whitespace ( $sFilePath );
+			$_sCode = php_strip_whitespace( $sFilePath );
 			$_sCode = preg_replace( '/^<\?php/', '', $_sCode );
 			$_sCode = preg_replace( '/\?>\s+?$/', '', $_sCode );
 			return $_sCode;
@@ -203,6 +205,14 @@ abstract class PHP_Class_Files_Script_Creator_Base {
 	 */
 	protected function _getHeaderComment( $aFiles, $aOptions )	 {
 
+		if ( $aOptions['header_class_path'] && $aOptions['header_class_name'] ) {
+			return $this->__getHeaderComment( 
+				$aOptions['header_class_path'],
+				$aOptions['header_class_name'],
+				$aOptions['header_type']
+			);				
+		}
+		
 		if ( $aOptions['header_class_name'] ) {
 			return $this->__getHeaderComment( 
 				isset( $aFiles[ $aOptions['header_class_name'] ] ) ? $aFiles[ $aOptions['header_class_name'] ][ 'path' ] : $aOptions['header_class_path'],

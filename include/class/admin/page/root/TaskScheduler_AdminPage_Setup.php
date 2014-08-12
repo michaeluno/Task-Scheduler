@@ -16,50 +16,30 @@ abstract class TaskScheduler_AdminPage_Setup extends TaskScheduler_AdminPage_For
 	 */
 	public function setUp() {
 		
-		// 1. Define the pages
-		$this->_definePages();
-		
-		// 2. Define the styling
-		$this->_defineStyles();
-							
+		$this->setRootMenuPage( 
+			__( 'Task Scheduler', 'task-scheduler' ),
+			TaskScheduler_Registry::getPluginURL( '/asset/image/menu_icon_16x16.png' )
+		);
+		$this->addSubMenuItems(
+			array(
+				'title'			=>	__( 'Tasks', 'task-scheduler' ),	// page and menu title
+				'page_slug'		=>	TaskScheduler_Registry::AdminPage_TaskList	// page slug				
+			),
+			array()
+		);
+									
 	}
 	
-		/**
-		 * Defines the admin pages of the plugin.
-		 * 
-		 * @since	1.0.0
-		 */	 
-		private function _definePages() {
-			
-			$this->setRootMenuPage( 
-				__( 'Task Scheduler', 'task-scheduler' ),
-				TaskScheduler_Registry::getPluginURL( '/asset/image/menu_icon_16x16.png' )
-			);
-			$this->addSubMenuItems(
-				array(
-					'title'			=>	__( 'Tasks', 'task-scheduler' ),	// page and menu title
-					'page_slug'		=>	TaskScheduler_Registry::AdminPage_TaskList	// page slug				
-				),
-				array()
-			);
-							
-		}
-
-		/**
-		 * Defines the styling of the admin pages.
-		 * 
-		 * @since	1.0.0
-		 */
-		private function _defineStyles() {
-						
-			$this->setPageHeadingTabsVisibility( false );		// disables the page heading tabs by passing false.
-			// $this->setInPageTabsVisibility( true );		// disables the page heading tabs by passing false.
-			$this->setPageTitleVisibility( true );
-			// $this->setInPageTabTag( 'h2' );				
-			$this->enqueueStyle( TaskScheduler_Registry::getPluginURL( '/asset/css/ts_task_list.css' ) );
-			$this->setDisallowedQueryKeys( array( 'settings-notice', 'task_scheduler_nonce', 'action', 'transient_key', 'task_scheduler_task' ) );
-			$this->setPluginSettingsLinkLabel( '' );	// pass an empty string.		
-			
-		}
+	public function load_TaskScheduler_AdminPage() {	// load_{instantiated class name}
+		
+		$this->setPageHeadingTabsVisibility( false );		// disables the page heading tabs by passing false.
+		// $this->setInPageTabsVisibility( true );		// disables the page heading tabs by passing false.
+		$this->setPageTitleVisibility( true );
+		// $this->setInPageTabTag( 'h2' );				
+		$this->enqueueStyle( TaskScheduler_Registry::getPluginURL( '/asset/css/ts_task_list.css' ) );
+		$this->setDisallowedQueryKeys( array( 'settings-notice', 'task_scheduler_nonce', 'action', 'transient_key', 'task_scheduler_task' ) );
+		$this->setPluginSettingsLinkLabel( '' );	// pass an empty string.		
+	
+	}	
 
 }

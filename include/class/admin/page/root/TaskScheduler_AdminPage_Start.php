@@ -15,16 +15,18 @@ abstract class TaskScheduler_AdminPage_Start extends TaskScheduler_AdminPageFram
 	public function start() {
 		
 		// Adds a plugin settings link.
-		if ( in_array( $this->oProp->sPageNow, array( 'plugins.php' ) ) && 'plugin' == $this->oProp->aScriptInfo['sType'] ) {
+		if ( in_array( $this->oProp->sPageNow, array( 'plugins.php' ) ) ) {
 			add_filter( 
-				'plugin_action_links_' . plugin_basename( $this->oProp->aScriptInfo['sPath'] ),
+				'plugin_action_links_' . plugin_basename( TaskScheduler_Registry::$sFilePath ),
 				array( $this, '_replyToInsertLink' ),
 				100	// lower priority make it insert left hand side
 			);				
 		}		
 				
 		// Correct the redirecting url when the post(task/thread) is updated in post.php.
-		add_filter( 'redirect_post_location', array( $this, '_replyToModifyRedirectURLAfterUpdatingTask' ), 10, 2 );
+		if ( in_array( $this->oProp->sPageNow, array( 'post.php' ) ) ) {
+			add_filter( 'redirect_post_location', array( $this, '_replyToModifyRedirectURLAfterUpdatingTask' ), 10, 2 );
+		}
 	
 	}
 	
@@ -47,20 +49,20 @@ abstract class TaskScheduler_AdminPage_Start extends TaskScheduler_AdminPageFram
 			
 		}
 	
-	/**
-	 * Modifies the redirect url applied when the task/thread is updated.
-	 */
-	public function _replyToModifyRedirectURLAfterUpdatingTask( $sURL, $iPostID ) {
+		/**
+		 * Modifies the redirect url applied when the task/thread is updated.
+		 */
+		public function _replyToModifyRedirectURLAfterUpdatingTask( $sURL, $iPostID ) {
 
-		$_sPostType = get_post_type( $iPostID );
-		if ( in_array( $_sPostType, array( TaskScheduler_Registry::PostType_Task, TaskScheduler_Registry::PostType_Thread ) ) ) {
-			
-			$_oRoutine = TaskScheduler_Routine::getInstance( $iPostID );
-			$_aQueryArgs = ! $_oRoutine->isEnabled() ? array( 'status' => 'disabled' ) : array();
-			return TaskScheduler_PluginUtility::getTaskListingPageURL( $_aQueryArgs );
-			
+			$_sPostType = get_post_type( $iPostID );
+			if ( in_array( $_sPostType, array( TaskScheduler_Registry::PostType_Task, TaskScheduler_Registry::PostType_Thread ) ) ) {
+				
+				$_oRoutine		= TaskScheduler_Routine::getInstance( $iPostID );
+				$_aQueryArgs	= ! $_oRoutine->isEnabled() ? array( 'status' => 'disabled' ) : array();
+				return TaskScheduler_PluginUtility::getTaskListingPageURL( $_aQueryArgs );
+				
+			}
+			return $sURL;
 		}
-		return $sURL;
-	}
-	
+		
 }

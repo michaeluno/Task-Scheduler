@@ -69,12 +69,28 @@ final class TaskScheduler_Bootstrap {
 			return;
 		}
 		
+		// Include the autoloader and the library
+		include( $_sPluginDir . '/include/class/boot/TaskScheduler_AutoLoad.php' );
+		include( $_sPluginDir . '/include/library/admin-page-framework/task-scheduler-admin-page-framework.min.php' );
+		
+		// Include the include lists.
+		$_aClassFiles		= array();
+		$_aAdminClassFiles	= array();
+		include( $_sPluginDir . '/include/task-scheduler-include-class-file-list.php' );
+		if ( $this->_bIsAdmin ) {
+			include( $_sPluginDir . '/include/task-scheduler-include-class-file-list-admin.php' );
+		}
+		
+		// Register them
+		new TaskScheduler_AutoLoad( array(), array(), $_aClassFiles + $_aAdminClassFiles );	
+		
+		
 		// These lines should only be read if the inclusion script or the minified class file is disabled manually.
-		$this->_includeLibraries();							
-		include( $_sPluginDir . '/include/class/boot/TaskScheduler_AutoLoad.php' );	
+		// $this->_includeLibraries();							
+		// include( $_sPluginDir . '/include/class/boot/TaskScheduler_AutoLoad.php' );	
 		
 		// Register the classes.
-		new TaskScheduler_AutoLoad( $_sPluginDir . '/include/class' );	
+		// new TaskScheduler_AutoLoad( $_sPluginDir . '/include/class' );	
 				
 	}
 		/**
