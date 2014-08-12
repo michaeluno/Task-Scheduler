@@ -11,8 +11,9 @@
 
 abstract class TaskScheduler_AdminPage_Setting_Start extends TaskScheduler_AdminPageFramework {
 // abstract class TaskScheduler_AdminPage_Setting_Start extends AdminPageFramework {
-		
+	
 	public function setUp() {}
+	protected function _defineInPageTabs() {}
 	protected function _defineForm() {}
 	
 	/**

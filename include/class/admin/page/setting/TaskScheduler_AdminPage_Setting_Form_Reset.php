@@ -11,7 +11,7 @@
 
 abstract class TaskScheduler_AdminPage_Setting_Form_Reset extends TaskScheduler_AdminPage_Setting_Start {
 
-	public function setUp() {
+	public function _defineInPageTabs() {
 		
 		$this->addInPageTabs(
 			TaskScheduler_Registry::AdminPage_Setting,	// the target page slug 
@@ -20,7 +20,7 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Reset extends TaskScheduler_
 				'title'		=>	__( 'Reset', 'task-scheduler' ),
 			)
 		);
-		parent::setUp();
+		parent::_defineInPageTabs();
 		
 	}
 	

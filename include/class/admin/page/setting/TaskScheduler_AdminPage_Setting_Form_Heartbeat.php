@@ -11,7 +11,7 @@
 
 abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskScheduler_AdminPage_Setting_Form_Task {
 
-	public function setUp() {
+	public function _defineInPageTabs() {
 		
 		$this->addInPageTabs(
 			TaskScheduler_Registry::AdminPage_Setting,	// the target page slug 
@@ -20,7 +20,7 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskSchedu
 				'title'		=>	__( 'Server Heartbeat', 'task-scheduler' ),
 			)
 		);		
-		parent::setUp();
+		parent::_defineInPageTabs();
 		
 	}
 

@@ -9,9 +9,9 @@
  * @since		1.0.0
  */
 
-abstract class TaskScheduler_AdminPage_Setting_Form_Task extends TaskScheduler_AdminPage_Setting_Form_Email {
+abstract class TaskScheduler_AdminPage_Setting_Form_Task extends TaskScheduler_AdminPage_Setting_Form_Reset {
 
-	public function setUp() {
+	public function _defineInPageTabs() {
 		
 		$this->addInPageTabs(
 			TaskScheduler_Registry::AdminPage_Setting,	// the target page slug 
@@ -20,7 +20,7 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Task extends TaskScheduler_A
 				'title'		=>	__( 'Task', 'task-scheduler' ),
 			)
 		);	
-		parent::setUp();
+		parent::_defineInPageTabs();
 		
 	}
 
