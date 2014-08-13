@@ -30,6 +30,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Start extends TaskScheduler_AdminP
 			if ( $this->oUtil->getCurrentPostType() != TaskScheduler_Registry::PostType_Task ) { return; }
 			
 			TaskScheduler_PluginUtility::goToAddNewPage();		
+			exit();
 			
 		}
 					

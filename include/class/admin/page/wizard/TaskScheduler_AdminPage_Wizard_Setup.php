@@ -26,8 +26,31 @@ abstract class TaskScheduler_AdminPage_Wizard_Setup extends TaskScheduler_AdminP
 				'page_slug'		=>	TaskScheduler_Registry::AdminPage_AddNew,	// page slug
 				// 'show_in_menu'	=>	false,		// do not add in the sub menu
 			)
-		);		
+		);			
+				
+		add_action( "load_" . $this->oProp->sClassName, array( $this, '_replyToLoadClassPage' ) );
+		add_action( "load_" . TaskScheduler_Registry::AdminPage_AddNew, array( $this, '_replyToLoadPage' ) );
+						
+	}
+	
+	/**
+	 * Called when one of the registered pages by the class gets loaded.
+	 */
+	public function _replyToLoadClassPage( $oAdminPage ) {
 		
+		$this->setPageHeadingTabsVisibility( false );		// disables the page heading tabs by passing false.
+		$this->setInPageTabsVisibility( false );		// disables the page heading tabs by passing false.
+		// $this->setPageTitleVisibility( false );
+		$this->setInPageTabTag( 'h2' );				
+		$this->enqueueStyle( TaskScheduler_Registry::getPluginURL( '/asset/css/admin_wizard.css' ) );
+		$this->setDisallowedQueryKeys( 'settings-notice' );
+		$this->setDisallowedQueryKeys( 'transient_key' );
+		$this->setPluginSettingsLinkLabel( '' );	// pass an empty string.		
+		
+	}
+	
+	public function _replyToLoadPage( $oAdminPage ) {
+
 		$this->addInPageTabs(
 			TaskScheduler_Registry::AdminPage_AddNew,	// the target page slug
 			array(	// the wizard starting page.
@@ -46,17 +69,9 @@ abstract class TaskScheduler_AdminPage_Wizard_Setup extends TaskScheduler_AdminP
 				'title'				=>	__( 'Create Task', 'task-scheduler' ),
 				'show_in_page_tab'	=>	false,
 			)
-		);				
-		
-		$this->_defineStyles();	
-		$this->_sTransientKey = isset( $_GET['transient_key'] ) && $_GET['transient_key'] ? $_GET['transient_key'] : TaskScheduler_Registry::TransientPrefix . uniqid();
-		
-		add_action( "load_" . TaskScheduler_Registry::AdminPage_AddNew, array( $this, '_replyToDefineForms' ) );
-						
-	}
+		);			
 	
-	public function _replyToDefineForms( $oAdminPage ) {
-
+		$this->_sTransientKey = isset( $_GET['transient_key'] ) && $_GET['transient_key'] ? $_GET['transient_key'] : TaskScheduler_Registry::TransientPrefix . uniqid();
 		$this->_registerCustomFieldTypes();
 		$this->_setWizard( $this->_sTransientKey );
 		$this->_setWizard_SelectAction( $this->_sTransientKey );
@@ -81,23 +96,4 @@ abstract class TaskScheduler_AdminPage_Wizard_Setup extends TaskScheduler_AdminP
 		
 		}	
 	
-	/**
-	 * Defines the styling of the admin pages.
-	 * 
-	 * @since	1.0.0
-	 */
-	protected function _defineStyles() {
-					
-		$this->setPageHeadingTabsVisibility( false );		// disables the page heading tabs by passing false.
-		$this->setInPageTabsVisibility( false );		// disables the page heading tabs by passing false.
-		// $this->setPageTitleVisibility( false );
-		$this->setInPageTabTag( 'h2' );				
-		$this->enqueueStyle( TaskScheduler_Registry::getPluginURL( '/asset/css/admin_wizard.css' ) );
-		$this->setDisallowedQueryKeys( 'settings-notice' );
-		$this->setDisallowedQueryKeys( 'transient_key' );
-		$this->setPluginSettingsLinkLabel( '' );	// pass an empty string.		
-		
-	}	
-	
-
 }

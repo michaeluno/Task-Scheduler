@@ -11,7 +11,7 @@
 
 abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskScheduler_AdminPage_EditModule_Tab_UpdateModule {
 
-	public function setUp() {
+	protected function _defineInPageTabs() {
 					
 		$this->addInPageTabs(
 			TaskScheduler_Registry::AdminPage_EditModule,	// the target page slug					
@@ -22,7 +22,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
 			)	
 		);
 				
-		parent::setUp();
+		parent::_defineInPageTabs();
 		
 	}
 	

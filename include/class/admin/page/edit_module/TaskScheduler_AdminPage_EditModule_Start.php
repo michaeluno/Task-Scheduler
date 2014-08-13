@@ -11,16 +11,12 @@
 
 abstract class TaskScheduler_AdminPage_EditModule_Start extends TaskScheduler_AdminPage_Wizard {
 	
-	public function start() {
-					
-		// $this->_registerCustomFieldTypes();
-			
-	}
+	public function start() {}
 						
 	/**
 	 * Will be defined in the extended class.
 	 */
 	public function setUp() {}
+	protected function _defineInPageTabs() {}
 	protected function _defineForm() {}
-	
 }

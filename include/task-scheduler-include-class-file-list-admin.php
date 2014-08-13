@@ -23,7 +23,6 @@ $_aAdminClassFiles = array(
 	"TaskScheduler_AdminPage_Setup"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/root/TaskScheduler_AdminPage_Setup.php", 
 	"TaskScheduler_AdminPage_Start"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/root/TaskScheduler_AdminPage_Start.php", 
 	"TaskScheduler_AdminPage_Setting"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/setting/TaskScheduler_AdminPage_Setting.php", 
-	"TaskScheduler_AdminPage_Setting_Form_Email"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Email.php", 
 	"TaskScheduler_AdminPage_Setting_Form_Heartbeat"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php", 
 	"TaskScheduler_AdminPage_Setting_Form_Reset"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Reset.php", 
 	"TaskScheduler_AdminPage_Setting_Form_Task"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Task.php", 

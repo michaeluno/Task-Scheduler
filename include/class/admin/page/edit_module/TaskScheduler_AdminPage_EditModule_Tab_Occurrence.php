@@ -11,7 +11,7 @@
 
 abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskScheduler_AdminPage_EditModule_Tab_Action {
 
-	public function setUp() {
+	protected function _defineInPageTabs() {
 					
 		$this->addInPageTabs(
 			TaskScheduler_Registry::AdminPage_EditModule,	// the target page slug					
@@ -22,8 +22,8 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
 				'show_in_page_tab'	=>	false,
 			)
 		);
-				
-		parent::setUp();
+		
+		parent::_defineInPageTabs();
 		
 	}
 	

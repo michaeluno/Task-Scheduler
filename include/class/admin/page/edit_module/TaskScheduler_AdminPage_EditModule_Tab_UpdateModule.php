@@ -16,7 +16,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModule extends TaskS
 	 * 
 	 * @since	1.0.0
 	 */	 	
-	public function setUp() {
+	protected function _defineInPageTabs() {
 				
 		$this->addInPageTabs(
 			TaskScheduler_Registry::AdminPage_EditModule,	// the target page slug		
@@ -27,9 +27,9 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModule extends TaskS
 			)
 		);				
 		
-		parent::setUp();
+		parent::_defineInPageTabs();
 		
-		add_action( "load_" . TaskScheduler_Registry::AdminPage_EditModule . "_update_module", array( $this, '_replyToLoadTab' ) );
+		add_action( "load_" . TaskScheduler_Registry::AdminPage_EditModule . "_update_module", array( $this, '_replyToLoadUpdateModuleTab' ) );
 		
 	}
 		
@@ -38,7 +38,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModule extends TaskS
 	 * 
 	 * @since			1.0.0
 	 */
-	public function _replyToLoadTab( $oAdminPage ) {
+	public function _replyToLoadUpdateModuleTab( $oAdminPage ) {
 
 		$_aWizardOptions = $this->_getWizardOptions();
 		$this->_deleteWizardOptions();
