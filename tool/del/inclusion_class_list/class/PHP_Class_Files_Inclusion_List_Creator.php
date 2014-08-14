@@ -6,10 +6,7 @@
  * @copyright	2013-2014 (c) Michael Uno
  * @license		MIT	<http://opensource.org/licenses/MIT>
  */
-if ( ! class_exists( 'PHP_Class_Files_Script_Generator_Base' ) ) {
-	require( dirname( dirname( dirname( __FILE__ ) ) ) . '/php_class_files_script_generator/PHP_Class_Files_Script_Generator_Base.php' );	
-}
-
+ 
 /**
  * Creates a PHP file that defines an array holding file path with the class key.
  * 
@@ -18,7 +15,7 @@ if ( ! class_exists( 'PHP_Class_Files_Script_Generator_Base' ) ) {
  * @remark		The parsed class file must have a name of the class defined in the file.
  * @version		1.0.1
  */
-class PHP_Class_Files_Inclusion_Script_Creator extends PHP_Class_Files_Script_Generator_Base {
+class PHP_Class_Files_Inclusion_Script_Creator extends PHP_Class_Files_Script_Creator_Base {
 	
 	static protected $_aStructure_Options = array(
 	
