@@ -63,15 +63,15 @@ e.g.
 = Is it possible to send an email when a particular task completes? =
 Yes. Create a task with the `Exit Code` occurrence type and the `Send Email` action. The `Exit Code` occurrence type lets you choose which task and what exit code should trigger an email to be sent.
 
-= How can I know an action returns what exit code? =
-The most built-in actions return `1` when they succeed and `0` on frailer. You can check what exit code will be returned by enabling the log. 
+= How can I know what exit code is return from an action? =
+The most built-in actions return `1` when they succeed and `0` on failure. You can check what exit code will be returned by enabling the log. 
 
 To enable the log, go to **Dashboard** -> **Task Scheduler** -> **Manage Tasks** and click on the **Edit** link of the task. Set a number in the **Max Count of Log Entries** option. `50` would be sufficient to check exit codes.
 
 After the task runs, click on the **View** link of the task listing table of the task. The log page will open and it should tell what exit code the action returns.
 
 = How can I create a module? =
-The tutorials are in preparation. It requires a basic PHP skill and an understanding of object oriented programming. 
+The tutorials are in preparation. It requires a basic PHP coding skill and an understanding of object oriented programming. 
 
 There are mainly two types of modules you can make, `action` and `occurrence`. Most of the time, you will want action modules.
 
@@ -91,10 +91,10 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 
 == Changelog ==
 
-= 1.0.0b09 - 2014/08/09 =
+= 1.0.0b09 - 2014/08/13 =
 - Changed the method of including PHP files to keep maintainability.
-- Tweaked the performance of plugin admin pages.
-- Fixed a bug that a page created for debugging was remaining.
+- Tweaked the performance of the plugin admin pages.
+- Fixed a bug that a test page created for debugging was remaining.
 - Fixed a bug that module options were not displayed in the task editing page.
 
 = 1.0.0b08 - 2014/08/09 =
