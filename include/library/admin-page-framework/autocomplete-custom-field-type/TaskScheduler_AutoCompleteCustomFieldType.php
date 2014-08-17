@@ -40,28 +40,38 @@ class TaskScheduler_AutoCompleteCustomFieldType extends TaskScheduler_AdminPageF
 		),	
 	);
 
-	public function __construct( $asClassName, $asFieldTypeSlug=null, $oMsg=null, $bAutoRegister=true ) {
-		
+	/**
+	 * User constructor.
+	 * 
+	 * Loaded at the end of the constructor.
+	 */
+	public function construct() {
+TaskScheduler_Debug::log( 'called' );
 		$_aGet = $_GET;
 		unset( $_aGet['post_type'], $_aGet['request'], $_aGet['page'], $_aGet['tab'], $_aGet['settings-updated'] );
-		// $this->aDefaultKeys['settings'] = add_query_arg( array( 'request' => 'autocomplete' ) + $_aGet, admin_url( $this->getPageNow() ) );
-		$this->aDefaultKeys['settings'] = $this->getQueryAdminURL( array( 'request' => 'autocomplete' ) + $_aGet );
-		$this->aDefaultKeys['settings2'] = array(
+		$this->aDefaultKeys['settings']		= $this->getQueryAdminURL( array( 'request' => 'autocomplete' ) + $_aGet );
+		$this->aDefaultKeys['settings2']	= array(
 			'hintText'	=>	__( 'Type the title of posts.', 'admin-page-framework-demo' ),
 		);
-		parent::__construct( $asClassName, $asFieldTypeSlug, $oMsg, $bAutoRegister );
 
 		/*
 		 * If the request key is set in the url and it yields 'autocomplete', return a JSON output and exit.
 		 */		
 		if ( isset( $_GET['request'] ) && 'autocomplete' == $_GET['request'] ) {
-			add_action( 'init', array( $this, '_replyToReturnAutoCompleteRequest' ) );
+			if ( did_action( 'init' ) ) {
+				$this->_replyToReturnAutoCompleteRequest();
+			} else {			
+				add_action( 'init', array( $this, '_replyToReturnAutoCompleteRequest' ) );
+			}
 		}
 
 	}
 	
+	/**
+	 * Responds to the request.
+	 */
 	public function _replyToReturnAutoCompleteRequest() {
-	
+TaskScheduler_Debug::log( 'requested' );
 		if ( ! $this->_isLoggedIn() ) exit;
 			
 		$_aGet = $_GET;
@@ -69,18 +79,23 @@ class TaskScheduler_AutoCompleteCustomFieldType extends TaskScheduler_AdminPageF
 					
 		// Retrieve posts
 		$_aArgs = $_aGet + array(
-			'post_type'			=> 'post',
-			'post_status'		=> 'publish',
+			'post_type'			=> 'post',		
+			'post_status'		=> 'publish, private',
 			'orderby'			=> 'title', 
 			'order'				=> 'ASC',
 			'posts_per_page'	=> -1,	
 		);
+		if ( isset( $_aArgs['post_types'] ) ) {
+			$_aArgs['post_type'] = preg_split( "/[,]\s*/", trim( ( string ) $_aArgs['post_types'] ), 0, PREG_SPLIT_NO_EMPTY );
+		}	
+		$_aArgs['post_status']	= preg_split( "/[,]\s*/", trim( ( string ) $_aArgs['post_status'] ), 0, PREG_SPLIT_NO_EMPTY );
+
 		if ( isset( $_GET['q'] ) ) {
 			add_filter( 'posts_where', array( $this, '_replyToModifyMySQLWhereClause' ), 10, 2 );
 			$_aArgs['q'] = $_GET['q'] ;
 		}
 		$_oResults = new WP_Query( $_aArgs );					
-
+		
 		// Format the data
 		$_aData = array();
 		foreach( $_oResults->posts as $__iIndex => $__oPost ) {
@@ -90,7 +105,7 @@ class TaskScheduler_AutoCompleteCustomFieldType extends TaskScheduler_AdminPageF
 			);
 		}
 		
-		exit( json_encode( $_aData ) );
+		die( json_encode( $_aData ) );
 	
 		
 	}
@@ -98,7 +113,7 @@ class TaskScheduler_AutoCompleteCustomFieldType extends TaskScheduler_AdminPageF
 			
 			if ( ! is_multisite() ) {				
 				if ( ! function_exists( 'is_user_logged_in' ) ) {
-					include_once( ABSPATH . "wp-includes/pluggable.php" ); 			
+					include( ABSPATH . "wp-includes/pluggable.php" ); 			
 				}	
 				return is_user_logged_in();
 			}
@@ -279,7 +294,7 @@ class TaskScheduler_AutoCompleteCustomFieldType extends TaskScheduler_AdminPageF
 				. "<label for='{$aField['input_id']}'>"
 					. $aField['before_input']
 					. ( $aField['label'] && ! $aField['repeatable']
-						? "<span class='admin-page-framework-input-label-string' style='min-width:" .  $aField['label_min_width'] . "px;'>" . $aField['label'] . "</span>"
+						? "<span class='admin-page-framework-input-label-string' style='min-width:" . $this->sanitizeLength( $aField['label_min_width'] ) . ";'>" . $aField['label'] . "</span>"
 						: "" 
 					)
 					. "<input " . $this->generateAttributes( $aInputAttributes ) . " />"	// this method is defined in the base class

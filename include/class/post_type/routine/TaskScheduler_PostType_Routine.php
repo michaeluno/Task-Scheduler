@@ -1,6 +1,6 @@
 <?php
 /**
- * THe class that creates a custom post type for task logs.
+ * The class that creates a custom post type for routines.
  *
  * @package      Task Scheduler
  * @copyright    Copyright (c) 2014, <Michael Uno>
@@ -8,15 +8,15 @@
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
 */
-final class TaskScheduler_PostType_Thread extends TaskScheduler_AdminPageFramework_PostType {
-
-    public function start() {
+final class TaskScheduler_PostType_Routine extends TaskScheduler_AdminPageFramework_PostType {
     
+    public function start() {
+
         $this->setPostTypeArgs(
-            array(    // post type argument - for the array structure, refer to http://codex.wordpress.org/Function_Reference/register_post_type#Arguments
-                'labels'               =>    array(
-                    'name'                                 =>    __( 'Threads', 'task-scheduler' ),
-                    'plugin_listing_table_title_cell_link' =>    '',    // framework specific key. [3.0.6+] - passing an empty will disable the automatic link insertion to the plugin listing table.
+            array(            // post type argument - for the array structure, refer to http://codex.wordpress.org/Function_Reference/register_post_type#Arguments
+                'labels'                => array(
+                    'name'                                 => __( 'Routines', 'task-scheduler' ),
+                    'plugin_listing_table_title_cell_link' => '',    // framework specific key. [3.0.6+] - passing an empty will disable the automatic link insertion to the plugin listing table.
                 ),
                 'public'                => true,
                 'show_ui'               => false,                
@@ -29,10 +29,10 @@ final class TaskScheduler_PostType_Thread extends TaskScheduler_AdminPageFramewo
                 'has_archive'           => false,
                 'hierarchical'          => true,
                 'show_admin_column'     => true,
-                'screen_icon'           => is_admin() ? TaskScheduler_Registry::getPluginURL( "/asset/image/screen_icon_32x32.png" ) : '',
-                'exclude_from_search'   => true,        
+                'exclude_from_search'   => true,    
             )        
-        );    
-    }
+        );
+                
+    }    
     
 }

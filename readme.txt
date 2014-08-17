@@ -4,7 +4,7 @@ Donate link: http://en.michaeluno.jp/donate
 Tags: access, tool, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation
 Requires at least: 3.7
 Tested up to: 3.9.1
-Stable tag: 1.0.0b07
+Stable tag: 1.0.0b09
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Provides a task management system.
@@ -90,6 +90,13 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 
 
 == Changelog ==
+
+= 1.0.0b10 - 2014/08/18 =
+- Deprecated the Hung Routine Handler action module.
+- Refined the entire routine system to create each routine instance when a task starts.
+- Changed the default routine status of tasks to be `Ready` from `Inactive`.
+- Fixed a bug that the wizard form field of the Exit Code occurrence type did not function as of the previous version.
+- Fixed a bug that when updating module options, the last run time meta value got lost.
 
 = 1.0.0b09 - 2014/08/13 =
 - Changed the method of including PHP files to keep maintainability.
