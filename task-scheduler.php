@@ -82,6 +82,6 @@ final class TaskScheduler_Registry extends TaskScheduler_Registry_Base {
 if ( ! defined( 'ABSPATH' ) ) { return; }
 TaskScheduler_Registry::setUp( __FILE__ );
 
-/* 4. Perform the bootstrap. */
+/* 3. Perform the bootstrap. */
 include( dirname( __FILE__ ) . '/include/class/boot/TaskScheduler_Bootstrap.php' );    
 new TaskScheduler_Bootstrap( __FILE__ );
