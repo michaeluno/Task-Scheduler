@@ -91,6 +91,9 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 
 == Changelog ==
 
+= 1.0.0b11 =
+- Added the ability for the `autocomplete` admin page framework custom field to search users that can be used by modules.
+
 = 1.0.0b10 - 2014/08/18 =
 - Deprecated the Hung Routine Handler action module.
 - Refined the entire routine system to create each routine instance when a task starts.
