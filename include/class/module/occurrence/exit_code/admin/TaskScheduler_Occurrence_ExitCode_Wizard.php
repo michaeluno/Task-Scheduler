@@ -44,7 +44,7 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
                     // 'tokenLimit'        =>    1,
                     'preventDuplicates' => true,
                     'hintText'          => __( 'Type a task name.', 'task-scheduler' ),
-                    // 'theme'          => 'facebook',    
+                    'theme'             => 'admin_page_framework',    
                     'searchDelay'       => 5,    // 50 milliseconds. Default: 300
                 ),                
             ),                        
