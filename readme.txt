@@ -3,8 +3,8 @@ Contributors: Michael Uno, miunosoft
 Donate link: http://en.michaeluno.jp/donate
 Tags: access, tool, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation
 Requires at least: 3.7
-Tested up to: 3.9.1
-Stable tag: 1.0.0b09
+Tested up to: 3.9.2
+Stable tag: 1.0.0b10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Provides a task management system.
