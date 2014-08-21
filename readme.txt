@@ -21,7 +21,7 @@ The goal of this plugin is to resolve such issues and become the perfect solutio
 
 <h4>What it does</h4>
 - creates periodic background access to the site (optional). 
-- triggers tasks registered by the site owner at desired time.
+- triggers tasks registered by the site owner at desired time or interval.
 
 <h4>Built-in Actions</h4>
 - <strong>Delete Posts</strong> - Performs bulk deletion of posts based on the post type, post statuses, taxonomy, and taxonomy terms.
