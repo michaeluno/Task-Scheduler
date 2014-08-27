@@ -92,7 +92,7 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 == Changelog ==
 
 = 1.0.0b12 =
-- Fixed an issue that v1.0.0b11 missed some files.
+- Fixed a bug that v1.0.0b11 had some missing files due to the character case.
 
 = 1.0.0b11 - 2014/08/22 =
 - Added the ability for the `autocomplete` admin page framework custom field to search users that can be used by modules.
