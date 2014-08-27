@@ -1,7 +1,7 @@
 === Task Scheduler (beta) ===
 Contributors: Michael Uno, miunosoft
 Donate link: http://en.michaeluno.jp/donate
-Tags: access, tool, utility, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation
+Tags: access, tool, utility, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation, routine, routines
 Requires at least: 3.7
 Tested up to: 3.9.2
 Stable tag: 1.0.0b10
@@ -11,21 +11,20 @@ Provides a task management system.
 
 == Description ==
 
-Do you have specific tasks which need to run at your desired time? Do you use WordPress as a proxy to fetch feed or generate data from external sources?
+Do you have specific tasks which need to run at your desired time? Do you use WordPress as a proxy to fetch feed or generate data from external sources? As WordPress has evolved into a phase of application platforms, a more enhanced task management system needed to emerge.
 
-As WordPress has evolved into a phase of application platforms, a more enhanced task management system needed to emerge.
-
-Currently, with WP Cron, if you register 1000 tasks to run immediately and one of them stalls, it affects all the other actions preventing them from being loaded at the scheduled time. Also, the scheduled tasks won't be triggered if there is no visitor on the site.
-
-The goal of this plugin is to resolve such issues and become the perfect solution for WordPress powered back-end application servers to provide full-brown API functionalities.
+Currently, with WP Cron, if you register, for example, 1000 tasks to run immediately and one of them stalls, it affects all the other actions preventing them from being loaded at the scheduled time. Also, the scheduled tasks won't be triggered if there is no visitor on the site. The goal of this plugin is to resolve such issues and become the perfect solution for WordPress powered back-end application servers to provide full-brown API functionalities.
 
 <h4>What it does</h4>
-- creates periodic background access to the site (optional). 
+- (optional) creates periodic background access to the site. 
 - triggers tasks registered by the site owner at desired time or interval.
 
 <h4>Built-in Actions</h4>
 - <strong>Delete Posts</strong> - Performs bulk deletion of posts based on the post type, post statuses, taxonomy, and taxonomy terms.
 - <strong>Send Email</strong> - Sends email to specified email addresses.
+
+<h4>Custom Action Modules</h4>
+- <strong>[Auto Post](https://wordpress.org/plugins/auto-post/)</strong> - creates posts automatically.
 
 <h4>Extensible</h4>
 This is designed to be fully extensible and developers can add custom modules including actions and occurrence types.
@@ -63,7 +62,7 @@ e.g.
 = Is it possible to send an email when a particular task completes? =
 Yes. Create a task with the `Exit Code` occurrence type and the `Send Email` action. The `Exit Code` occurrence type lets you choose which task and what exit code should trigger an email to be sent.
 
-= How can I know what exit code is return from an action? =
+= How can I know what exit code is returned from an action? =
 The most built-in actions return `1` when they succeed and `0` on failure. You can check what exit code will be returned by enabling the log. 
 
 To enable the log, go to **Dashboard** -> **Task Scheduler** -> **Manage Tasks** and click on the **Edit** link of the task. Set a number in the **Max Count of Log Entries** option. `50` would be sufficient to check exit codes.
@@ -91,8 +90,8 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 
 == Changelog ==
 
-= 1.0.0b12 =
-- Fixed a bug that v1.0.0b11 had some missing files due to the character case.
+= 1.0.0b12 - 2014/08/27 =
+- Fixed a bug that v1.0.0b11 had some missing files due to the incorrect character cases.
 
 = 1.0.0b11 - 2014/08/22 =
 - Added the ability for the `autocomplete` admin page framework custom field to search users that can be used by modules.
