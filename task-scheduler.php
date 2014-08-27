@@ -5,7 +5,7 @@
 	Description:    Provides an enhanced task management system for WordPress.
 	Author:         miunosoft (Michael Uno)
 	Author URI:     http://michaeluno.jp
-	Version:        1.0.0b12
+	Version:        1.0.0b13
 */
 
 /* 1. Define the base registry class. */
@@ -16,7 +16,7 @@
  */
 class TaskScheduler_Registry_Base {
 
-	const Version        = '1.0.0b12';    // <--- DON'T FORGET TO CHANGE THIS AS WELL!!
+	const Version        = '1.0.0b13';    // <--- DON'T FORGET TO CHANGE THIS AS WELL!!
 	const Name           = 'Task Scheduler';
 	const Description    = 'Provides an enhanced task management system for WordPress.';
 	const URI            = 'http://en.michaeluno.jp/';

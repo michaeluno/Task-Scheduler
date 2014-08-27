@@ -37,7 +37,7 @@ abstract class TaskScheduler_ListTable_Views extends TaskScheduler_ListTable_Col
         $_aViews = array();        
         foreach ( $_aBaseKeys as $_sKey => $_sLabel ) {
             
-            $_sSelfURL_StatusQuery = $this->getQueryURL( array( 'status' => $_sKey ) );
+            $_sSelfURL_StatusQuery = esc_url( $this->getQueryURL( array( 'status' => $_sKey ) ) );
             $_sCurrent = ( ! isset( $_GET['status'] ) && 'enabled' == $_sKey ) || ( isset( $_GET['status'] ) && $_sKey == $_GET['status'] ) ? 'current' : '';
             $_aViews[ $_sKey ] = "<a href='{$_sSelfURL_StatusQuery}' class='{$_sCurrent}'>"
                     . $_sLabel

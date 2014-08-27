@@ -41,6 +41,7 @@ class TaskScheduler_ListTable extends TaskScheduler_ListTable_Views {
         'task_scheduler_task',
         'orderby',
         'order',
+        'paged',
     );
     
     /**
