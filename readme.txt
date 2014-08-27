@@ -1,7 +1,7 @@
 === Task Scheduler (beta) ===
 Contributors: Michael Uno, miunosoft
 Donate link: http://en.michaeluno.jp/donate
-Tags: access, tool, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation
+Tags: access, tool, utility, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation
 Requires at least: 3.7
 Tested up to: 3.9.2
 Stable tag: 1.0.0b10
@@ -91,7 +91,10 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 
 == Changelog ==
 
-= 1.0.0b11 =
+= 1.0.0b12 =
+- Fixed an issue that v1.0.0b11 missed some files.
+
+= 1.0.0b11 - 2014/08/22 =
 - Added the ability for the `autocomplete` admin page framework custom field to search users that can be used by modules.
 
 = 1.0.0b10 - 2014/08/18 =

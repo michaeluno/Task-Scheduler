@@ -154,7 +154,8 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
                 $_oTask->_force_execution   // allow duplicate
             );
             $_oRoutine = TaskScheduler_Routine::getInstance( $iRoutineID );
-
+            if ( ! is_object( $_oRoutine ) ) { return; }  
+            
         }
         
         // For routine instances,
