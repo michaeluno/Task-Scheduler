@@ -50,7 +50,7 @@ class TaskScheduler_Event_Routine {
         
         // Store the previous task status in a transient. This is used to cancel the routine.
         $_sLoadID = TaskScheduler_Registry::TransientPrefix . md5( $nSpawnedTime );
-        set_transient( $_sLoadID, $_sPreviousTaskStatus, $_iMaxTaskExecutionTime ? $_iMaxTaskExecutionTime : 30 );    // avoid setting 0 for the expiration duration.
+        TaskScheduler_WPUtility::setTransient( $_sLoadID, $_sPreviousTaskStatus, $_iMaxTaskExecutionTime ? $_iMaxTaskExecutionTime : 30 );    // avoid setting 0 for the expiration duration.
         
         $oRoutine->setMeta( '_routine_status',  'awaiting' );    // the 'Force Execution' task option will ignore this status if enabled. Otherwise, it is used to determine scheduled routines.
         $oRoutine->setMeta( '_is_spawned',      true );            // used to determine scheduled routines
@@ -77,12 +77,12 @@ class TaskScheduler_Event_Routine {
         // Check the previous task status.
         $_nSpawnedMicrotime      = $oRoutine->getMeta( '_spawned_time' );
         $_sTransientKey          = TaskScheduler_Registry::TransientPrefix . md5( $_nSpawnedMicrotime );
-        $_sPreviousTaskStatus    = get_transient( $_sTransientKey );
+        $_sPreviousTaskStatus    = TaskScheduler_WPUtility::getTransient( $_sTransientKey );
         if ( $_sPreviousTaskStatus ) {
             $oRoutine->setMeta( '_routine_status', $_sPreviousTaskStatus );
         }
         $oRoutine->deleteMeta( '_is_spawned' );
-        delete_transient( $_sTransientKey );
+        TaskScheduler_WPUtility::deleteTransient( $_sTransientKey );
         
     }
     
@@ -218,7 +218,7 @@ class TaskScheduler_Event_Routine {
         // Clean the previous status transient
         $_nSpawnedMicrotime    = $oRoutine->getMeta( '_spawned_time' );
         $_sTransientKey        = TaskScheduler_Registry::TransientPrefix . md5( $_nSpawnedMicrotime );        
-        delete_transient( $_sTransientKey );
+        TaskScheduler_WPUtility::deleteTransient( $_sTransientKey );
                 
     }
     

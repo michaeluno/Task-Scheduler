@@ -86,7 +86,7 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
     
         // Check the action lock.
         $_sActionLockKey = $this->_sTransientPrefix . $oRoutine->ID;
-        if ( get_transient( $_sActionLockKey ) ) { 
+        if ( TaskScheduler_WPUtility::getTransient( $_sActionLockKey ) ) { 
             // The task is locked.
             do_action( "task_scheduler_action_cancel_routine" , $oRoutine );
             return; 
@@ -94,13 +94,13 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
     
         // Lock the action.
         do_action( "task_scheduler_action_before_doing_routine", $oRoutine );
-        set_transient( $_sActionLockKey, time(), $_iActionLockDuration );
+        TaskScheduler_WPUtility::setTransient( $_sActionLockKey, time(), $_iActionLockDuration );
     
         // Do the action
         do_action( "task_scheduler_action_do_routine" , $oRoutine, $nScheduledTime );
         
         // Unlock the action
-        delete_transient( $_sActionLockKey );
+        TaskScheduler_WPUtility::deleteTransient( $_sActionLockKey );
         do_action( "task_scheduler_action_after_doing_routine", $oRoutine );    // for the Volatile occurrence type
         
     }

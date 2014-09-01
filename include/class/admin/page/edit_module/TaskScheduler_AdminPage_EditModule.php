@@ -49,7 +49,7 @@ final class TaskScheduler_AdminPage_EditModule extends TaskScheduler_AdminPage_E
             }
             
             $_aPostMeta = TaskScheduler_WPUtility::getPostMetas( $_GET['post'] );
-            set_transient( $sTransientKey, $_aPostMeta, 30*60 );    // 30 minutes
+            TaskScheduler_WPUtility::setTransient( $sTransientKey, $_aPostMeta, 30*60 );    // 30 minutes
             return $_aPostMeta;
             
         }

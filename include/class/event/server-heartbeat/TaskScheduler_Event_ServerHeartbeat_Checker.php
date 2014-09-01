@@ -92,8 +92,8 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         $_nNow                          = microtime( true );
 
         // Set a check-action lock 
-        delete_transient( self::$sRecheckActionTransientKey );
-        set_transient( self::$sCheckActionTransientKey, $_nNow, 60 );
+        TaskScheduler_WPUtility::deleteTransient( self::$sRecheckActionTransientKey );
+        TaskScheduler_WPUtility::setTransient( self::$sCheckActionTransientKey, $_nNow, 60 );
         
         // Parse the retrieved routines.
         // If it is a task, update the next scheduled time, create a routine and return.
@@ -113,11 +113,11 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
             
         }
         
-        delete_transient( self::$sCheckActionTransientKey );
+        TaskScheduler_WPUtility::deleteTransient( self::$sCheckActionTransientKey );
         
         // If the transient value is different from the set one right before the loop, it means that another process has requested a check.
         if ( TaskScheduler_WPUtility::getTransientWithoutCache( self::$sRecheckActionTransientKey ) ) {
-            delete_transient( self::$sRecheckActionTransientKey );
+            TaskScheduler_WPUtility::deleteTransient( self::$sRecheckActionTransientKey );
             TaskScheduler_ServerHeartbeat::beat();
         }        
         
@@ -224,8 +224,8 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
      */
     public function _replyToCheckScheduledActions() {
         
-        if ( get_transient( self::$sCheckActionTransientKey ) ) {
-            set_transient( self::$sRecheckActionTransientKey, microtime( true ), 60 );
+        if ( TaskScheduler_WPUtility::getTransient( self::$sCheckActionTransientKey ) ) {
+            TaskScheduler_WPUtility::setTransient( self::$sRecheckActionTransientKey, microtime( true ), 60 );
             return;
         }
         TaskScheduler_ServerHeartbeat::beat();

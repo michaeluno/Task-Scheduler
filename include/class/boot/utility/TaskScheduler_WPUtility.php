@@ -9,32 +9,7 @@
  * @since        1.0.0
  */
 
-class TaskScheduler_WPUtility extends TaskScheduler_WPUtility_Post {
-
-    /**
-     * Retrieve the transient value directly from the database.
-     * 
-     * Similar to the built-in get_transient() method but this one does not use the stored cache in the memory.
-     */
-    static public function getTransientWithoutCache( $sTransientKey ) {
-    
-        if ( wp_using_ext_object_cache() ) {
-            // Skip local cache and force re-fetch of doing_cron transient in case
-            // another processes updated the cache
-            return wp_cache_get( $sTransientKey, 'transient', true );
-        }             
-    
-        global $wpdb;            
-        $_oRow = $wpdb->get_row( 
-            $wpdb->prepare( 
-                "SELECT option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1",
-                '_transient_' . $sTransientKey
-            ) 
-        );
-        return is_object( $_oRow ) ? $_oRow->option_value: false;
-        
-    }
-
+class TaskScheduler_WPUtility extends TaskScheduler_WPUtility_Option {
 
     /**
      * Returns the label of the given taxonomy slug.

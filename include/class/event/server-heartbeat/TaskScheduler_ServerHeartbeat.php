@@ -61,7 +61,7 @@ final class TaskScheduler_ServerHeartbeat {
      * Checks if the server heartbeat is sleeping.
      */
     static public function isSleeping() {
-        return ( false !== get_transient( self::$sTransientKey_Sleep ) );
+        return ( false !== TaskScheduler_WPUtility::getTransient( self::$sTransientKey_Sleep ) );
     }    
     
     /**
@@ -111,7 +111,7 @@ final class TaskScheduler_ServerHeartbeat {
          */
         static private function _getInfo( $sKey='' ) {
             
-            $_aInfo = get_transient( self::$sTransientKey );
+            $_aInfo = TaskScheduler_WPUtility::getTransient( self::$sTransientKey );
             if ( false === $_aInfo ) { return false; }
             
             $_aInfo = is_array( $_aInfo ) ? $_aInfo : array();
@@ -138,7 +138,7 @@ final class TaskScheduler_ServerHeartbeat {
                 $_aInfo['id']                        =    self::getID();
             }
             $_aInfo = $aSettings + array_filter( $_aInfo ); // drop non-true values.
-            set_transient( self::$sTransientKey, $_aInfo );    // made it not vanish by itself
+            TaskScheduler_WPUtility::setTransient( self::$sTransientKey, $_aInfo );    // made it not vanish by itself
             
         }    
     
@@ -191,8 +191,8 @@ final class TaskScheduler_ServerHeartbeat {
         
         self::$_bStop = true;
         
-        delete_transient( self::$sTransientKey );
-        delete_transient( self::$sTransientKey_Sleep );
+        TaskScheduler_WPUtility::deleteTransient( self::$sTransientKey );
+        TaskScheduler_WPUtility::deleteTransient( self::$sTransientKey_Sleep );
         $_iTimestamp = wp_next_scheduled( self::$sServerHeartbeatActionHook );
         if ( $_iTimestamp ) {
             wp_unschedule_event( $_iTimestamp, self::$sServerHeartbeatActionHook );
@@ -281,12 +281,12 @@ final class TaskScheduler_ServerHeartbeat {
          */
         static public function _replyToSleepAndExit() {
                         
-            $_iInterval                    = self::getInterval();
-            $_iReservedSeconds            = 3;    // wp_remove_get() sometimes stalls
-            $_nElapsedTime                = timer_stop( 0, 6 );
+            $_iInterval                 = self::getInterval();
+            $_iReservedSeconds          = 3;    // wp_remove_get() sometimes stalls
+            $_nElapsedTime              = timer_stop( 0, 6 );
             $_nSleepDuration            = ( $_iInterval - $_nElapsedTime ) < 0 ? 0 : $_iInterval - $_nElapsedTime;    // to not allow a negative value.
             $_iMaxExecutionTime         = function_exists( 'ini_get' ) ? ini_get( 'max_execution_time' ) : 25;
-            $_iSecondsToLimit            = $_iMaxExecutionTime - ceil( $_nElapsedTime );
+            $_iSecondsToLimit           = $_iMaxExecutionTime - ceil( $_nElapsedTime );
             $_nEstimatedRequiredTime    = $_nSleepDuration + $_iReservedSeconds;
             
             // If the estimated required time for the rest of the script execution is longer then the PHP max-execution time, 
@@ -318,7 +318,7 @@ final class TaskScheduler_ServerHeartbeat {
                 // Be careful not to set 0 for the cache duration.
                 $_iTransientDuration = ( int ) floor( $nSleepDuration );
                 if ( $_iTransientDuration ) {                    
-                    set_transient( self::$sTransientKey_Sleep, self::getID(), $_iTransientDuration );                        
+                    TaskScheduler_WPUtility::setTransient( self::$sTransientKey_Sleep, self::getID(), $_iTransientDuration );                        
                 }
                 usleep( $nSleepDuration * 1000000 ); 
                 if ( $_iTransientDuration )     {
@@ -332,37 +332,15 @@ final class TaskScheduler_ServerHeartbeat {
             static private function _deleteSleepTransient() {                
             
                 // If the transient ID is different, it means another different heartbeat is pulsating.
-                // $_sSleepID = get_transient( self::$sTransientKey_Sleep );
-                $_sSleepID = self::_getSleepLock();
+                // $_sSleepID = TaskScheduler_WPUtility::getTransient( self::$sTransientKey_Sleep );
+                $_sSleepID = TaskScheduler_WPUtility::getTransientWithoutCache( self::$sTransientKey_Sleep );
                 if ( false !== $_sSleepID && self::getID() !== $_sSleepID ) {
                     self::$_bStop = true;
                     return;
                 }            
-                delete_transient( self::$sTransientKey_Sleep );                
+                TaskScheduler_WPUtility::deleteTransient( self::$sTransientKey_Sleep );                
                 
-            }
-            /**
-             * Retrieve the sleep transient value directly from the database.
-             */
-            static private function _getSleepLock() {
-            
-                if ( wp_using_ext_object_cache() ) {
-                    // Skip local cache and force re-fetch of doing_cron transient in case
-                    // another processes updated the cache
-                    return wp_cache_get( self::$sTransientKey_Sleep, 'transient', true );
-                }             
-            
-                global $wpdb;            
-                $_oRow = $wpdb->get_row( 
-                    $wpdb->prepare( 
-                        "SELECT option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1",
-                        '_transient_' . self::$sTransientKey_Sleep
-                    ) 
-                );
-                return is_object( $_oRow ) ? $_oRow->option_value: false;
-                
-            }
-            
+            }            
             
         /**
          * Pulsates.

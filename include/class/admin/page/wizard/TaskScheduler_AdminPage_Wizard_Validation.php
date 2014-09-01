@@ -48,7 +48,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
             }    
 
             $aWizardOptions = apply_filters( 'task_scheduler_admin_filter_saving_wizard_options', $aWizardOptions );
-            set_transient( $_GET['transient_key'], $aWizardOptions, 30*60 );
+            TaskScheduler_WPUtility::setTransient( $_GET['transient_key'], $aWizardOptions, 30*60 );
             return $aWizardOptions;
             
         }

@@ -48,12 +48,12 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
      */
     protected function _saveWizardOptions( $sTransientKey, array $aMergingOptions ) {
         
-        $_aStoredOptions = get_transient( $sTransientKey );
+        $_aStoredOptions = TaskScheduler_WPUtility::getTransient( $sTransientKey );
         $_aStoredOptions = $_aStoredOptions ? $_aStoredOptions : array();
         $_aSavingOptions = $aMergingOptions + $_aStoredOptions;    // not recursive for repeatable fields. 
         $_aSavingOptions = array_filter( $_aSavingOptions );
         unset( $_aSavingOptions['submit'] );
-        set_transient( $sTransientKey, $_aSavingOptions, 30*60 );    // 30 minutes        
+        TaskScheduler_WPUtility::setTransient( $sTransientKey, $_aSavingOptions, 30*60 );    // 30 minutes        
         return $_aSavingOptions;
         
     }
@@ -69,7 +69,7 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
         // If already retrieved, use it.
         $_aWizardOptions = isset( $_aWizardOptions ) && false !== $_aWizardOptions
             ? $_aWizardOptions
-            : get_transient( $_sTransientKey );
+            : TaskScheduler_WPUtility::getTransient( $_sTransientKey );
         
         // If the key is not set, return the entire array.
         if ( empty( $sKey ) ) {
@@ -96,7 +96,7 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
                     ? $_GET['transient_key'] 
                     : '' 
             );
-        delete_transient( $sTransientKey );
+        TaskScheduler_WPUtility::deleteTransient( $sTransientKey );
         
     }
         

@@ -91,6 +91,7 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 == Changelog ==
 
 = 1.0.0b13 =
+- Fixed an issue with sites enabling object caching.
 - Fixed a bug of paged navigation links in the task listing table.
 
 = 1.0.0b12 - 2014/08/27 =
