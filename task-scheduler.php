@@ -5,7 +5,7 @@
 	Description:    Provides an enhanced task management system for WordPress.
 	Author:         miunosoft (Michael Uno)
 	Author URI:     http://michaeluno.jp
-	Version:        1.0.0b13
+	Version:        1.0.0b14
 */
 
 /* 1. Define the base registry class. */
@@ -16,7 +16,7 @@
  */
 class TaskScheduler_Registry_Base {
 
-	const Version        = '1.0.0b13';    // <--- DON'T FORGET TO CHANGE THIS AS WELL!!
+	const Version        = '1.0.0b14';    // <--- DON'T FORGET TO CHANGE THIS AS WELL!!
 	const Name           = 'Task Scheduler';
 	const Description    = 'Provides an enhanced task management system for WordPress.';
 	const URI            = 'http://en.michaeluno.jp/';
@@ -72,10 +72,23 @@ final class TaskScheduler_Registry extends TaskScheduler_Registry_Base {
 	 * 
 	 * Example:  TaskScheduler_Registry::getPluginURL( 'asset/css/meta_box.css' );
 	 */
-	public static function getPluginURL( $sRelativePath='' ) {
+	static public function getPluginURL( $sRelativePath='' ) {
 		return plugins_url( $sRelativePath, self::$sFilePath );
 	}
 
+    /**
+     * Returns an information array of this class.
+     * 
+     * @since       1.0.0
+     * @return      array
+     */
+    static public function getInfo() {
+        $_oReflection = new ReflectionClass( __CLASS__ );
+        return $_oReflection->getConstants()
+            + $_oReflection->getStaticProperties()
+        ;
+    }        
+    
 }
  
 // Return if accessed directly. Do not exit as the header class for the inclusion script need to access the registry class.
