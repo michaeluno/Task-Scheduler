@@ -38,7 +38,7 @@ final class TaskScheduler_Registry extends TaskScheduler_Registry_Base {
 	const TextDomainPath            = './language';
 	const RequiredPHPVersion        = '5.2.1';
 	const RequiredWordPressVersion  = '3.7';
-	    
+        
 	// These properties will be defined in the setUp() method.
 	static public $sFilePath = '';
 	static public $sDirPath  = '';	
@@ -62,7 +62,9 @@ final class TaskScheduler_Registry extends TaskScheduler_Registry_Base {
         'setting'       => 'ts_settings',
         'system'        => 'ts_system',
     );
-
+        // Backward compatibility
+        const AdminPage_AddNew          = 'ts_add_new';
+        
     /**
      * Used post types.
      * 
