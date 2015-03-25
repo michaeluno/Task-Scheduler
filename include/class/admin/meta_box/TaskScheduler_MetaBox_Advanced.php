@@ -14,47 +14,57 @@ class TaskScheduler_MetaBox_Advanced extends TaskScheduler_MetaBox_Base {
 
         $this->addSettingFields(
             array(
-                'field_id'        =>    '_max_root_log_count',
-                'title'            =>    __( 'Max Count of Log Entries', 'task-scheduler' ),
-                'type'            =>    'number',
-                'attributes'    =>    array(
-                    'min'    =>    0,
-                    'step'    =>    1,
+                'field_id'        => '_max_root_log_count',
+                'title'           => __( 'Max Count of Log Entries', 'task-scheduler' ),
+                'type'            => 'number',
+                'attributes'      => array(
+                    'min'    => 0,
+                    'step'   => 1,
                 ),
-                'description'    =>    __( 'Set the maximum number of log items.', 'task-scheduler' )
+                'description'    => __( 'Set the maximum number of log items.', 'task-scheduler' )
                     . ' ' . __( 'Set 0 to disable it.', 'task-scheduler' ),
             ),
             array(
-                'field_id'        =>    '_max_execution_time',
-                'title'            =>    __( 'Max Task Execution Time', 'task-scheduler' ),
-                'type'            =>    'number',
-                'after_label'    =>    ' ' .__( 'second(s)', 'task-scheduler' ),
-                'description'    =>    __( 'Set the expected duration that the task will take to complete.', 'task-scheduler' ),
-                'attributes'    =>    array(
-                    'min'    =>    0,
-                    'step'    =>    1,
-                    'max'    =>    TaskScheduler_WPUtility::canUseIniSet() 
+                'field_id'        => '_max_execution_time',
+                'title'           => __( 'Max Task Execution Time', 'task-scheduler' ),
+                'type'            => 'number',
+                'after_label'     => ' ' .__( 'second(s)', 'task-scheduler' ),
+                'description'     => __( 'Set the expected duration that the task will take to complete.', 'task-scheduler' ),
+                'attributes'      => array(
+                    'min'    => 0,
+                    'step'   => 1,
+                    'max'    => TaskScheduler_WPUtility::canUseIniSet() 
                         ? null
                         : TaskScheduler_WPUtility::getServerAllowedMaxExecutionTime( 30 ),
                 ),                
             ),
             array(
-                'field_id'        =>    '_force_execution',
-                'title'            =>    __( 'Force Execution', 'task-scheduler' ),
-                'type'            =>    'checkbox',
-                'label'            =>    __( 'Execute the action even when the last routine is not completed.', 'task-scheduler' ),
-                'default'        =>    false,
+                'field_id'        => '_force_execution',
+                'title'           => __( 'Force Execution', 'task-scheduler' ),
+                'type'            => 'checkbox',
+                'label'           => __( 'Execute the action even when the last routine is not completed.', 'task-scheduler' ),
+                'default'         => false,
             ),            
             array()
         );    
     
     }
                 
-    /*
+    /**
      * Validation methods
+     * 
+     * @callback        filter      validation_ + extended class name
      */
-    public function validation_TaskScheduler_MetaBox_Advanced( $aInput, $aOldInput ) {    // validation_ + extended class name
-                
+    public function validation_TaskScheduler_MetaBox_Advanced( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) {
+
+        $_aParams    = func_get_args() + array(
+            null, null, null, null
+        );
+        $aInput      = $_aParams[ 0 ];
+        $aOldInput   = $_aParams[ 1 ];
+        $oAdminPage  = $_aParams[ 2 ];
+        $aSubmitInfo = $_aParams[ 3 ]; 
+    
         // Sanitize values
         if ( isset( $aInput['_max_root_log_count'] ) ) {
             $aInput['_max_root_log_count'] = $this->oUtil->fixNumber( 
@@ -82,10 +92,14 @@ class TaskScheduler_MetaBox_Advanced extends TaskScheduler_MetaBox_Base {
          */
         private function _checkLogs( $iMaxRootLogCount ) {
 
-            if ( ! isset( $_REQUEST['post_ID'] ) ) { return; }
+            if ( ! isset( $_REQUEST['post_ID'] ) ) { 
+                return; 
+            }
             $_iTaskID    = $_REQUEST['post_ID'];
-            $_oTask        = TaskScheduler_Routine::getInstance( $_iTaskID );
-            if ( ! is_object( $_oTask ) ) { return; }
+            $_oTask      = TaskScheduler_Routine::getInstance( $_iTaskID );
+            if ( ! is_object( $_oTask ) ) { 
+                return; 
+            }
             
             // Check the number of logs and if exceeded, create a task to remove them.
             if ( $_oTask->getRootLogCount() > ( int ) $iMaxRootLogCount ) {

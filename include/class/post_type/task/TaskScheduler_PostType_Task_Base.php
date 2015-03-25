@@ -25,7 +25,7 @@ abstract class TaskScheduler_PostType_Task_Base extends TaskScheduler_AdminPageF
                 'menu_position'         => 110,
                 'can_export'            => true,
                 'supports'              => array( 'title', ),
-                'taxonomies'            => array( TaskScheduler_Registry::Taxonomy_SystemLabel, ),
+                'taxonomies'            => array( TaskScheduler_Registry::$aTaxonomies[ 'system' ], ),
                 'menu_icon'             => is_admin() ? TaskScheduler_Registry::getPluginURL( '/asset/image/menu_icon_16x16.png' ) : '',
                 'has_archive'           => false,
                 'hierarchical'          => true,
@@ -37,7 +37,7 @@ abstract class TaskScheduler_PostType_Task_Base extends TaskScheduler_AdminPageF
         
         // Create the internal label taxonomy 
         $this->addTaxonomy( 
-            TaskScheduler_Registry::Taxonomy_SystemLabel, // taxonomy slug
+            TaskScheduler_Registry::$aTaxonomies[ 'system' ], // taxonomy slug
             array(            // argument - for the argument array keys, refer to : http://codex.wordpress.org/Function_Reference/register_taxonomy#Arguments
                 'labels'                => array(
                     'name'            => __( 'Task Scheduler System Label', 'task-scheduler' ),
@@ -52,7 +52,7 @@ abstract class TaskScheduler_PostType_Task_Base extends TaskScheduler_AdminPageF
                 'show_table_filter'     => true,    // framework specific key
                 'show_in_sidebar_menus' => false,    // framework specific key
             ),
-            array( TaskScheduler_Registry::PostType_Thread )    // additional object types
+            array( TaskScheduler_Registry::$aPostTypes[ 'thread' ] )    // additional object types
         );        
             
         add_filter( 'the_content', array( $this, '_replyToShowTaskDetails' ) );
@@ -105,7 +105,7 @@ abstract class TaskScheduler_PostType_Task_Base extends TaskScheduler_AdminPageF
                 'include'       => '',
                 'link_after'    => '',
                 'link_before'   => '',
-                'post_type'     => TaskScheduler_Registry::PostType_Log,
+                'post_type'     => TaskScheduler_Registry::$aPostTypes[ 'log' ],
                 'post_status'   => array( 'private', 'publish' ),
                 'show_date'     => true,
                 'sort_column'   => 'post_date',    // , menu_order, post_title

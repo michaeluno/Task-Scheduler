@@ -37,7 +37,7 @@ abstract class TaskScheduler_AdminPage_Start extends TaskScheduler_AdminPageFram
                         
             $_sLink = add_query_arg(
                 array( 
-                    'page'    =>     TaskScheduler_Registry::AdminPage_TaskList,
+                    'page'    => TaskScheduler_Registry::$aAdminPages[ 'task_list' ],
                 ),
                 admin_url( 'admin.php' )
             );
@@ -55,7 +55,7 @@ abstract class TaskScheduler_AdminPage_Start extends TaskScheduler_AdminPageFram
         public function _replyToModifyRedirectURLAfterUpdatingTask( $sURL, $iPostID ) {
 
             $_sPostType = get_post_type( $iPostID );
-            if ( in_array( $_sPostType, array( TaskScheduler_Registry::PostType_Task, TaskScheduler_Registry::PostType_Thread ) ) ) {
+            if ( in_array( $_sPostType, array( TaskScheduler_Registry::$aPostTypes[ 'task' ], TaskScheduler_Registry::$aPostTypes[ 'thread' ] ) ) ) {
                 
                 $_oRoutine      = TaskScheduler_Routine::getInstance( $iPostID );
                 $_aQueryArgs    = ! $_oRoutine->isEnabled() ? array( 'status' => 'disabled' ) : array();

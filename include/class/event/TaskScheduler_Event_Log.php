@@ -33,10 +33,10 @@ class TaskScheduler_Event_Log {
      */
     public function _replyToDeleteLog( $iPostID ) {
         
-        if ( TaskScheduler_Registry::PostType_Task != get_post_type( $iPostID ) ) { return; }        
+        if ( TaskScheduler_Registry::$aPostTypes[ 'task' ] != get_post_type( $iPostID ) ) { return; }        
         
         // If the task itself is the delete log task, do not create the same task again.
-        if ( has_term( array( 'delete_log' ), TaskScheduler_Registry::Taxonomy_SystemLabel, $iPostID ) ) { return; }
+        if ( has_term( array( 'delete_log' ), TaskScheduler_Registry::$aTaxonomies[ 'system' ], $iPostID ) ) { return; }
         
         // if the task does not have any log, do not create the log deletion task.
         if ( ! TaskScheduler_LogUtility::getLogCount( $iPostID ) ) { return; }

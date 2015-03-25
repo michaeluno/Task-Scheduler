@@ -25,7 +25,7 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
     
     public function __construct() {
         
-        $this->_sTransientPrefix = TaskScheduler_Registry::TransientPrefix;
+        $this->_sTransientPrefix = TaskScheduler_Registry::TRANSIENT_PREFIX;
     
         // At this point, the page is loaded for a specific routine(task/thread).
         if ( ! self::isCallingAction() ) { return; }

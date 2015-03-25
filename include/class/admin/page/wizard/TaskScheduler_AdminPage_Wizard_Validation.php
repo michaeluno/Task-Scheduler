@@ -2,9 +2,9 @@
 /**
  * One of the abstract classes of the plugin admin page class for the wizard pages.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -17,20 +17,32 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
 
     /**
      * The validation handler of the wizard admin pages for the entire class.
+     * 
+     * @callback        filter      validation_{class name}
      */
-    public function validation_TaskScheduler_AdminPage_Wizard( $aInput, $aOldInput, $oAdminPage ) {
+    public function validation_TaskScheduler_AdminPage_Wizard( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) {
 
-        $_aWizardOptions = isset( $aInput[ '_wizard_options' ] ) ? $aInput[ '_wizard_options' ] : array();
-    
+        $_aParams    = func_get_args() + array(
+            null, null, null, null
+        );
+        $aInput      = $_aParams[ 0 ];
+        $aOldInput   = $_aParams[ 1 ];
+        $oAdminPage  = $_aParams[ 2 ];
+        $aSubmitInfo = $_aParams[ 3 ];        
+        
+        $_aWizardOptions = isset( $aInput[ '_wizard_options' ] ) 
+            ? $aInput[ '_wizard_options' ] 
+            : array();
+
         // Check if necessary keys are set. If the transient is expired, the necessary elements will miss. In that case, let the user start over the process.
         if ( ! isset( $_aWizardOptions['post_title'] ) || ! $_aWizardOptions['post_title'] ) {
             $this->setSettingNotice( __( 'The wizard session has been expired. Please start from the beginning.', 'task-scheduler' ) );
-            die( TaskScheduler_PluginUtility::goToAddNewPage() );
-        }        
+            exit( TaskScheduler_PluginUtility::goToAddNewPage() );
+        }
         
         // The wizard options are stored in the '_wizard_options' element
         $_aSavedValues = $this->_saveValidatedWizardOptions( $_aWizardOptions );
-        
+
         // Passing a dummy value will prevent the framework from displaying an admin notice.
         return array( 'dummy value' );    
         
@@ -47,8 +59,17 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
                 return;
             }    
 
-            $aWizardOptions = apply_filters( 'task_scheduler_admin_filter_saving_wizard_options', $aWizardOptions );
-            TaskScheduler_WPUtility::setTransient( $_GET['transient_key'], $aWizardOptions, 30*60 );
+            $aWizardOptions = apply_filters( 
+                'task_scheduler_admin_filter_saving_wizard_options', 
+                $aWizardOptions 
+            );
+
+            TaskScheduler_WPUtility::setTransient( 
+                $_GET['transient_key'], 
+                $aWizardOptions, 
+                30*60 
+            );
+
             return $aWizardOptions;
             
         }

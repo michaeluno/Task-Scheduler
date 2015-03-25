@@ -53,8 +53,16 @@ final class TaskScheduler_Action_PostDeleter_Wizard_2 extends TaskScheduler_Wiza
         
     }    
         
-    public function validateSettings( $aInput, $aOldInput, $oAdminPage ) { 
+    public function validateSettings( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) { 
 
+        $_aParams    = func_get_args() + array(
+            null, null, null, null
+        );
+        $aInput      = $_aParams[ 0 ];
+        $aOldInput   = $_aParams[ 1 ];
+        $oAdminPage  = $_aParams[ 2 ];
+        $aSubmitInfo = $_aParams[ 3 ];         
+    
         // The Admin Page Framework inserts some keys into the $aInput array that it thinks 
         // the keys may be of higher capability users. So here ensure these keys won't be sent.
         unset( 

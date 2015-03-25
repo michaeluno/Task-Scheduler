@@ -128,7 +128,7 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
         wp_safe_redirect( 
             add_query_arg( 
                 array( 
-                    'page'        =>    TaskScheduler_Registry::AdminPage_AddNew,
+                    'page'        =>    TaskScheduler_Registry::$aAdminPages[ 'add_new' ],
                 ), 
                 admin_url( 'admin.php' ) 
             )
@@ -169,7 +169,7 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
         return add_query_arg( 
             $_aGetQuery
             + array( 
-                'page'        =>    TaskScheduler_Registry::AdminPage_EditModule,
+                'page'        =>    TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],
             ), 
             admin_url( 'admin.php' ) 
         );        
@@ -188,7 +188,7 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
     static public function getTaskListingPageURL( array $aQueryArgs=array() ) {
         return add_query_arg( 
             $aQueryArgs + array( 
-                'page'        =>    TaskScheduler_Registry::AdminPage_TaskList,
+                'page'        =>    TaskScheduler_Registry::$aAdminPages[ 'task_list' ],
             ), 
             admin_url( 'admin.php' ) 
         );

@@ -13,10 +13,22 @@ abstract class TaskScheduler_AdminPage_EditModule_Validation extends TaskSchedul
     
     /**
      * The validation handler of the wizard admin pages for the entire class.
+     * 
+     * @callback        filter      validation_{class name}
      */
-    public function validation_TaskScheduler_AdminPage_EditModule( $aInput, $aOldInput, $oAdminPage ) {
+    public function validation_TaskScheduler_AdminPage_EditModule( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) {
 
-        $_aWizardOptions = isset( $aInput[ '_wizard_options' ] ) ? $aInput[ '_wizard_options' ] : array();
+        $_aParams    = func_get_args() + array(
+            null, null, null, null
+        );
+        $aInput      = $_aParams[ 0 ];
+        $aOldInput   = $_aParams[ 1 ];
+        $oAdminPage  = $_aParams[ 2 ];
+        $aSubmitInfo = $_aParams[ 3 ];     
+
+        $_aWizardOptions = isset( $aInput[ '_wizard_options' ] ) 
+            ? $aInput[ '_wizard_options' ] 
+            : array();
 
         // The wizard options are stored in the '_wizard_options' element
         if ( ! empty( $_aWizardOptions ) ) {

@@ -2,9 +2,9 @@
 /**
  * Creates wizard pages for the 'Occurrence' option.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -20,15 +20,15 @@ final class TaskScheduler_Occurrence_SpecificTime_Wizard extends TaskScheduler_W
     
         return array(
             array(    
-                'field_id'            =>    'when',
-                'title'                =>    __( 'When', 'task-scheduler' ),
-                'type'                =>    'date_time',
-                'time_format'        =>    'hh:mm',    // H:mm is the default format.
-                'repeatable'        =>    true,
-                'attributes'        =>    array(
-                    'size'        =>    20,
+                'field_id'          => 'when',
+                'title'             => __( 'When', 'task-scheduler' ),
+                'type'              => 'date_time',
+                'time_format'       => 'hh:mm',    // H:mm is the default format.
+                'repeatable'        => true,
+                'attributes'        => array(
+                    'size' => 20,
                 ),
-                'options'    =>    "{
+                'options'    => "{
                     numberOfMonths: 2,
                     minDate: 0
                 }"
@@ -37,10 +37,18 @@ final class TaskScheduler_Occurrence_SpecificTime_Wizard extends TaskScheduler_W
         
     }    
 
-    public function validateSettings( $aInput, $aOldInput, $oAdminPage ) { 
+    public function validateSettings( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) { 
+
+        $_aParams    = func_get_args() + array(
+            null, null, null, null
+        );
+        $aInput      = $_aParams[ 0 ];
+        $aOldInput   = $_aParams[ 1 ];
+        $oAdminPage  = $_aParams[ 2 ];
+        $aSubmitInfo = $_aParams[ 3 ];     
     
         $_bIsValid = true;
-        $_aErrors = array();
+        $_aErrors  = array();
         
         $aInput['when'] = array_filter( $aInput['when'] );    // drop non-true values.
         if ( empty( $aInput['when'] ) ) {
@@ -53,7 +61,7 @@ final class TaskScheduler_Occurrence_SpecificTime_Wizard extends TaskScheduler_W
         $_bUnset = false;
         foreach( $aInput['when'] as $_iIndex => $_sDateTime ) {
             $_iSetTimeStamp = strtotime( $_sDateTime );
-            $_iCurrentTimeStamp = current_time( 'timestamp', false );    // somehow the second parameter is okay with false.
+            $_iCurrentTimeStamp = current_time( 'timestamp' );
             if ( $_iSetTimeStamp < $_iCurrentTimeStamp ) {
                 $_bUnset = true;            
                 unset( $aInput['when'][ $_iIndex ] );

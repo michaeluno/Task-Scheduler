@@ -14,7 +14,7 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskSchedu
     public function _defineInPageTabs() {
         
         $this->addInPageTabs(
-            TaskScheduler_Registry::AdminPage_Setting,    // the target page slug 
+            TaskScheduler_Registry::$aAdminPages[ 'setting' ],    // the target page slug 
             array(
                 'tab_slug'    =>    'server_heartbeat',    // avoid hyphen(dash), dots, and white spaces
                 'title'        =>    __( 'Server Heartbeat', 'task-scheduler' ),
@@ -30,7 +30,7 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskSchedu
     protected function _defineForm() {
             
         $this->addSettingSections(
-            TaskScheduler_Registry::AdminPage_Setting,    // the target page slug
+            TaskScheduler_Registry::$aAdminPages[ 'setting' ],    // the target page slug
             array(
                 'section_id'    =>    'server_heartbeat',
                 'tab_slug'        =>    'server_heartbeat',
@@ -141,9 +141,19 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskSchedu
     
     /**
      * Validates the submitted form data.
+     * 
+     * @callback        filter          validation_{class name}_{section id}
      */
-    public function validation_TaskScheduler_AdminPage_Setting_server_heartbeat( $aInput, $aOldInput, $oAdminPage ) {
+    public function validation_TaskScheduler_AdminPage_Setting_server_heartbeat( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) {
 
+        $_aParams    = func_get_args() + array(
+            null, null, null, null
+        );
+        $aInput      = $_aParams[ 0 ];
+        $aOldInput   = $_aParams[ 1 ];
+        $oAdminPage  = $_aParams[ 2 ];
+        $aSubmitInfo = $_aParams[ 3 ];     
+    
         // Sanitize the query key
         if ( isset( $aInput['query_string'][ 1 ] ) ) {
             $aInput['query_string'][ 1 ] = TaskScheduler_WPUtility::sanitizeCharsForURLQueryKey( $aInput['query_string'][ 1 ] );

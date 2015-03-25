@@ -41,8 +41,16 @@ final class TaskScheduler_Action_PostDeleter_Wizard extends TaskScheduler_Wizard
         
     }    
 
-    public function validateSettings( $aInput, $aOldInput, $oAdminPage ) { 
+    public function validateSettings( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) { 
 
+        $_aParams    = func_get_args() + array(
+            null, null, null, null
+        );
+        $aInput      = $_aParams[ 0 ];
+        $aOldInput   = $_aParams[ 1 ];
+        $oAdminPage  = $_aParams[ 2 ];
+        $aSubmitInfo = $_aParams[ 3 ];         
+    
         $_bIsValid = true;
         $_aErrors = array();    
 

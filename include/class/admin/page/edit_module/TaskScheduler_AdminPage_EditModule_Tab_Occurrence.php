@@ -14,12 +14,12 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
     protected function _defineInPageTabs() {
                     
         $this->addInPageTabs(
-            TaskScheduler_Registry::AdminPage_EditModule,    // the target page slug                    
+            TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],    // the target page slug                    
             array(    // the landing page of the editing page of occurrence module options.
-                'tab_slug'            =>    'edit_occurrence',    
-                'title'                =>    __( 'Edit Occurrence', 'task-scheduler' ),
-                'order'                =>    1,    // this must be the 'default' tab
-                'show_in_page_tab'    =>    false,
+                'tab_slug'            => 'edit_occurrence',    
+                'title'               => __( 'Edit Occurrence', 'task-scheduler' ),
+                'order'               => 1,    // this must be the 'default' tab
+                'show_in_page_tab'    => false,
             )
         );
         
@@ -30,44 +30,44 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
     protected function _defineForm() {
     
         $this->addSettingSections(
-            TaskScheduler_Registry::AdminPage_EditModule,    // the target page slug
+            TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],    // the target page slug
             array(
-                'section_id'    =>    'edit_occurrence',
-                'tab_slug'        =>    'edit_occurrence',
-                'title'            =>    __( 'Occurrence', 'task-scheduler' ),
+                'section_id'    => 'edit_occurrence',
+                'tab_slug'      => 'edit_occurrence',
+                'title'         => __( 'Occurrence', 'task-scheduler' ),
             )            
         );        
             
         $this->addSettingFields(
             'edit_occurrence',    // the target section ID        
             array(
-                'field_id'            =>    'transient_key',
-                'type'                =>    'text',                
-                'hidden'            =>    true,
-                'value'                =>    $this->_sTransientKey,
+                'field_id'          => 'transient_key',
+                'type'              => 'text',                
+                'hidden'            => true,
+                'value'             => $this->_sTransientKey,
             ),            
             array(    
-                'field_id'                =>    'occurrence',
-                'title'                    =>    __( 'Occurrence', 'task-scheduler' ),
-                'type'                    =>    'radio',
-                'label_min_width'        =>    '100%',                
-                'label'                    =>    array(),
+                'field_id'          => 'occurrence',
+                'title'             => __( 'Occurrence', 'task-scheduler' ),
+                'type'              => 'radio',
+                'label_min_width'   => '100%',                
+                'label'             => array(),
             ),            
             array(    
-                'field_id'            =>    'submit',
-                'type'                =>    'submit',
-                'label'                =>    __( 'Next', 'task-scheduler' ),
-                'label_min_width'    =>    0,
-                'attributes'        =>    array(
+                'field_id'          => 'submit',
+                'type'              => 'submit',
+                'label'             => __( 'Next', 'task-scheduler' ),
+                'label_min_width'   => 0,
+                'attributes'        => array(
                     'field'    =>    array(
-                        'style'    =>    'float:right; clear:none; display: inline;',
+                        'style'    => 'float:right; clear:none; display: inline;',
                     ),
                 ),
                  array(
-                    'value'            =>    __( 'Back', 'task-scheduler' ),
-                    'href'            =>    TaskScheduler_PluginUtility::getEditTaskPageURL(),
-                    'attributes'    =>    array(
-                        'class'    =>    'button secondary ',
+                    'value'          => __( 'Back', 'task-scheduler' ),
+                    'href'           => TaskScheduler_PluginUtility::getEditTaskPageURL(),
+                    'attributes'     => array(
+                        'class'    => 'button secondary ',
                     ),                        
                 ),                 
             )    
@@ -82,7 +82,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
      */
     public function field_definition_TaskScheduler_AdminPage_EditModule_edit_occurrence_occurrence( $aField ) {
     
-        $aField['label']    = apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_occurrence', $aField['label'] );    
+        $aField['label']   = apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_occurrence', $aField['label'] );    
         foreach( $aField['label'] as $_sSlug => $_sLabel ) {
             $_sDescription = apply_filters( "task_scheduler_filter_description_occurrence_{$_sSlug}", '' );
             if ( $_sDescription ) {
@@ -96,15 +96,24 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
     /**
      * The validation callback method for the 'edit_occurrence' form section.
      * 
-     * @since    1.0.0
+     * @since       1.0.0
+     * @callback    filter      validation_{instantiated class name}_{section ID}
      */
-    public function validation_TaskScheduler_AdminPage_EditModule_edit_occurrence( $aInput, $aOldInput ) {    // validation_{instantiated class name}_{section ID}
-                
+    public function validation_TaskScheduler_AdminPage_EditModule_edit_occurrence( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) {
+    
+        $_aParams    = func_get_args() + array(
+            null, null, null, null
+        );
+        $aInput      = $_aParams[ 0 ];
+        $aOldInput   = $_aParams[ 1 ];
+        $oAdminPage  = $_aParams[ 2 ];
+        $aSubmitInfo = $_aParams[ 3 ];
+    
         // The transient key must be embedded in the url.
         $_sRedirectURL = add_query_arg( array( 'transient_key'    =>    $aInput['transient_key'], ));    
         $_sRedirectURL = add_query_arg(
             array(
-                'transient_key'    =>    $aInput['transient_key'],
+                'transient_key'    => $aInput['transient_key'],
             ),
             apply_filters( 'task_scheduler_admin_filter_wizard_occurrence_redirect_url_' . $aInput['occurrence'], $_sRedirectURL, $aInput )
         );

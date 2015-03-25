@@ -19,17 +19,17 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModuleOptions extend
     protected function _defineInPageTabs() {
                 
         $this->addInPageTabs(
-            TaskScheduler_Registry::AdminPage_EditModule,    // the target page slug        
+            TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],    // the target page slug        
             array(    // the options will be redirected to this page and saved and redirected to post.php 
-                'tab_slug'            =>    'update_module',    
-                'title'                =>    __( 'Update Module Options', 'task-scheduler' ),
-                'show_in_page_tab'    =>    false,
+                'tab_slug'            => 'update_module',    
+                'title'               => __( 'Update Module Options', 'task-scheduler' ),
+                'show_in_page_tab'    => false,
             )
         );                
         
         parent::_defineInPageTabs();
         
-        add_action( "load_" . TaskScheduler_Registry::AdminPage_EditModule . "_update_module", array( $this, '_replyToLoadUpdateModuleTab' ) );
+        add_action( "load_" . TaskScheduler_Registry::$aAdminPages[ 'edit_module' ] . "_update_module", array( $this, '_replyToLoadUpdateModuleTab' ) );
         
     }
         
@@ -50,14 +50,16 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModuleOptions extend
         }
 
         // Drop unnecessary form elements. The method is defined in the base class.
-        $_bUpdateSchedule    = isset( $_aWizardOptions['_update_next_schedule'] ) ? $_aWizardOptions['_update_next_schedule'] : false;
+        $_bUpdateSchedule   = isset( $_aWizardOptions['_update_next_schedule'] ) 
+            ? $_aWizardOptions['_update_next_schedule'] 
+            : false;
         $_aWizardOptions    = $this->_dropUnnecessaryWizardOptions( $_aWizardOptions );
 
         // Update the meta.
         TaskScheduler_WPUtility::updatePostMeta( $_GET['post'], $_aWizardOptions );        
         if ( $_bUpdateSchedule ) {            
-            $_oTask    = TaskScheduler_Routine::getInstance( $_GET['post'] );
-            $_nLastRunTime = $_oTask->_last_run_time;
+            $_oTask         = TaskScheduler_Routine::getInstance( $_GET['post'] );
+            $_nLastRunTime  = $_oTask->_last_run_time;
             $_oTask->deleteMeta( '_last_run_time' );    // The Filxed Interval occurence type uses the last run time meta data.
             $_oTask->setNextRunTime();
             $_oTask->setMeta( '_last_run_time', $_nLastRunTime );
@@ -65,7 +67,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModuleOptions extend
         $this->setSettingNotice( __( 'The task has been updated.', 'task-scheduler' ), 'updated' );
             
         // Go to the task listing table page.
-         exit( TaskScheduler_PluginUtility::goToEditTaskPage() );
+        exit( TaskScheduler_PluginUtility::goToEditTaskPage() );
         
     }
         

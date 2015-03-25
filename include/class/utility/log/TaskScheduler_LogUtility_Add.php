@@ -20,7 +20,7 @@ abstract class TaskScheduler_LogUtility_Add extends TaskScheduler_LogUtility_Bas
         if ( ! $iTaskOrLogID ) { return 0; }
         
         $_sLog = is_array( $asLog ) ? implode( ' ', $asLog ) : $asLog;
-        return TaskScheduler_Registry::PostType_Log == get_post_type( $iTaskOrLogID )
+        return TaskScheduler_Registry::$aPostTypes[ 'log' ] == get_post_type( $iTaskOrLogID )
             ? self::logByParentLogID( $iTaskOrLogID, $_sLog )
             : self::logByTaskID( $iTaskOrLogID, $_sLog );
         
@@ -64,7 +64,7 @@ abstract class TaskScheduler_LogUtility_Add extends TaskScheduler_LogUtility_Bas
              */
             static private function _insertLog( array $aPostArgs ) {
                     
-                $_iLogID = self::insertPost( $aPostArgs, TaskScheduler_Registry::PostType_Log );
+                $_iLogID = self::insertPost( $aPostArgs, TaskScheduler_Registry::$aPostTypes[ 'log' ] );
                 
                 // Set the post slug as it seems that the same post slug is assigned to different log posts.
                 wp_update_post( 

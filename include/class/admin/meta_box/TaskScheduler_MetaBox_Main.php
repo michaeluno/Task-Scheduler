@@ -14,9 +14,12 @@ class TaskScheduler_MetaBox_Main extends TaskScheduler_MetaBox_Base {
         
         $this->addSettingFields(
             array(
-                'field_id'        =>    'excerpt',
-                'title'            =>    __( 'Description', 'task-scheduler' ),
-                'type'            =>    'textarea',
+                'field_id'      => 'excerpt',
+                'title'         => __( 'Description', 'task-scheduler' ),
+                'type'          => 'textarea',
+                'attributes'    => array(
+                    'style'   => 'width:100%',
+                ),
             ),
             array()
         );    
@@ -34,11 +37,21 @@ class TaskScheduler_MetaBox_Main extends TaskScheduler_MetaBox_Base {
         return $aField;
     }
         
-    /*
-     * Validation methods
+    /**
+     * A validation callback.
+     * 
+     * @callback        filter      validation_ + extended class name
      */
-    public function validation_TaskScheduler_MetaBox_Main( $aInput, $aOldInput ) {    // validation_ + extended class name
-                    
+    public function validation_TaskScheduler_MetaBox_Main( /* $aInput, $aOldInput, $oAdminpage, $aSubmitInfo */ ) {
+           
+        $_aParams    = func_get_args() + array(
+            null, null, null, null
+        );
+        $aInput      = $_aParams[ 0 ];
+        $aOldInput   = $_aParams[ 1 ];
+        $oAdminPage  = $_aParams[ 2 ];
+        $aSubmitInfo = $_aParams[ 3 ]; 
+        
         return $aInput;
         
     }

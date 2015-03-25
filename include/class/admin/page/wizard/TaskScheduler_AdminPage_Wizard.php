@@ -2,16 +2,16 @@
 /**
  * The class that creates the wizard pages.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
 
  /**
   * @filter    apply    task_scheduler_admin_filter_wizard_options        Applies to the wizard options to be set to the form options.
-  * @filter    add        task_scheduler_admin_filter_get_wizard_options    Applies the wizard options.
+  * @filter    add      task_scheduler_admin_filter_get_wizard_options    Applies the wizard options.
   */
 class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setup {
     
@@ -19,7 +19,12 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
     
         parent::start();
         
-        add_filter( 'task_scheduler_admin_filter_get_wizard_options', array( $this, '_replyToGetWizardOptions' ), 10, 2 );
+        add_filter( 
+            'task_scheduler_admin_filter_get_wizard_options', 
+            array( $this, '_replyToGetWizardOptions' ), 
+            10, 
+            2 
+        );
         
     }
     /**
@@ -32,13 +37,17 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
      */
     public function options_TaskScheduler_AdminPage_Wizard( $aOptions ) {
         
-        // Since the wizard options do not have section dimension (in the first depth), store the options in each section.
-        $_aOptions = apply_filters( 'task_scheduler_admin_filter_wizard_options', $this->_getWizardOptions() );
+        // Since the wizard options do not have a section dimension (in the first depth), store the options in each section.
+        $_aOptions = apply_filters( 
+            'task_scheduler_admin_filter_wizard_options', 
+            $this->_getWizardOptions() 
+        );
+
         return array(
             // section id    => field values.
-            'wizard'                =>    $_aOptions,    // the first wizard tab
-            'wizard_select_action'    =>    $_aOptions,    // the task action selection tab
-            '_wizard_options'        =>    $_aOptions, // for each module.
+            'wizard'                => $_aOptions, // the first wizard tab
+            'wizard_select_action'  => $_aOptions, // the task action selection tab
+            '_wizard_options'       => $_aOptions, // for each module.
         );
 
     }
@@ -49,7 +58,9 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
     protected function _saveWizardOptions( $sTransientKey, array $aMergingOptions ) {
         
         $_aStoredOptions = TaskScheduler_WPUtility::getTransient( $sTransientKey );
-        $_aStoredOptions = $_aStoredOptions ? $_aStoredOptions : array();
+        $_aStoredOptions = $_aStoredOptions 
+            ? $_aStoredOptions 
+            : array();
         $_aSavingOptions = $aMergingOptions + $_aStoredOptions;    // not recursive for repeatable fields. 
         $_aSavingOptions = array_filter( $_aSavingOptions );
         unset( $_aSavingOptions['submit'] );
@@ -64,13 +75,15 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
     protected function _getWizardOptions( $sKey='' ) {
         
         static $_aWizardOptions;
-        $_sTransientKey = isset( $_GET['transient_key'] ) ? $_GET['transient_key'] : '';
+        $_sTransientKey = isset( $_GET['transient_key'] ) 
+            ? $_GET['transient_key'] 
+            : '';
         
         // If already retrieved, use it.
         $_aWizardOptions = isset( $_aWizardOptions ) && false !== $_aWizardOptions
             ? $_aWizardOptions
             : TaskScheduler_WPUtility::getTransient( $_sTransientKey );
-        
+
         // If the key is not set, return the entire array.
         if ( empty( $sKey ) ) {
             return is_array( $_aWizardOptions )
@@ -103,10 +116,12 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
     /**
      * Retrieves the wizard options of the given transient key.
      * 
+     * @callback        filter      task_scheduler_admin_filter_get_wizard_options
      */
     public function _replyToGetWizardOptions( $vDefault, $sKey='' ) {
 
         $_vReturn = $this->_getWizardOptions( $sKey );
+
         if ( is_null( $_vReturn ) ) {
             return $vDefault;
         }

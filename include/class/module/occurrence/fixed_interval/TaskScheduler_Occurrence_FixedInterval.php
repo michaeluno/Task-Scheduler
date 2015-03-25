@@ -50,7 +50,7 @@ class TaskScheduler_Occurrence_FixedInterval extends TaskScheduler_Occurrence_Ba
         
         $_nLastRunTime = $oTask->_last_run_time
             ? $oTask->_last_run_time
-            : microtime( true );
+            : microtime( true );    // @todo    Examine whether GMT offset should be calcurated or not.
         $_iInterval = $this->_getIntervalInSeconds( $_aOptions['interval'][ 0 ], $_aOptions['interval'][ 1 ] );
         return $_nLastRunTime + $_iInterval;
                 

@@ -18,12 +18,12 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
         
         $this->addSettingFields(
             array(
-                'field_id'        =>    'occurrence',
-                'title'            =>    __( 'Occurrence', 'task-scheduler' ),
-                'type'            =>    'text',
-                'attributes'    =>    array(
-                    'ReadOnly'    =>    'ReadOnly',
-                    'name'        =>    '',
+                'field_id'        => 'occurrence',
+                'title'           => __( 'Occurrence', 'task-scheduler' ),
+                'type'            => 'text',
+                'attributes'      => array(
+                    'ReadOnly'    => 'ReadOnly',
+                    'name'        => '',
                 ),
             ),        
             array()
@@ -36,8 +36,13 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
      */
     public function field_definition_TaskScheduler_MetaBox_Occurrence_occurrence( $aField ) {
         
-        if ( ! $this->_oTask ) { return $aField; }
-        $aField['value']    = apply_filters( "task_scheduler_filter_label_occurrence_{$this->_oTask->occurrence}", $this->_oTask->occurrence );
+        if ( ! $this->_oTask ) { 
+            return $aField; 
+        }
+        $aField['value'] = apply_filters( 
+            "task_scheduler_filter_label_occurrence_{$this->_oTask->occurrence}", 
+            $this->_oTask->occurrence 
+        );
         return $aField;        
         
     }
@@ -47,8 +52,12 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
      */
     public function field_definition_TaskScheduler_MetaBox_Occurrence( $aAllFields ) {    // field_definition_{class name}
 
-        if ( ! $this->_oTask ) { return $aAllFields; }    
-        if ( ! isset( $aAllFields['_default'] ) || ! is_array( $aAllFields['_default'] ) ) { return $aAllFields; }
+        if ( ! $this->_oTask ) { 
+            return $aAllFields; 
+        }    
+        if ( ! isset( $aAllFields['_default'] ) || ! is_array( $aAllFields['_default'] ) ) { 
+            return $aAllFields; 
+        }
         
         $aAllFields['_default'] = $aAllFields['_default'] 
             + $this->_getModuleFields( $this->_oTask->occurrence, ( array ) $this->_oTask->{$this->_oTask->occurrence} )
@@ -58,11 +67,21 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
         
     }    
         
-    /*
-     * Validation methods
+    /**
+     * A validation callback method.
+     * 
+     * @callback        filter      validation_ + extended class name
      */
-    public function validation_TaskScheduler_MetaBox_Occurrence( $aInput, $aOldInput ) {    // validation_ + extended class name
-                    
+    public function validation_TaskScheduler_MetaBox_Occurrence( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) {
+                  
+        $_aParams    = func_get_args() + array(
+            null, null, null, null
+        );
+        $aInput      = $_aParams[ 0 ];
+        $aOldInput   = $_aParams[ 1 ];
+        $oAdminPage  = $_aParams[ 2 ];
+        $aSubmitInfo = $_aParams[ 3 ]; 
+        
         return $aInput;
         
     }

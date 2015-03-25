@@ -49,7 +49,7 @@ class TaskScheduler_Event_Routine {
         $_iMaxTaskExecutionTime   = ( int ) $oRoutine->_max_execution_time;
         
         // Store the previous task status in a transient. This is used to cancel the routine.
-        $_sLoadID = TaskScheduler_Registry::TransientPrefix . md5( $nSpawnedTime );
+        $_sLoadID = TaskScheduler_Registry::TRANSIENT_PREFIX . md5( $nSpawnedTime );
         TaskScheduler_WPUtility::setTransient( $_sLoadID, $_sPreviousTaskStatus, $_iMaxTaskExecutionTime ? $_iMaxTaskExecutionTime : 30 );    // avoid setting 0 for the expiration duration.
         
         $oRoutine->setMeta( '_routine_status',  'awaiting' );    // the 'Force Execution' task option will ignore this status if enabled. Otherwise, it is used to determine scheduled routines.
@@ -76,7 +76,7 @@ class TaskScheduler_Event_Routine {
     
         // Check the previous task status.
         $_nSpawnedMicrotime      = $oRoutine->getMeta( '_spawned_time' );
-        $_sTransientKey          = TaskScheduler_Registry::TransientPrefix . md5( $_nSpawnedMicrotime );
+        $_sTransientKey          = TaskScheduler_Registry::TRANSIENT_PREFIX . md5( $_nSpawnedMicrotime );
         $_sPreviousTaskStatus    = TaskScheduler_WPUtility::getTransient( $_sTransientKey );
         if ( $_sPreviousTaskStatus ) {
             $oRoutine->setMeta( '_routine_status', $_sPreviousTaskStatus );
@@ -91,8 +91,8 @@ class TaskScheduler_Event_Routine {
      */
     public function _replyToDoBeforeRoutine( $oRoutine ) {
 
-        $oRoutine->setMeta( '_routine_status',  'processing' );
-        $oRoutine->setMeta( '_last_run_time',   microtime( true ) );
+        $oRoutine->setMeta( '_routine_status', 'processing' );
+        $oRoutine->setMeta( '_last_run_time', microtime( true ) );
         $oRoutine->deleteMeta( '_is_spawned' );    
     
     }
@@ -217,7 +217,7 @@ class TaskScheduler_Event_Routine {
                 
         // Clean the previous status transient
         $_nSpawnedMicrotime    = $oRoutine->getMeta( '_spawned_time' );
-        $_sTransientKey        = TaskScheduler_Registry::TransientPrefix . md5( $_nSpawnedMicrotime );        
+        $_sTransientKey        = TaskScheduler_Registry::TRANSIENT_PREFIX . md5( $_nSpawnedMicrotime );        
         TaskScheduler_WPUtility::deleteTransient( $_sTransientKey );
                 
     }

@@ -50,11 +50,11 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
         $this->_oTaskListTable->aData = $_aTasks;
         
         // Set the count for the view links.
-        $this->_oTaskListTable->_iEnabledTasks      = $_oEnabled->found_posts;
-        $this->_oTaskListTable->_iDisabledTasks     = $_oDisabled->found_posts;
-        $this->_oTaskListTable->_iSystemRoutines    = $_oSystem->found_posts;
-        $this->_oTaskListTable->_iRoutines          = $_oRoutines->found_posts;
-        $this->_oTaskListTable->_iThreads           = $_oThreads->found_posts;
+        $this->_oTaskListTable->_iEnabledTasks   = $_oEnabled->found_posts;
+        $this->_oTaskListTable->_iDisabledTasks  = $_oDisabled->found_posts;
+        $this->_oTaskListTable->_iSystemRoutines = $_oSystem->found_posts;
+        $this->_oTaskListTable->_iRoutines       = $_oRoutines->found_posts;
+        $this->_oTaskListTable->_iThreads        = $_oThreads->found_posts;
         
     }    
     
@@ -68,7 +68,7 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
             $_aQueryArgs = array();
             if ( isset( $_GET['orderby'], $_GET['order'] ) ) {
                 $_aQueryArgs['meta_key'] = $_GET['orderby'];
-                $_aQueryArgs['order']     = strtoupper( $_GET['order'] );
+                $_aQueryArgs['order']    = strtoupper( $_GET['order'] );
             }                
             
             switch( strtolower( $sLabel ) ) {
@@ -79,7 +79,7 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
                         'tax_query' => array(
                             'relation'    =>    'AND',
                             array(
-                                'taxonomy'  => TaskScheduler_Registry::Taxonomy_SystemLabel,
+                                'taxonomy'  => TaskScheduler_Registry::$aTaxonomies[ 'system' ],
                                 'field'     => 'slug',
                                 'terms'     => array( 'system' ),
                                 'operator'  => 'NOT IN'
@@ -93,21 +93,21 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
                         'tax_query'     => array(
                             'relation'  => 'AND',
                             array(
-                                'taxonomy'  =>  TaskScheduler_Registry::Taxonomy_SystemLabel,
-                                'field'     =>  'slug',
-                                'terms'     =>  array( 'system' ),
-                                'operator'  =>  'NOT IN'
+                                'taxonomy'  => TaskScheduler_Registry::$aTaxonomies[ 'system' ],
+                                'field'     => 'slug',
+                                'terms'     => array( 'system' ),
+                                'operator'  => 'NOT IN'
                             ),            
                         ),                            
                     ) + $_aQueryArgs;                    
                     break;
                 case 'system':
                     $_aQueryArgs = array(
-                        'post_type'     => TaskScheduler_Registry::PostType_Task,
+                        'post_type'     => TaskScheduler_Registry::$aPostTypes[ 'task' ],
                         'post_status'   => array( 'pending', 'private', 'publish' ),    
                         'tax_query'     => array(
                             array(
-                                'taxonomy'  => TaskScheduler_Registry::Taxonomy_SystemLabel,
+                                'taxonomy'  => TaskScheduler_Registry::$aTaxonomies[ 'system' ],
                                 'field'     => 'slug',
                                 'terms'     => 'system',
                             ),
@@ -117,7 +117,7 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
                 case 'routine':
                     return TaskScheduler_RoutineUtility::find( 
                         array( 
-                            'post_type' =>  TaskScheduler_Registry::PostType_Routine,
+                            'post_type' =>  TaskScheduler_Registry::$aPostTypes[ 'routine' ],
                         ) 
                         + $_aQueryArgs 
                     );
@@ -135,7 +135,7 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
     protected function _setTaskListingTableForm() {
                     
         $this->addSettingSections(
-            TaskScheduler_Registry::AdminPage_TaskList,    // the target page slug
+            TaskScheduler_Registry::$aAdminPages[ 'task_list' ],    // the target page slug
             array(
                 'section_id'    => 'task_listing_table',
                 // 'title'            =>    __( 'Tasks', 'task-scheduler' ),

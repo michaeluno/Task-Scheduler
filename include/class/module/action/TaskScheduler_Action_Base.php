@@ -19,8 +19,14 @@ abstract class TaskScheduler_Action_Base extends TaskScheduler_Module_Factory {
      */
     public function __construct( $sSlug, $asWizardClasses=array() ) {
         
-        parent::__construct( $sSlug, $asWizardClasses, 'action' );
-        if ( ! $sSlug ) { return; }
+        parent::__construct( 
+            $sSlug, 
+            $asWizardClasses, 
+            'action'
+        );
+        if ( ! $sSlug ) { 
+            return; 
+        }
         
         // For action type extensions, the slug is used for the action hook name.
         // Here the callback is hooked up with a filter, not action, in order to receive and return an exit code.

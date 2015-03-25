@@ -86,7 +86,7 @@ final class TaskScheduler_Option {
      */
     static public function getInstance() {
         
-        self::$oInstance = self::$oInstance ? self::$oInstance : new TaskScheduler_Option( TaskScheduler_Registry::OptionKey );
+        self::$oInstance = self::$oInstance ? self::$oInstance : new TaskScheduler_Option( TaskScheduler_Registry::$aOptionKeys['main'] );
         return self::$oInstance;
         
     }

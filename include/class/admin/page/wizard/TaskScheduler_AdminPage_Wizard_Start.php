@@ -2,9 +2,9 @@
 /**
  * One of the base classes of the plugin admin page class for the wizard pages.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -23,11 +23,17 @@ abstract class TaskScheduler_AdminPage_Wizard_Start extends TaskScheduler_AdminP
          */
         private function _disableAddNewButton() {
         
-            if ( ! $this->oProp->bIsAdmin ) { return; }
+            if ( ! $this->oProp->bIsAdmin ) { 
+                return; 
+            }
             
-            if ( ! in_array( $this->oUtil->getPageNow(), array( 'post-new.php' ) ) ) { return; }
+            if ( ! in_array( $this->oUtil->getPageNow(), array( 'post-new.php' ) ) ) { 
+                return; 
+            }
                 
-            if ( $this->oUtil->getCurrentPostType() != TaskScheduler_Registry::PostType_Task ) { return; }
+            if ( $this->oUtil->getCurrentPostType() != TaskScheduler_Registry::$aPostTypes[ 'task' ] ) { 
+                return; 
+            }
             
             TaskScheduler_PluginUtility::goToAddNewPage();        
             exit();

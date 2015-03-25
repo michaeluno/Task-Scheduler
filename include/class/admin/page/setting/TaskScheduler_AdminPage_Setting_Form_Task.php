@@ -14,7 +14,7 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Task extends TaskScheduler_A
     public function _defineInPageTabs() {
         
         $this->addInPageTabs(
-            TaskScheduler_Registry::AdminPage_Setting,    // the target page slug 
+            TaskScheduler_Registry::$aAdminPages[ 'setting' ],    // the target page slug 
             array(
                 'tab_slug'    =>    'task',    // avoid hyphen(dash), dots, and white spaces
                 'title'        =>    __( 'Task', 'task-scheduler' ),
@@ -30,7 +30,7 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Task extends TaskScheduler_A
     protected function _defineForm() {
     
         $this->addSettingSections(
-            TaskScheduler_Registry::AdminPage_Setting,    // the target page slug
+            TaskScheduler_Registry::$aAdminPages[ 'setting' ],    // the target page slug
             array(
                 'section_id'    =>    'routine',
                 'tab_slug'        =>    'task',

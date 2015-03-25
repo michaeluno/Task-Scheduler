@@ -59,7 +59,7 @@ abstract class TaskScheduler_Module_Factory {
         if ( 
             is_admin() 
             && (
-                isset( $_GET['page'] ) && in_array( $_GET['page'], array( TaskScheduler_Registry::AdminPage_AddNew, TaskScheduler_Registry::AdminPage_EditModule ) )
+                isset( $_GET['page'] ) && in_array( $_GET['page'], array( TaskScheduler_Registry::$aAdminPages[ 'add_new' ], TaskScheduler_Registry::$aAdminPages[ 'edit_module' ] ) )
                 || isset( $GLOBALS['pagenow'] ) && in_array( $GLOBALS['pagenow'], array( 'post.php' ) )
             )
         ) {

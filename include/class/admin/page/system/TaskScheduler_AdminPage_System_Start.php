@@ -9,6 +9,4 @@
  * @since        1.0.0
  */
 
-abstract class TaskScheduler_AdminPage_System_Start extends TaskScheduler_AdminPageFramework {
-        
-}
+abstract class TaskScheduler_AdminPage_System_Start extends TaskScheduler_AdminPageFramework {}

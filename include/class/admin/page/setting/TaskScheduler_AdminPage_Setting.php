@@ -2,9 +2,9 @@
 /**
  * One of the abstract class of the plugin admin page class.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -13,15 +13,15 @@ final class TaskScheduler_AdminPage_Setting extends TaskScheduler_AdminPage_Sett
 
     public function setUp() {
     
-        $this->setRootMenuPageBySlug( TaskScheduler_Registry::AdminPage_Root );
+        $this->setRootMenuPageBySlug( TaskScheduler_Registry::$aAdminPages['root'] );
         $this->addSubMenuItems(
             array(
-                'title'            =>    __( 'Settings', 'task-scheduler' ),    // page and menu title
-                'page_slug'        =>    TaskScheduler_Registry::AdminPage_Setting    // page slug
+                'title'            => __( 'Settings', 'task-scheduler' ),    // page and menu title
+                'page_slug'        => TaskScheduler_Registry::$aAdminPages[ 'setting' ]    // page slug
             )
         );        
                         
-        add_action( "load_" . TaskScheduler_Registry::AdminPage_Setting, array( $this, '_replyToLoadSettingPage' ) );
+        add_action( "load_" . TaskScheduler_Registry::$aAdminPages[ 'setting' ], array( $this, '_replyToLoadSettingPage' ) );
         
     }
     

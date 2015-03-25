@@ -2,9 +2,9 @@
 /**
  * One of the base classes of the plugin admin page class for the wizard pages.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -24,11 +24,11 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskSchedul
 
         $_aWizardOptions = $this->_getWizardOptions();
         $this->_deleteWizardOptions();
-        
+
         // Check the required keys - the user may comeback to the page from the browser's Back button.
         if ( ! isset( $_aWizardOptions['post_title'], $_aWizardOptions['occurrence'], $_aWizardOptions['routine_action'] ) ) {
-            
-            $this->setSettingNotice( __( 'The wizard session has been expired. Please start from the beginning.', 'task-scheduler' ) );
+
+            $this->setSettingNotice( __( 'Required data are missing. Please start from the beginning.', 'task-scheduler' ) );
             exit( TaskScheduler_PluginUtility::goToAddNewPage() );
             
         }
@@ -38,7 +38,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskSchedul
         
         // Add advanced options - these will appear in the Advanced meta box in the task edit page.
         $_aWizardOptions['_max_root_log_count'] = TaskScheduler_Option::get( array( 'task_default', 'max_root_log_count' ) );
-        $_aWizardOptions['_max_execution_time']    = TaskScheduler_Option::get( array( 'task_default', 'max_execution_time' ) );
+        $_aWizardOptions['_max_execution_time'] = TaskScheduler_Option::get( array( 'task_default', 'max_execution_time' ) );
         $_aWizardOptions['_force_execution']    = false;
 
         // Create a task as post and schedule the next run time.
@@ -46,7 +46,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskSchedul
         if ( $_iPostID ) {
             $_oTask    = TaskScheduler_Routine::getInstance( $_iPostID );
             $_oTask->setNextRunTime();
-// TODO: beat only if the next scheduled time is very close.
+            // @todo: perform the heartbeat only if the next scheduled time is very close.
             do_action( 'task_scheduler_action_check_shceduled_actions' );
             $this->setSettingNotice( __( 'A task has been created.', 'task-scheduler' ), 'updated' );
         }
@@ -60,7 +60,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskSchedul
          * Removes unnecessary elements from the saving wizard options array.
          */
         protected function _dropUnnecessaryWizardOptions( array $aWizardOptions ) {
-            
+
             unset( 
                 $aWizardOptions['submit'], 
                 $aWizardOptions['transient_key'], 
@@ -71,8 +71,8 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskSchedul
             );
             
             // Remove section keys that are used for modules with multiple screens.
-            $_sMainActionSlug = $aWizardOptions['routine_action'];
-            $_aSectionSlugs = apply_filters( "task_scheduler_admin_filter_wizard_slugs_{$_sMainActionSlug}", array() );
+            $_sMainActionSlug   = $aWizardOptions[ 'routine_action' ];
+            $_aSectionSlugs     = apply_filters( "task_scheduler_admin_filter_wizard_slugs_{$_sMainActionSlug}", array() );
             foreach( $_aSectionSlugs as $_sSectionSlug ) {
                 if ( $_sSectionSlug === $_sMainActionSlug ) { continue; }
                 unset( $aWizardOptions[ $_sSectionSlug ] );

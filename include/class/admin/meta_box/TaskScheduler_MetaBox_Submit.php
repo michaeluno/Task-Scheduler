@@ -12,12 +12,24 @@ class TaskScheduler_MetaBox_Submit extends TaskScheduler_MetaBox_Base {
         
         add_action( 'admin_menu', array( $this, '_replyToRemoveDefaultMetaBoxes' ) );
         
+        // Modifies the post status of the task
+        add_filter( 
+            'wp_insert_post_data', 
+            array( $this, 'replyToModifyThePostStatus' ), 
+            100,    // lower priority than Admin Page Framework (which also uses the same hook for metabox form field validation)
+            2 
+        );        
+        
     }
         /**
          * Removes the default submit meta box that has the Update/Create button.
          */
         public function _replyToRemoveDefaultMetaBoxes() {
-            remove_meta_box( 'submitdiv', TaskScheduler_Registry::PostType_Task, 'side' );
+            remove_meta_box( 
+                'submitdiv', 
+                TaskScheduler_Registry::$aPostTypes[ 'task' ], 
+                'side'
+            );
         }    
     
     
@@ -27,45 +39,50 @@ class TaskScheduler_MetaBox_Submit extends TaskScheduler_MetaBox_Base {
      */ 
     public function setUp() {
         
-        $this->_iRoutineID = isset( $_GET['post'] ) ? $_GET['post'] : 0;
+        $this->_iRoutineID = isset( $_GET['post'] ) 
+            ? $_GET['post'] 
+            : 0;
         
         $this->addSettingFields(
             array(
-                'field_id'        =>    'label_last_run_time',
-                'type'            =>    'text',            
-                'title'            =>    __( 'Last Run Time', 'task-scheduler' ),
-                'attributes'    =>    array(
-                    'readonly'    =>    'ReadOnly',
-                    'name'        =>    '',    // dummy
-                    'size'        =>    16,
+                'field_id'        => 'label_last_run_time',
+                'type'            => 'text',            
+                'title'           => __( 'Last Run Time', 'task-scheduler' ),
+                'attributes'      => array(
+                    'readonly'    => 'ReadOnly',
+                    'name'        => '',    // dummy
+                    'size'        => 16,
                 ),
             ),
             array(
-                'field_id'        =>    'label_next_run_time',
-                'type'            =>    'text',            
-                'title'            =>    __( 'Next Run Time', 'task-scheduler' ),
-                'attributes'    =>    array(
-                    'readonly'    =>    'ReadOnly',
-                    'name'        =>    '',    // dummy
-                    'size'        =>    16,
+                'field_id'        => 'label_next_run_time',
+                'type'            => 'text',            
+                'title'           => __( 'Next Run Time', 'task-scheduler' ),
+                'attributes'      => array(
+                    'readonly'    => 'ReadOnly',
+                    'name'        => '',    // dummy
+                    'size'        => 16,
                 ),
             ),    
             array(
-                'field_id'        =>    '_is_enabled',
-                'type'            =>    'radio',        
-                'title'            =>    __( 'Switch', 'task-scheduler' ),
-                'label'            =>    array(
+                'field_id'        => '_is_enabled',
+                'type'            => 'radio',        
+                'title'           => __( 'Switch', 'task-scheduler' ),
+                'label'           => array(
                     1    =>    __( 'Enabled', 'task-scheduler' ),
                     0    =>    __( 'Disabled', 'task-scheduler' ),                
                 ),
                 // 'value'            =>    1,
             ),            
             array(
-                'field_id'        =>    'task_submit',
-                'type'            =>    'submit',
-                'value'            =>    __( 'Update', 'task-scheduler' ),
-                'attributes'    =>    array(
-                    'style'    =>    'float:right;',                    
+                'field_id'        => 'task_submit',
+                'type'            => 'submit',
+                'value'           => __( 'Update', 'task-scheduler' ),
+                'label_min_width' => '',
+                'attributes'      => array(
+                    'fields' => array(
+                        'style'    => 'width: auto; float:right;',
+                    ),
                 ),
             ),
             array()
@@ -102,24 +119,62 @@ class TaskScheduler_MetaBox_Submit extends TaskScheduler_MetaBox_Base {
         
     }
     
-    /*
-     * Validation methods
+    /**
+     * A validation callback.
+     * 
+     * @callback        filter      validation_ + extended class name
      */
-    public function validation_TaskScheduler_MetaBox_Submit( $aInput, $aOldInput ) {    // validation_ + extended class name
+    public function validation_TaskScheduler_MetaBox_Submit( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) {
         
-        $_bShouldBeEnabled = $aInput['_is_enabled'] ? true : false;
-        $_sEnableOrDisable = $aInput['_is_enabled'] ? 'enable' : 'disable';
+        $_aParams    = func_get_args() + array(
+            null, null, null, null
+        );
+        $aInput      = $_aParams[ 0 ];
+        $aOldInput   = $_aParams[ 1 ];
+        $oAdminPage  = $_aParams[ 2 ];
+        $aSubmitInfo = $_aParams[ 3 ];            
+        
+        $_bShouldBeEnabled  = $aInput['_is_enabled'] ? true : false;
+        $_sEnableOrDisable  = $aInput['_is_enabled'] ? 'enable' : 'disable';
         unset( $aInput[ '_is_enabled' ], $aInput['task_submit'] );
 
         $_iRoutineID    = isset( $_POST['post_ID'] ) ? $_POST['post_ID'] : ( isset( $_POST['ID'] ) ? $_POST['ID'] : 0 );
-        $_oRoutine        = TaskScheduler_Routine::getInstance( $_iRoutineID );
-        $_bisEnabled    = $_oRoutine->isEnabled() ? true : false;
+        $_oRoutine      = TaskScheduler_Routine::getInstance( $_iRoutineID );
+        $_bisEnabled    = ( bool ) $_oRoutine->isEnabled();
         if ( $_bisEnabled !== $_bShouldBeEnabled ) {
-            $_oRoutine->{$_sEnableOrDisable}();
+                            
+            // @deprecated  The below method uses wp_update_post() and it causes infinite recursive function calls in a recent framework or WordPress version.
+            // $_oRoutine->{$_sEnableOrDisable}();
+            
+            $this->_sNewPostStatus = $_bShouldBeEnabled 
+                ? 'private' 
+                : 'pending';            
+            update_post_meta( 
+                $_iRoutineID, 
+                '_routine_status', 
+                'ready'
+            );
+
+            
         }
 
         return $aInput;
         
     }
+        /**
+         * Stores the new task (post) status.
+         */
+        private $_sNewPostStatus = '';
+        /**
+         * 
+         */
+        public function replyToModifyThePostStatus( $aPostData, $aUnmodified ) {
+            
+            if ( $this->_sNewPostStatus ) {
+                $aPostData['post_status'] = $this->_sNewPostStatus;
+            }
+            return $aPostData;
+            
+        }
     
 }

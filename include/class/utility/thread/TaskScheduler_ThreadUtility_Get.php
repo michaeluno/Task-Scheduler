@@ -27,7 +27,7 @@ abstract class TaskScheduler_ThreadUtility_Get extends TaskScheduler_ThreadUtili
                 
         // Construct the query argument array.
         $_aArgs = $aArgs + array(
-            'post_type'         => TaskScheduler_Registry::PostType_Thread,
+            'post_type'         => TaskScheduler_Registry::$aPostTypes[ 'thread' ],
             'post_status'       => array( 'publish', 'private' ),
             'posts_per_page'    => -1,    // -1 for all            
             'orderby'           => 'date ID',        // another option: 'ID',    
@@ -58,7 +58,7 @@ abstract class TaskScheduler_ThreadUtility_Get extends TaskScheduler_ThreadUtili
             ),                
             'tax_query'     => array(
                 array(    // exclude the internal threads
-                    'taxonomy'  => TaskScheduler_Registry::Taxonomy_SystemLabel,
+                    'taxonomy'  => TaskScheduler_Registry::$aTaxonomies[ 'system' ],
                     'field'     => 'slug',
                     'terms'     => array( 'internal' ),
                     'operator'  => 'NOT IN'            

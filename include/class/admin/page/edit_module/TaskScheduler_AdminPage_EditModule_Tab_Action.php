@@ -14,11 +14,11 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
     protected function _defineInPageTabs() {
                     
         $this->addInPageTabs(
-            TaskScheduler_Registry::AdminPage_EditModule,    // the target page slug                    
+            TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],    // the target page slug                    
             array(    // the landing page of the editing page of action module options.
-                'tab_slug'            =>    'edit_action',    
-                'title'                =>    __( 'Edit Action', 'task-scheduler' ),
-                'show_in_page_tab'    =>    false,
+                'tab_slug'            => 'edit_action',    
+                'title'               => __( 'Edit Action', 'task-scheduler' ),
+                'show_in_page_tab'    => false,
             )    
         );
                 
@@ -29,11 +29,11 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
     protected function _defineForm() {
 
         $this->addSettingSections(
-            TaskScheduler_Registry::AdminPage_EditModule,    // the target page slug
+            TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],    // the target page slug
             array(
-                'section_id'    =>    'edit_action',
-                'tab_slug'        =>    'edit_action',
-                'title'            =>    __( 'Action', 'task-scheduler' ),
+                'section_id'    => 'edit_action',
+                'tab_slug'      => 'edit_action',
+                'title'         => __( 'Action', 'task-scheduler' ),
             )            
         );        
             
@@ -41,38 +41,37 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
         $this->addSettingFields(
             'edit_action',    // the target section ID        
             array(
-                'field_id'            =>    'transient_key',
-                'type'                =>    'text',                
-                'hidden'            =>    true,
-                'value'                =>    $this->_sTransientKey,
+                'field_id'            => 'transient_key',
+                'type'                => 'text',                
+                'hidden'              => true,
+                'value'               => $this->_sTransientKey,
             ),            
             array(
-                'field_id'            =>    'routine_action',
-                'title'                =>    __( 'Action', 'task-scheduler' ),
-                'type'                =>    'revealer',
-                'label'                =>    array(),    // will be redefined in the 'field_definition_{...}' callback.
-                // 'description'        =>    __( 'Select the one to perform when the time comes', 'task-scheduler' ),
+                'field_id'            => 'routine_action',
+                'title'               => __( 'Action', 'task-scheduler' ),
+                'type'                => 'revealer',
+                'label'               => array(),    // will be redefined in the 'field_definition_{...}' callback.
             ),
             array(
-                'field_id'            =>    'custom_action',
-                'title'                =>    __( 'Custom Action', 'task-scheduler' ),
-                'type'                =>    'text',
-                'description'        =>    __( 'If none of the action you want to execute is listed above, specify the action name here.', 'task-scheduler' ),
+                'field_id'            => 'custom_action',
+                'title'               => __( 'Custom Action', 'task-scheduler' ),
+                'type'                => 'text',
+                'description'         => __( 'If none of the action you want to execute is listed above, specify the action name here.', 'task-scheduler' ),
             ),                
             array(    
-                'field_id'            =>    'submit',
-                'type'                =>    'submit',
-                'label'                =>    __( 'Next', 'task-scheduler' ),
-                'label_min_width'    =>    0,
-                'attributes'        =>    array(
+                'field_id'            => 'submit',
+                'type'                => 'submit',
+                'label'               => __( 'Next', 'task-scheduler' ),
+                'label_min_width'     => 0,
+                'attributes'          => array(
                     'field'    =>    array(
                         'style'    =>    'float:right; clear:none; display: inline;',
                     ),
                 ),    
                  array(
-                    'value'            =>    __( 'Back', 'task-scheduler' ),
-                    'href'            =>    TaskScheduler_PluginUtility::getEditTaskPageURL(),
-                    'attributes'    =>    array(
+                    'value'            => __( 'Back', 'task-scheduler' ),
+                    'href'             => TaskScheduler_PluginUtility::getEditTaskPageURL(),
+                    'attributes'       => array(
                         'class'    =>    'button secondary ',
                     ),                        
                 ),                 
@@ -96,7 +95,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
         $aField['label']        = apply_filters( 
             'task_scheduler_admin_filter_field_labels_wizard_action', 
             array(
-                -1    =>    '--- ' . __( 'Select Action', 'task-scheduler' ) . ' ---',
+                -1    => '--- ' . __( 'Select Action', 'task-scheduler' ) . ' ---',
             ) 
         );
         if ( ! array_key_exists ( $_sRoutineActionSlug, $aField['label'] ) ) {
@@ -122,12 +121,21 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
     /**
      * The validation callback method for the 'edit_action' form section.
      * 
-     * @since    1.0.0
+     * @since       1.0.0
+     * @callback    filter      validation_{instantiated class name}_{section ID}
      */
-    public function validation_TaskScheduler_AdminPage_EditModule_edit_action( $aInput, $aOldInput ) {    // validation_{instantiated class name}_{section ID}
+    public function validation_TaskScheduler_AdminPage_EditModule_edit_action( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) {
 
-        $_bIsValid = true;
-        $_aErrors = array();
+        $_aParams    = func_get_args() + array(
+            null, null, null, null
+        );
+        $aInput      = $_aParams[ 0 ];
+        $aOldInput   = $_aParams[ 1 ];
+        $oAdminPage  = $_aParams[ 2 ];
+        $aSubmitInfo = $_aParams[ 3 ];    
+    
+        $_bIsValid   = true;
+        $_aErrors    = array();
         
         // Do validation checks.
         if ( '-1' === ( string ) $aInput['routine_action'] && '' == trim( $aInput['custom_action'] ) ) {
@@ -188,8 +196,8 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
             $_sActionHook = $aWizardOptions['routine_action'];
             $_sRedirectURL = add_query_arg( 
                 array( 
-                    'transient_key'    =>    $aWizardOptions['transient_key'],
-                    'tab'            =>    'update_module',    // if the applying filters below does not take effect, it goes to the create task page.
+                    'transient_key'  => $aWizardOptions['transient_key'],
+                    'tab'            => 'update_module',    // if the applying filters below does not take effect, it goes to the create task page.
                 )
             );    
             // The transient key must be embedded in the url.

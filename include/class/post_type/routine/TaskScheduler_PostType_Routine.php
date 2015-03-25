@@ -24,7 +24,7 @@ final class TaskScheduler_PostType_Routine extends TaskScheduler_AdminPageFramew
                 'menu_position'         => 110,
                 'can_export'            => true,
                 'supports'              => array( 'title' ),
-                'taxonomies'            => array( TaskScheduler_Registry::Taxonomy_SystemLabel, ),
+                'taxonomies'            => array( TaskScheduler_Registry::$aTaxonomies[ 'system' ], ),
                 'menu_icon'             => is_admin() ? TaskScheduler_Registry::getPluginURL( '/asset/image/menu_icon_16x16.png' ) : '',
                 'has_archive'           => false,
                 'hierarchical'          => true,

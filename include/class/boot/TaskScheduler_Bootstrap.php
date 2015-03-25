@@ -42,7 +42,7 @@ final class TaskScheduler_Bootstrap {
         $this->_localize();
         
         // 7. Check requirements.
-        add_action( 'admin_init', array( $this, '_replyToCheckRequirements' ) );
+        register_activation_hook( $this->_sFilePath, array( $this, '_replyToCheckRequirements' ) );
         
         // 8. Schedule to load plugin specific components.
         add_action( 'plugins_loaded', array( $this, '_replyToLoadPluginComponents' ) );
@@ -65,24 +65,26 @@ final class TaskScheduler_Bootstrap {
         $_sPluginDir =  dirname( $sFilePath );
         
         // If the include script fails, the auto loader class is not defined.
-        if ( class_exists( 'TaskScheduler_AutoLoad' ) ) {
-            return;
-        }
+        // if ( class_exists( 'TaskScheduler_AutoLoad' ) ) {
+            // return;
+        // }
         
         // Include the autoloader and the library
-        include( $_sPluginDir . '/include/class/boot/TaskScheduler_AutoLoad.php' );
-        include( $_sPluginDir . '/include/library/admin-page-framework/task-scheduler-admin-page-framework.min.php' );
+        // include( $_sPluginDir . '/include/class/boot/TaskScheduler_AutoLoad.php' );
+        // include( $_sPluginDir . '/include/library/admin-page-framework/task-scheduler-admin-page-framework.min.php' );
+        // include( $_sPluginDir . '/include/library/admin-page-framework/admin-page-framework.php' );
         
         // Include the include lists.
         $_aClassFiles        = array();
-        $_aAdminClassFiles    = array();
+        $_aAdminClassFiles   = array();
         include( $_sPluginDir . '/include/task-scheduler-include-class-file-list.php' );
         if ( $this->_bIsAdmin ) {
             include( $_sPluginDir . '/include/task-scheduler-include-class-file-list-admin.php' );
         }
         
         // Register them
-        new TaskScheduler_AutoLoad( array(), array(), $_aClassFiles + $_aAdminClassFiles );    
+        new TaskScheduler_AdminPageFramework_RegisterClasses( array(), array(), $_aClassFiles + $_aAdminClassFiles );
+        // new TaskScheduler_AutoLoad( array(), array(), $_aClassFiles + $_aAdminClassFiles );    
         
         
         // These lines should only be read if the inclusion script or the minified class file is disabled manually.
@@ -116,30 +118,18 @@ final class TaskScheduler_Bootstrap {
      */
     public function _replyToCheckRequirements() {
 
-        new TaskScheduler_Requirements( 
-            $this->_sFilePath,
-            array(
-                'php' => array(
-                    'version'    =>    TaskScheduler_Registry::RequiredPHPVersion,
-                    'error'        =>    __( 'The plugin requires the PHP version %1$s or higher.', 'task-scheduler' ),
-                ),
-                'wordpress' => array(
-                    'version'    =>    TaskScheduler_Registry::RequiredWordPressVersion,
-                    'error'        =>    __( 'The plugin requires the WordPress version %1$s or higher.', 'task-scheduler' ),
-                ),
-                // 'mysql'    =>    array(
-                    // 'version'    =>    '5.5.24',
-                    // 'error' => __( 'The plugin requires the MySQL version %1$s or higher.', 'task-scheduler' ),
-                // ),
-                'functions' => array(
-                    'curl_version' => sprintf( __( 'The plugin requires the %1$s to be installed.', 'task-scheduler' ), 'the cURL library' ),
-                ),
-                // 'classes' => array(
-                    // 'DOMDocument' => sprintf( __( 'The plugin requires the <a href="%1$s">libxml</a> extension to be activated.', 'pseudo-image' ), 'http://www.php.net/manual/en/book.libxml.php' ),
-                // ),
-                'constants'    => array(),
-            )
+        $_oRequirements = new TaskScheduler_Requirements( 
+            TaskScheduler_Registry::$aRequirements,
+            TaskScheduler_Registry::NAME
         );    
+        $_oRequirements->check();
+        if ( $_oRequirements->check() ) {            
+            $_oRequirements->deactivatePlugin( 
+                $this->_sFilePath, 
+                __( 'Deactivating the plugin', 'task-scheduler' ),  // additional message
+                true    // is in the activation hook. This will exit the script.
+            );
+        }                
         
     }
 
@@ -175,14 +165,14 @@ final class TaskScheduler_Bootstrap {
     public function _replyToDoWhenPluginDeactivates() {
                             
         // Delete transients
-        TaskScheduler_WPUtility::clearTransients( TaskScheduler_Registry::TransientPrefix );
+        TaskScheduler_WPUtility::clearTransients( TaskScheduler_Registry::TRANSIENT_PREFIX );
 
         // Remove the server heartbeat resume WP Cron event.
         TaskScheduler_WPUtility::unscheduleWPCronEventsByName( 'task_scheduler_action_check_heartbeat_hourly' );
         
         // Delete options
         if ( TaskScheduler_Option::get( array( 'reset', 'reset_upon_deactivation' ) ) ) {
-            delete_option( TaskScheduler_Registry::OptionKey );
+            delete_option( TaskScheduler_Registry::$aOptionKeys['main'] );
         }
     }    
     
@@ -218,10 +208,10 @@ final class TaskScheduler_Bootstrap {
         new TaskScheduler_Event;    
 
         // 2. Post types - we have four custom post types. One is for tasks, another is for routines, another is for threads, and the last is for logs.
-        new TaskScheduler_PostType_Task( TaskScheduler_Registry::PostType_Task, null, $this->_sFilePath );
-        new TaskScheduler_PostType_Thread( TaskScheduler_Registry::PostType_Thread, null, $this->_sFilePath );
-        new TaskScheduler_PostType_Routine( TaskScheduler_Registry::PostType_Routine, null, $this->_sFilePath );
-        new TaskScheduler_PostType_Log( TaskScheduler_Registry::PostType_Log, null, $this->_sFilePath );
+        new TaskScheduler_PostType_Task( TaskScheduler_Registry::$aPostTypes[ 'task' ], null, $this->_sFilePath );
+        new TaskScheduler_PostType_Thread( TaskScheduler_Registry::$aPostTypes[ 'thread' ], null, $this->_sFilePath );
+        new TaskScheduler_PostType_Routine( TaskScheduler_Registry::$aPostTypes[ 'routine' ], null, $this->_sFilePath );
+        new TaskScheduler_PostType_Log( TaskScheduler_Registry::$aPostTypes[ 'log' ], null, $this->_sFilePath );
         
         // 3. Admin pages
         if ( $this->_bIsAdmin ) {
@@ -230,16 +220,22 @@ final class TaskScheduler_Bootstrap {
             $this->oAdminPage = new TaskScheduler_AdminPage( '', $this->_sFilePath );
 
             // 3.2. Add New
-            new TaskScheduler_AdminPage_Wizard( '', $this->_sFilePath );        // passing an empty string will disable saving options.
+            new TaskScheduler_AdminPage_Wizard( 
+                '', // passing an empty string will disable saving options.
+                $this->_sFilePath 
+            );        
             
             // 3.3. Edit Module Options
-            new TaskScheduler_AdminPage_EditModule( '', $this->_sFilePath );    // passing an empty string will disable saving options.
+            new TaskScheduler_AdminPage_EditModule(
+                '', // passing an empty string will disable saving options.
+                $this->_sFilePath 
+            );    
             
             // 3.4. Settings
-            new TaskScheduler_AdminPage_Setting( TaskScheduler_Registry::OptionKey, $this->_sFilePath );
+            new TaskScheduler_AdminPage_Setting( TaskScheduler_Registry::$aOptionKeys['main'], $this->_sFilePath );
             
             // 3.5. System - will be implemented at some point in the future.
-            // new TaskScheduler_AdminPage_System( TaskScheduler_Registry::OptionKey, $this->_sFilePath );    
+            // new TaskScheduler_AdminPage_System( TaskScheduler_Registry::$aOptionKeys['main'], $this->_sFilePath );    
             
             // 3.6. Meta Boxes for task editing page (post.php).
             $this->_registerMetaBoxes();
@@ -263,35 +259,35 @@ final class TaskScheduler_Bootstrap {
             new TaskScheduler_MetaBox_Main(
                 'task_scheduler_meta_box_main',
                 __( 'Main', 'task-scheduler' ),
-                array( TaskScheduler_Registry::PostType_Task, TaskScheduler_Registry::PostType_Thread ),
+                array( TaskScheduler_Registry::$aPostTypes[ 'task' ], TaskScheduler_Registry::$aPostTypes[ 'thread' ] ),
                 'normal',    // context
                 'high'
             );        
             new TaskScheduler_MetaBox_Occurrence(
                 'task_scheduler_meta_box_occurrence',
                 __( 'Occurrence', 'task-scheduler' ),
-                array( TaskScheduler_Registry::PostType_Task, TaskScheduler_Registry::PostType_Thread ),
+                array( TaskScheduler_Registry::$aPostTypes[ 'task' ], TaskScheduler_Registry::$aPostTypes[ 'thread' ] ),
                 'normal',    // context
                 'default'        // priority
             );
             new TaskScheduler_MetaBox_Action(
                 'task_scheduler_meta_box_action',
                 __( 'Action', 'task-scheduler' ),
-                array( TaskScheduler_Registry::PostType_Task, TaskScheduler_Registry::PostType_Thread ),
+                array( TaskScheduler_Registry::$aPostTypes[ 'task' ], TaskScheduler_Registry::$aPostTypes[ 'thread' ] ),
                 'normal',    // context
                 'low'        // priority
             );            
             new TaskScheduler_MetaBox_Advanced(
                 'task_scheduler_meta_box_advanced',
                 __( 'Advanced', 'task-scheduler' ),
-                array( TaskScheduler_Registry::PostType_Task, TaskScheduler_Registry::PostType_Thread ),
+                array( TaskScheduler_Registry::$aPostTypes[ 'task' ], TaskScheduler_Registry::$aPostTypes[ 'thread' ] ),
                 'advanced',    // context
                 'default'
             );
             new TaskScheduler_MetaBox_Submit(
                 'task_scheduler_meta_box_submit',
                 __( 'Update', 'task-scheduler' ),
-                array( TaskScheduler_Registry::PostType_Task, TaskScheduler_Registry::PostType_Thread ),
+                array( TaskScheduler_Registry::$aPostTypes[ 'task' ], TaskScheduler_Registry::$aPostTypes[ 'thread' ] ),
                 'side',
                 'high'
             );

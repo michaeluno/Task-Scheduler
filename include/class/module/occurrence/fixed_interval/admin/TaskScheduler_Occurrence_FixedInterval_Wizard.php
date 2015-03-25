@@ -2,9 +2,9 @@
 /**
  * Creates wizard pages for the 'Occurrence' option.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -25,17 +25,17 @@ final class TaskScheduler_Occurrence_FixedInterval_Wizard extends TaskScheduler_
     
         return array(        
             array(    
-                'field_id'            =>    'interval',
-                'title'                =>    __( 'Interval', 'task-scheduler' ),
-                'type'                =>    'number',
+                'field_id'            => 'interval',
+                'title'               => __( 'Interval', 'task-scheduler' ),
+                'type'                => 'number',
                 array(
-                    'type'        =>    'select',
-                    'default'    =>    'minute',
-                    'label'        =>    array(
-                        'second'    =>    __( 'second(s)', 'task-scheduler' ),
-                        'minute'    =>    __( 'minute(s)', 'task-scheduler' ),
-                        'hour'        =>    __( 'hour(s)', 'task-scheduler' ),
-                        'day'        =>    __( 'day(s)', 'task-scheduler' ),
+                    'type'       => 'select',
+                    'default'    => 'minute',
+                    'label'      => array(
+                        'second' => __( 'second(s)', 'task-scheduler' ),
+                        'minute' => __( 'minute(s)', 'task-scheduler' ),
+                        'hour'   => __( 'hour(s)', 'task-scheduler' ),
+                        'day'    => __( 'day(s)', 'task-scheduler' ),
                     ),
                 ),
             ),                
@@ -43,7 +43,15 @@ final class TaskScheduler_Occurrence_FixedInterval_Wizard extends TaskScheduler_
         
     }    
 
-    public function validateSettings( $aInput, $aOldInput, $oAdminPage ) { 
+    public function validateSettings( /* $aInput, $aOldInput, $oAdminPage */ ) { 
+        
+        $_aParams    = func_get_args() + array(
+            null, null, null, null
+        );
+        $aInput      = $_aParams[ 0 ];
+        $aOldInput   = $_aParams[ 1 ];
+        $oAdminPage  = $_aParams[ 2 ];
+        $aSubmitInfo = $_aParams[ 3 ];             
         
         $_bIsValid = true;
         $_aErrors = array();
@@ -66,7 +74,6 @@ final class TaskScheduler_Occurrence_FixedInterval_Wizard extends TaskScheduler_
     
         return $aInput; 
         
-    }
-    
+    }   
     
 }

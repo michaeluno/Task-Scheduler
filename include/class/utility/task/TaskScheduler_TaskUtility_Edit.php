@@ -2,9 +2,9 @@
 /**
  * One of the abstract parent classes of the TaskScheduler_TaskUtility class.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -20,8 +20,8 @@ abstract class TaskScheduler_TaskUtility_Edit extends TaskScheduler_TaskUtility_
         
         wp_update_post( 
             array(
-                'ID'            =>    $iTaskID,
-                'post_status'   =>    'private',
+                'ID'            => $iTaskID,
+                'post_status'   => 'private',
             ) 
         );        
         update_post_meta( $iTaskID, '_routine_status', 'ready' );
@@ -37,8 +37,8 @@ abstract class TaskScheduler_TaskUtility_Edit extends TaskScheduler_TaskUtility_
         
         wp_update_post( 
             array(
-                'ID'            =>    $iTaskID,
-                'post_status'   =>    'pending',
+                'ID'            => $iTaskID,
+                'post_status'   => 'pending',
             ) 
         );        
         update_post_meta( $iTaskID, '_routine_status', 'ready' );

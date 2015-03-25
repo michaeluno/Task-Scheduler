@@ -123,14 +123,14 @@ final class TaskScheduler_Routine extends TaskScheduler_Routine_Taxonomy {
      * @return    boolean    True if it is a task.
      */
     public function isTask() {
-        return ( TaskScheduler_Registry::PostType_Task == $this->post_type );
+        return ( TaskScheduler_Registry::$aPostTypes[ 'task' ] == $this->post_type );
     }
     
     /**
      * Checks whether the object is a routine.
      */
     public function isRoutine() {
-        return ( TaskScheduler_Registry::PostType_Routine == $this->post_type );
+        return ( TaskScheduler_Registry::$aPostTypes[ 'routine' ] == $this->post_type );
     }
 
     /**
@@ -138,11 +138,11 @@ final class TaskScheduler_Routine extends TaskScheduler_Routine_Taxonomy {
      */
     public function getType() {
         switch( $this->post_type ) {
-            case TaskScheduler_Registry::PostType_Routine:
+            case TaskScheduler_Registry::$aPostTypes[ 'routine' ]:
                 return 'routine';
-            case TaskScheduler_Registry::PostType_Thread:
+            case TaskScheduler_Registry::$aPostTypes[ 'thread' ]:
                 return 'thread';
-            case TaskScheduler_Registry::PostType_Task:
+            case TaskScheduler_Registry::$aPostTypes[ 'task' ]:
                 return 'task';                
             default:
                 return '';

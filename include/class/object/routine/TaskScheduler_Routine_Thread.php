@@ -16,7 +16,7 @@ abstract class TaskScheduler_Routine_Thread extends TaskScheduler_Routine_Log {
      * Checks whether the object is a thread.
      */
     public function isThread() {
-        return ( TaskScheduler_Registry::PostType_Thread == $this->post_type );
+        return ( TaskScheduler_Registry::$aPostTypes[ 'thread' ] == $this->post_type );
     }        
     
     /**

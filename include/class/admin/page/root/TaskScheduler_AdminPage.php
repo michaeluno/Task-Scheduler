@@ -39,17 +39,17 @@ final class TaskScheduler_AdminPage extends TaskScheduler_AdminPage_Setup {
                     [3] => Tasks )
         ) */
 
-        $_iMenuPosition_Task = null;
-        $_iMenuPosition_Log = null;
+        $_iMenuPosition_Task    = null;
+        $_iMenuPosition_Log     = null;
         foreach ( $GLOBALS['submenu'][ $_sPageSlug ] as $_iIndex => $_aSubMenu ) {
                         
             if ( ! isset( $_aSubMenu[ 2 ] ) ) { continue; }
             
-            if (  TaskScheduler_Registry::AdminPage_TaskList == $_aSubMenu[ 2 ] ) {    
+            if (  TaskScheduler_Registry::$aAdminPages[ 'task_list' ] == $_aSubMenu[ 2 ] ) {    
                 $_iMenuPosition_Task = $_iIndex;
             }
             
-            if ( 'edit.php?post_type=' . TaskScheduler_Registry::PostType_Log == $_aSubMenu[ 2 ] ) {
+            if ( 'edit.php?post_type=' . TaskScheduler_Registry::$aPostTypes[ 'log' ] == $_aSubMenu[ 2 ] ) {
                 $_iMenuPosition_Log = $_iIndex;
             }
 

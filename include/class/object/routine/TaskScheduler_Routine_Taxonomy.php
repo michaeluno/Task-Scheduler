@@ -16,7 +16,7 @@ abstract class TaskScheduler_Routine_Taxonomy extends TaskScheduler_Routine_Thre
      */
     public function hasTerm( $asTerm, $sTaxonomy='' )  {
         
-        $sTaxonomy = $sTaxonomy ? $sTaxonomy : TaskScheduler_Registry::Taxonomy_SystemLabel;
+        $sTaxonomy = $sTaxonomy ? $sTaxonomy : TaskScheduler_Registry::$aTaxonomies[ 'system' ];
         return has_term( $asTerm, $sTaxonomy, $this->ID );
         
     }

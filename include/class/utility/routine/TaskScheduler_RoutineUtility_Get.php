@@ -28,9 +28,9 @@ abstract class TaskScheduler_RoutineUtility_Get extends TaskScheduler_RoutineUti
         // Construct the query argument array.
         $_aArgs = $aArgs + array(
             'post_type'         => array( 
-                TaskScheduler_Registry::PostType_Task,
-                TaskScheduler_Registry::PostType_Routine,
-                TaskScheduler_Registry::PostType_Thread 
+                TaskScheduler_Registry::$aPostTypes[ 'task' ],
+                TaskScheduler_Registry::$aPostTypes[ 'routine' ],
+                TaskScheduler_Registry::$aPostTypes[ 'thread' ] 
             ),
             'post_status'       => array( 'publish', 'private' ),
             'posts_per_page'    => -1,    // -1 for all            

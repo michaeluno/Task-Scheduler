@@ -14,49 +14,49 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_Wizard extends TaskScheduler_A
     /**
      * Defines the add_new form.
      */
-    protected function _setWizard( $sTransientKey ) {
+    protected function _setWizardForm_AddNewTask( $sTransientKey ) {
         
         $this->addSettingSections(
-            TaskScheduler_Registry::AdminPage_AddNew,    // the target page slug
+            TaskScheduler_Registry::$aAdminPages[ 'add_new' ],    // the target page slug
             array(
-                'tab_slug'        =>    'wizard',
-                'section_id'    =>    'wizard',
-                'title'            =>    __( 'Task Creation Wizard', 'task-scheduler' ),
+                'tab_slug'     => 'wizard',
+                'section_id'   => 'wizard',
+                'title'        => __( 'Task Creation Wizard', 'task-scheduler' ),
             )            
         );        
         $this->addSettingFields(
             'wizard',    // the target section ID
             array(
-                'field_id'            =>    'transient_key',
-                'type'                =>    'text',                
-                'hidden'            =>    true,
-                'value'                =>    $sTransientKey,
+                'field_id'            => 'transient_key',
+                'type'                => 'text',                
+                'hidden'              => true,
+                'value'               => $sTransientKey,
             ),
             array(    
-                'field_id'            =>    'post_title',
-                'title'                =>    __( 'Task Name', 'task-scheduler' ),
-                'type'                =>    'text',
+                'field_id'            => 'post_title',
+                'title'               => __( 'Task Name', 'task-scheduler' ),
+                'type'                => 'text',
             ),    
             array(    
-                'field_id'            =>    'post_excerpt',
-                'title'                =>    __( 'Description', 'task-scheduler' ) . ' (' . __( 'optional', 'task-manager' ) . ')',
-                'type'                =>    'textarea',
+                'field_id'            => 'post_excerpt',
+                'title'               => __( 'Description', 'task-scheduler' ) . ' (' . __( 'optional', 'task-manager' ) . ')',
+                'type'                => 'textarea',
             ),                
             array(    
-                'field_id'                =>    'occurrence',
-                'title'                    =>    __( 'Occurrence', 'task-scheduler' ),
-                'type'                    =>    'radio',
-                'label_min_width'        =>    '100%',
-                'label'                    =>    array(),    // redefined in the 'field_definition_{...}' callback.
+                'field_id'            => 'occurrence',
+                'title'               => __( 'Occurrence', 'task-scheduler' ),
+                'type'                => 'radio',
+                'label_min_width'     => '100%',
+                'label'               => array(),    // redefined in the 'field_definition_{...}' callback.
             ),    
             array(    
-                'field_id'            =>    'submit',
-                'type'                =>    'submit',
-                'label'                =>    __( 'Next', 'task-scheduler' ),
-                'label_min_width'    =>    0,
-                'attributes'        =>    array(
-                    'field'    =>    array(
-                        'style'    =>    'float:right; clear:none; display: inline;',
+                'field_id'            => 'submit',
+                'type'                => 'submit',
+                'label'               => __( 'Next', 'task-scheduler' ),
+                'label_min_width'     => 0,
+                'attributes'          => array(
+                    'field'    => array(
+                        'style' => 'float:right; clear:none; display: inline;',
                     ),
                 ),                        
             )    
@@ -70,7 +70,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_Wizard extends TaskScheduler_A
     public function field_definition_TaskScheduler_AdminPage_Wizard_wizard_occurrence( $aField ) {
     
         // Set the first item as the default.
-        $aField['label'] = apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_occurrence', $aField['label'] );    
+        $aField['label'] = apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_occurrence', $aField['label'] );
         foreach( $aField['label'] as $_sSlug => $_sLabel ) {
             $_sDescription = apply_filters( "task_scheduler_filter_description_occurrence_{$_sSlug}", '' );
             if ( $_sDescription ) {
@@ -80,7 +80,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_Wizard extends TaskScheduler_A
         
         // Set the default.
         $_aLabels = array_keys( $aField['label'] );    // Avoid the PHP strict standard warning            
-        $aField['default'] =  array_shift( $_aLabels );        
+        $aField['default'] = array_shift( $_aLabels );        
         return $aField;
         
     }    
@@ -88,13 +88,22 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_Wizard extends TaskScheduler_A
     /**
      * The validation callback method for the wizard form section.
      * 
-     * @since    1.0.0
+     * @since       1.0.0
+     * @callback    filter      validation_{instantiated class name}_{section ID}
      */
-    public function validation_TaskScheduler_AdminPage_Wizard_wizard( $aInput, $aOldInput ) {    // validation_{instantiated class name}_{section ID}
+    public function validation_TaskScheduler_AdminPage_Wizard_wizard( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) { 
 
-        $_bIsValid = true;
-        $_aErrors = array();
-        
+        $_aParams    = func_get_args() + array(
+            null, null, null, null
+        );
+        $aInput      = $_aParams[ 0 ];
+        $aOldInput   = $_aParams[ 1 ];
+        $oAdminPage  = $_aParams[ 2 ];
+        $aSubmitInfo = $_aParams[ 3 ];      
+    
+        $_bIsValid   = true;
+        $_aErrors    = array();
+
         // Do validation checks.
         if ( ! $aInput['post_title'] ) {
             
@@ -123,7 +132,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_Wizard extends TaskScheduler_A
         $_sRedirectURL = add_query_arg( array( 'transient_key'    =>    $aInput['transient_key'], ));    
         $_sRedirectURL = add_query_arg(
             array(
-                'transient_key'    =>    $aInput['transient_key'],
+                'transient_key'    => $aInput['transient_key'],
             ),
             apply_filters( 'task_scheduler_admin_filter_wizard_occurrence_redirect_url_' . $aInput['occurrence'], $_sRedirectURL, $aInput )
         );
@@ -136,7 +145,10 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_Wizard extends TaskScheduler_A
         
         $aInput['occurrence_label'] = apply_filters( "task_scheduler_filter_label_occurrence_" . $aInput['occurrence'], $aInput['occurrence'] );
 
-        $this->_saveWizardOptions( $aInput['transient_key'], $aInput );
+        $this->_saveWizardOptions( 
+            $aInput['transient_key'], 
+            $aInput 
+        );
 
         // Go to the next page.
         exit( wp_safe_redirect( $_sRedirectURL ) );

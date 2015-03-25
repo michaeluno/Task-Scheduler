@@ -2,9 +2,9 @@
 /**
  * One of the abstract class of the plugin admin page class.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -22,8 +22,8 @@ abstract class TaskScheduler_AdminPage_Setup extends TaskScheduler_AdminPage_For
         );
         $this->addSubMenuItems(
             array(
-                'title'            =>    __( 'Tasks', 'task-scheduler' ),    // page and menu title
-                'page_slug'        =>    TaskScheduler_Registry::AdminPage_TaskList    // page slug                
+                'title'     => __( 'Tasks', 'task-scheduler' ),    // page and menu title
+                'page_slug' => TaskScheduler_Registry::$aAdminPages[ 'task_list' ]    // page slug                
             ),
             array()
         );

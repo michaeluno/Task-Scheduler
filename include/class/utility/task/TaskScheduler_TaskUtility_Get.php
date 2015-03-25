@@ -27,7 +27,7 @@ abstract class TaskScheduler_TaskUtility_Get extends TaskScheduler_TaskUtility_E
                 
         // Construct the query argument array.
         $_aArgs = $aArgs + array(
-            'post_type'          =>    TaskScheduler_Registry::PostType_Task,
+            'post_type'          =>    TaskScheduler_Registry::$aPostTypes[ 'task' ],
             'post_status'        =>    array( 'publish', 'private' ),    // means 'Enabled'
             'posts_per_page'     =>    -1,    // -1 for all            
             'orderby'            =>    'date ID',        // another option: 'ID',    

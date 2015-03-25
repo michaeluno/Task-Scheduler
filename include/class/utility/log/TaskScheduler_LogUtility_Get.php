@@ -22,7 +22,7 @@ abstract class TaskScheduler_LogUtility_Get extends TaskScheduler_LogUtility_Add
                 
         // Construct the query argument array.
         $_aArgs = $aArgs + array(
-            'post_type'            =>    TaskScheduler_Registry::PostType_Log,
+            'post_type'            =>    TaskScheduler_Registry::$aPostTypes[ 'log' ],
             'post_status'        =>    array( 'publish', 'private' ),
             'posts_per_page'     =>    -1,    // -1 for all            
             'orderby'            =>    'date ID',        // another option: 'ID',    
@@ -46,7 +46,7 @@ abstract class TaskScheduler_LogUtility_Get extends TaskScheduler_LogUtility_Add
         return get_children( 
             array(
                 'post_parent' => $iRootLogID,
-                'post_type' => TaskScheduler_Registry::PostType_Log,            
+                'post_type' => TaskScheduler_Registry::$aPostTypes[ 'log' ],            
             )
         );        
 
@@ -62,7 +62,7 @@ abstract class TaskScheduler_LogUtility_Get extends TaskScheduler_LogUtility_Add
         $_aResults = get_children( 
             array(
                 'post_parent' => $iRootLogID,
-                'post_type' => TaskScheduler_Registry::PostType_Log,        
+                'post_type' => TaskScheduler_Registry::$aPostTypes[ 'log' ],        
             ),
             'ARRAY_A'
         );        

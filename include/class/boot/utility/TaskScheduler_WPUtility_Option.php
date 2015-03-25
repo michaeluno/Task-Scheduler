@@ -29,9 +29,13 @@ abstract class TaskScheduler_WPUtility_Option extends TaskScheduler_WPUtility_Po
         $_bWpUsingExtObjectCacheTemp = $_wp_using_ext_object_cache; 
         $_wp_using_ext_object_cache = false;
 
-        self::$_bIsNetworkAdmin = isset( self::$_bIsNetworkAdmin ) ? self::$_bIsNetworkAdmin : is_network_admin();
+        self::$_bIsNetworkAdmin = isset( self::$_bIsNetworkAdmin ) 
+            ? self::$_bIsNetworkAdmin 
+            : is_network_admin();
 
-        $_vTransient = ( self::$_bIsNetworkAdmin ) ? delete_site_transient( $sTransientKey ) : delete_transient( $sTransientKey );
+        $_vTransient = self::$_bIsNetworkAdmin 
+            ? delete_site_transient( $sTransientKey ) 
+            : delete_transient( $sTransientKey );
 
         // reset prior value of $_wp_using_ext_object_cache
         $_wp_using_ext_object_cache = $_bWpUsingExtObjectCacheTemp; 
@@ -48,11 +52,15 @@ abstract class TaskScheduler_WPUtility_Option extends TaskScheduler_WPUtility_Po
         // temporarily disable $_wp_using_ext_object_cache
         global $_wp_using_ext_object_cache;  
         $_bWpUsingExtObjectCacheTemp = $_wp_using_ext_object_cache; 
-        $_wp_using_ext_object_cache = false;
+        $_wp_using_ext_object_cache  = false;
 
-        self::$_bIsNetworkAdmin = isset( self::$_bIsNetworkAdmin ) ? self::$_bIsNetworkAdmin : is_network_admin();
+        self::$_bIsNetworkAdmin = isset( self::$_bIsNetworkAdmin ) 
+            ? self::$_bIsNetworkAdmin 
+            : is_network_admin();
 
-        $_vTransient = ( self::$_bIsNetworkAdmin ) ? get_site_transient( $sTransientKey ) : get_transient( $sTransientKey );    
+        $_vTransient = self::$_bIsNetworkAdmin 
+            ? get_site_transient( $sTransientKey ) 
+            : get_transient( $sTransientKey );    
 
         // reset prior value of $_wp_using_ext_object_cache
         $_wp_using_ext_object_cache = $_bWpUsingExtObjectCacheTemp; 
@@ -74,16 +82,19 @@ abstract class TaskScheduler_WPUtility_Option extends TaskScheduler_WPUtility_Po
         // temporarily disable $_wp_using_ext_object_cache
         global $_wp_using_ext_object_cache;  
         $_bWpUsingExtObjectCacheTemp = $_wp_using_ext_object_cache; 
-        $_wp_using_ext_object_cache = false;
+        $_wp_using_ext_object_cache  = false;
 
         self::$_bIsNetworkAdmin = isset( self::$_bIsNetworkAdmin ) ? self::$_bIsNetworkAdmin : is_network_admin();
         
-        $_vTransient = ( self::$_bIsNetworkAdmin ) ? set_site_transient( $sTransientKey, $vValue, $iExpiration ) : set_transient( $sTransientKey, $vValue, $iExpiration );
+        $_vTransient = self::$_bIsNetworkAdmin
+            ? set_site_transient( $sTransientKey, $vValue, $iExpiration ) 
+            : set_transient( $sTransientKey, $vValue, $iExpiration );
 
         // reset prior value of $_wp_using_ext_object_cache
         $_wp_using_ext_object_cache = $_bWpUsingExtObjectCacheTemp; 
 
         return $_vTransient;     
+        
     }
  
     /**

@@ -57,7 +57,7 @@ abstract class TaskScheduler_RoutineUtility_Add extends TaskScheduler_RoutineUti
         );
         $aRoutineOptions  = $aRoutineOptions + array(
             'post_title'            => sprintf( __( 'Routine instance of %1$s', 'task-scheduler' ), $_oTask->post_title ),
-            'post_type'             => TaskScheduler_Registry::PostType_Routine,
+            'post_type'             => TaskScheduler_Registry::$aPostTypes[ 'routine' ],
             '_routine_status'       => 'queued',
             'occurrence'            => 'volatile',
             'owner_task_id'         => $iTaskID,
@@ -72,7 +72,7 @@ abstract class TaskScheduler_RoutineUtility_Add extends TaskScheduler_RoutineUti
         }
         $_aTerms = wp_get_post_terms( 
             $iTaskID,
-            TaskScheduler_Registry::Taxonomy_SystemLabel, 
+            TaskScheduler_Registry::$aTaxonomies[ 'system' ], 
             array( "fields" => "names" ) 
         );
         

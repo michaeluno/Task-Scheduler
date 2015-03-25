@@ -3,7 +3,7 @@
  * Creates wizard pages for the 'exit_code' occurrence type.
  * 
  * @package      Task Scheduler
- * @copyright    Copyright (c) 2014, Michael Uno
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
  * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
@@ -39,7 +39,7 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
                 'title'               => __( 'Tasks', 'task-scheduler' ),
                 'type'                => 'autocomplete',
                 'description'         => __( 'Leave this empty to apply to any tasks.', 'task-scheduler' ),
-                'settings'            => add_query_arg( array( 'request' => 'autocomplete', 'post_types' => TaskScheduler_Registry::PostType_Task, 'post_status' => 'private', ) + $_GET, admin_url( TaskScheduler_AdminPageFramework_WPUtility::getPageNow() ) ),
+                'settings'            => add_query_arg( array( 'request' => 'autocomplete', 'post_types' => TaskScheduler_Registry::$aPostTypes[ 'task' ], 'post_status' => 'private', ) + $_GET, admin_url( TaskScheduler_AdminPageFramework_WPUtility::getPageNow() ) ),
                 'settings2'           => array(    // equivalent to the second parameter of the tokenInput() method
                     // 'tokenLimit'        =>    1,
                     'preventDuplicates' => true,
@@ -52,7 +52,15 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
         
     }    
         
-    public function validateSettings( $aInput, $aOldInput, $oAdminPage ) { 
+    public function validateSettings( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) { 
+        
+        $_aParams    = func_get_args() + array(
+            null, null, null, null
+        );
+        $aInput      = $_aParams[ 0 ];
+        $aOldInput   = $_aParams[ 1 ];
+        $oAdminPage  = $_aParams[ 2 ];
+        $aSubmitInfo = $_aParams[ 3 ];             
         
         $_bIsValid = true;
         $_aErrors = array();
@@ -110,8 +118,8 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
         }
         
         // At the moment, set only two exit code options.
-        $aWizardOptions[ '__on_exit_code' ]                = $this->_aSubmit[ 'exit_code' ];
-        $aWizardOptions[ '__on_exit_code_task_ids' ]    = $this->_getSetTaskIDs( $this->_aSubmit['task_ids'] );
+        $aWizardOptions[ '__on_exit_code' ]          = $this->_aSubmit[ 'exit_code' ];
+        $aWizardOptions[ '__on_exit_code_task_ids' ] = $this->_getSetTaskIDs( $this->_aSubmit['task_ids'] );
         if ( empty( $aWizardOptions[ '__on_exit_code_task_ids' ] ) ) {
             unset( $aWizardOptions[ '__on_exit_code_task_ids' ] );
         }
@@ -126,11 +134,15 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
          */
         private function _getSetTaskIDs( $sJSONTaskIDs ) {
             
-            if ( ! $sJSONTaskIDs ) { return array(); }
+            if ( ! $sJSONTaskIDs ) { 
+                return array(); 
+            }
             $_aJSONTaskIDs = json_decode( $sJSONTaskIDs, true );
             $_aTaskIDs = array();
             foreach( $_aJSONTaskIDs as $_aTaskID ) {
-                if ( ! isset( $_aTaskID['id'] ) ) { continue; }
+                if ( ! isset( $_aTaskID['id'] ) ) { 
+                    continue; 
+                }
                 $_aTaskIDs[] = $_aTaskID['id'];
             }
             return $_aTaskIDs;

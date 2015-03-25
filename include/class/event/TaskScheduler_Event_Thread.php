@@ -47,7 +47,7 @@ class TaskScheduler_Event_Thread {
         if ( ! is_object( $_oRoutine ) ) { return; }
                 
         // For internal threads, do not add any log.
-        if ( has_term( array( 'internal', ), TaskScheduler_Registry::Taxonomy_SystemLabel, $oThread->ID ) ) { return; }
+        if ( has_term( array( 'internal', ), TaskScheduler_Registry::$aTaxonomies[ 'system' ], $oThread->ID ) ) { return; }
                 
         $_oRoutine->log( sprintf( __( 'Finished the thread: %1$s', 'task-scheduler' ), $oThread->ID ), $oThread->parent_routine_log_id );
         

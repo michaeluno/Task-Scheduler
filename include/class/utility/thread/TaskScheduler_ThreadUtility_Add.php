@@ -52,7 +52,7 @@ abstract class TaskScheduler_ThreadUtility_Add extends TaskScheduler_ThreadUtili
          
         $_aOwnerTerms = wp_get_post_terms( 
             $iOwnerRoutineID,
-            TaskScheduler_Registry::Taxonomy_SystemLabel, 
+            TaskScheduler_Registry::$aTaxonomies[ 'system' ], 
             array( "fields" => "names" ) 
         );              
 
@@ -158,7 +158,7 @@ abstract class TaskScheduler_ThreadUtility_Add extends TaskScheduler_ThreadUtili
                 'post_status'           => 'private',
                 '_next_run_time'        => microtime( true ),    // queue now
                 'tax_input'             => array( 
-                    TaskScheduler_Registry::Taxonomy_SystemLabel => $aSystemTaxonomyTerms
+                    TaskScheduler_Registry::$aTaxonomies[ 'system' ] => $aSystemTaxonomyTerms
                 ),        
                 '_max_execution_time'   => $_oOwnerTask->_max_execution_time,
             )
@@ -178,15 +178,15 @@ abstract class TaskScheduler_ThreadUtility_Add extends TaskScheduler_ThreadUtili
         }
 
         // Create a post.
-        $_iThreadID = self::insertPost( $aThreadOptions, TaskScheduler_Registry::PostType_Thread );
+        $_iThreadID = self::insertPost( $aThreadOptions, TaskScheduler_Registry::$aPostTypes[ 'thread' ] );
                                                 
         // Add terms because the 'tax_input' argument does not take effect for some reasons when multiple terms are set.
-         $_aSystemInternalTerms = isset( $aThreadOptions['tax_input'][ TaskScheduler_Registry::Taxonomy_SystemLabel ] )
-            ? $aThreadOptions['tax_input'][ TaskScheduler_Registry::Taxonomy_SystemLabel ]
+         $_aSystemInternalTerms = isset( $aThreadOptions['tax_input'][ TaskScheduler_Registry::$aTaxonomies[ 'system' ] ] )
+            ? $aThreadOptions['tax_input'][ TaskScheduler_Registry::$aTaxonomies[ 'system' ] ]
             : array();
 
         if ( ! empty( $_aSystemInternalTerms ) ) {
-            wp_set_object_terms( $_iThreadID, $_aSystemInternalTerms, TaskScheduler_Registry::Taxonomy_SystemLabel, true );
+            wp_set_object_terms( $_iThreadID, $_aSystemInternalTerms, TaskScheduler_Registry::$aTaxonomies[ 'system' ], true );
         }                
                 
         return $_iThreadID;

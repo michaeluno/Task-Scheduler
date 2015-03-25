@@ -80,7 +80,7 @@ class TaskScheduler_ListTable extends TaskScheduler_ListTable_Views {
     public function setNonce() {
         
         $this->sNonce = uniqid();
-        TaskScheduler_WPUtility::setTransient( TaskScheduler_Registry::TransientPrefix . $this->sNonce, $this->sNonce, 60*10 );
+        TaskScheduler_WPUtility::setTransient( TaskScheduler_Registry::TRANSIENT_PREFIX . $this->sNonce, $this->sNonce, 60*10 );
         return $this->sNonce;
         
     }
@@ -89,14 +89,14 @@ class TaskScheduler_ListTable extends TaskScheduler_ListTable_Views {
      */
     public function getNonce( $sNonce ) {
         
-        return TaskScheduler_WPUtility::getTransient( TaskScheduler_Registry::TransientPrefix . $sNonce );
+        return TaskScheduler_WPUtility::getTransient( TaskScheduler_Registry::TRANSIENT_PREFIX . $sNonce );
         
     }
     /**
      * Deletes the specified nonce.
      */
     public function deleteNonce( $sNonnce ) {
-        TaskScheduler_WPUtility::deleteTransient( TaskScheduler_Registry::TransientPrefix . $sNonnce );
+        TaskScheduler_WPUtility::deleteTransient( TaskScheduler_Registry::TRANSIENT_PREFIX . $sNonnce );
     }
             
     /**

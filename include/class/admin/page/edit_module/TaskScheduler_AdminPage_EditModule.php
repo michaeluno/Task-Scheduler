@@ -32,9 +32,9 @@ final class TaskScheduler_AdminPage_EditModule extends TaskScheduler_AdminPage_E
         $_aWizardOptions = apply_filters( 'task_scheduler_admin_filter_wizard_options', $_aWizardOptions );
         return array(
             // section id    => field values.
-            'edit_action'            =>    $_aWizardOptions, // for each module.
-            'edit_occurrence'        =>    $_aWizardOptions, // for each module.
-            '_wizard_options'        =>    $_aWizardOptions, // for each module.
+            'edit_action'     => $_aWizardOptions, // for each module.
+            'edit_occurrence' => $_aWizardOptions, // for each module.
+            '_wizard_options' => $_aWizardOptions, // for each module.
         );
 
     }
