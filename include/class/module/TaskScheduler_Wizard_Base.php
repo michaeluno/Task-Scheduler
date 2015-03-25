@@ -166,7 +166,17 @@ abstract class TaskScheduler_Wizard_Base {
         add_filter( "task_scheduler_admin_filter_wizard_" . $this->_sModuleType . "_redirect_url_" . $this->sSlug, array( $this, '_replyToSetRedirectURL' ), 10, 2 );
 
         // Meta boxes in wp_admin/post.php need to display field values.
-        add_filter( "task_scheduler_filter_fields_{$this->sSlug}", array( $this, '_replyToAddFormFields' ) );
+        add_filter( 
+            "task_scheduler_filter_fields_{$this->sSlug}", 
+            array( $this, '_replyToAddFormFields' ) 
+        );
+        // Meta box form output.
+        add_filter( 
+            'task_scheduler_admin_filter_meta_box_content_' . $this->sSlug,
+            array( $this, 'getMetaboxOutput' ),
+            10,
+            2
+        );
         
     }
 
@@ -545,7 +555,22 @@ abstract class TaskScheduler_Wizard_Base {
     
         return $aInput; 
     }
-
+    
+    /**
+     * User constructor.
+     */
     public function construct() {}
+    
+    /**
+     * Returns the meta box form fields output.
+     */
+    public function getMetaBoxOutput( /* $sOutput, $oTask */ ) { 
+        $_aParams    = func_get_args() + array(
+            null, null
+        );
+        $sOutput = $_aParams[ 0 ];
+        $oTask   = $_aParams[ 1 ];        
+        return $sOutput;
+    }
     
 }

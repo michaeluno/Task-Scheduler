@@ -60,8 +60,11 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
         }
         
         $aAllFields['_default'] = $aAllFields['_default'] 
-            + $this->_getModuleFields( $this->_oTask->occurrence, ( array ) $this->_oTask->{$this->_oTask->occurrence} )
-            + array( 'wizard_redirect_button_occurrence' => $this->_getModuleEditButtonField( 'wizard_redirect_button_occurrence', 'edit_occurrence' ) );
+            + $this->_getModuleFields( 
+                $this->_oTask->occurrence, 
+                ( array ) $this->_oTask->{$this->_oTask->occurrence}
+            )
+        ;
         
         return $aAllFields;        
         
@@ -85,5 +88,18 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
         return $aInput;
         
     }
+    
+    public function content( $sOutput ) {
+        $sOutput = isset( $this->_oTask->occurrence )
+            ? apply_filters(
+                'task_scheduler_admin_filter_meta_box_content_' . $this->_oTask->occurrence,
+                $sOutput,
+                $this->_oTask
+            )
+            : $sOutput;
+        return $sOutput 
+             . $this->_getChangeButton( 'edit_occurrence' )
+            ;
+    }    
     
 }

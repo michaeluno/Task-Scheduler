@@ -51,3 +51,24 @@ textarea[readonly] {
 	padding: 0.4em;
 }
   */
+ 
+
+.task-scheduler-daily-module-days,
+.task-scheduler-daily-module-times
+{
+    margin-left: 1em;
+}
+.task-scheduler-daily-occurrence-module-input {
+    margin: 1em;
+}
+.task-scheduler-daily-module-times {
+    list-style-type: disc;
+    padding-left: 1em;
+}
+.task-scheduler-daily-module-days > li {
+    display: inline-block;
+    margin-right: 1em;
+}
+.task-scheduler-daily-module-days > li > input {
+    margin-right: 0.5em;
+}

@@ -6,6 +6,11 @@
  */
 abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramework_MetaBox {
 // abstract class TaskScheduler_MetaBox_Base extends AdminPageFramework_MetaBox {
+    
+    /**
+     * Stores the task objecct.
+     */
+    protected $_oTask;
         
     public function start() {
         
@@ -49,7 +54,10 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
             return; 
         }
         
-        wp_enqueue_style( 'task_scheduler_meta_box_css', TaskScheduler_Registry::getPluginURL( 'asset/css/meta_box.css' ) );
+        wp_enqueue_style( 
+            'task_scheduler_meta_box_css', 
+            TaskScheduler_Registry::getPluginURL( 'asset/css/meta_box.css' ) 
+        );
         
     }
     
@@ -78,7 +86,9 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
         foreach( $aModularOptions as $_sKey => $_aisValue ) {
             
             // Check if the parsing option key exists in the fields array.
-            if ( ! isset( $_aModularFields[ $_sKey ] ) ) { continue; }
+            if ( ! isset( $_aModularFields[ $_sKey ] ) ) { 
+                continue; 
+            }
             $_aModularField = $_aModularFields[ $_sKey ];
             
             $_aisValue = TaskScheduler_Utility::isJSON( $_aisValue ) ? json_decode( $_aisValue, true ) : $_aisValue;
@@ -117,31 +127,28 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
     }
     
     /**
-     * Returns the 'Change' button field definition array based on the module tab slug.
+     * Returns the module edit link.
+     * @since       1.0.0
      */
-    protected function _getModuleEditButtonField( $sFieldID, $sTabSlug ) {
-
-        $_sModuleEditPageURL = TaskScheduler_PluginUtility::getModuleEditPageURL(
-            array(
-                'transient_key'  => TaskScheduler_Registry::TRANSIENT_PREFIX . uniqid(),
-                'tab'            => $sTabSlug,
-                'post'           => isset( $_GET['post'] ) ? $_GET['post'] : 0,
+    protected function _getChangeButton( $sTabSlug ) {
+        
+        $_sModuleEditPageURL = esc_url(
+            TaskScheduler_PluginUtility::getModuleEditPageURL(
+                array(
+                    'transient_key'  => TaskScheduler_Registry::TRANSIENT_PREFIX . uniqid(),
+                    'tab'            => $sTabSlug,
+                    'post'           => isset( $_GET['post'] )
+                        ? $_GET['post'] 
+                        : 0,
+                )
             )
-        );
-        return array(
-            'field_id'        => $sFieldID,
-            'type'            => 'hidden',
-            'value'           => '',
-            'before_field'    => "<div style='float:right;'>"
+        );            
+        return "<div style='text-align: right; padding: 0.5em 0 1em;'>"
                 . "<a class='button button-secondary button-large' href='{$_sModuleEditPageURL}'>" 
                     . __( 'Change', 'task-scheduler' ) 
-                    . "</a>"
-                . "</div>",
-            'attributes'      => array(
-                'name'        => '',
-            ),                
-        );        
-        
+                . "</a>"
+            . "</div>"
+        ;
     }
     
     /**
@@ -160,5 +167,5 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
         return 'text';
         
     }    
-
+    
 }
