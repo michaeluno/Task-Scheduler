@@ -10,6 +10,7 @@
  */
 
  /**
+  * Defines the 'wizard_select_action' tab in the 'Add New' wizard admin page.
   * 
   * @filter        apply    task_scheduler_admin_filter_wizard_action_redirect_url_{action hook name}        Applies to the redirecting url after submitting the action selecting form.
   */
@@ -21,7 +22,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
     protected function _setWizardForm_SelectAction( $sTransientKey ) {
         
         $this->addSettingSections(
-            TaskScheduler_Registry::$aAdminPages[ 'add_new' ],    // the target page slug
+            TaskScheduler_Registry::$aAdminPages[ 'add_new' ], // the target page slug
             array(
                 'tab_slug'      => 'wizard_select_action',
                 'section_id'    => 'wizard_select_action',
@@ -41,7 +42,6 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
                 'title'             => __( 'Action', 'task-scheduler' ),
                 'type'              => 'revealer',
                 'label'             => array(),    // will be redefined in the field_definition_{...} callback
-                // 'description'    => __( 'Select the action which runs at the scheduled time', 'task-scheduler' ),
             ),
             array(
                 'field_id'          => 'custom_action',
@@ -91,16 +91,16 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
         protected function _getRoutineActionField( array $aField ) {
             
             $_sRoutineActionSlug = $this->_getWizardOptions( 'routine_action' );
-            $aField['label']     = apply_filters( 
+            $aField[ 'label' ]   = apply_filters( 
                 'task_scheduler_admin_filter_field_labels_wizard_action',
                 array()
             );
-            
+
             // Set the default value.
-            $aField['value'] = array_key_exists ( $_sRoutineActionSlug, $aField['label'] )
+            $aField[ 'value' ] = array_key_exists ( $_sRoutineActionSlug, $aField['label'] )
                 ? "#description-{$_sRoutineActionSlug}"
                 : -1;
-                
+
             // Convert the keys to the 'revealer' field type specification.
             $_aLabels = array(
                 -1    =>    '--- ' . __( 'Select Action', 'task-scheduler' ) . ' ---',
@@ -113,7 +113,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
                 // Create action description hidden elements.
                 $_sDescription    = apply_filters( "task_scheduler_filter_description_action_{$_sSlug}", '' );
                 if ( ! $_sDescription ) { continue; }
-                $_sDisplay = $_sSlug === $_sRoutineActionSlug
+                $_sDisplay        = $_sSlug === $_sRoutineActionSlug
                     ? '' 
                     : 'display:none;';
                 $_aDescriptions[] = "<p id='description-{$_sSlug}' style='{$_sDisplay}'>"
@@ -123,7 +123,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
             }
             
             $aField['label'] = $_aLabels;
-            $aField['after_fieldset'] = implode( PHP_EOL, $_aDescriptions );    
+            $aField['after_fieldset'] = implode( PHP_EOL, $_aDescriptions );
             return $aField;
             
         }

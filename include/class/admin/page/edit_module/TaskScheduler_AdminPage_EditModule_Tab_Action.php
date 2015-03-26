@@ -9,6 +9,9 @@
  * @since        1.0.0
  */
 
+ /**
+  * 
+  */
 abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskScheduler_AdminPage_EditModule_Tab_UpdateModuleOptions {
 
     protected function _defineInPageTabs() {
@@ -89,28 +92,40 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
      */     
     public function field_definition_TaskScheduler_AdminPage_EditModule_edit_action_routine_action( $aField ) {
         
-        return $this->_getRoutineActionField( $aField );
-        
-        $_sRoutineActionSlug    = $this->_getWizardOptions( 'routine_action' );
-        $aField['label']        = apply_filters( 
-            'task_scheduler_admin_filter_field_labels_wizard_action', 
-            array(
-                -1    => '--- ' . __( 'Select Action', 'task-scheduler' ) . ' ---',
-            ) 
-        );
-        if ( ! array_key_exists ( $_sRoutineActionSlug, $aField['label'] ) ) {
-            $aField['value']    = -1;
-        }
+        $aField = $this->_getRoutineActionField( $aField );
+                
+        // Re-set the default value as the routine action slug is not set in the first opening screen.
+        $_sRoutineActionSlug = $this->_getActionSlug();
+        if ( '-1' === ( string ) $aField[ 'value' ] && $_sRoutineActionSlug ) {
+            $aField[ 'value' ] = "#description-{$_sRoutineActionSlug}";
+        }            
         return $aField;
-        
+                
     }    
-    
+        private function _getActionSlug() {
+            
+            if ( ! isset( $_GET[ 'post' ] ) ) {
+                return '';
+            }
+            if ( ! $_GET[ 'post' ] ) {
+                return '';
+            }
+            $_oTask = TaskScheduler_Routine::getInstance( $_GET[ 'post' ] );
+            return isset( $_oTask->routine_action )
+                ? $_oTask->routine_action
+                : '';
+            
+        }
+        
     /**
      * Redefines the 'custom_action' field of the 'edit_action' section.
      */     
     public function field_definition_TaskScheduler_AdminPage_EditModule_edit_action_custom_action( $aField ) {
         
-        $_sRoutineActionSlug    = $this->_getWizardOptions( 'routine_action' );
+        $_sRoutineActionSlug    = $this->_getActionSlug();
+        $_sRoutineActionSlug    = $_sRoutineActionSlug
+            ? $_sRoutineActionSlug
+            : $this->_getWizardOptions( 'routine_action' );
         if ( ! array_key_exists ( $_sRoutineActionSlug, apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_action', array( -1 => '_dummy_value' ) ) ) ) {
             $aField['value']    = $_sRoutineActionSlug;
         }        
