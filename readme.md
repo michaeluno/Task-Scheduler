@@ -2,23 +2,25 @@
 
 ### Welcome to our GitHub Repository
 
+<p align="center">
+    <img src="https://lh5.googleusercontent.com/-cFlSfbJuzdc/VROY53huCuI/AAAAAAAAB-8/T0z40G1Jugs/s800/icon-256x256.png" alt="Task Scheduler" />
+</p>
+
 Task Scheduler is an open source WordPress plugin that provides easier UI for registering scheduled tasks.
 
 ## Screenshots ##
 
-<p align="center">
-	<a href="https://ps.w.org/task-scheduler/assets/screenshot-1.png" title="Task Scheduler- Settings">
-		<img src="//ps.w.org/task-scheduler/assets/screenshot-1.png" alt="Task Scheduler- Settings" />
-	</a>
-</p>
-
 <div style="margin:20px; float:left">
-	<a href="https://ps.w.org/task-scheduler/assets/screenshot-2.png" title="Task Scheduler- Settings">
-		<img src="//ps.w.org/task-scheduler/assets/screenshot-2.png" alt="Task Scheduler- Settings" width="320" />
+	<a href="https://lh4.googleusercontent.com/-lUMoaPatEiM/VROY5g3Sr6I/AAAAAAAAB-8/UuXx-cRYGzs/s0/screenshot-1.png" title="Task Scheduler- Settings">
+		<img src="https://lh4.googleusercontent.com/-lUMoaPatEiM/VROY5g3Sr6I/AAAAAAAAB-8/UuXx-cRYGzs/s288/screenshot-1.png" alt="Task Scheduler- Task Listing Table" width="320" />
 	</a>
 	&nbsp;
-	<a href="https://ps.w.org/task-scheduler/assets/screenshot-3.png" title="Task Scheduler- Settings">
-		<img src="//ps.w.org/task-scheduler/assets/screenshot-3.png" alt="Task Scheduler- Settings" width="320" />
+	<a href="https://lh3.googleusercontent.com/-i1EUpsMnw3g/VROY5uZJo5I/AAAAAAAAB-8/tHJjl09-z4A/s0/screenshot-2.png" title="Task Scheduler- Settings">
+		<img src="https://lh3.googleusercontent.com/-i1EUpsMnw3g/VROY5uZJo5I/AAAAAAAAB-8/tHJjl09-z4A/s288/screenshot-2.png.png" alt="Task Scheduler- Add New Task Wizard" width="320" />
+	</a>
+	&nbsp;
+	<a href="https://lh4.googleusercontent.com/-msSKFVRk1TI/VROY6hjC-OI/AAAAAAAAB-8/LiT0t7xP73w/s0/screenshot-3.png" title="Task Scheduler- Settings">
+		<img src="https://lh4.googleusercontent.com/-msSKFVRk1TI/VROY6hjC-OI/AAAAAAAAB-8/LiT0t7xP73w/s288/screenshot-3.png" alt="Task Scheduler- Settings" width="320" />
 	</a>
 	&nbsp;    
 </div>
@@ -64,7 +66,8 @@ There are various ways you can contribute:
 
 If you like it, please rate and review it in the [WordPress Plugin Directory](http://wordpress.org/support/view/plugin-reviews/task-scheduler?filter=5). Also donation would be greatly appreciated. Thank you!
 
-[![Donate with PayPal](https://www.paypal.jp/uploadedImages/wwwpaypaljp/Supporting_Content/jp/contents/popup/logo/SG_mc_vs_am_jcb_JP_203_80.png)](http://en.michaeluno.jp/donate) 
+#### Donate
+[![Donate with PayPal](https://www.paypal.jp/uploadedImages/wwwpaypaljp/Supporting_Content/jp/contents/popup/logo/SG_mc_vs_am_jcb_JP_203_80.png)](http://en.michaeluno.jp/donate)
 
 ## Copyright and License ##
 
