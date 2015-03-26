@@ -31,7 +31,10 @@ echo 'Started...' . $sCarriageReturn;
 // for the front-end
 new PHP_Class_Files_Inclusion_Script_Creator(
 	$sTargetBaseDir,
-	array( $sTargetBaseDir . '/include/library', $sTargetBaseDir . '/include/class' ), 	// scan directory paths
+	array( 
+        $sTargetBaseDir . '/include/library/custom-field-types', 
+        $sTargetBaseDir . '/include/class' 
+    ), 	// scan directory paths
 	$sResultFilePath, 
 	array(
 		'header_class_name'	=>	'TaskScheduler_InclusionScriptHeader',
