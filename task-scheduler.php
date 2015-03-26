@@ -1,6 +1,6 @@
 <?php
 /* 
-	Plugin Name:    Task Scheduler (beta)
+	Plugin Name:    Task Scheduler
 	Plugin URI:     http://en.michaeluno.jp/
 	Description:    Provides an enhanced task management system for WordPress.
 	Author:         miunosoft (Michael Uno)
