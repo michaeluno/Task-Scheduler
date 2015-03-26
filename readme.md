@@ -7,18 +7,18 @@ Task Scheduler is an open source WordPress plugin that provides easier UI for re
 ## Screenshots ##
 
 <p align="center">
-	<a href="http://ps.w.org/task-scheduler/assets/screenshot-1.png" title="Task Scheduler- Settings">
-		<img src="http://ps.w.org/task-scheduler/assets/screenshot-1.png" alt="Task Scheduler- Settings" />
+	<a href="https://ps.w.org/task-scheduler/assets/screenshot-1.png" title="Task Scheduler- Settings">
+		<img src="//ps.w.org/task-scheduler/assets/screenshot-1.png" alt="Task Scheduler- Settings" />
 	</a>
 </p>
 
 <div style="margin:20px; float:left">
-	<a href="http://ps.w.org/task-scheduler/assets/screenshot-2.png" title="Task Scheduler- Settings">
-		<img src="http://ps.w.org/task-scheduler/assets/screenshot-2.png" alt="Task Scheduler- Settings" width="320" />
+	<a href="https://ps.w.org/task-scheduler/assets/screenshot-2.png" title="Task Scheduler- Settings">
+		<img src="//ps.w.org/task-scheduler/assets/screenshot-2.png" alt="Task Scheduler- Settings" width="320" />
 	</a>
 	&nbsp;
-	<a href="http://ps.w.org/task-scheduler/assets/screenshot-3.png" title="Task Scheduler- Settings">
-		<img src="http://ps.w.org/task-scheduler/assets/screenshot-3.png" alt="Task Scheduler- Settings" width="320" />
+	<a href="https://ps.w.org/task-scheduler/assets/screenshot-3.png" title="Task Scheduler- Settings">
+		<img src="//ps.w.org/task-scheduler/assets/screenshot-3.png" alt="Task Scheduler- Settings" width="320" />
 	</a>
 	&nbsp;    
 </div>
@@ -64,7 +64,7 @@ There are various ways you can contribute:
 
 If you like it, please rate and review it in the [WordPress Plugin Directory](http://wordpress.org/support/view/plugin-reviews/task-scheduler?filter=5). Also donation would be greatly appreciated. Thank you!
 
-[![Donate with PayPal](https://www.paypal.com/en_US/i/btn/x-click-but04.gif)](http://en.michaeluno.jp/donate) 
+[![Donate with PayPal](https://www.paypal.jp/uploadedImages/wwwpaypaljp/Supporting_Content/jp/contents/popup/logo/SG_mc_vs_am_jcb_JP_203_80.png)](http://en.michaeluno.jp/donate) 
 
 ## Copyright and License ##
 
