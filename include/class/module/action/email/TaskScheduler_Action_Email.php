@@ -21,7 +21,10 @@ class TaskScheduler_Action_Email extends TaskScheduler_Action_Base {
      */
     public function construct() {
                                     
-        new TaskScheduler_Action_Email_Thread( 'task_scheduler_action_send_indiviual_email' );
+        new TaskScheduler_Action_Email_Thread(
+            'task_scheduler_action_send_indiviual_email',
+            array() // internal, no wizard
+        );
         
     }
     
