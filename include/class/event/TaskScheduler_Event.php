@@ -30,9 +30,10 @@ class TaskScheduler_Event {
                 'TaskScheduler_Action_PostDeleter_Wizard_3'
             ) 
         );
-        new TaskScheduler_Action_Debug( 'task_scheduler_action_debug', 'TaskScheduler_Action_Debug_Wizard' );
+        new TaskScheduler_Action_Debug( 'task_scheduler_action_debug' );
         new TaskScheduler_Action_Email( 'task_scheduler_action_email', 'TaskScheduler_Action_Email_Wizard' );
-        new TaskScheduler_Action_RoutineLogDeleter( 'task_scheduler_action_delete_task_log' );
+        new TaskScheduler_Action_RoutineLogDeleter( 'task_scheduler_action_delete_task_log', array() );
+        
         // @deprecated
         // new TaskScheduler_Action_HungRoutineHandler_Thread( 'task_scheduler_action_handle_hung_task' );
         

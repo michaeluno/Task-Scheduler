@@ -1,6 +1,6 @@
 <?php 
 /**
-	Task Scheduler v1.0.0b14 by miunosoft (Michael Uno) 
+	Task Scheduler v1.0.1b01 by miunosoft (Michael Uno) 
 	Provides an enhanced task management system for WordPress.
 	<http://en.michaeluno.jp/>
 	Copyright (c) 2014, Michael Uno; Licensed under GPL v2 or later */
@@ -27,6 +27,7 @@ $_aClassFiles = array(
 	"TaskScheduler_Wizard_Base"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/TaskScheduler_Wizard_Base.php", 
 	"TaskScheduler_Action_Base"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/TaskScheduler_Action_Base.php", 
 	"TaskScheduler_Wizard_Action_Base"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/TaskScheduler_Wizard_Action_Base.php", 
+	"TaskScheduler_Wizard_Defaut"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/TaskScheduler_Wizard_Defaut.php", 
 	"TaskScheduler_Action_Debug"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/debug/TaskScheduler_Action_Debug.php", 
 	"TaskScheduler_Action_Debug_Wizard"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/debug/admin/TaskScheduler_Action_Debug_Wizard.php", 
 	"TaskScheduler_Action_Email"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/email/TaskScheduler_Action_Email.php", 
@@ -97,4 +98,5 @@ $_aClassFiles = array(
 	"TaskScheduler_TimeRangeCustomFieldType"	=>	TaskScheduler_Registry::$sDirPath . "/include/library/custom-field-types/date-time-custom-field-types/TaskScheduler_TimeRangeCustomFieldType.php", 
 	"TaskScheduler_MultipleTextInputFieldType"	=>	TaskScheduler_Registry::$sDirPath . "/include/library/custom-field-types/multiple-text-input-filed-type/TaskScheduler_MultipleTextInputFieldType.php", 
 	"TaskScheduler_RevealerCustomFieldType"	=>	TaskScheduler_Registry::$sDirPath . "/include/library/custom-field-types/revealer-custom-field-type/TaskScheduler_RevealerCustomFieldType.php", 
+	"TaskScheduler_Wizard_Default"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/TaskScheduler_Wizard_Defaut.php", 
 );

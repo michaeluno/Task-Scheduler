@@ -2,9 +2,9 @@
 /**
  * An abstract class of the 'Action' wizard hidden tabbed pages.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -27,5 +27,5 @@ abstract class TaskScheduler_Wizard_Action_Base extends TaskScheduler_Wizard_Bas
      * This is used for filter names,
      */
     protected $_sModuleType = 'action';        
-    
+
 }

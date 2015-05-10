@@ -2,9 +2,9 @@
 /**
  * The class that defines the Debug task for the task scheduler.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, <Michael Uno>
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -42,45 +42,100 @@ abstract class TaskScheduler_Module_Factory {
     /**
      * Sets up necessary hooks and properties.
      * 
-     * @param    string            $sSlug            The slug of the extension. For action type extensions, pass the action hook name.
-     * @param    array|string    $asWizardClasses    An array of wizard screen classes. The first item will be the main class.
-     * @param    string            $sModuleType    The option type, which can be either 'action' or 'occurrence' at the moment.
+     * @param    string          $sSlug             The slug of the extension. For action type extensions, pass the action hook name.
+     * @param    array|string    $asWizardClasses   An array of wizard screen classes. The first item will be the main class.
+     * @param    string          $sModuleType       The option type, which can be either 'action' or 'occurrence' at the moment.
      */
     public function __construct( $sSlug='', $asWizardClasses=array(), $sModuleType='' ) {
         
-        // The action hook name is used for the class slug. The slug is used for identifying the form section name, page tab, and hook names etc.
-        $this->sSlug        = $sSlug ? sanitize_key( $sSlug ) : sanitize_key( $this->sSlug );
-        $this->_sModuleType    = $sModuleType ? $sModuleType : $this->_sModuleType;
-        $this->_sClassName    = get_class( $this );
-        
-        add_filter( "task_scheduler_filter_label_" . $this->_sModuleType . "_" . $this->sSlug, array( $this, 'getLabel' ) );
-        add_filter( "task_scheduler_filter_description_" . $this->_sModuleType . "_" . $this->sSlug, array( $this, 'getDescription' ) );
-        
-        if ( 
-            is_admin() 
-            && (
-                isset( $_GET['page'] ) && in_array( $_GET['page'], array( TaskScheduler_Registry::$aAdminPages[ 'add_new' ], TaskScheduler_Registry::$aAdminPages[ 'edit_module' ] ) )
-                || isset( $GLOBALS['pagenow'] ) && in_array( $GLOBALS['pagenow'], array( 'post.php' ) )
-            )
-        ) {
-        
+        $this->_setProperties( $sSlug, $sModuleType );
+        $this->_setHooks( $asWizardClasses );
+        $this->construct();        
+    
+    }
+        /**
+         * Sets up class properties.
+         * @since       1.0.1
+         */
+        private function _setProperties( $sSlug, $sModuleType ) {
+         
+            // The action hook name is used for the class slug. The slug is used for identifying the form section name, page tab, and hook names etc.
+            $this->sSlug          = $sSlug 
+                ? sanitize_key( $sSlug ) 
+                : sanitize_key( $this->sSlug );
+            $this->_sModuleType   = $sModuleType 
+                ? $sModuleType 
+                : $this->_sModuleType;
+            $this->_sClassName    = get_class( $this );
+         
+        }
+        /**
+         * Sets up hooks.
+         * @since       1.0.1
+         */
+        private function _setHooks( $asWizardClasses ) {
+            
+            add_filter( 
+                "task_scheduler_filter_label_" . $this->_sModuleType . "_" . $this->sSlug, 
+                array( $this, 'getLabel' ) 
+            );
+            add_filter( 
+                "task_scheduler_filter_description_" . $this->_sModuleType . "_" . $this->sSlug, 
+                array( $this, 'getDescription' ) 
+            );
+            
+            if ( ! $this->_isInAdminWizard() ) {
+                return;
+            }
+                        
             add_filter( 'task_scheduler_admin_filter_wizard_options', array( $this, '_replyToModifyDefaultOptions' ), 20, 1 );
             add_filter( "task_scheduler_admin_filter_wizard_options_{$this->sSlug}", array( $this, '_replyToGetWizardOptions' ) );
             add_filter( "task_scheduler_admin_filter_wizard_slugs_{$this->sSlug}", array( $this, '_replyToGetWizardSlugs' ) );
         
             // Instantiate the wizard class if exists.
-            $_aWizardClasses = is_array( $asWizardClasses ) ? $asWizardClasses : array( $asWizardClasses );
+            $_aWizardClasses = is_array( $asWizardClasses ) 
+                ? $asWizardClasses 
+                : array( $asWizardClasses );
             foreach( $_aWizardClasses as $_sWizardClass ) {
                 $this->addWizardScreen( $_sWizardClass, $this->sSlug );
             }
             
         }
-        
-        // Call the user constructor
-        $this->construct();        
-    
-    }
-        
+            /**
+             * Checks whether the currently loading page is in the task scheduler wizard page or not.
+             * @since       1.0.1
+             * @return      boolean
+             */
+            private function _isInAdminWizard() {
+                
+                if ( ! is_admin() ) {
+                    return false;
+                }                
+                if ( 
+                    isset( $_GET['page'] ) 
+                    && in_array( 
+                        $_GET['page'], 
+                        array( 
+                            TaskScheduler_Registry::$aAdminPages[ 'add_new' ],
+                            TaskScheduler_Registry::$aAdminPages[ 'edit_module' ]
+                        )
+                    )
+                ) {
+                    return true;
+                }
+                if (
+                    isset( $GLOBALS['pagenow'] )
+                    && in_array( 
+                        $GLOBALS['pagenow'], 
+                        array( 'post.php' ) 
+                    )
+                ) {
+                    return true;
+                }
+                return false;
+             
+            }
+            
         /**
          * Returns the slugs used for the wizard group.
          */
@@ -94,7 +149,7 @@ abstract class TaskScheduler_Module_Factory {
         public function _replyToGetWizardOptions( array $aSubmit ) {
             
             $_aWizardOptions    = apply_filters( 'task_scheduler_admin_filter_get_wizard_options', array() );
-            $_aWizardSlugs        = array_reverse( $this->getWizardScreenSlugs() );
+            $_aWizardSlugs      = array_reverse( $this->getWizardScreenSlugs() );
             foreach( $_aWizardSlugs as $_sSlug )  {
                 if ( isset( $_aWizardOptions[ $_sSlug ] ) && is_array( $_aWizardOptions[ $_sSlug ] ) ) {
                     $aSubmit = $aSubmit + $_aWizardOptions[ $_sSlug ];
@@ -143,26 +198,32 @@ abstract class TaskScheduler_Module_Factory {
      * 
      * In the constructor, "{module class name}_Wizard" will be automatically added.
      * 
-     * @remark    do not check is_admin() as the wizard screen class uses front end hooks.
+     * @remark   do not check is_admin() as the wizard screen class uses front end hooks.
      * @param    string    $sWizardClassName    The wizard class name.
-     * @param    string    $sSlug                The identifier to pass to the wizard class. This is set when the constructor calls this method.
+     * @param    string    $sSlug               The identifier to pass to the wizard class. This is set when the constructor calls this method.
      */
     public function addWizardScreen( $sWizardClassName, $sSlug='' ) {
         
-        if ( ! class_exists( $sWizardClassName ) ) { return; }
+        if ( ! class_exists( $sWizardClassName ) ) { 
+            return; 
+        }
 
-        $_bIsFirst            = empty( $this->aWizardScreens );
-        $_iNth                = count( $this->aWizardScreens ) + 1;
-        $_sMainWizardSlug    = $this->_getMainWizardSlug( $sSlug );
-        $sSlug                = $_bIsFirst ? $sSlug : $_sMainWizardSlug . '_' . $_iNth;
-        $_oWizardScreen     = new $sWizardClassName( $sSlug, $_sMainWizardSlug );
-        $this->aWizardScreens[] =  array(
-            'class_name'    =>    $sWizardClassName,
-            'slug'            =>    $sSlug,
-            'instance'        =>    $_oWizardScreen,
-            'is_main'        =>    $_bIsFirst,
+        $_bIsFirst              = empty( $this->aWizardScreens );
+        $_iNth                  = count( $this->aWizardScreens ) + 1;
+        $_sMainWizardSlug       = $this->_getMainWizardSlug( $sSlug );
+        $sSlug                  = $_bIsFirst 
+            ? $sSlug 
+            : $_sMainWizardSlug . '_' . $_iNth;
+        $_oWizardScreen         = new $sWizardClassName( $sSlug, $_sMainWizardSlug );
+        $this->aWizardScreens[] = array(
+            'class_name'    => $sWizardClassName,
+            'slug'          => $sSlug,
+            'instance'      => $_oWizardScreen,
+            'is_main'       => $_bIsFirst,
         );
-        if ( $_bIsFirst ) { return; }
+        if ( $_bIsFirst ) { 
+            return; 
+        }
         
         // At this point, the added wizard screen is not the first one. 
         
