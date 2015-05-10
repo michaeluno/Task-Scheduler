@@ -9,18 +9,20 @@
  * @since        1.0.0
  */
 
- /**
-  * 
-  * @filter        apply    task_scheduler_filter_next_run_time_{occurrence slug}        Applies to the next run time of the task.
-  */
+/**
+ * Defines the behaviour when the user finishes defining a task.
+ * 
+ * @filter        apply    task_scheduler_filter_next_run_time_{occurrence slug}        Applies to the next run time of the task.
+ */
 abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskScheduler_AdminPage_Wizard_Tab_SelectAction {
 
     /**
      * A callback method triggered when the 'wizard_create_task' tab is loaded in the 'ts_add_new' page.
      * 
-     * @since            1.0.0
+     * @since           1.0.0
+     * @callback        action      load_ + page slug + tab
      */
-    public function load_ts_add_new_wizard_create_task() {    // load_ + page slug + tab
+    public function load_ts_add_new_wizard_create_task() {   
 
         $_aWizardOptions = $this->_getWizardOptions();
         $this->_deleteWizardOptions();
@@ -52,7 +54,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskSchedul
         }
         
         // Go to the task listing table page.
-         exit( TaskScheduler_PluginUtility::goToTaskListingPage() );
+        exit( TaskScheduler_PluginUtility::goToTaskListingPage() );
         
     }
         
@@ -67,28 +69,34 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskSchedul
                 $aWizardOptions['previous_urls'],
                 $aWizardOptions['action_label'],
                 $aWizardOptions['occurrence_label'],
-                $aWizardOptions['excerpt']    // TODO: find out when the 'excerpt' element gets added
+                $aWizardOptions['excerpt']    // @todo: find out when the 'excerpt' element gets added
             );
             
             // Remove section keys that are used for modules with multiple screens.
             $_sMainActionSlug   = $aWizardOptions[ 'routine_action' ];
             $_aSectionSlugs     = apply_filters( "task_scheduler_admin_filter_wizard_slugs_{$_sMainActionSlug}", array() );
             foreach( $_aSectionSlugs as $_sSectionSlug ) {
-                if ( $_sSectionSlug === $_sMainActionSlug ) { continue; }
+                if ( $_sSectionSlug === $_sMainActionSlug ) { 
+                    continue; 
+                }
                 unset( $aWizardOptions[ $_sSectionSlug ] );
             }    
             
             // Some are added while going back and force in the wizard screens.
-            $_aOccurrenceSlugs = apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_occurrence', array() );    
+            $_aOccurrenceSlugs = apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_occurrence', array() );
             $_aOccurrenceSlugs = array_keys( $_aOccurrenceSlugs );
             foreach( $_aOccurrenceSlugs as $_sOccurrenceSlug ) {
-                if ( $_sOccurrenceSlug === $aWizardOptions['occurrence'] ) { continue; }
+                if ( $_sOccurrenceSlug === $aWizardOptions['occurrence'] ) { 
+                    continue; 
+                }
                 unset( $aWizardOptions[ $_sOccurrenceSlug ] );            
             }
             $_aActionSlugs = apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_action', array() );
             $_aActionSlugs = array_keys( $_aActionSlugs );
             foreach( $_aActionSlugs as $_sActionSlug ) {
-                if ( $_sActionSlug === $aWizardOptions['routine_action'] ) { continue; }
+                if ( $_sActionSlug === $aWizardOptions['routine_action'] ) { 
+                    continue; 
+                }
                 unset( $aWizardOptions[ $_sActionSlug ] );                        
             }
         
