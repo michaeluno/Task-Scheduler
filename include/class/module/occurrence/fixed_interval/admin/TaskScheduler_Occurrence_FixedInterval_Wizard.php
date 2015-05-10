@@ -43,7 +43,7 @@ final class TaskScheduler_Occurrence_FixedInterval_Wizard extends TaskScheduler_
         
     }    
 
-    public function validateSettings( /* $aInput, $aOldInput, $oAdminPage */ ) { 
+    public function validateSettings( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) { 
         
         $_aParams    = func_get_args() + array(
             null, null, null, null
@@ -53,8 +53,8 @@ final class TaskScheduler_Occurrence_FixedInterval_Wizard extends TaskScheduler_
         $oAdminPage  = $_aParams[ 2 ];
         $aSubmitInfo = $_aParams[ 3 ];             
         
-        $_bIsValid = true;
-        $_aErrors = array();
+        $_bIsValid   = true;
+        $_aErrors    = array();
         
         if ( ! isset( $aInput['interval'][ 0 ] ) || ! $aInput['interval'][ 0 ] ) {
             // $aVariable[ 'sectioni_id' ]['field_id']
