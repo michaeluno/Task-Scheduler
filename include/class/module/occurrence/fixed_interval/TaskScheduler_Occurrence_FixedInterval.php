@@ -2,9 +2,9 @@
 /**
  * Handles hooks for the 'fixed_interval' occurrence option.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -43,19 +43,22 @@ class TaskScheduler_Occurrence_FixedInterval extends TaskScheduler_Occurrence_Ba
      */ 
     public function getNextRunTime( $iTimestamp, $oTask ) {
         
-        $_aOptions = $oTask->getMeta( $this->sSlug );
+        $_aOptions      = $oTask->getMeta( $this->sSlug );
         if ( ! isset( $_aOptions['interval'][ 0 ], $_aOptions['interval'][ 1 ] ) ) {
             return $iTimestamp;
         }
         
-        $_nLastRunTime = $oTask->_last_run_time
+        $_nLastRunTime  = $oTask->_last_run_time
             ? $oTask->_last_run_time
             : microtime( true );    // @todo    Examine whether GMT offset should be calcurated or not.
-        $_iInterval = $this->_getIntervalInSeconds( $_aOptions['interval'][ 0 ], $_aOptions['interval'][ 1 ] );
+        $_iInterval     = $this->_getIntervalInSeconds( $_aOptions['interval'][ 0 ], $_aOptions['interval'][ 1 ] );
         return $_nLastRunTime + $_iInterval;
                 
     }
-                
+        /**
+         * 
+         * @return      integer
+         */
         private function _getIntervalInSeconds( $iSeconds, $sUnit ) {
             switch( $sUnit ) {
                 default:
