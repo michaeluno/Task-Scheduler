@@ -2,9 +2,9 @@
 /**
  * The class that defines the Debug action for the Task Scheduler plugin.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, <Michael Uno>
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -40,11 +40,17 @@ class TaskScheduler_Action_Debug extends TaskScheduler_Action_Base {
     public function doAction( $isExitCode, $oTask ) {
 
         static $_iPageLoadID;
-        $_iPageLoadID = $_iPageLoadID ? $_iPageLoadID : uniqid();        
+        $_iPageLoadID = $_iPageLoadID 
+            ? $_iPageLoadID 
+            : uniqid();        
         
-        $_oCallerInfo = debug_backtrace();
-        $_sCallerFunction = isset( $_oCallerInfo[ 1 ]['function'] ) ? $_oCallerInfo[ 1 ]['function'] : '';
-        $_sCallerClasss = isset( $_oCallerInfo[ 1 ]['class'] ) ? $_oCallerInfo[ 1 ]['class'] : '';
+        $_oCallerInfo     = debug_backtrace();
+        $_sCallerFunction = isset( $_oCallerInfo[ 1 ]['function'] ) 
+            ? $_oCallerInfo[ 1 ]['function'] 
+            : '';
+        $_sCallerClasss   = isset( $_oCallerInfo[ 1 ]['class'] ) 
+            ? $_oCallerInfo[ 1 ]['class'] 
+            : '';
 
         file_put_contents( 
             WP_CONTENT_DIR . DIRECTORY_SEPARATOR . get_class() . '_' . date( "Ymd" ) . '.log', 
@@ -55,7 +61,8 @@ class TaskScheduler_Action_Debug extends TaskScheduler_Action_Base {
         
         // sleep( 60 )    ; // simulate being hung
         
-        return 1;    // the exit code.
+        // Exit Code
+        return 1;    
     }
         /**
          * Retrieves the currently loaded page url.
