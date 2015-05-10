@@ -1,15 +1,17 @@
 <?php
 /**
- *    Handles actions sent to the form of the list table of Task Scheduler tasks. 
+ * Handles actions sent to the form of the list table of Task Scheduler tasks. 
  *    
  * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michel Uno
- * @authorurl    http://michaeluno.jp
- * @since        1.0.0 
+ * @copyright   Copyright (c) 2014-2015, Michael Uno
+ * @author      Michel Uno
+ * @authorurl   http://michaeluno.jp
+ * @since       1.0.0 
 */
 
-if ( ! class_exists( 'WP_List_Table' ) ) require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+if ( ! class_exists( 'WP_List_Table' ) ) { 
+    require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+}
 
 class TaskScheduler_ListTable_Action extends WP_List_Table {
     
@@ -18,7 +20,10 @@ class TaskScheduler_ListTable_Action extends WP_List_Table {
      */ 
     public function get_bulk_actions() {
         
-        switch( isset( $_GET['status'] ) ? $_GET['status'] : '' ) {
+        $_aGET = $_GET + array(
+            'status' => '',
+        );
+        switch( $_aGET[ 'status' ] ) {
             
             default:
             case 'enabled':        
@@ -66,7 +71,7 @@ class TaskScheduler_ListTable_Action extends WP_List_Table {
             return;
         }
 
-        $_iApplied = 0;
+        $_iApplied     = 0;
         $_sAdminNotice = '';
         switch( strtolower( $this->current_action() ) ) {
             case 'enable':
@@ -125,10 +130,6 @@ class TaskScheduler_ListTable_Action extends WP_List_Table {
                 break;    // do nothing.
                 
         }   
-        
-        // if ( $_iApplied && $_sAdminNotice ) {
-            // $this->setAdminNotice( $_sAdminNotice, 'updated' );
-        // }        
         
         // Remove the nonce
         $this->deleteNonce( $_REQUEST['task_scheduler_nonce'] );

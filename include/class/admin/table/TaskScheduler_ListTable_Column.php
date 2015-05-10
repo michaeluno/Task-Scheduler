@@ -3,7 +3,7 @@
  * An abstract class that defines the columns of the Task Scheduler task listing table.
  *
  * @package      Task Scheduler
- * @copyright    Copyright (c) 2014, Michael Uno
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
  * @author       Michel Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0 
@@ -32,15 +32,22 @@ abstract class TaskScheduler_ListTable_Column extends TaskScheduler_ListTable_Ac
         );
     }
     
-    public function column_default( $aItem, $sColumnName ) {    // 'column_' + 'default'
+    /**
+     * 
+     * @remark      'column_' + 'default'
+     */
+    public function column_default( $aItem, $sColumnName ) {    
         switch( $sColumnName ){      
             default:
                 // return print_r( $aItem, true ); //Show the whole array for troubleshooting purposes
         }    
     }
     
-    
-    public function column_cb( $oRoutine ){    // column_ + cb
+    /**
+     * 
+     * @remark      column_ + cb
+     */
+    public function column_cb( $oRoutine ){   
         return sprintf(
             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
             /*$1%s*/ $this->_args['singular'],  
@@ -48,6 +55,10 @@ abstract class TaskScheduler_ListTable_Column extends TaskScheduler_ListTable_Ac
         );
     }
     
+    /**
+     * 
+     * @remark      column_ + 'name'
+     */
     public function column_name( $oRoutine ) {    
                             
         // Build row action links
@@ -60,7 +71,7 @@ abstract class TaskScheduler_ListTable_Column extends TaskScheduler_ListTable_Ac
                 '<a href="%s" rel="permalink" title="' . esc_attr( sprintf( __( 'View &#8220;%s&#8221;' ), $oRoutine->post_title ) ) . '">' 
                     . __( 'View', 'task-scheduler' ) 
                 . '</a>', 
-                get_permalink( $oRoutine->ID )  // site_url( "?p={$iPostID}" ) 
+                get_permalink( $oRoutine->ID )  
             ),            
             'run'       =>    sprintf( '<a href="%s">' . __( 'Run Now', 'task-scheduler' ) . '</a>', add_query_arg( array( 'action' => 'run', 'task_scheduler_task' => $oRoutine->ID, 'task_scheduler_nonce' => $this->sNonce ) ) ),
         );
@@ -92,6 +103,9 @@ abstract class TaskScheduler_ListTable_Column extends TaskScheduler_ListTable_Ac
             
     }
     
+    /**
+     * 
+     */
     public function column_details( $oRoutine ) {    
         
         $_sOccurrenceLabel    = apply_filters( "task_scheduler_filter_label_occurrence_{$oRoutine->occurrence}", $oRoutine->occurrence );
@@ -106,8 +120,8 @@ abstract class TaskScheduler_ListTable_Column extends TaskScheduler_ListTable_Ac
     public function column_status( $oRoutine ) {
     
         $_sStatusLabel = $this->_getStatusLabel( $oRoutine->_routine_status );
-        $_iThreads = $oRoutine->getThreadCount();
-        $_sHasThreads = $_iThreads 
+        $_iThreads     = $oRoutine->getThreadCount();
+        $_sHasThreads  = $_iThreads 
             ? sprintf( __( '%1$s threads', 'task-scheduler' ), $_iThreads )
             : __( 'No thread', 'task-scheduler' );
         $_sElapsedTime = in_array( $oRoutine->_routine_status, array( 'processing', 'awaiting' ) )
@@ -156,21 +170,17 @@ abstract class TaskScheduler_ListTable_Column extends TaskScheduler_ListTable_Ac
     
     public function column_last_run( $oRoutine ) {        
         
-        $_sExitCountDescription    = __( 'Indicates how many times a valid exit code has been returned.', 'task-scheduler' );
-        $_sExitCodeDescription    = __( 'Indicates the last exit code returned from the action.', 'task-scheduler' );
-        $_aOutput    = array();
-        $_aOutput[]    = "<p>" 
+        $_sExitCountDescription = __( 'Indicates how many times a valid exit code has been returned.', 'task-scheduler' );
+        $_sExitCodeDescription  = __( 'Indicates the last exit code returned from the action.', 'task-scheduler' );
+        $_aOutput               = array();
+        $_aOutput[]             = "<p>" 
                 . $oRoutine->getReadableTime( $oRoutine->_last_run_time, 'Y/m/d G:i:s', true )
             . "</p>";
         if ( $oRoutine->isTask() ) {
             $_aOutput[] = "<p title='" . esc_attr( $_sExitCountDescription ) . "'>"
                     . "<span class='description-label'>" . __( 'Exit Count', 'task-scheduler' ) . ":</span>"
                     . ( $oRoutine->_count_exit ? $oRoutine->_count_exit : 0 )
-                . "</p>";    
-            // $_aOutput[] = "<p title='" . esc_attr( $_sExitCountDescription ) . "'>"
-                    // . "<span class='description-label'>" . __( 'Hung Count', 'task-scheduler' ) . ":</span>"
-                    // . ( $oRoutine->_count_hung ? $oRoutine->_count_hung : 0 )
-                // . "</p>";            
+                . "</p>";            
         }
         return implode( PHP_EOL, $_aOutput );
             

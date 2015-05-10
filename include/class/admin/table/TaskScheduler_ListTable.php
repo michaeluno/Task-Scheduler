@@ -1,12 +1,12 @@
 <?php
 /**
- *    Handles the list table of Task Scheduler tasks. 
+ * Handles the list table of Task Scheduler tasks. 
  *    
  * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michel Uno
- * @authorurl    http://michaeluno.jp
- * @since        1.0.0 
+ * @copyright   Copyright (c) 2014-2015, Michael Uno
+ * @author      Michel Uno
+ * @authorurl   http://michaeluno.jp
+ * @since       1.0.0 
 */
 
 
