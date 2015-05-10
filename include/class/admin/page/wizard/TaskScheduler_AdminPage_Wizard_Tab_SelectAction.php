@@ -252,11 +252,12 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
          */
         private function _getNextPageURL( array $aWizardOptions ) {
             
-            $_sActionHook = $aWizardOptions['routine_action'];
+            $_sActionHook  = $aWizardOptions['routine_action'];
             $_sRedirectURL = add_query_arg( 
                 array( 
                     'transient_key'  => $aWizardOptions['transient_key'],
-                    'tab'            => 'wizard_create_task',    // if the applying filters below does not take effect, it goes to the create task page.
+                    // if the applying filters below does not take effect, it goes to the 'Create Task' page.
+                    'tab'            => 'wizard_create_task',    
                 )
             );    
             // The transient key must be embedded in the url.
