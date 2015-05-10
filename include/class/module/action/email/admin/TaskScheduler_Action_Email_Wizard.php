@@ -2,9 +2,9 @@
 /**
  * Creates wizard pages for the 'Email' action.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -20,26 +20,26 @@ final class TaskScheduler_Action_Email_Wizard extends TaskScheduler_Wizard_Actio
 
         return array(
             array(    
-                'field_id'            =>    'email_addresses',
-                'title'                =>    __( 'Email Addresses', 'task-scheduler' ),
-                'type'                =>    'text',
-                'repeatable'        =>    true,
+                'field_id'           => 'email_addresses',
+                'title'              => __( 'Email Addresses', 'task-scheduler' ),
+                'type'               => 'text',
+                'repeatable'         => true,
             ),            
             array(    
-                'field_id'            =>    'email_title',
-                'title'                =>    __( 'Email Title', 'task-scheduler' ),
-                'type'                =>    'text',
-                'default'            =>    __( 'Automated Email Notice of %task_name% - %site_name%', 'task-scheduler' ),
-                'attributes'        =>    array(
-                    'size'    =>    60,
+                'field_id'           => 'email_title',
+                'title'              => __( 'Email Title', 'task-scheduler' ),
+                'type'               => 'text',
+                'default'            => __( 'Automated Email Notice of %task_name% - %site_name%', 'task-scheduler' ),
+                'attributes'         => array(
+                    'size'    => 60,
                 ),
             ),            
             array(    
-                'field_id'            =>    'email_message',
-                'title'                =>    __( 'Email Message', 'task-scheduler' ),
-                'type'                =>    'textarea',
-                'rich'                =>    true,
-                'default'            =>    sprintf( 
+                'field_id'            => 'email_message',
+                'title'               => __( 'Email Message', 'task-scheduler' ),
+                'type'                => 'textarea',
+                'rich'                => true,
+                'default'             => sprintf( 
                         __( 'This is an automated email message from %1$s (%2$s), sent by the task, %3$s, with the %4$s occurrence type.', 'task-scheduler' ),    
                         '%site_name%',
                         '%site_url%',
@@ -47,7 +47,7 @@ final class TaskScheduler_Action_Email_Wizard extends TaskScheduler_Wizard_Actio
                         '%occurrence%'
                     ) . PHP_EOL . PHP_EOL 
                     . '%task_description%',
-                'after_fields'        =>    '<div class="action-email-field-description"><h5>' . __( 'Available variables', 'task-scheduler'    ) . '</h5>'
+                'after_fields'        => '<div class="action-email-field-description"><h5>' . __( 'Available variables', 'task-scheduler'    ) . '</h5>'
                     . '<ul>' 
                         . '<li><code>%task_name%</code> - ' . __( 'the task name', 'task-scheduler' ) . '</li>'
                         . '<li><code>%task_description%</code> - ' . __( 'the task description', 'task-scheduler' ) . '</li>'
@@ -73,8 +73,8 @@ final class TaskScheduler_Action_Email_Wizard extends TaskScheduler_Wizard_Actio
         $oAdminPage  = $_aParams[ 2 ];
         $aSubmitInfo = $_aParams[ 3 ];      
     
-        $_bIsValid = true;
-        $_aErrors = array();
+        $_bIsValid   = true;
+        $_aErrors    = array();
         
         $aInput['email_addresses'] = array_filter( $aInput['email_addresses'] );    // drop non-true values.
         $aInput['email_addresses'] = array_unique( $aInput['email_addresses'] );
@@ -109,6 +109,5 @@ final class TaskScheduler_Action_Email_Wizard extends TaskScheduler_Wizard_Actio
         return $aInput;         
 
     }
-    
     
 }
