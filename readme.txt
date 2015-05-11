@@ -2,7 +2,7 @@
 Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
-Tested up to:       4.1.1
+Tested up to:       4.2.2
 Stable tag:         1.0.0
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
@@ -91,7 +91,13 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 
 == Changelog ==
 
-= 1.0.0 =
+= 1.0.1 =
+- Fixed an incompatibility issue with WordPress 4.2 or above that in the listing table view, the view links lost the count indications.
+- Fixed an incompatibility issue with WordPress 4.2 or above that taxonomy terms could not be listed.
+- Changed it to accept an empty slug to create a custom action module.
+- Changed it to accept no wizard class to create a custom action module.
+
+= 1.0.0 - 2015/03/26 =
 - Added the `daily` occurrence type.
 - Updated Admin Page Framework.
 
