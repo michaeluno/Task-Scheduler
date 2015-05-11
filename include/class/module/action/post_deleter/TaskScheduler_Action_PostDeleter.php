@@ -2,9 +2,9 @@
 /**
  * The class that defines the action of Delete Posts for the Task Scheduler plugin.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, <Michael Uno>
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, <Michael Uno>
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -22,7 +22,10 @@ class TaskScheduler_Action_PostDeleter extends TaskScheduler_Action_Base {
      */
     public function construct() {
                                     
-        new TaskScheduler_Action_PostDeleter_Thread( 'task_scheduler_action_post_deleter_thread' );
+        new TaskScheduler_Action_PostDeleter_Thread( 
+            'task_scheduler_action_post_deleter_thread', // slug
+            array()     // internal, no wizard
+        );
 
     }
 
