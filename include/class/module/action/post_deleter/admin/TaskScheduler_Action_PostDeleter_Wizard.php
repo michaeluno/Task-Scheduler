@@ -2,9 +2,9 @@
 /**
  * Creates wizard pages for the 'Delete Posts' action.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -25,17 +25,17 @@ final class TaskScheduler_Action_PostDeleter_Wizard extends TaskScheduler_Wizard
 
         return array(
             array(    
-                'field_id'            =>    'post_type_of_deleting_posts',
-                'title'                =>    __( 'Post Type', 'task-scheduler' ),
-                'type'                =>    'select',
-                'label'                =>    TaskScheduler_WPUtility::getRegisteredPostTypeLabels(),
-            ),            
-            array(    
-                'field_id'            =>    'post_statuses_of_deleting_posts',
-                'title'                =>    __( 'Post Statuses', 'task-scheduler' ),
-                'type'                =>    'checkbox',
-                'label'                =>    TaskScheduler_WPUtility::getRegisteredPostStatusLabels(),
-                'default'            =>    array( 'trash' => 1 ),                
+                'field_id'  => 'post_type_of_deleting_posts',
+                'title'     => __( 'Post Type', 'task-scheduler' ),
+                'type'      => 'select',
+                'label'     => TaskScheduler_WPUtility::getRegisteredPostTypeLabels(),
+            ),                 
+            array(             
+                'field_id'  => 'post_statuses_of_deleting_posts',
+                'title'     => __( 'Post Statuses', 'task-scheduler' ),
+                'type'      => 'checkbox',
+                'label'     => TaskScheduler_WPUtility::getRegisteredPostStatusLabels(),
+                'default'   => array( 'trash' => 1 ),                
             ),            
         );
         
