@@ -355,7 +355,7 @@ abstract class TaskScheduler_Wizard_Base {
                         'transient_key'    => $this->_sTransientKey,
                     )
                 ),
-                 array(
+                array(
                     'value'        => __( 'Back', 'task-scheduler' ),
                     // the previous url will be automatically set                     
                     'attributes'   => array(
@@ -457,7 +457,7 @@ abstract class TaskScheduler_Wizard_Base {
         $aOldInput   = $_aParams[ 1 ];
         $oAdminPage  = $_aParams[ 2 ];
         $aSubmitInfo = $_aParams[ 3 ];
-        
+      
         $_aWizardOptions = array( 
             'previous_urls' => apply_filters( 
                 'task_scheduler_admin_filter_get_wizard_options', 
