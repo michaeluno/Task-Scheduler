@@ -39,7 +39,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
             $this->setSettingNotice( __( 'The wizard session has been expired. Please start from the beginning.', 'task-scheduler' ) );
             exit( TaskScheduler_PluginUtility::goToAddNewPage() );
         }
-        
+
         // The wizard options are stored in the '_wizard_options' element
         $_aSavedValues = $this->_saveValidatedWizardOptions( $_aWizardOptions );
 
