@@ -29,7 +29,6 @@ $_aClassFiles = array(
 	"TaskScheduler_Wizard_Action_Base"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/TaskScheduler_Wizard_Action_Base.php", 
 	"TaskScheduler_Wizard_Defaut"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/TaskScheduler_Wizard_Defaut.php", 
 	"TaskScheduler_Action_Debug"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/debug/TaskScheduler_Action_Debug.php", 
-	"TaskScheduler_Action_Debug_Wizard"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/debug/admin/TaskScheduler_Action_Debug_Wizard.php", 
 	"TaskScheduler_Action_Email"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/email/TaskScheduler_Action_Email.php", 
 	"TaskScheduler_Action_Email_Thread"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/email/TaskScheduler_Action_Email_Thread.php", 
 	"TaskScheduler_Action_Email_Wizard"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php", 
