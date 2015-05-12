@@ -61,6 +61,7 @@ textarea[readonly] {
 .task-scheduler-daily-occurrence-module-input {
     margin: 1em;
 }
+.task-scheduler-specific_time-module-when,
 .task-scheduler-daily-module-times {
     list-style-type: disc;
     padding-left: 1em;

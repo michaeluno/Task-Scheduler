@@ -22,7 +22,7 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
                 'title'           => __( 'Occurrence', 'task-scheduler' ),
                 'type'            => 'text',
                 'attributes'      => array(
-                    'ReadOnly'    => 'ReadOnly',
+                    'readonly'    => 'readonly',
                     'name'        => '',
                 ),
             ),        

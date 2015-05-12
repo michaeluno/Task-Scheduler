@@ -28,7 +28,7 @@ final class TaskScheduler_Debug {
         }
             
         // esc_html() has a bug that breaks with complex HTML code.
-        return "<div><pre class='dump-array'>" . htmlspecialchars( print_r( $v, true ) ) . "</pre><div>";    
+        return "<div><pre class='dump-array'>" . htmlspecialchars( print_r( $v, true ) ) . "</pre></div>";    
         
     }
                     

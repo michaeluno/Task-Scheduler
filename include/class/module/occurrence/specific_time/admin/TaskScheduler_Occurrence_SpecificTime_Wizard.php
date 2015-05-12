@@ -88,6 +88,49 @@ final class TaskScheduler_Occurrence_SpecificTime_Wizard extends TaskScheduler_W
         return $aInput;         
 
     }
-    
+
+    /**
+     * Defines the output in the meta box.
+     * @since       1.0.1
+     * @return      string
+     */
+    public function getMetaBoxOutput( /* $sOutput, $oTask */ ) {
+        
+        $_aParams    = func_get_args() + array(
+            null, null
+        );
+        $sOutput   = $_aParams[ 0 ];
+        $oTask     = $_aParams[ 1 ];
+        $_sSlug    = $oTask->occurrence;
+        $_aOptions = ( array ) $oTask->{$_sSlug};
+        $_sLabel   = apply_filters( 
+            "task_scheduler_filter_label_occurrence_{$_sSlug}", 
+            $_sSlug
+        );
+        
+        return "<h4>" . __( 'Type', 'task-scheduler' ) . ":</h4>"
+            . "<p>" . $_sLabel . "</p>"
+            . "<h4>" . __( 'Times', 'task-scheduler' ) . ":</h4>"
+            . "<p>" 
+                . $this->_getReadableTimes( $_aOptions[ 'when' ] )
+            . "</p>";
+              
+    }        
+        /**
+         * 
+         * @since       1.0.1
+         * @return      string      The readable time list.
+         */
+        private function _getReadableTimes( array $aTimes ) {
+            
+            $_aTimeList = array();
+            foreach( $aTimes as $sTime ) {
+                $_aTimeList[] = "<li>" . $sTime. "</li>";
+            }
+            return "<ul class='task-scheduler-specific_time-module-when'>"
+                    . implode( '', $_aTimeList )
+                . "</ul>";
+            
+        }
     
 }

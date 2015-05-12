@@ -119,7 +119,7 @@ final class TaskScheduler_Occurrence_Daily_Wizard extends TaskScheduler_Wizard_O
             ? $_aOptions[ 'days' ]
             : array();
         
-        return "<h3>" . __( 'Type', 'task-scheduler' ) . "</h3>"
+        return "<h4>" . __( 'Type', 'task-scheduler' ) . ":</h4>"
             . "<input class='task-scheduler-daily-occurrence-module-input' type='text' readonly='readonly' value='" . __( 'Daily', 'task-scheduler' ) . "' />"
             . $this->_getTimesList( $_aTimes )
             . $this->_getDaysList( $_aDays )
@@ -133,7 +133,7 @@ final class TaskScheduler_Occurrence_Daily_Wizard extends TaskScheduler_Wizard_O
          */
         private function _getTimesList( array $aTimes ) {
             $_aOutput   = array();
-            $_aOutput[] = "<h3>" . __( 'Times', 'task-scheduler' ) . "</h3>";
+            $_aOutput[] = "<h4>" . __( 'Times', 'task-scheduler' ) . ":</h4>";
             $_aOutput[] = "<ul class='task-scheduler-daily-module-times'>";
             foreach( $aTimes as $_sTime ) {
                 $_aOutput[] = "<li>"
@@ -164,7 +164,7 @@ final class TaskScheduler_Occurrence_Daily_Wizard extends TaskScheduler_Wizard_O
             );            
             
             $_aOutput = array();
-            $_aOutput[] = "<h3>" . __( 'Days', 'task-scheduler' ) . "</h3>";
+            $_aOutput[] = "<h4>" . __( 'Days', 'task-scheduler' ) . ":</h4>";
             $_aOutput[] = "<ul class='task-scheduler-daily-module-days'>";
             foreach ( $_aDaysLabel as $_iDay => $_sLabel ) {
                 $_aOutput[] = in_array( $_iDay, $aDays )
