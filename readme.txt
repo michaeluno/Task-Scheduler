@@ -47,6 +47,130 @@ If you need a custom module, let us know it!
 
 == Other Notes ==
 
+<h4>Create a Custom Action</h4>
+You can run your custom action with Task Scheduler and run it with scheduled times, once a day, with a fixed interval. or whatever you set with the plugin.
+
+1. Decide your action slug which also serves as a WordPress _filter_ hook.
+
+Say you pick `my_custom_action` as an action name.
+
+2. Use the `add_filter()` WordPress core function to hook into the action.
+
+`
+/**
+ * Called when the Task Scheduler plugin gets loaded.
+ */
+function doMyCustomAction( $sExitCode, $oRoutine ) {
+    
+    /**
+     * Do you stuff here.
+     */
+    TaskScheduler_Debug::log( $oRoutine->getMeta() );
+    return 1;
+    
+}
+/**
+ * Set the`my_custom_action` custom action slug in the Select Action screen
+ * via Dashboard -> Task SCheduler -> Add New Task.
+ */
+add_filter( 'my_custom_action', 'doMyCustomAction', 10, 2 );
+`
+
+Please note that we use `add_filter()` not `add_action()` in order to return an exit code. 
+
+Return `1` if the task completes and `0` when there is a problem. You can pass any value except `null`.
+
+3. Go to **Dashboard** -> **Task Scheduler** -> **Add New Task**. Proceed the wizard and when you get the **Select Action** screen after setting up the occurrence, type **my_custom_action**, the one you defined in the above step.
+  
+The action slug set in the field will be triggered at the scheduled time.
+
+See an example plugin (https://gist.github.com/michaeluno/5819636448947e7ab733).
+
+<h4>Create a Custom Action Module</h4>
+If you want your action to be listed in the **Select Action** screen, you need to create an action module. 
+
+To create an action module, you need to define a class by extending a base class that Task Scheduler prepares for you.
+
+1. Define your custom action module class by extending the TaskScheduler_Action_Base class. 
+
+`
+class TaskScheduler_SampleActionModule extends TaskScheduler_Action_Base {
+        
+    /**
+     * The user constructor.
+     * 
+     * This method is automatically called at the end of the class constructor.
+     */
+    public function construct() {
+        
+        // Debug 
+        // TaskScheduler_Debug::log(  get_object_vars( $this ) );
+        
+    }
+
+    /**
+     * Returns the readable label of this action.
+     * 
+     * This will be called when displaying the action in an pull-down select option, task listing table, or notification email message.
+     */
+    public function getLabel( $sLabel ) {         
+        return __( 'Sample Action Module', 'task-scheduler-sample-action-module' );
+    }
+    
+    /**
+     * Returns the description of the module.
+     */
+    public function getDescription( $sDescription ) {
+        return __( 'This is a sample action module.', 'task-scheduler-sample-action-module' );
+    }    
+    
+    /**
+     * Defines the behaviour of the task action.
+     * 
+     * Required arguments: 
+     * 
+     */
+    public function doAction( $sExitCode, $oRoutine ) {
+        
+        /**
+         * Write your own code here! Delete the below log method. 
+         * 
+         * Good luck!
+         */
+        TaskScheduler_Debug::log( $oRoutine->getMeta() );
+        
+        // Exit code.
+        return 1;
+        
+    }
+            
+}
+`
+
+In the doAction() method of the above class, define the behavior of your action what it does. The second parameter receives a routine object. The object has a public method named `getMeta()` which returns the associated arguments. 
+
+2. Use the `task_scheduler_action_after_loading_plugin` action hook to register your action module.
+
+To register your action module, just instantiate the class you defined.
+
+`
+function loadTaskSchedulerSampleActionModule() {
+    
+    // Register a custom action module.
+    include( dirname( __FILE__ ) . '/module/TaskScheduler_SampleActionModule.php' );
+    new TaskScheduler_SampleActionModule;
+    
+}
+add_action( 'task_scheduler_action_after_loading_plugin', 'loadTaskSchedulerSampleActionModule' );
+`
+3. Go to **Dashboard** -> **Task Scheduler** -> **Add New Task**. Proceed the wizard and when you get the **Select Action** screen, choose your action.
+
+You can set your custom arguments in the **Argument (optional)** field if necessary.
+
+The set values will be stored in the argument element of the array returned by the `getMeta()` public method of the routine object.
+
+See the entire example plugin (https://github.com/michaeluno/task-scheduler-sample-action-module).
+
 == Frequently Asked Questions ==
 
 = Who needs this? =
@@ -71,11 +195,11 @@ To enable the log, go to **Dashboard** -> **Task Scheduler** -> **Manage Tasks**
 After the task runs, click on the **View** link of the task listing table of the task. The log page will open and it should tell what exit code the action returns.
 
 = How can I create a module? =
-The tutorials are in preparation. It requires a basic PHP coding skill and understanding of object oriented programming. 
+See the [Other Notes](https://wordpress.org/plugins/task-scheduler/other_notes/) section. It requires a basic PHP coding skill and understanding of object oriented programming. 
 
 There are mainly two types of modules you can make, `action` and `occurrence`. Most of the time, you will want action modules.
 
-If you are interested, open the `include/class/module/action` folder and you'll see some built-in action modules. If you open some of the files, you'll notice that each of them are very short. What it does is basically extend a base module class like `TaskScheduler_Action_Base` and insert code in the methods predefined by the base class.
+Comprehensive instructions for creating modules are still in preparation. If you are interested, open the `include/class/module/action` folder and you'll see some built-in action modules. If you open some of the files, you'll notice that each of them are very short. What it does is basically extend a base module class like `TaskScheduler_Action_Base` and insert code in the methods predefined by the base class.
 
 If you are comfortable reading PHP code, it should not be hard to figure out. Give it a try. If you get a question, don't hesitate to post a question about it.
 
@@ -92,6 +216,7 @@ Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler)
 == Changelog ==
 
 = 1.0.1 =
+- Fixed a bug in the Delete Posts action module that the taxonomy and post status options did not take effect.
 - Fixed an incompatibility issue with WordPress 4.2 or above that in the listing table view, the view links lost the count indications.
 - Fixed an incompatibility issue with WordPress 4.2 or above that taxonomy terms could not be listed.
 - Changed it to accept an empty slug to create a custom module.
