@@ -8,9 +8,11 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
 // abstract class TaskScheduler_MetaBox_Base extends AdminPageFramework_MetaBox {
     
     /**
-     * Stores the task objecct.
+     * Stores the task object.
+     * @since       1.0.0
+     * @since       1.0.1       Changed the name from `$_oTask` and made it public to be accessed from outside.
      */
-    protected $_oTask;
+    public $oTask;
         
     public function start() {
         
@@ -80,7 +82,9 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
         $_aWizardSlugs   = apply_filters( "task_scheduler_admin_filter_wizard_slugs_{$sModuleSlug}", array() );
         foreach( $_aWizardSlugs as $sSlug ) {
             $_aWizardFieldsWithSection    = apply_filters( "task_scheduler_filter_fields_{$sSlug}", array() );
-            $_aWizardFields               = isset( $_aWizardFieldsWithSection[ $sSlug ] ) ? $_aWizardFieldsWithSection[ $sSlug ] : array();
+            $_aWizardFields               = isset( $_aWizardFieldsWithSection[ $sSlug ] ) 
+                ? $_aWizardFieldsWithSection[ $sSlug ] 
+                : array();
             $_aModularFields              = $_aModularFields + $_aWizardFields;
         }
         foreach( $aModularOptions as $_sKey => $_aisValue ) {
@@ -102,7 +106,7 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
             
             $_aModularField = array(
                 'attributes'    => array(
-                    'ReadOnly'  => 'ReadOnly',
+                    'readonly'  => 'readonly',
                     'name'      => '',
                     'class'     => 'read-only',
                 ),
@@ -112,7 +116,9 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
                 'title'         => $_aModularField['title'],
                 // 'show_title_column'    =>  true,
             );            
-            $_aModularField['attributes']['cols'] = 'textarea' == $_aModularField['type'] ? 42 : null;
+            $_aModularField['attributes']['cols'] = 'textarea' == $_aModularField['type'] 
+                ? 42 
+                : null;
             if ( is_array( $_aisValue ) ) {
                 $_aModularField['before_fieldset'] = "<div class='task-scheduler-module-options-value-container'>"
                         . TaskScheduler_PluginUtility::getListFromAssociativeArray( array( __( 'Key', 'task-scheduler' ) => __( 'Value', 'task-scheduler' ) ) + $_aisValue )
@@ -159,11 +165,9 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
         if ( is_array( $aisValue ) ) {
             return 'hidden';
         }
-        
         if ( 'textarea' === $sSetFieldType ) {
             return $sSetFieldType;
         }
-        
         return 'text';
         
     }    

@@ -12,7 +12,7 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
      */ 
     public function setUp() {
         
-        $this->_oTask = isset( $_GET['post'] )
+        $this->oTask = isset( $_GET['post'] )
             ? TaskScheduler_Routine::getInstance( $_GET['post'] )
             : null;
         
@@ -36,12 +36,12 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
      */
     public function field_definition_TaskScheduler_MetaBox_Occurrence_occurrence( $aField ) {
         
-        if ( ! $this->_oTask ) { 
+        if ( ! $this->oTask ) { 
             return $aField; 
         }
         $aField['value'] = apply_filters( 
-            "task_scheduler_filter_label_occurrence_{$this->_oTask->occurrence}", 
-            $this->_oTask->occurrence 
+            "task_scheduler_filter_label_occurrence_{$this->oTask->occurrence}", 
+            $this->oTask->occurrence 
         );
         return $aField;        
         
@@ -52,7 +52,7 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
      */
     public function field_definition_TaskScheduler_MetaBox_Occurrence( $aAllFields ) {    // field_definition_{class name}
 
-        if ( ! $this->_oTask ) { 
+        if ( ! $this->oTask ) { 
             return $aAllFields; 
         }    
         if ( ! isset( $aAllFields['_default'] ) || ! is_array( $aAllFields['_default'] ) ) { 
@@ -61,8 +61,8 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
         
         $aAllFields['_default'] = $aAllFields['_default'] 
             + $this->_getModuleFields( 
-                $this->_oTask->occurrence, 
-                ( array ) $this->_oTask->{$this->_oTask->occurrence}
+                $this->oTask->occurrence, 
+                ( array ) $this->oTask->{$this->oTask->occurrence}
             )
         ;
         
@@ -90,11 +90,11 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
     }
     
     public function content( $sOutput ) {
-        $sOutput = isset( $this->_oTask->occurrence )
+        $sOutput = isset( $this->oTask->occurrence )
             ? apply_filters(
-                'task_scheduler_admin_filter_meta_box_content_' . $this->_oTask->occurrence,
+                'task_scheduler_admin_filter_meta_box_content_' . $this->oTask->occurrence,
                 $sOutput,
-                $this->_oTask
+                $this->oTask
             )
             : $sOutput;
         return $sOutput 

@@ -12,11 +12,44 @@
 abstract class TaskScheduler_WPUtility_Post extends TaskScheduler_Utility {
     
     /**
+     * 
+     * @since       1.0.1
+     * @return      string      The term label name.
+     */
+    static public function getTermName( $iTermID, $sTaxonomySlug ) {
+        $_oTerm = get_term( $iTermID, $sTaxonomySlug );
+        return $_oTerm->name;
+    }
+    
+    
+    /**
+     * 
+     * @since       1.0.1
+     * @return      string      The taxonomy label name.
+     */
+    static public function getTaxonomyNameBySlug( $sSlug ) {
+        $_oTaxonomy = get_taxonomy( $sSlug );
+        return $_oTaxonomy->labels->name;
+    }
+    
+    /**
      * Checks if the post exists by the given post ID.
      */    
     static public function doesPostExist( $iID ) {
         return is_string( get_post_status( $iID ) );
     }    
+    
+    /**
+     * 
+     * @since       1.0.1
+     * @return      string      The post type label.
+     */
+    static public function getPostTypeLabelBySlug( $sSlug ) {
+               
+        $_oPostType = get_post_type_object( $sSlug );
+        return $_oPostType->labels->name;               
+        
+    }
     
     /**
      * Returns an array holding the registered post types with the key of the slugs and the value of the label.
@@ -40,6 +73,23 @@ abstract class TaskScheduler_WPUtility_Post extends TaskScheduler_Utility {
         // return array_diff_key( $_aPostTypes, array_flip( $_aPostTypes ) );            
         
     }
+    
+    /**
+     * 
+     * @since       1.0.1
+     * @return      string      The readable post status label.
+     */
+    static public function getPostStatusLabelBySlug( $sSlug ) {
+        
+        foreach( get_post_stati( array( 'name' => $sSlug ), '' ) as $_sSlug => $_oPostStatus )  {
+            if ( $sSlug === $_sSlug ) {
+                return $_oPostStatus->label;
+            }
+        }    
+        return $sSlug;
+        
+    }
+    
     /**
      * Returns an array holding the registered post statuses with the keys of post status keys and the values of labels.
      * 

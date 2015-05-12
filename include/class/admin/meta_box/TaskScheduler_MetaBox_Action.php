@@ -12,7 +12,7 @@ class TaskScheduler_MetaBox_Action extends TaskScheduler_MetaBox_Base {
      */ 
     public function setUp() {
         
-        $this->_oTask = isset( $_GET['post'] )
+        $this->oTask = isset( $_GET['post'] )
             ? TaskScheduler_Routine::getInstance( $_GET['post'] )
             : null;        
 
@@ -20,20 +20,31 @@ class TaskScheduler_MetaBox_Action extends TaskScheduler_MetaBox_Base {
             array(
                 'transient_key'  => TaskScheduler_Registry::TRANSIENT_PREFIX . uniqid(),
                 'tab'            => 'edit_action',
-                'post'           => isset( $_GET['post'] ) ? $_GET['post'] : 0,
+                'post'           => isset( $_GET['post'] )
+                    ? $_GET['post'] 
+                    : 0,
             )
         );
             
         $this->addSettingFields(
             array(
-                'field_id'        => 'routine_action',
+                'field_id'        => 'routine_action_label',
                 'title'           => __( 'Action', 'task-scheduler' ),
                 'type'            => 'text',
                 'attributes'      => array(
-                    'ReadOnly'    => 'ReadOnly',
+                    'readonly'    => 'readonly',
                     'name'        => '',    // not saving the data
                 ),
             ),
+            array(
+                'field_id'        => 'routine_action',
+                'title'           => __( 'Action Slug', 'task-scheduler' ),
+                'type'            => 'text',
+                'attributes'      => array(
+                    'readonly'    => 'readonly',
+                    'name'        => '',    // not saving the data
+                ),
+            ),            
             array(
                 'field_id'        => 'argument',
                 'title'           => __( 'Arguments', 'task-scheduler' ),
@@ -46,22 +57,35 @@ class TaskScheduler_MetaBox_Action extends TaskScheduler_MetaBox_Base {
     }
         
     /**
+     * Redefines the 'routine_action_label' field.
+     */
+    public function field_definition_TaskScheduler_MetaBox_Action_routine_action_label( $aField ) {
+        
+        if ( ! $this->oTask ) { 
+            return $aField; 
+        }
+        $aField['value']    = apply_filters( "task_scheduler_filter_label_action_{$this->oTask->routine_action}", $this->oTask->routine_action );
+        return $aField;
+        
+    }
+    /**
      * Redefines the 'routine_action' field.
      */
     public function field_definition_TaskScheduler_MetaBox_Action_routine_action( $aField ) {
         
-        if ( ! $this->_oTask ) { return $aField; }
-        $aField['value']    = apply_filters( "task_scheduler_filter_label_action_{$this->_oTask->routine_action}", $this->_oTask->routine_action );
+        if ( ! $this->oTask ) { 
+            return $aField; 
+        }
+        $aField['value']    = $this->oTask->routine_action;
         return $aField;
         
-    }
-    
+    }    
     /**
      * Redefines the form fields.
      */
     public function field_definition_TaskScheduler_MetaBox_Action( $aAllFields ) {    // field_definition_{class name}
 
-        if ( ! $this->_oTask ) { 
+        if ( ! $this->oTask ) { 
             return $aAllFields; 
         }
         if ( ! isset( $aAllFields['_default'] ) || ! is_array( $aAllFields['_default'] ) ) { 
@@ -69,7 +93,7 @@ class TaskScheduler_MetaBox_Action extends TaskScheduler_MetaBox_Base {
         }
         
         $aAllFields['_default'] = $aAllFields['_default'] 
-            + $this->_getModuleFields( $this->_oTask->routine_action, ( array ) $this->_oTask->{$this->_oTask->routine_action} )
+            + $this->_getModuleFields( $this->oTask->routine_action, ( array ) $this->oTask->{$this->oTask->routine_action} )
         ;
         
         return $aAllFields;
@@ -96,11 +120,11 @@ class TaskScheduler_MetaBox_Action extends TaskScheduler_MetaBox_Base {
     }
  
     public function content( $sOutput ) {
-        $sOutput = isset( $this->_oTask->routine_action )
+        $sOutput = isset( $this->oTask->routine_action )
             ? apply_filters(
-                'task_scheduler_admin_filter_meta_box_content_' . $this->_oTask->routine_action,
+                'task_scheduler_admin_filter_meta_box_content_' . $this->oTask->routine_action,
                 $sOutput,
-                $this->_oTask
+                $this->oTask
             )
             : $sOutput;
         return $sOutput 
