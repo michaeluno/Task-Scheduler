@@ -2,9 +2,9 @@
 /**
  * The class that provides utility methods which use WordPress built-in functions.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, <Michael Uno>
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -39,7 +39,12 @@ class TaskScheduler_WPUtility extends TaskScheduler_WPUtility_Option {
         $_aLabels = array();
         $_aTaxonomyObjects = get_object_taxonomies( $sPostTypeSlug, 'objects' );
         foreach( $_aTaxonomyObjects as $_sTaxonomySlug => $_oTaxonomy ) {
-            if ( ! isset( $_oTaxonomy->labels->name ) ) continue;
+            if ( 'post_format' === $_sTaxonomySlug ) {
+                continue;
+            }
+            if ( ! isset( $_oTaxonomy->labels->name ) ) { 
+                continue;
+            }
             $_aLabels[ $_sTaxonomySlug ] = $_oTaxonomy->labels->name;
         }        
         return $_aLabels;
@@ -65,7 +70,9 @@ class TaskScheduler_WPUtility extends TaskScheduler_WPUtility_Option {
      */
     static public function clearTransients( $sPrefix )  {
         
-        if ( ! isset( $GLOBALS['wpdb'], $GLOBALS['table_prefix'] ) ) return;
+        if ( ! isset( $GLOBALS['wpdb'], $GLOBALS['table_prefix'] ) ) { 
+            return;
+        }
         
         $GLOBALS['wpdb']->query( "DELETE FROM `" . $GLOBALS['table_prefix'] . "options` WHERE `option_name` LIKE ( '_transient_%{$sPrefix}%' )" );
         $GLOBALS['wpdb']->query( "DELETE FROM `" . $GLOBALS['table_prefix'] . "options` WHERE `option_name` LIKE ( '_transient_timeout_%{$sPrefix}%' )" );        
@@ -77,7 +84,11 @@ class TaskScheduler_WPUtility extends TaskScheduler_WPUtility_Option {
      */
     static public function getRedableMySQLDate( $sMySQLDate, $sDateTimeFormat=null, $bAdjustGMT=false ) { 
 
-        return self::getSiteReadableDate( mysql2date( 'U' , $sMySQLDate ), $sDateTimeFormat, $bAdjustGMT );
+        return self::getSiteReadableDate( 
+            mysql2date( 'U' , $sMySQLDate ), 
+            $sDateTimeFormat, 
+            $bAdjustGMT 
+        );
     
     }
         
