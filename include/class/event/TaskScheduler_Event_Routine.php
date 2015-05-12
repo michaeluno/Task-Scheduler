@@ -70,7 +70,7 @@ class TaskScheduler_Event_Routine {
     }
     
     /**
-     * Gets triggered when a routine is canceled.
+     * Gets triggered when a routine is cancelled.
      */
     public function _replyToCancelRoutine( $oRoutine ) {
     
