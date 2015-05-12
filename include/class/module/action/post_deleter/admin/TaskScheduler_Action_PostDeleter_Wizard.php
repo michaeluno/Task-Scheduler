@@ -25,17 +25,19 @@ final class TaskScheduler_Action_PostDeleter_Wizard extends TaskScheduler_Wizard
 
         return array(
             array(    
-                'field_id'  => 'post_type_of_deleting_posts',
-                'title'     => __( 'Post Type', 'task-scheduler' ),
-                'type'      => 'select',
-                'label'     => TaskScheduler_WPUtility::getRegisteredPostTypeLabels(),
+                'field_id'      => 'post_type_of_deleting_posts',
+                'title'         => __( 'Post Type', 'task-scheduler' ),
+                'type'          => 'select',
+                'label'         => TaskScheduler_WPUtility::getRegisteredPostTypeLabels(),
+                'description'   => __( 'Select which post type of posts should be deleted.', 'task-scheduler' ),
             ),                 
             array(             
-                'field_id'  => 'post_statuses_of_deleting_posts',
-                'title'     => __( 'Post Statuses', 'task-scheduler' ),
-                'type'      => 'checkbox',
-                'label'     => TaskScheduler_WPUtility::getRegisteredPostStatusLabels(),
-                'default'   => array( 'trash' => 1 ),                
+                'field_id'      => 'post_statuses_of_deleting_posts',
+                'title'         => __( 'Post Statuses', 'task-scheduler' ),
+                'type'          => 'checkbox',
+                'label'         => TaskScheduler_WPUtility::getRegisteredPostStatusLabels(),
+                'default'       => array( 'trash' => 1 ),                
+                'description'   => __( 'Select post statuses with witch the posts gets deleted.', 'task-scheduler' ),
             ),            
         );
         

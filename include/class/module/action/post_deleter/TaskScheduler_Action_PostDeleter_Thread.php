@@ -2,9 +2,9 @@
 /**
  * The class that defines the action of Delete Posts for the Task Scheduler plugin.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, <Michael Uno>
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, <Michael Uno>
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -80,7 +80,7 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
         // Do delete posts - we are going to delete up to 20 items to prevent exhausting the PHP max execution time.
         $_aDeleted = array();
         foreach( $_aChunks_PostIDs[ 0 ] as $_iPostID ) {
-            if( wp_delete_post( $_iPostID, true ) ) {
+            if ( wp_delete_post( $_iPostID, true ) ) {
                 $_aDeleted[] = $_iPostID;
             }
         }
@@ -111,7 +111,7 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
             // Construct the query argument array.
             $_aQueryArgs = array(
                 'post_type'      => $asPostType,
-                'post_status'    => $asPostStatus,    
+                'post_status'    => array_keys( array_filter( $asPostStatus ) ),
                 'posts_per_page' => $iLimit,   // -1 for all            
                 'orderby'        => 'date ID', // another option: 'ID',    
                 'order'          => 'ASC', // 'DESC': the newest comes first, 'ASC': the oldest comes first
@@ -123,7 +123,7 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
                     array(
                         'taxonomy' => $sTaxonomy,
                         'field'    => 'term_id',
-                        'terms'    => $aTerms,
+                        'terms'    => array_keys( array_filter( $aTerms ) ),
                     ),
                 );                            
             }

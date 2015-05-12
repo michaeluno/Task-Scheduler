@@ -56,7 +56,8 @@ final class TaskScheduler_Action_PostDeleter_Wizard_3 extends TaskScheduler_Wiza
                 'field_id'          => 'term_ids_of_deleting_posts',
                 'title'             => __( 'Terms', 'task-scheduler' ),
                 'type'              => 'taxonomy',
-                'taxonomy_slugs'    => isset( $_aWizardOptions['taxonomy_of_deleting_posts'] ) 
+                'width'             => '400px',
+                'taxonomy_slugs'    => isset( $_aWizardOptions[ 'taxonomy_of_deleting_posts' ] ) 
                     ? $_aWizardOptions['taxonomy_of_deleting_posts']
                     : array(),
                 'if'                => $_bIsTaxonomySet,
