@@ -27,5 +27,5 @@ abstract class TaskScheduler_Wizard_Occurrence_Base extends TaskScheduler_Wizard
      * This is used for filter names,
      */
     protected $_sModuleType = 'occurrence';
-            
+                    
 }

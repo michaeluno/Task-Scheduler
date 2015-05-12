@@ -16,8 +16,15 @@ abstract class TaskScheduler_Occurrence_Base extends TaskScheduler_Module_Factor
             
     /**
      * Sets up necessary hooks and properties.
+     * 
+     * @since       1.0.0
+     * @since       1.0.1       Made the first parameter optional.
      */
-    public function __construct( $sSlug, $asWizardClasses=array() )     {
+    public function __construct( $sSlug='', $asWizardClasses=array( 'TaskScheduler_Wizard_Occurrence_Default' ) ) {
+        
+        $sSlug = empty( $sSlug )
+            ? strtolower( get_class( $this ) )
+            : $sSlug;        
         
         parent::__construct( 
             $sSlug, 

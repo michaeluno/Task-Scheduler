@@ -41,7 +41,7 @@ class TaskScheduler_Occurrence_Constant extends TaskScheduler_Occurrence_Base {
      */
     public function doAfterAction( $oRoutine, $isExitCode ) {
         
-        // The constant type is meatn to be loaded again and again repeatedly. So the routine status shuold be kept 'queued' unless the action returns 'DELETE'.
+        // The constant type is meant to be loaded again and again repeatedly. So the routine status shuold be kept 'queued' unless the action returns 'DELETE'.
         // if ( 'DELETE' !== $isExitCode ) {
             // $oRoutine->setMeta( '_routine_status', 'queued' );
         // }        

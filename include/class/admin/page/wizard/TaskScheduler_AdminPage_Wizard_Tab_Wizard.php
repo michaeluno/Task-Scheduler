@@ -2,9 +2,9 @@
 /**
  * One of the base classes of the plugin admin page class for the wizard pages.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */

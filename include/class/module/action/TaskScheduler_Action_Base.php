@@ -20,7 +20,7 @@ abstract class TaskScheduler_Action_Base extends TaskScheduler_Module_Factory {
      * @since       1.0.0
      * @since       1.0.1       If a slug is not specified, lower-cased class name gets automatically applied.
      */
-    public function __construct( $sSlug='', $asWizardClasses=array( 'TaskScheduler_Wizard_Default' ) ) {
+    public function __construct( $sSlug='', $asWizardClasses=array( 'TaskScheduler_Wizard_Action_Default' ) ) {
         
         $sSlug = empty( $sSlug )
             ? strtolower( get_class( $this ) )
