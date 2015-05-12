@@ -206,6 +206,9 @@ If you are comfortable reading PHP code, it should not be hard to figure out. Gi
 = Found a bug. Where can I report? =
 Please use the [GitHub repository](https://github.com/michaeluno/Task-Scheduler) of this plugin.
 
+= How do I list my module? =
+If you create a module plugin that can be shared by others, submit it to wordpress.org. 
+
 == Screenshots ==
 
 1. ***Task Listing Table***
