@@ -33,7 +33,13 @@ final class TaskScheduler_Action_PostDeleter_Wizard extends TaskScheduler_Wizard
             array( $this, '_replyToModifyFieldOutput_post_statuses_of_deleting_posts' ),
             10,
             2
-        );        
+        );       
+        
+        add_filter(
+            'field_definition_TaskScheduler_MetaBox_Action',
+            array( $this, '_replyToModifyFieldOrder' ),
+            30 // low priority to let the `TaskScheduler_MetaBox_Action` class process the fileter
+        );
 
     }
 
@@ -171,5 +177,38 @@ final class TaskScheduler_Action_PostDeleter_Wizard extends TaskScheduler_Wizard
                     . implode( '', $_aTermLabelList )
                 . "</ul>";
         }        
+    
+    /**
+     * 
+     * @return  array
+     */
+    public function _replyToModifyFieldOrder( $aFields ) {
+
+        if ( ! isset( $aFields[ '_default' ] ) || ! is_array( $aFields[ '_default' ] ) ) {
+            return $aFields;
+        }
+   
+        $_aFields = $aFields[ '_default' ];
+        $_aFields = $this->_resetElement( $_aFields, 'post_type_of_deleting_posts' );
+        $_aFields = $this->_resetElement( $_aFields, 'post_statuses_of_deleting_posts' );
+        $_aFields = $this->_resetElement( $_aFields, 'taxonomy_of_deleting_posts' );
+        $_aFields = $this->_resetElement( $_aFields, 'term_ids_of_deleting_posts' );
+        $_aFields = $this->_resetElement( $_aFields, 'number_of_posts_to_delete_per_routine' );
+        $aFields[ '_default' ] = $_aFields;
+        return $aFields;
+        
+    }
+        /**
+         * Put the specified element into the last of the array.
+         * @return  array
+         */
+        private function _resetElement( array $aArray, $sKey ) {
+            
+            $_mTemp = $aArray[ $sKey ];
+            unset( $aArray[ $sKey ] );
+            $aArray[ $sKey ] = $_mTemp;
+            return $aArray;
+            
+        }
     
 }

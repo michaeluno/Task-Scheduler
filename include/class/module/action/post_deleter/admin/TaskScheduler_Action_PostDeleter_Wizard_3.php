@@ -87,8 +87,8 @@ final class TaskScheduler_Action_PostDeleter_Wizard_3 extends TaskScheduler_Wiza
         $oAdminPage  = $_aParams[ 2 ];
         $aSubmitInfo = $_aParams[ 3 ];         
     
-        $_bIsValid = true;
-        $_aErrors = array();    
+        $_bIsValid   = true;
+        $_aErrors    = array();    
     
         // Ensure to remove unnecessary elements.
         unset( 
@@ -97,9 +97,11 @@ final class TaskScheduler_Action_PostDeleter_Wizard_3 extends TaskScheduler_Wiza
             $aInput['taxonomy_label_of_deleting_posts']
         );
         
-        $_aCheckedPostStatuses = isset( $aInput['term_ids_of_deleting_posts'] ) ? $aInput['term_ids_of_deleting_posts'] : array();
-        $_aCheckedPostStatuses = array_filter( $_aCheckedPostStatuses );    // drop unchecked items.
-        if ( isset( $aInput['term_ids_of_deleting_posts'] ) && empty( $_aCheckedPostStatuses ) ) {
+        $_aCheckedTerms = isset( $aInput['term_ids_of_deleting_posts'] ) 
+            ? $aInput['term_ids_of_deleting_posts'] 
+            : array();
+        $_aCheckedTerms = array_filter( $_aCheckedTerms );    // drop unchecked items.
+        if ( isset( $aInput['term_ids_of_deleting_posts'] ) && empty( $_aCheckedTerms ) ) {
 
             // $aVariable[ 'sectioni_id' ]['field_id']
             $_aErrors[ $this->_sSectionID ][ 'term_ids_of_deleting_posts' ] = __( 'At least one item needs to be checked.', 'task-scheduler' );
@@ -118,7 +120,8 @@ final class TaskScheduler_Action_PostDeleter_Wizard_3 extends TaskScheduler_Wiza
         // Fix a number 
         $aInput['number_of_posts_to_delete_per_routine']    = $oAdminPage->oUtil->fixNumber( $aInput['number_of_posts_to_delete_per_routine'], 20, 1 );
         
-        return $aInput;         
+        // Reverse the element order
+        return array_reverse( $aInput );         
 
     }
     

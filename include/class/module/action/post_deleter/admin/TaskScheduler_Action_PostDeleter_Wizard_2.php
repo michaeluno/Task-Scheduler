@@ -28,7 +28,11 @@ final class TaskScheduler_Action_PostDeleter_Wizard_2 extends TaskScheduler_Wiza
                     'readonly' => 'readonly',
                     'name'     => '',    // dummy
                 ),
-                'value'             =>    TaskScheduler_WPUtility::getPostTypeLabel( isset( $_aWizardOptions['post_type_of_deleting_posts'] ) ? $_aWizardOptions['post_type_of_deleting_posts'] : null ),
+                'value'             => TaskScheduler_WPUtility::getPostTypeLabel( 
+                    isset( $_aWizardOptions['post_type_of_deleting_posts'] ) 
+                        ? $_aWizardOptions['post_type_of_deleting_posts'] 
+                        : null 
+                ),
             ),            
             array(    
                 'field_id'          => 'post_statuses_of_deleting_posts',

@@ -82,8 +82,10 @@ class TaskScheduler_MetaBox_Action extends TaskScheduler_MetaBox_Base {
     }    
     /**
      * Redefines the form fields.
+     * 
+     * @callback        filter       field_definition_{class name}
      */
-    public function field_definition_TaskScheduler_MetaBox_Action( $aAllFields ) {    // field_definition_{class name}
+    public function field_definition_TaskScheduler_MetaBox_Action( $aAllFields ) {   
 
         if ( ! $this->oTask ) { 
             return $aAllFields; 
