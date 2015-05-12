@@ -74,8 +74,8 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
         }
         
         // Divide the found posts by 20 - this should creates two chunks, the first part to delete and the rest to check if there are remained posts.
-        $_aChunks_PostIDs   = array_chunk( $_aPostIDsToDelete, $_iNumberOfPostsToDelete );
-        $_bHasRemain        = isset( $_aChunks_PostIDs[ 1 ] ) && 0 < count( $_aChunks_PostIDs[ 1 ] );
+        $_aChunks_PostIDs = array_chunk( $_aPostIDsToDelete, $_iNumberOfPostsToDelete );
+        $_bHasRemain      = isset( $_aChunks_PostIDs[ 1 ] ) && 0 < count( $_aChunks_PostIDs[ 1 ] );
         
         // Do delete posts - we are going to delete up to 20 items to prevent exhausting the PHP max execution time.
         $_aDeleted = array();
@@ -97,8 +97,8 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
         
         // Keep continuing. The system will not delete the thread if 'NOT_DELETE' is passed as the exit code.
         do_action( 'task_scheduler_action_check_shceduled_actions' );
-        $oThread->setMeta( '_next_run_time',    microtime( true ) );
-        $oThread->setMeta( '_routine_status',   'queued' );
+        $oThread->setMeta( '_next_run_time', microtime( true ) );
+        $oThread->setMeta( '_routine_status','queued' );
         return 'NOT_DELETE';
         
     }
@@ -112,14 +112,14 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
             $_aQueryArgs = array(
                 'post_type'      => $asPostType,
                 'post_status'    => $asPostStatus,    
-                'posts_per_page' => $iLimit,    // -1 for all            
-                'orderby'        => 'date ID',        // another option: 'ID',    
-                'order'          => 'ASC', // DESC: the newest comes first, 'ASC' : the oldest comes first
-                'fields'         => 'ids',    // return only post IDs by default.
+                'posts_per_page' => $iLimit,   // -1 for all            
+                'orderby'        => 'date ID', // another option: 'ID',    
+                'order'          => 'ASC', // 'DESC': the newest comes first, 'ASC': the oldest comes first
+                'fields'         => 'ids', // return only post IDs by default.
             );
             if ( $sTaxonomy && '-1' !== ( string ) $sTaxonomy && ! empty( $aTerms ) ) {
                 $_aQueryArgs['tax_query'] = array(
-                    'relation'    =>    'AND',
+                    'relation'     => 'AND',
                     array(
                         'taxonomy' => $sTaxonomy,
                         'field'    => 'term_id',

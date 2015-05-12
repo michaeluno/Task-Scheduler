@@ -75,7 +75,7 @@ class TaskScheduler_Action_PostDeleter extends TaskScheduler_Action_Base {
             return 0;
         }
 
-        // Create a thread with the constant occurrence type that handle the job.        
+        // Create a thread with the constant occurrence type that handles the job.
         $_iThreadTaskID = TaskScheduler_ThreadUtility::derive( 
             $oRoutine->ID, 
             array(
@@ -90,8 +90,12 @@ class TaskScheduler_Action_PostDeleter extends TaskScheduler_Action_Base {
                 'post_type_of_deleting_posts'           => $_aRoutineArguments['post_type_of_deleting_posts'],
                 'post_statuses_of_deleting_posts'       => $_aRoutineArguments['post_statuses_of_deleting_posts'],
                 'taxonomy_of_deleting_posts'            => $_aRoutineArguments['taxonomy_of_deleting_posts'],
-                'term_ids_of_deleting_posts'            => isset( $_aRoutineArguments['term_ids_of_deleting_posts'] ) ? $_aRoutineArguments['term_ids_of_deleting_posts'] : null,
-                'number_of_posts_to_delete_per_routine' => $_aRoutineArguments['number_of_posts_to_delete_per_routine'] ? $_aRoutineArguments['number_of_posts_to_delete_per_routine'] : null,
+                'term_ids_of_deleting_posts'            => isset( $_aRoutineArguments['term_ids_of_deleting_posts'] ) 
+                    ? $_aRoutineArguments['term_ids_of_deleting_posts'] 
+                    : null,
+                'number_of_posts_to_delete_per_routine' => $_aRoutineArguments['number_of_posts_to_delete_per_routine'] 
+                    ? $_aRoutineArguments['number_of_posts_to_delete_per_routine'] 
+                    : null,
             )            
         );
 
