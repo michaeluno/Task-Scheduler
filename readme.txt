@@ -218,8 +218,8 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.0.1 =
-- Fixed a bug in the Delete Posts action module that the taxonomy and post status options did not take effect.
+= 1.0.1 - 2015/05/12 =
+- Fixed a bug in the `Delete Posts` action module that the taxonomy and post status options did not take effect.
 - Fixed an incompatibility issue with WordPress 4.2 or above that in the listing table view, the view links lost the count indications.
 - Fixed an incompatibility issue with WordPress 4.2 or above that taxonomy terms could not be listed.
 - Changed it to accept an empty slug to create a custom module.
