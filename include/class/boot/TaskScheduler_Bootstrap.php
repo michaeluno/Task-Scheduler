@@ -45,7 +45,7 @@ final class TaskScheduler_Bootstrap {
         register_activation_hook( $this->_sFilePath, array( $this, '_replyToCheckRequirements' ) );
         
         // 8. Schedule to load plugin specific components.
-        add_action( 'plugins_loaded', array( $this, '_replyToLoadPluginComponents' ) );
+        add_action( 'after_setup_theme', array( $this, '_replyToLoadPluginComponents' ) );
                         
     }    
     

@@ -3,7 +3,7 @@ Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
 Tested up to:       4.2.2
-Stable tag:         1.0.0
+Stable tag:         1.0.1
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               access, tool, utility, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation, routine, routines
@@ -50,11 +50,11 @@ If you need a custom module, let us know it!
 <h4>Create a Custom Action</h4>
 You can run your custom action with Task Scheduler and run it with scheduled times, once a day, with a fixed interval. or whatever you set with the plugin.
 
-1. Decide your action slug which also serves as a WordPress _filter_ hook.
+**1.** Decide your action slug which also serves as a WordPress _filter_ hook.
 
 Say you pick `my_custom_action` as an action name.
 
-2. Use the `add_filter()` WordPress core function to hook into the action.
+**2.** Use the `add_filter()` WordPress core function to hook into the action.
 
 `
 /**
@@ -70,7 +70,7 @@ function doMyCustomAction( $sExitCode, $oRoutine ) {
     
 }
 /**
- * Set the`my_custom_action` custom action slug in the Select Action screen
+ * Set the 'my_custom_action' custom action slug in the Select Action screen
  * via Dashboard -> Task SCheduler -> Add New Task.
  */
 add_filter( 'my_custom_action', 'doMyCustomAction', 10, 2 );
@@ -80,7 +80,7 @@ Please note that we use `add_filter()` not `add_action()` in order to return an 
 
 Return `1` if the task completes and `0` when there is a problem. You can pass any value except `null`.
 
-3. Go to **Dashboard** -> **Task Scheduler** -> **Add New Task**. Proceed the wizard and when you get the **Select Action** screen after setting up the occurrence, type **my_custom_action**, the one you defined in the above step.
+**3.** Go to **Dashboard** -> **Task Scheduler** -> **Add New Task**. Proceed the wizard and when you get the **Select Action** screen after setting up the occurrence, type **my_custom_action**, the one you defined in the above step.
   
 The action slug set in the field will be triggered at the scheduled time.
 
@@ -91,7 +91,7 @@ If you want your action to be listed in the **Select Action** screen, you need t
 
 To create an action module, you need to define a class by extending a base class that Task Scheduler prepares for you.
 
-1. Define your custom action module class by extending the TaskScheduler_Action_Base class. 
+**1.** Define your custom action module class by extending the TaskScheduler_Action_Base class. 
 
 `
 class TaskScheduler_SampleActionModule extends TaskScheduler_Action_Base {
@@ -147,9 +147,9 @@ class TaskScheduler_SampleActionModule extends TaskScheduler_Action_Base {
 }
 `
 
-In the doAction() method of the above class, define the behavior of your action what it does. The second parameter receives a routine object. The object has a public method named `getMeta()` which returns the associated arguments. 
+In the doAction() method of the above class, define the behaviour of your action what it does. The second parameter receives a routine object. The object has a public method named `getMeta()` which returns the associated arguments. 
 
-2. Use the `task_scheduler_action_after_loading_plugin` action hook to register your action module.
+**2.** Use the `task_scheduler_action_after_loading_plugin` action hook to register your action module.
 
 To register your action module, just instantiate the class you defined.
 
@@ -163,7 +163,8 @@ function loadTaskSchedulerSampleActionModule() {
 }
 add_action( 'task_scheduler_action_after_loading_plugin', 'loadTaskSchedulerSampleActionModule' );
 `
-3. Go to **Dashboard** -> **Task Scheduler** -> **Add New Task**. Proceed the wizard and when you get the **Select Action** screen, choose your action.
+
+**3.** Go to **Dashboard** -> **Task Scheduler** -> **Add New Task**. Proceed the wizard and when you get the **Select Action** screen, choose your action.
 
 You can set your custom arguments in the **Argument (optional)** field if necessary.
 
@@ -217,6 +218,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 
 == Changelog ==
+
+= 1.0.2 =
+- Changed the timing of loading plugin components to support themes to add modules.
 
 = 1.0.1 - 2015/05/12 =
 - Fixed a bug in the `Delete Posts` action module that the taxonomy and post status options did not take effect.
