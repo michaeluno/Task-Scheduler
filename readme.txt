@@ -220,6 +220,7 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 == Changelog ==
 
 = 1.0.2 =
+- Fixed auto-complete fields that did not work in WordPress 4.0 or above.
 - Changed the timing of loading plugin components to support themes to add modules.
 
 = 1.0.1 - 2015/05/12 =
