@@ -66,6 +66,7 @@ $aClassFiles = array(
 	"TaskScheduler_AdminPageFramework_WPUtility_URL"	=>	TaskScheduler_AdminPageFramework_Registry::$sDirPath . "/factory/AdminPageFramework_Factory/utility/AdminPageFramework_WPUtility/AdminPageFramework_WPUtility_URL.php", 
 	"TaskScheduler_AdminPageFramework_FieldTypeRegistration"	=>	TaskScheduler_AdminPageFramework_Registry::$sDirPath . "/factory/AdminPageFramework_Factory/view/AdminPageFramework_FieldTypeRegistration.php", 
 	"TaskScheduler_AdminPageFramework_PageLoadInfo_Base"	=>	TaskScheduler_AdminPageFramework_Registry::$sDirPath . "/factory/AdminPageFramework_Factory/view/AdminPageFramework_PageLoadInfo_Base.php", 
+	"TaskScheduler_AdminPageFramework_TabNavigationBar"	=>	TaskScheduler_AdminPageFramework_Registry::$sDirPath . "/factory/AdminPageFramework_Factory/view/AdminPageFramework_TabNavigationBar.php", 
 	"TaskScheduler_AdminPageFramework_FieldType"	=>	TaskScheduler_AdminPageFramework_Registry::$sDirPath . "/factory/AdminPageFramework_Factory/view/AdminPageFramework_FieldType/AdminPageFramework_FieldType.php", 
 	"TaskScheduler_AdminPageFramework_FieldType_Base"	=>	TaskScheduler_AdminPageFramework_Registry::$sDirPath . "/factory/AdminPageFramework_Factory/view/AdminPageFramework_FieldType/AdminPageFramework_FieldType_Base.php", 
 	"TaskScheduler_AdminPageFramework_FieldType_checkbox"	=>	TaskScheduler_AdminPageFramework_Registry::$sDirPath . "/factory/AdminPageFramework_Factory/view/AdminPageFramework_FieldType/AdminPageFramework_FieldType_checkbox.php", 
