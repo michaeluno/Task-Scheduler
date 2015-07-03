@@ -180,6 +180,7 @@ final class TaskScheduler_Action_PostDeleter_Wizard extends TaskScheduler_Wizard
     
     /**
      * 
+     * @callback    filter      field_definition_TaskScheduler_MetaBox_Action
      * @return  array
      */
     public function _replyToModifyFieldOrder( $aFields ) {
@@ -203,6 +204,10 @@ final class TaskScheduler_Action_PostDeleter_Wizard extends TaskScheduler_Wizard
          * @return  array
          */
         private function _resetElement( array $aArray, $sKey ) {
+            
+            if ( ! isset( $aArray[ $sKey ] ) ) {
+                return $aArray;
+            }
             
             $_mTemp = $aArray[ $sKey ];
             unset( $aArray[ $sKey ] );
