@@ -34,10 +34,8 @@ final class TaskScheduler_Registry extends TaskScheduler_Registry_Base {
 	        
 	// The plugin itself uses these values.
 	const TRANSIENT_PREFIX          = 'TS_';    // Up to 8 characters as transient name allows 45 characters or less ( 40 for site transients ) so that md5 (32 characters) can be added
-	const TextDomain                = 'task-scheduler';
-	const TextDomainPath            = './language';
-	const RequiredPHPVersion        = '5.2.1';
-	const RequiredWordPressVersion  = '3.7';
+	const TEXT_DOMAIN               = 'task-scheduler';
+	const TEXT_DOMAIN_PATH          = '/language';
         
 	// These properties will be defined in the setUp() method.
 	static public $sFilePath = '';
