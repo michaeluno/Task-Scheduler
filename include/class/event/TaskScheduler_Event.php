@@ -76,6 +76,11 @@ class TaskScheduler_Event {
                 array()     // internal, no wizard
             );
             
+            // [1.1.0+] Revived
+            new TaskScheduler_Action_HungRoutineHandler_Thread( 
+                'task_scheduler_action_handle_hung_task' 
+            );
+            
         }
         
         /**

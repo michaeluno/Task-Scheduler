@@ -2,8 +2,8 @@
 Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
-Tested up to:       4.2.2
-Stable tag:         1.0.1
+Tested up to:       4.2.3
+Stable tag:         1.0.2
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               access, tool, utility, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation, routine, routines
@@ -218,6 +218,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 
 == Changelog ==
+
+= 1.1.0 =
+- Added an option that enables the ability to remove hung routines.
 
 = 1.0.2 - 2015/07/03 =
 - Fixed auto-complete fields that did not work in WordPress 4.0 or above.

@@ -44,7 +44,23 @@ class TaskScheduler_MetaBox_Advanced extends TaskScheduler_MetaBox_Base {
                 'type'            => 'checkbox',
                 'label'           => __( 'Execute the action even when the last routine is not completed.', 'task-scheduler' ),
                 'default'         => false,
-            ),            
+            ),        
+            array(
+                'field_id'        => '_hung_routine_handle_type',
+                'title'           => __( 'Handling Hung Routines', 'task-scheduler' ),
+                'type'            => 'radio',
+                'label'           => array(
+                    0   => __( 'Do nothing.', 'task-scheduler' ),
+                    1   => sprintf( 
+                        __( 'Terminate the routine and change the status to <code>%1$s</code>.', 'task-scheduler' ),
+                        __( 'Ready', 'task-scheduler' )
+                    ),
+                    2   => __( 'Terminate and remove the routine.', 'task-scheduler' ),
+                ),
+                'description'     => __( 'Choose which action you would like to take for hung routines which exceed the set execution time.', 'task-scheduler' ),
+                'default'         => 0,
+                'label_min_width'   => '100%',
+            ),
             array()
         );    
     
@@ -106,6 +122,6 @@ class TaskScheduler_MetaBox_Advanced extends TaskScheduler_MetaBox_Base {
                 wp_schedule_single_event( time(), 'task_scheduler_action_add_log_deletion_task', array( $_iTaskID ) );
             }                
             
-            
         }
+        
 }

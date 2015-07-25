@@ -104,9 +104,11 @@ class TaskScheduler_ListTable extends TaskScheduler_ListTable_Views {
      */
     public function getQueryURL( array $aKeyValues, $sURL=null ) {
         
-        $sURL = $sURL ? $sURL : $_SERVER['REQUEST_URI'];
-        $_sModifiedURL = add_query_arg( $aKeyValues, $sURL );
-        $_aDisallowedQueryKeys = array_diff( $this->_aDisallowedQueryKeys, array_keys( $aKeyValues ) );
+        $sURL                   = $sURL 
+            ? $sURL 
+            : $_SERVER['REQUEST_URI'];
+        $_sModifiedURL          = add_query_arg( $aKeyValues, $sURL );
+        $_aDisallowedQueryKeys  = array_diff( $this->_aDisallowedQueryKeys, array_keys( $aKeyValues ) );
 
         return remove_query_arg( $_aDisallowedQueryKeys, $_sModifiedURL );
         
@@ -200,15 +202,21 @@ class TaskScheduler_ListTable extends TaskScheduler_ListTable_Views {
          */
         public function usort_reorder( $a, $b ) {
             
-            $_sOrderBy    = ! empty( $_REQUEST['orderby'] )     ? $_REQUEST['orderby']    : 'post_date'; 
-            $_sOrder    = ! empty( $_REQUEST['order'] )        ? $_REQUEST['order']    : 'desc'; // desc: larget to smaller            
-            $_iResult = 1;
+            $_sOrderBy = ! empty( $_REQUEST['orderby'] ) 
+                ? $_REQUEST['orderby'] 
+                : 'post_date'; 
+            $_sOrder   = ! empty( $_REQUEST['order'] )
+                ? $_REQUEST['order']   
+                : 'desc'; // desc: larget to smaller            
+            $_iResult  = 1;
             if ( is_array( $a ) && is_array( $b ) ) {
                 $_iResult = strcmp( $a[ $_sOrderBy ], $b[ $_sOrderBy ] ); 
             } else if ( is_object( $a ) && is_object( $b ) ){
                 $_iResult = strcmp( $a->{$_sOrderBy} , $b->{$_sOrderBy} ); 
             }
-            return ( 'desc' === $_sOrder ) ? -$_iResult : $_iResult; 
+            return ( 'desc' === $_sOrder ) 
+                ? -$_iResult 
+                : $_iResult; 
             
         }
 

@@ -41,6 +41,10 @@ abstract class TaskScheduler_Action_Base extends TaskScheduler_Module_Factory {
 
     }
     
+    /**
+     * 
+     * @callback        filter      $this->sSlug
+     */
     public function doAction( $isExitCode, $oRoutine ) {}
     
 }

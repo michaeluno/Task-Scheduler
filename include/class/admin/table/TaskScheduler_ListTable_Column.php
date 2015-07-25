@@ -182,12 +182,18 @@ abstract class TaskScheduler_ListTable_Column extends TaskScheduler_ListTable_Ac
                     . ( $oRoutine->_count_exit ? $oRoutine->_count_exit : 0 )
                 . "</p>";            
         }
+        if ( $oRoutine->_count_hung ) {
+            $_aOutput[] = "<p>"
+                    . "<span class='description-label'>" . __( 'Hung Count', 'task-scheduler' ) . ":</span>"
+                    . $oRoutine->_count_hung
+                . "</p>";                        
+        }
         return implode( PHP_EOL, $_aOutput );
             
     }
     public function column_next_run( $oRoutine ) {
         
-        $_sCallCountDescription    = __( 'Indicates how many times the action has been called.', 'task-scheduler' );
+        $_sCallCountDescription   = __( 'Indicates how many times the action has been called.', 'task-scheduler' );
         $_sRunCountDescription    = __( 'Indicates how many times the action has run.', 'task-scheduler' )
             . ' &#10;' . __( 'This does not necessarily mean the action did the expected job.', 'task-scheduler' );
         return "<p>" 

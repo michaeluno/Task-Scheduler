@@ -31,7 +31,6 @@ class TaskScheduler_ListTable_Action extends WP_List_Table {
                     'disable'       => __( 'Disable', 'task-scheduler' ),
                     'reset_status'  => __( 'Reset Status', 'task-scheduler' ),
                     'reset_counts'  => __( 'Reset Counts', 'task-scheduler' ),
-                
                 );
             
             case 'disabled':

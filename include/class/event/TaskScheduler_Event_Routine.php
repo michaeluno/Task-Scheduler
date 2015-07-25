@@ -57,7 +57,11 @@ class TaskScheduler_Event_Routine {
         $oRoutine->setMeta( '_spawned_time',    $nSpawnedTime );    // used to cancel the routine and to detect the hung 
         $oRoutine->setMeta( '_count_call',      $oRoutine->getMeta( '_count_call' ) + 1 );
 
-        if ( $oRoutine->isTask() ) {
+        if ( $oRoutine->isRoutine() && $oRoutine->getMeta( '_hung_routine_handle_type' ) ) {
+            do_action( 'task_scheduler_action_add_hung_routine_handler_thread', $oRoutine );
+        }
+        
+        // if ( $oRoutine->isTask() ) {
             
             // Pass the spawned time and the thread will compare the passed spawned time and the currently set spawned time 
             // to identify the dealing task is the one that needs to be taken cared of as there is a possibility that forced execution 
@@ -65,7 +69,7 @@ class TaskScheduler_Event_Routine {
             // @deprecated
             // do_action( 'task_scheduler_action_add_hung_routine_handler_thread', $oRoutine );
             
-        }
+        // }
         
     }
     
