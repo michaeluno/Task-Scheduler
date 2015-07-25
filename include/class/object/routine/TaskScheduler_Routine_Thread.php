@@ -2,9 +2,9 @@
 /**
  * One of the abstract classes of the TaskScheduler_Routine class.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, <Michael Uno>
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -38,7 +38,7 @@ abstract class TaskScheduler_Routine_Thread extends TaskScheduler_Routine_Log {
     /**
      * Returns an task object instance of the owner.
      * 
-     * @return    false|object        If failed, false; otherwize, the owner task object.
+     * @return    false|object        If failed, false; otherwise, the owner task object.
      */
     public function getOwner() {        
         return $this->isThread() || $this->isRoutine() ? TaskScheduler_Routine::getInstance( $this->getOwnerID() ) : false;
