@@ -2,9 +2,9 @@
 /**
  * An abstract class of a custom post type for task logs.
  *
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, <Michael Uno>
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
 */
@@ -16,40 +16,40 @@ abstract class TaskScheduler_PostType_Log_Base extends TaskScheduler_AdminPageFr
         $this->setPostTypeArgs(
             array(            // argument - for the array structure, refer to http://codex.wordpress.org/Function_Reference/register_post_type#Arguments
                 'labels'                =>    array(
-                    'name'                    =>    __( 'Task Scheduler Log', 'task-scheduler' ),
-                    'all_items'                =>    __( 'Logs', 'task-scheduler' ),    // sub menu label
-                    'singular_name'            =>    __( 'Log', 'task-scheduler' ),
-                    'menu_name'                =>    __( 'Logs', 'task-scheduler' ),    // this changes the root menu name 
-                    'add_new'                =>    __( 'Add New Log', 'task-scheduler' ),
-                    'add_new_item'            =>    __( 'Add New Log', 'task-scheduler' ),
-                    'edit'                    =>    __( 'Edit', 'task-scheduler' ),
-                    'edit_item'                =>    __( 'Edit Log', 'task-scheduler' ),
-                    'new_item'                =>    __( 'New Log', 'task-scheduler' ),
-                    'view'                    =>    __( 'View', 'task-scheduler' ),
-                    'view_item'                =>    __( 'View Log', 'task-scheduler' ),
-                    'search_items'            =>    __( 'Search Logs', 'task-scheduler' ),
-                    'not_found'                =>    __( 'No Log found for Task Scheduler', 'task-scheduler' ),
-                    'not_found_in_trash'    =>    __( 'No Log Found for Task Scheduler in Trash', 'task-scheduler' ),
-                    'parent'                =>    __( 'Parent Log', 'task-scheduler' ),
+                    'name'                    => __( 'Task Scheduler Log', 'task-scheduler' ),
+                    'all_items'               => __( 'Logs', 'task-scheduler' ),    // sub menu label
+                    'singular_name'           => __( 'Log', 'task-scheduler' ),
+                    'menu_name'               => __( 'Logs', 'task-scheduler' ),    // this changes the root menu name 
+                    'add_new'                 => __( 'Add New Log', 'task-scheduler' ),
+                    'add_new_item'            => __( 'Add New Log', 'task-scheduler' ),
+                    'edit'                    => __( 'Edit', 'task-scheduler' ),
+                    'edit_item'               => __( 'Edit Log', 'task-scheduler' ),
+                    'new_item'                => __( 'New Log', 'task-scheduler' ),
+                    'view'                    => __( 'View', 'task-scheduler' ),
+                    'view_item'               => __( 'View Log', 'task-scheduler' ),
+                    'search_items'            => __( 'Search Logs', 'task-scheduler' ),
+                    'not_found'               => __( 'No Log found for Task Scheduler', 'task-scheduler' ),
+                    'not_found_in_trash'      => __( 'No Log Found for Task Scheduler in Trash', 'task-scheduler' ),
+                    'parent'                  => __( 'Parent Log', 'task-scheduler' ),
                     // 'publish'                =>    __( 'Run', 'task-scheduler' ),
                     'plugin_listing_table_title_cell_link'    =>    '',    // framework specific key. [3.0.6+] - passing an empty will disable the automatic link insertion to the plugin listing table.
                 ),
-                'public'                =>    true,
-                'show_ui'                 =>    true,
-                // 'show_in_menu'             =>    false, // Whether to show post type in the admin menu. 'show_ui' must be true for this to work. bool (defaults to 'show_ui')
-                'show_in_menu'            =>    'TaskScheduler_AdminPage',    // the plugin root admin page
-                'menu_position'            =>    999,
-                'can_export'              =>    true,
+                'public'                  => true,
+                'show_ui'                 => true,
+                // 'show_in_menu'         => false, // Whether to show post type in the admin menu. 'show_ui' must be true for this to work. bool (defaults to 'show_ui')
+                'show_in_menu'            => 'TaskScheduler_AdminPage',    // the plugin root admin page
+                'menu_position'           => 999,
+                'can_export'              => true,
                 // 'supports' => array( 'title', 'editor', 'comments', 'thumbnail' ),    // 'custom-fields'
-                'supports'                =>    array( 'title', 'editor', 'excerpt' ),
-                'taxonomies'            =>    array( '' ),
-                'menu_icon'                =>    TaskScheduler_Registry::getPluginURL( '/asset/image/menu_icon_16x16.png' ),
-                'has_archive'            =>    false,
-                'hierarchical'            =>    true,
-                'show_admin_column'        =>    true,
-                'screen_icon'            =>    TaskScheduler_Registry::getPluginURL( "/asset/image/screen_icon_32x32.png" ),
-                'exclude_from_search'    =>    true,
-                // 'show_table_filter'        =>    false,    // not working.
+                'supports'                => array( 'title', 'editor', 'excerpt' ),
+                'taxonomies'              => array( '' ),
+                'menu_icon'               => TaskScheduler_Registry::getPluginURL( '/asset/image/menu_icon_16x16.png' ),
+                'has_archive'             => false,
+                'hierarchical'            => true,
+                'show_admin_column'       => true,
+                'screen_icon'             => TaskScheduler_Registry::getPluginURL( "/asset/image/screen_icon_32x32.png" ),
+                'exclude_from_search'     => true,
+                // 'show_table_filter'    => false,    // not working.
                 // 'capabilities' => array(
                     // 'create_posts' => false,
                 // ),        
@@ -89,7 +89,9 @@ abstract class TaskScheduler_PostType_Log_Base extends TaskScheduler_AdminPageFr
          */ 
         public function _replyToSetDefautSortOrder( $oWPQuery ) {
 
-            if ( $oWPQuery->query['post_type'] != $this->oProp->sPostType ) { return; }
+            if ( $oWPQuery->query['post_type'] != $this->oProp->sPostType ) { 
+                return; 
+            }
             
             // 'orderby' value can be any column name
             $oWPQuery->set( 'orderby', 'date' );
@@ -113,18 +115,18 @@ abstract class TaskScheduler_PostType_Log_Base extends TaskScheduler_AdminPageFr
      public function columns_ts_log( $aHeaderColumns ) {    // columns_{post type slug}
         
         return array(
-            'cb'                    => '<input type="checkbox" />',    // Checkbox for bulk actions. 
+            'cb'                   => '<input type="checkbox" />',    // Checkbox for bulk actions. 
             'title'                => __( 'title', 'task-scheduler' ),    
-            // 'date'                => __( 'Date', 'task-scheduler' ),    
-            'time'                => __( 'Time', 'task-scheduler' ),    
+            // 'date'              => __( 'Date', 'task-scheduler' ),    
+            'time'                 => __( 'Time', 'task-scheduler' ),    
         ) ;
             
     }
     
     public function sortable_columns_ts_log( $aSortableHeaderColumns ) {    // sortable_columns_{post type slug}
         return $aSortableHeaderColumns + array(
-            'title'                =>    'title',
-            'time'                =>    'time',
+            'title'                => 'title',
+            'time'                 => 'time',
         );
     }    
 
