@@ -2,9 +2,9 @@
 /**
  * Provides utility methods which use the Task Scheduler plugin specific components.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, <Michael Uno>
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -23,28 +23,28 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
         // The following change dynamically so don't check
         $_aNotCheckingTopLevelArguments = array_merge( 
             array(
-                'ID'             , // [ <post id> ] // Are you updating an existing post?
-                'tax_input',    // => [ array( <taxonomy> => <array | string> ) ] // For custom taxonomies. Default empty.
-                'post_type',    //     => [ 'post' | 'page' | 'link' | 'nav_menu_item' | custom post type ] // Default 'post'.
-                'post_author',    //    => [ <user ID> ] // The user ID number of the author. Default is the current user ID.
-                'post_status',    //   => [ 'draft' | 'publish' | 'pending'| 'future' | 'private' | custom registered status ] // Default 'draft'.
-                'post_content'   , // [ <string> ] // The full text of the post.
-                'post_name'      , // [ <string> ] // The name (slug) for your post            
-                'post_parent'    , // [ <post ID> ] // Sets the parent of the new post, if any. Default 0.
-                'menu_order'     , // [ <order> ] // If new post is a page, sets the order in which it should appear in supported menus. Default 0.
-                'ping_status',    //    => [ 'closed' | 'open' ] // Pingbacks or trackbacks allowed. Default is the option 'default_ping_status'.
-                'to_ping'        , // // Space or carriage return-separated list of URLs to ping. Default empty string.
-                'pinged'         , // // Space or carriage return-separated list of URLs that have been pinged. Default empty string.
-                'post_password'  , // [ <string> ] // Password for post, if any. Default empty string.
-                'guid'           , // // Skip this and let Wordpress handle it, usually.
-                'post_content_filtered' , // // Skip this and let Wordpress handle it, usually.
-                'post_excerpt'   , // [ <string> ] // For all your post excerpt needs.
-                'post_date'      , // [ Y-m-d H:i:s ] // The time post was made.
-                'post_date_gmt'  , // [ Y-m-d H:i:s ] // The time post was made, in GMT.
-                'comment_status' , // [ 'closed' | 'open' ] // Default is the option 'default_comment_status', or 'closed'.
-                'post_category'  , // [ array(<category id>, ...) ] // Default empty.
-                'tags_input'     , // [ '<tag>, <tag>, ...' | array ] // Default empty.            
-                'page_template'  , // [ <string> ] // Requires name of template file, eg template.php. Default empty.
+                'ID',               // [ <post id> ] // Are you updating an existing post?
+                'tax_input',        // => [ array( <taxonomy> => <array | string> ) ] // For custom taxonomies. Default empty.
+                'post_type',        //     => [ 'post' | 'page' | 'link' | 'nav_menu_item' | custom post type ] // Default 'post'.
+                'post_author',      //    => [ <user ID> ] // The user ID number of the author. Default is the current user ID.
+                'post_status',      //   => [ 'draft' | 'publish' | 'pending'| 'future' | 'private' | custom registered status ] // Default 'draft'.
+                'post_content',     // [ <string> ] // The full text of the post.
+                'post_name',        // [ <string> ] // The name (slug) for your post            
+                'post_parent',      // [ <post ID> ] // Sets the parent of the new post, if any. Default 0.
+                'menu_order',       // [ <order> ] // If new post is a page, sets the order in which it should appear in supported menus. Default 0.
+                'ping_status',      //    => [ 'closed' | 'open' ] // Pingbacks or trackbacks allowed. Default is the option 'default_ping_status'.
+                'to_ping',          // Space or carriage return-separated list of URLs to ping. Default empty string.
+                'pinged',           // Space or carriage return-separated list of URLs that have been pinged. Default empty string.
+                'post_password',    // [ <string> ] // Password for post, if any. Default empty string.
+                'guid',             // Skip this and let Wordpress handle it, usually.
+                'post_content_filtered', // // Skip this and let Wordpress handle it, usually.
+                'post_excerpt',     // [ <string> ] // For all your post excerpt needs.
+                'post_date',        // [ Y-m-d H:i:s ] // The time post was made.
+                'post_date_gmt',    // [ Y-m-d H:i:s ] // The time post was made, in GMT.
+                'comment_status',   // [ 'closed' | 'open' ] // Default is the option 'default_comment_status', or 'closed'.
+                'post_category',    // [ array(<category id>, ...) ] // Default empty.
+                'tags_input',       // [ '<tag>, <tag>, ...' | array ] // Default empty.            
+                'page_template',    // [ <string> ] // Requires name of template file, eg template.php. Default empty.
             ), array(
                 // These plugin specific meta keys have dynamic values so it should not be compared.
                 '_next_run_time',
@@ -85,12 +85,12 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
         }
                 
         // Compose the 'meta_query' argument element.
-        $_aMetaQuery = array( 'relation' =>    'AND' );
+        $_aMetaQuery = array( 'relation' => 'AND' );
         foreach ( $aTaskMeta as $_sKey => $_vValue ) {
             $_aMetaQuery[] = array(
-                'key'       =>    $_sKey,
-                'value'     =>    $_vValue,
-                'compare'   =>    'IN',                
+                'key'       => $_sKey,
+                'value'     => $_vValue,
+                'compare'   => 'IN',                
             );
         }
         $_aQueryArguments[ 'meta_query' ]     = $_aMetaQuery;
@@ -148,8 +148,10 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
     public static function getEditTaskPageURL() {
         return add_query_arg(
             array( 
-                'post'        =>    isset( $_GET['post'] ) ? $_GET['post'] : '',
-                'action'    =>    'edit',
+                'post'   => isset( $_GET['post'] ) 
+                    ? $_GET['post'] 
+                    : '',
+                'action' => 'edit',
             ),
             admin_url( "post.php" )
         );        
@@ -169,7 +171,7 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
         return add_query_arg( 
             $_aGetQuery
             + array( 
-                'page'        =>    TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],
+                'page' => TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],
             ), 
             admin_url( 'admin.php' ) 
         );        
@@ -188,7 +190,7 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
     static public function getTaskListingPageURL( array $aQueryArgs=array() ) {
         return add_query_arg( 
             $aQueryArgs + array( 
-                'page'        =>    TaskScheduler_Registry::$aAdminPages[ 'task_list' ],
+                'page' => TaskScheduler_Registry::$aAdminPages[ 'task_list' ],
             ), 
             admin_url( 'admin.php' ) 
         );
