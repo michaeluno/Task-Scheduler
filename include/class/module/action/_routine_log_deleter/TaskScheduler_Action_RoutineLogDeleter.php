@@ -3,16 +3,15 @@
  * The class that defines the Delete Task Log action for the Task Scheduler plugin.
  * 
  * @package      Task Scheduler
- * @copyright    Copyright (c) 2014, <Michael Uno>
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
  * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
 
- /**
-  * 
-
-  */
+/**
+ *
+ */
 class TaskScheduler_Action_RoutineLogDeleter extends TaskScheduler_Action_Base {
         
     /**

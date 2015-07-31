@@ -2,17 +2,17 @@
 /**
  * The class that defines the behavior of threads of the Delete Task Log action for the Task Scheduler plugin.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, <Michael Uno>
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
 
- /**
-  * The thread class of the routine log deleter task class.
-  * 
-  */
+/**
+ * The thread class of the routine log deleter task class.
+ * 
+ */
 class TaskScheduler_Action_RoutineLogDeleter_Thread extends TaskScheduler_Action_Base {
         
     /**
