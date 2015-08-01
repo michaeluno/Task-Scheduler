@@ -57,11 +57,11 @@ class TaskScheduler_Action_TransientCleaner extends TaskScheduler_Action_Base {
         
         // Clean transients.
         if ( '2' !== ( string ) $_aTaskMeta[ $this->sSlug ][ 'transient_type' ] ) {
-            $this->_cleanExpiredTransients_Site();
+            $this->_cleanExpiredTransients_Site( $_aTaskMeta[ $this->sSlug ][ 'transient_prefix' ] );
         }
         
         if ( '1' !== ( string ) $_aTaskMeta[ $this->sSlug ][ 'transient_type' ] ) {
-            $this->_cleanExpiredTransients_Network();
+            $this->_cleanExpiredTransients_Network( $_aTaskMeta[ $this->sSlug ][ 'transient_prefix' ] );
         }
      
         return 1;
