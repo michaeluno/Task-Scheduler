@@ -56,14 +56,24 @@ class TaskScheduler_Action_TransientCleaner extends TaskScheduler_Action_Base {
         }
         
         // Clean transients.
+        $_iCountSiteTransients    = 0;
         if ( '2' !== ( string ) $_aTaskMeta[ $this->sSlug ][ 'transient_type' ] ) {
-            $this->_cleanExpiredTransients_Site( $_aTaskMeta[ $this->sSlug ][ 'transient_prefix' ] );
+            $_iCountSiteTransients = $this->_cleanExpiredTransients_Site( $_aTaskMeta[ $this->sSlug ][ 'transient_prefix' ] );
+        }
+        $_iCountNetworkTransients = 0;
+        if ( '1' !== ( string ) $_aTaskMeta[ $this->sSlug ][ 'transient_type' ] ) {
+            $_iCountNetworkTransients = $this->_cleanExpiredTransients_Network( $_aTaskMeta[ $this->sSlug ][ 'transient_prefix' ] );
         }
         
-        if ( '1' !== ( string ) $_aTaskMeta[ $this->sSlug ][ 'transient_type' ] ) {
-            $this->_cleanExpiredTransients_Network( $_aTaskMeta[ $this->sSlug ][ 'transient_prefix' ] );
-        }
+        // Log
+        $oRoutine->log( 
+            sprintf(
+                __( 'Cleaned %1$s transients.', 'task-scheduler' ),
+                $_iCountSiteTransients + $_iCountNetworkTransients
+            ) 
+        );
      
+        // Exit Code
         return 1;
         
     }
@@ -71,6 +81,7 @@ class TaskScheduler_Action_TransientCleaner extends TaskScheduler_Action_Base {
         /**
          * 
          * @since       1.1.0
+         * @return      integer     The total found expired transients.
          */
         private function _cleanExpiredTransients_Site( $sTransientPrefix ) {
          
@@ -95,16 +106,18 @@ class TaskScheduler_Action_TransientCleaner extends TaskScheduler_Action_Base {
             foreach( $_aTransientNames as $_sTransientName ) {
                 get_transient( $_sTransientName );
             }
-         
+            return count( $_aTransientNames );
+            
         }    
         /**
          * 
          * @since       1.1.0
+         * @return      integer     The total found expired transients.
          */
         private function _cleanExpiredTransients_Network( $sTransientPrefix ) {
          
             if ( ! is_multisite() ) {
-                return;
+                return 0;
             }
             
             global $wpdb;
@@ -128,7 +141,8 @@ class TaskScheduler_Action_TransientCleaner extends TaskScheduler_Action_Base {
             foreach ( $_aTransientNames as $_sTransientName ) {
                 get_site_transient( $_sTransientName );
             }            
-         
+            return count( $_aTransientNames );
+            
         }    
         
 }
