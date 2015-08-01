@@ -216,7 +216,7 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.1.0 =
+= 1.1.0 - 2015/08/02 =
 - Added a built-in action module that cleans expired transients.
 - Added an option that enables the ability to remove hung routines.
 
