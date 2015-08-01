@@ -28,7 +28,7 @@ class TaskScheduler_Event {
             
             new TaskScheduler_Occurrence_FixedInterval( 
                 'fixed_interval', 
-                'TaskScheduler_Occurrence_FixedInterval_Wizard'
+                'TaskScheduler_Occurrence_FixedInterval_Wizard' 
             );
             new TaskScheduler_Occurrence_SpecificTime( 
                 'specific_time', 
@@ -69,14 +69,20 @@ class TaskScheduler_Event {
             new TaskScheduler_Action_Debug( 'task_scheduler_action_debug' );
             new TaskScheduler_Action_Email( 
                 'task_scheduler_action_email', 
-                'TaskScheduler_Action_Email_Wizard' 
+                'TaskScheduler_Action_Email_Wizard' // wizard class name
             );
             new TaskScheduler_Action_RoutineLogDeleter( 
                 'task_scheduler_action_delete_task_log', 
                 array()     // internal, no wizard
             );
             
-            // [1.1.0+] Revived
+            // 1.1.0+
+            new TaskScheduler_Action_TransientCleaner(
+                'task_scheduler_action_clean_transients',
+                'TaskScheduler_Action_TransientCleaner_Wizard' // wizard class name
+            );
+            
+            // 1.1.0+ Revived
             new TaskScheduler_Action_HungRoutineHandler_Thread( 
                 'task_scheduler_action_handle_hung_task',
                 array()     // internal, no wizard

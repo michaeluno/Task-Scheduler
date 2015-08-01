@@ -1,6 +1,6 @@
 <?php 
 /**
-	Task Scheduler v1.0.1b01 by miunosoft (Michael Uno) 
+	Task Scheduler v1.1.0b02 by miunosoft (Michael Uno) 
 	Provides an enhanced task management system for WordPress.
 	<http://en.michaeluno.jp/>
 	Copyright (c) 2014, Michael Uno; Licensed under GPL v2 or later */
