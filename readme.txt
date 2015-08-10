@@ -14,7 +14,7 @@ Provides a task management system.
 
 Do you have specific tasks which need to run at your desired time? Do you use WordPress as a proxy to generate data from external sources? As WordPress has evolved into a phase of application platforms, a more enhanced task management system needed to emerge.
 
-Currently, with WP Cron, if you register, for example, 1000 tasks to run immediately and one of them stalls, it affects all the other actions preventing them from being loaded at the scheduled time. Also, the scheduled tasks won't be triggered if there is no visitor on the site. The goal of this plugin is to resolve such issues and become the perfect solution for WordPress powered back-end application servers to provide full-brown API functionalities.
+Currently, with WP Cron, if you register a large number of actions, for example, 1000 tasks to run immediately and one of them stalls, it affects all the other actions preventing them from being loaded at the scheduled time. Also, the scheduled tasks won't be triggered if there is no visitor on the site. The goal of this plugin is to resolve such issues and become the perfect solution for WordPress powered back-end application servers to provide full-brown API functionalities.
 
 <h4>What it does</h4>
 - (optional) creates periodic background access to the site. 
@@ -57,7 +57,7 @@ Say you pick `my_custom_action` as an action name.
 /**
  * Called when the Task Scheduler plugin gets loaded.
  */
-function doMyCustomAction( $sExitCode, $oRoutine ) {
+function doMyCustomAction( $isExitCode, $oRoutine ) {
     
     /**
      * Do you stuff here.
@@ -68,7 +68,7 @@ function doMyCustomAction( $sExitCode, $oRoutine ) {
 }
 /**
  * Set the 'my_custom_action' custom action slug in the Select Action screen
- * via Dashboard -> Task SCheduler -> Add New Task.
+ * via Dashboard -> Task Scheduler -> Add New Task.
  */
 add_filter( 'my_custom_action', 'doMyCustomAction', 10, 2 );
 `
@@ -77,7 +77,7 @@ Please note that we use `add_filter()` not `add_action()` in order to return an 
 
 Return `1` if the task completes and `0` when there is a problem. You can pass any value except `null`.
 
-**3.** Go to **Dashboard** -> **Task Scheduler** -> **Add New Task**. Proceed the wizard and when you get the **Select Action** screen after setting up the occurrence, type **my_custom_action**, the one you defined in the above step.
+**3.** Go to **Dashboard** -> **Task Scheduler** -> **Add New Task**. Proceed with the wizard and when you get the **Select Action** screen after setting up the occurrence, type **my_custom_action**, the one you defined in the above step.
   
 The action slug set in the field will be triggered at the scheduled time.
 
@@ -123,11 +123,9 @@ class TaskScheduler_SampleActionModule extends TaskScheduler_Action_Base {
     
     /**
      * Defines the behaviour of the task action.
-     * 
-     * Required arguments: 
-     * 
+     *  
      */
-    public function doAction( $sExitCode, $oRoutine ) {
+    public function doAction( $isExitCode, $oRoutine ) {
         
         /**
          * Write your own code here! Delete the below log method. 
