@@ -5,7 +5,7 @@
 	Description:    Provides an enhanced task management system for WordPress.
 	Author:         miunosoft (Michael Uno)
 	Author URI:     http://michaeluno.jp
-	Version:        1.1.0
+	Version:        1.1.1b01
 */
 
 /**
@@ -15,7 +15,7 @@
  */
 class TaskScheduler_Registry_Base {
 
-	const VERSION        = '1.1.0';    // <--- DON'T FORGET TO CHANGE THIS AS WELL!!
+	const VERSION        = '1.1.1b01';    // <--- DON'T FORGET TO CHANGE THIS AS WELL!!
 	const NAME           = 'Task Scheduler';
 	const DESCRIPTION    = 'Provides an enhanced task management system for WordPress.';
 	const URI            = 'http://en.michaeluno.jp/';
@@ -158,6 +158,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 TaskScheduler_Registry::setUp( __FILE__ );
 
 // Run the bootstrap script.
-include( dirname( __FILE__ ) . '/include/library/admin-page-framework/admin-page-framework.php' );
-include( dirname( __FILE__ ) . '/include/class/boot/TaskScheduler_Bootstrap.php' );    
+include( dirname( __FILE__ ) . '/include/library/apf/admin-page-framework.php' );
+include( dirname( __FILE__ ) . '/include/class/TaskScheduler_Bootstrap.php' );    
 new TaskScheduler_Bootstrap( __FILE__ );

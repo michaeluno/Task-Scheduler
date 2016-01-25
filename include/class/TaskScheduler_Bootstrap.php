@@ -17,7 +17,7 @@
  */
 final class TaskScheduler_Bootstrap {
     
-    function __construct( $sPluginFilePath ) {
+    public function __construct( $sPluginFilePath ) {
         
         // 0. The class properties.
         $this->_sFilePath = $sPluginFilePath;
@@ -54,63 +54,23 @@ final class TaskScheduler_Bootstrap {
     /**
      * Sets up global variables.
      */
-    private function _setGlobalVariables() {}
+    // private function _setGlobalVariables() {}
     
     /**
      * Register classes to be auto-loaded.
      * 
      */
     private function _loadClasses( $sFilePath ) {
-        
-        $_sPluginDir =  dirname( $sFilePath );
-        
-        // If the include script fails, the auto loader class is not defined.
-        // if ( class_exists( 'TaskScheduler_AutoLoad' ) ) {
-            // return;
-        // }
-        
-        // Include the autoloader and the library
-        // include( $_sPluginDir . '/include/class/boot/TaskScheduler_AutoLoad.php' );
-        // include( $_sPluginDir . '/include/library/admin-page-framework/task-scheduler-admin-page-framework.min.php' );
-        // include( $_sPluginDir . '/include/library/admin-page-framework/admin-page-framework.php' );
-        
-        // Include the include lists.
+
         $_aClassFiles        = array();
-        $_aAdminClassFiles   = array();
-        include( $_sPluginDir . '/include/task-scheduler-include-class-file-list.php' );
-        if ( $this->_bIsAdmin ) {
-            include( $_sPluginDir . '/include/task-scheduler-include-class-file-list-admin.php' );
-        }
-        
-        // Register them
-        new TaskScheduler_AdminPageFramework_RegisterClasses( array(), array(), $_aClassFiles + $_aAdminClassFiles );
-        // new TaskScheduler_AutoLoad( array(), array(), $_aClassFiles + $_aAdminClassFiles );    
-        
-        
-        // These lines should only be read if the inclusion script or the minified class file is disabled manually.
-        // $this->_includeLibraries();                            
-        // include( $_sPluginDir . '/include/class/boot/TaskScheduler_AutoLoad.php' );    
-        
-        // Register the classes.
-        // new TaskScheduler_AutoLoad( $_sPluginDir . '/include/class' );    
+        include( dirname( $sFilePath ) . '/include/class-list.php' );
+        new TaskScheduler_AdminPageFramework_RegisterClasses( 
+            array(), 
+            array(), 
+            $_aClassFiles 
+        );
                 
     }
-        /**
-         * Includes third-party libraries.
-         */
-        protected function _includeLibraries() {
-                    
-            include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/task-scheduler-admin-page-framework.min.php' );
-            include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/autocomplete-custom-field-type/TaskScheduler_AutoCompleteCustomFieldType.php' );
-            include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/date-time-custom-field-types/TaskScheduler_DateRangeCustomFieldType.php' );
-            include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/date-time-custom-field-types/TaskScheduler_DateTimeCustomFieldType.php' );
-            include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/date-time-custom-field-types/TaskScheduler_DateTimeRangeCustomFieldType.php' );
-            include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/date-time-custom-field-types/TaskScheduler_DateCustomFieldType.php' );
-            include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/date-time-custom-field-types/TaskScheduler_TimeCustomFieldType.php' );
-            include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/date-time-custom-field-types/TaskScheduler_TimeRangeCustomFieldType.php' );
-            include( TaskScheduler_Registry::$sDirPath . '/include/library/admin-page-framework/revealer-custom-field-type/TaskScheduler_RevealerCustomFieldType.php' );
-                        
-        }    
 
     /**
      * 

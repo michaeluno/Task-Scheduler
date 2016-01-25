@@ -2,8 +2,8 @@
 
 /* Configuration */
 $sTargetBaseDir		= dirname( dirname( dirname( __FILE__ ) ) );
-$sResultFilePath	= $sTargetBaseDir . '/include/task-scheduler-include-class-file-list.php';
-$sResultFilePath_2	= $sTargetBaseDir . '/include/task-scheduler-include-class-file-list-admin.php';
+$sResultFilePath	= $sTargetBaseDir . '/include/class-list.php';
+// $sResultFilePath_2	= $sTargetBaseDir . '/include/class-list-admin.php';
 
 
 /* If accessed from a browser, exit. */
@@ -45,14 +45,14 @@ new PHP_Class_Files_Inclusion_Script_Creator(
 		'base_dir_var'  	=>	'TaskScheduler_Registry::$sDirPath',
 		'search'			=>	array(
 			'allowed_extensions'	=>	array( 'php' ),	// e.g. array( 'php', 'inc' )
-			'exclude_dir_paths'		=>	array( $sTargetBaseDir . '/include/class/admin' ),
+			// 'exclude_dir_paths'		=>	array( $sTargetBaseDir . '/include/class/admin' ),
 			'exclude_dir_names'		=>	array(),
 			'is_recursive'			=>	true,
 		),			
 	)
 );
 // for admin pages
-new PHP_Class_Files_Inclusion_Script_Creator( 
+/* new PHP_Class_Files_Inclusion_Script_Creator( 
 	$sTargetBaseDir,
 	array( $sTargetBaseDir . '/include/class/admin' ), 	// scan directory paths
 	$sResultFilePath_2, 
@@ -70,5 +70,5 @@ new PHP_Class_Files_Inclusion_Script_Creator(
 			'is_recursive'			=>	true,
 		),			
 	)
-);
+); */
 echo 'Done!' . $sCarriageReturn;
