@@ -152,7 +152,8 @@ final class TaskScheduler_Bootstrap {
     /**
      * Loads the plugin specific components. 
      * 
-     * @remark        All the necessary classes should have been already loaded.
+     * @remark      All the necessary classes should have been already loaded.
+     * @callback    action      after_setup_theme
      */
     public function _replyToLoadPluginComponents() {
 
@@ -204,7 +205,7 @@ final class TaskScheduler_Bootstrap {
          */
         protected function _registerMetaBoxes() {
             
-            if ( ! isset( $GLOBALS['pagenow'] ) || 'post.php' !== $GLOBALS['pagenow'] ) {
+            if ( ! isset( $GLOBALS[ 'pagenow' ] ) || 'post.php' !== $GLOBALS[ 'pagenow' ] ) {
                 return;
             }
                         
