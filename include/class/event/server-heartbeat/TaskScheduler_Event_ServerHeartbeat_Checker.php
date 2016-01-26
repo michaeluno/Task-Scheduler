@@ -222,9 +222,6 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
                 $oTask->ID,  // the owner task id.
                 array( 
                     'parent_routine_log_id'    => $oTask->log( __( 'Starting a routine.', 'task-scheduler' ), 0, true ),
-
-                // @todo 1.1.1 Examine whether this is safe to do as this was set by routine in previous versions.
-                    // '_next_run_time'           => $oTask->_next_run_time,  // setting the scheduled time so that the routine can adjust the sleep duration
                 ),
                 array(),    // system taxonomy terms
                 $oTask->_force_execution   // allow duplicate

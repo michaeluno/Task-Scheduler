@@ -108,8 +108,9 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
             }
 
             // This value is not GMT-calculated.
-            return $this->_getNextClosestTime( $nLastRunTimestamp, $aDays, $aTimes );
-
+            $_iNextRunTime = $this->_getNextClosestTime( $nLastRunTimestamp, $aDays, $aTimes );
+            return $_iNextRunTime;
+            
         }
         /**
          * Checks whether today's weekday is in the given days array.
@@ -152,22 +153,22 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
             foreach( $aTimes as $_sHourMinute ) {
                 
                 // If the set time is already passed, skip.
-                $_iSetHourMinuteInSeconds = $this->_getTimeInSeconds( $_sHourMinute );
+                $_iSetHourMinuteInSeconds = $this->_getTimeInSeconds( $_sHourMinute );      
                 if ( $_iSetHourMinuteInSeconds <= $_iGMTLastRunHourMinute ) {
                     continue;
                 }
-                if ( $_iSetHourMinuteInSeconds <= $_iGMTCurrentHourMinute ) {
+                if ( $_iSetHourMinuteInSeconds <= $_iGMTCurrentHourMinute ) {                                                          
                     continue;
                 }                
                 
                 // Return the set time as timestamp.
-                return strtotime( '0:00:00' )           // today's 0 o'clock timestamp without GMT
-                    + $this->_getGMTRemovedTimestamp(   // remove the GMT adjustment
-                        $_iSetHourMinuteInSeconds       // this value is set hour-minutes in seconds WITH GMT (expected hour-minutes which are calculated with GMT offset)
-                    );
+                $_nNextRunTime = $this->_getTodaysZeroOclockTimestamp()
+                    + $_iSetHourMinuteInSeconds;
 
+                return $_nNextRunTime;
+                
             }
-            
+
             // not found
             return 0;
             
@@ -186,13 +187,18 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
             // Remove today's day from the array.
             $aDays                  = $this->_unsetArrayElementsByValue( $aDays, $_iTheDay );
             sort( $aDays );   
-            
+
             $_iDaysToClosestDay     = $this->_getNumberOfDaysToClosestDay( $_iTheDay, $aDays );
-            return strtotime( '0:00:00' )   // today's 0 o'clock timestamp without GMT
+                   
+            // $this->_getTodaysZeroOclockTimestamp() // 
+            return // strtotime( '0:00:00' )   // today's 0 o'clock timestamp without GMT
+                $this->_getTodaysZeroOclockTimestamp()
                 + ( $_iDaysToClosestDay * 3600 * 24 )   // seconds to the closest day
-                + $this->_getGMTRemovedTimestamp(
-                    $this->_getSmallestTimeInSeconds( $aTimes ) // this value is presumed to be calculated with GMT so the GMT offset must be removed
-                );
+                + $this->_getSmallestTimeInSeconds( $aTimes ) // this value is presumed to be calculated with GMT so the GMT offset must be removed
+                // + $this->_getGMTRemovedTimestamp(
+                    // $this->_getSmallestTimeInSeconds( $aTimes ) // this value is presumed to be calculated with GMT so the GMT offset must be removed
+                // )
+                ;
             
         }
             private function _unsetArrayElementsByValue( $aArray, $mValue ) {
@@ -226,6 +232,20 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
                 
             }
        
+            /**
+             * Returns today's 0 o'clock timestamp. 
+             * 
+             * This is tricky as "strtotime( '0:00:00' ) + GMT offset" will not return the correct time stamp in a time zone.
+             * 
+             * @return      integer     The unix timestamp of today's 0'oclock. Today is calculated without GMT.
+             */
+            private function _getTodaysZeroOclockTimestamp() {
+                
+                $_iGMTCurrentTimestamp  = $this->_getGMTOffsetTimestamp( time() );
+                $_iGMTCurrentHourMinute = $this->_getTimeInSeconds( date( 'G:i:s', $_iGMTCurrentTimestamp ) );
+                return $this->_getGMTRemovedTimestamp( $_iGMTCurrentTimestamp - $_iGMTCurrentHourMinute );
+                
+            }              
         
         /**
          * @remark      $aTimes should look like this.
