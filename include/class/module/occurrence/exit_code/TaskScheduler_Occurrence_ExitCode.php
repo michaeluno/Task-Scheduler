@@ -40,6 +40,7 @@ class TaskScheduler_Occurrence_ExitCode extends TaskScheduler_Occurrence_Base {
         
     /**
      * Returns the next run time time-stamp.
+     * @return      integer|float     timestamp without GMT offset.
      */ 
     public function getNextRunTime( $iTimeStamp, $oTask )    {
         return '';        // 0 or ''    will prevent the routine from being loaded

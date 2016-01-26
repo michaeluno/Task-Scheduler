@@ -12,7 +12,6 @@
 /**
  * Defines the behaviour when the user finishes defining a task.
  * 
- * @filter        apply    task_scheduler_filter_next_run_time_{occurrence slug}        Applies to the next run time of the task.
  */
 abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskScheduler_AdminPage_Wizard_Tab_SelectAction {
 

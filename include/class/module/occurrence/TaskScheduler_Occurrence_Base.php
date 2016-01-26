@@ -39,6 +39,7 @@ abstract class TaskScheduler_Occurrence_Base extends TaskScheduler_Module_Factor
     
     /*
      * Extensible methods.
+     * @return      integer|float     timestamp without GMT offset.
      */
     public function getNextRunTime( $iTimestamp, $oTask ) { 
         return $iTimestamp;

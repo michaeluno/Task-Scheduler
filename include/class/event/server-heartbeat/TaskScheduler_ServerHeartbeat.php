@@ -313,7 +313,9 @@ final class TaskScheduler_ServerHeartbeat {
             static private function _sleep( $nSleepDuration ) {
                 
                 // Give the interval - for example, to wait for 2 seconds, pass 2000000. 
-                if ( $nSleepDuration <= 0 ) { return; }
+                if ( $nSleepDuration <= 0 ) { 
+                    return; 
+                }
 
                 // Be careful not to set 0 for the cache duration.
                 $_iTransientDuration = ( int ) floor( $nSleepDuration );

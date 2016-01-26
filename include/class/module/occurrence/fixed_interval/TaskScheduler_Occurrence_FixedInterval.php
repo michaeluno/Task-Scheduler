@@ -40,19 +40,28 @@ class TaskScheduler_Occurrence_FixedInterval extends TaskScheduler_Occurrence_Ba
         
     /**
      * Returns the next run time time-stamp.
+     * @return      integer|float     timestamp without GMT offset.
      */ 
     public function getNextRunTime( $iTimestamp, $oTask ) {
         
         $_aOptions      = $oTask->getMeta( $this->sSlug );
-        if ( ! isset( $_aOptions['interval'][ 0 ], $_aOptions['interval'][ 1 ] ) ) {
+        if ( ! isset( $_aOptions[ 'interval' ][ 0 ], $_aOptions[ 'interval' ][ 1 ] ) ) {
             return $iTimestamp;
         }
         
+        $_nNow          = microtime( true );
         $_nLastRunTime  = $oTask->_last_run_time
             ? $oTask->_last_run_time
-            : microtime( true );    // @todo    Examine whether GMT offset should be calcurated or not.
-        $_iInterval     = $this->_getIntervalInSeconds( $_aOptions['interval'][ 0 ], $_aOptions['interval'][ 1 ] );
-        return $_nLastRunTime + $_iInterval;
+            : $_nNow;    
+        $_iInterval     = $this->_getIntervalInSeconds( 
+            $_aOptions[ 'interval' ][ 0 ], 
+            $_aOptions[ 'interval' ][ 1 ]
+        );
+        
+        $_nNextRun = $_nLastRunTime + $_iInterval;
+        return $_nNextRun > $_nNow
+            ? $_nNextRun
+            : $_nNow + $_iInterval;
                 
     }
         /**

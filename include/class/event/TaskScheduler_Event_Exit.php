@@ -83,7 +83,12 @@ class TaskScheduler_Event_Exit {
         $_aFoundTasks = $this->_getTasksOnExitCode( $isExitCode, $_oTask->ID );
             
         foreach( $_aFoundTasks as $_iTaskID ) {
-            do_action( 'task_scheduler_action_spawn_routine', $_iTaskID, microtime( true ) );
+            do_action( 
+                'task_scheduler_action_spawn_routine', 
+                $_iTaskID, 
+                microtime( true ),  // scheduled time - current time
+                false   // whether to update next run time
+            );
         }        
         
     }

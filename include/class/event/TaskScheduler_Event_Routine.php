@@ -12,7 +12,6 @@
 /**
  * 
  * @remark    The term routine is used to refer to the both 'thread' and 'task'. 
- * @filter    apply     task_scheduler_filter_next_run_time_{occurrence slug}    Applies to the next run time of the task.
  * @action    add       task_scheduler_action_before_calling_routine             Called when a routine is about to be called.
  * @action    add       task_scheduler_action_cancel_routine                     Called when a routine is canceled.
  * @action    add       task_scheduler_action_before_doing_routine               Called before a routine action gets triggered.
@@ -25,14 +24,14 @@
 class TaskScheduler_Event_Routine {
         
     /**
-     * Sets up hooks and properties.
+     * Sets up hooks.
      */
     public function __construct() {
 
-        add_action( 'task_scheduler_action_before_calling_routine', array( $this, '_replyToSpawnRoutine' ), 10, 2 );
+        add_action( 'task_scheduler_action_before_calling_routine', array( $this, '_replyToDoBeforeSpawnRoutine' ), 10, 2 );
         add_action( 'task_scheduler_action_cancel_routine',         array( $this, '_replyToCancelRoutine' ) );
         add_action( 'task_scheduler_action_before_doing_routine',   array( $this, '_replyToDoBeforeRoutine' ) );
-        add_action( 'task_scheduler_action_do_routine',             array( $this, '_replyToDoRoutine' ), 10, 2 );
+        add_action( 'task_scheduler_action_do_routine',             array( $this, '_replyToDoRoutine' ) );
         add_action( 'task_scheduler_action_after_doing_action',     array( $this, '_replyToDoAfterRoutineAction' ), 10, 2 );
         add_action( 'task_scheduler_action_after_doing_routine',    array( $this, '_replyToCompleteRoutine' ) );
         
@@ -40,11 +39,15 @@ class TaskScheduler_Event_Routine {
 
     /**
      * Called when the task is about to be spawned.
+     * @callback    action      task_scheduler_action_before_calling_routine
+     * @return      void
      */
-    public function _replyToSpawnRoutine( $oRoutine, $nSpawnedTime ) {
+    public function _replyToDoBeforeSpawnRoutine( $oRoutine, $nSpawnedTime ) {
         
-        if ( ! is_object( $oRoutine ) ) { return; }
-        $oRoutine->deleteMeta( '_eixt_code' );
+        if ( ! is_object( $oRoutine ) ) { 
+            return;
+        }
+        $oRoutine->deleteMeta( '_exit_code' );
         $_sPreviousTaskStatus     = $oRoutine->_routine_status;
         $_iMaxTaskExecutionTime   = ( int ) $oRoutine->_max_execution_time;
         
@@ -60,16 +63,6 @@ class TaskScheduler_Event_Routine {
         if ( $oRoutine->isRoutine() && $oRoutine->getMeta( '_hung_routine_handle_type' ) ) {
             do_action( 'task_scheduler_action_add_hung_routine_handler_thread', $oRoutine );
         }
-        
-        // if ( $oRoutine->isTask() ) {
-            
-            // Pass the spawned time and the thread will compare the passed spawned time and the currently set spawned time 
-            // to identify the dealing task is the one that needs to be taken cared of as there is a possibility that forced execution 
-            // spawns multiple instances of routines.
-            // @deprecated
-            // do_action( 'task_scheduler_action_add_hung_routine_handler_thread', $oRoutine );
-            
-        // }
         
     }
     
@@ -104,10 +97,13 @@ class TaskScheduler_Event_Routine {
     /**
      * Executes the action of the task.
      * 
-     * @remark    For convenience, the action of the task is called 'action' to imply it performs an action that needs for the task.
+     * @remark      For convenience, the action of the task is called 'action' to imply it performs an action that needs for the task.
      * However, technically speaking, it is performed as a WordPress filter to get the exit code to be returned.
+     * 
+     * @callback    action      task_scheduler_action_do_routine
+     * @return      void
      */
-    public function _replyToDoRoutine( $oRoutine, $nNextScheduledTime=0 )     {
+    public function _replyToDoRoutine( $oRoutine ) {
 
         $_bIsThread = $oRoutine->isThread();
         $_iLogID    = $oRoutine->log( $this->_getLogText( $oRoutine ), 0, true ); 

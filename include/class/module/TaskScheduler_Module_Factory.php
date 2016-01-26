@@ -15,7 +15,7 @@
  * @filter        add            task_scheduler_filter_label_{module type}_{slug}
  * @filter        add            task_scheduler_filter_description_{module type}_{slug}
  */
-abstract class TaskScheduler_Module_Factory {
+abstract class TaskScheduler_Module_Factory extends TaskScheduler_PluginUtility {
         
     /**
      * The identifier of the action. 

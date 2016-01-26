@@ -28,10 +28,14 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
         $this->_sTransientPrefix = TaskScheduler_Registry::TRANSIENT_PREFIX;
     
         // At this point, the page is loaded for a specific routine(task/thread).
-        if ( ! self::isCallingAction() ) { return; }
+        if ( ! self::isCallingAction() ) { 
+            return; 
+        }
             
         // Tell WordPress this is a background routine by setting the Cron flag.
-        if ( ! defined( 'DOING_CRON' ) ) { define( 'DOING_CRON', true ); }                
+        if ( ! defined( 'DOING_CRON' ) ) { 
+            define( 'DOING_CRON', true );
+        }
         ignore_user_abort( true );
     
         // Let other third-party scripts load their necessary components by hooking the 'init' action instead of calling the method right here.
@@ -46,10 +50,12 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
     /**
      * Executes an individual task and exists.
      * 
+     * @callback    action      init
+     * @return      void
      */
     public function _replyToDoRoutineAndExit() {
         
-        $_oRoutine = TaskScheduler_Routine::getInstance( $_COOKIE['server_heartbeat_action'] );
+        $_oRoutine = TaskScheduler_Routine::getInstance( $_COOKIE[ 'server_heartbeat_action' ] );
         if ( ! is_object( $_oRoutine ) )  {
             exit();        
         }        
@@ -58,7 +64,9 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
         }
 
         // Check the spawned time in case simultaneous page loads triggered the same task.
-        $_nSpawnedTime = isset( $_COOKIE['server_heartbeat_spawned_time'] ) ? $_COOKIE['server_heartbeat_spawned_time'] : null;
+        $_nSpawnedTime = isset( $_COOKIE[ 'server_heartbeat_spawned_time' ] ) 
+            ? $_COOKIE[ 'server_heartbeat_spawned_time' ] 
+            : null;
         if ( $_nSpawnedTime !== $_oRoutine->_spawned_time ) {
             exit();
         }
@@ -66,7 +74,9 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
         do_action( 'task_scheduler_action_after_calling_routine', $_oRoutine );
         $this->_doRoutine( 
             $_oRoutine,
-            isset( $_COOKIE['server_heartbeat_scheduled_time'] ) ? $_COOKIE['server_heartbeat_scheduled_time'] : null
+            isset( $_COOKIE[ 'server_heartbeat_scheduled_time' ] ) 
+                ? $_COOKIE[ 'server_heartbeat_scheduled_time' ] 
+                : 0
         );
         exit();
     
@@ -77,10 +87,15 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
      * 
      * @return    void
      */    
-    private function _doRoutine( $oRoutine, $nScheduledTime=null ) {
+    private function _doRoutine( $oRoutine, $nScheduledTime ) {
 
         // Set the max execution time and wait until the exact time.
-        $_nSleepSeconds          = $this->_getRequiredSleepSeconds( $nScheduledTime ? $nScheduledTime : ( int ) $oRoutine->_next_run_time );    
+        $_nSleepSeconds          = $this->_getRequiredSleepSeconds( $oRoutine, $nScheduledTime );
+        if ( $_nSleepSeconds > TaskScheduler_Option::get( array( 'server_heartbeat', 'interval' ) ) ) {
+            // The sleep duration is too long.
+            do_action( "task_scheduler_action_cancel_routine" , $oRoutine );
+            return;             
+        }
         $_iActionLockDuration    = $this->_setMaxExecutionTime( $oRoutine, $_nSleepSeconds );
         $this->_sleep( $_nSleepSeconds );
     
@@ -97,7 +112,7 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
         TaskScheduler_WPUtility::setTransient( $_sActionLockKey, time(), $_iActionLockDuration );
     
         // Do the action
-        do_action( "task_scheduler_action_do_routine" , $oRoutine, $nScheduledTime );
+        do_action( 'task_scheduler_action_do_routine', $oRoutine );
         
         // Unlock the action
         TaskScheduler_WPUtility::deleteTransient( $_sActionLockKey );
@@ -110,14 +125,34 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
          * 
          * @return    float    The required sleep duration in seconds.
          */
-        private function _getRequiredSleepSeconds( $nNextRunTimeStamp ) {
+        private function _getRequiredSleepSeconds( $oRoutine, $nNextRunTimeStamp ) {
             
-            $_nSleepSeconds = ( $nNextRunTimeStamp - microtime( true ) ) + 0;    // plus zero will convert the value to numeric.
-            $_nSleepSeconds = $_nSleepSeconds <= 0 ? 0 : $_nSleepSeconds;            
+            $nNextRunTimeStamp = $this->_getNextRunTimeStamp( $nNextRunTimeStamp, $oRoutine );            
+            $_nSleepSeconds    = ( $nNextRunTimeStamp - microtime( true ) ) + 0;    // plus zero will convert the value to numeric.
+            $_nSleepSeconds    = $_nSleepSeconds <= 0 
+                ? 0 
+                : $_nSleepSeconds;
             return $_nSleepSeconds;
             
         }        
-        
+            /**
+             * @return      numeric
+             * @since       1.1.1
+             */
+            private function _getNextRunTimeStamp( $nNextRunTimeStamp, $oRoutine ) {
+                
+                if ( $nNextRunTimeStamp ) {
+                    return $nNextRunTimeStamp;
+                }
+               
+                // If the routine next run time is not set use the value of the task
+                $_oTask   = TaskScheduler_Routine::getInstance( $oRoutine->owner_task_id );
+                return isset( $_oTask->_next_run_time )
+                    ? $_oTask->_next_run_time
+                    : $nNextRunTimeStamp;
+             
+            }
+            
         /**
          * Sets the required maximum script execution time.
          * 
@@ -160,14 +195,16 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
          * Sleeps.
          */
         private function _sleep( $nSleepSeconds ) {
-                        
+
             // Sleep until the next scheduled time
-            if ( $nSleepSeconds <= 0 ) { return; }
+            if ( $nSleepSeconds <= 0 ) { 
+                return; 
+            }
             $_iSleepDurationMicroSeconds = ceil( $nSleepSeconds ) * 1000000;
             if ( $_iSleepDurationMicroSeconds > 0 ) {
                 usleep( $_iSleepDurationMicroSeconds ); 
             }
-            
+
         }                
                                 
     /**

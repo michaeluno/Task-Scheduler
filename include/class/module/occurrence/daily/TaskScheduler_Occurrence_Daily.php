@@ -40,16 +40,20 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
         
     /**
      * Returns the next run time time-stamp.
+     * 
+     * Right before the routine is spawned, this gets called.
+     * 
+     * @return      integer|float     timestamp without GMT offset.
      */ 
-    public function getNextRunTime( $iTimestamp, $oTask )    {
-        
+    public function getNextRunTime( $iTimestamp, $oTask ) {
+
         // Extract the options for this module
         $_aOptions = $oTask->getMeta( $this->sSlug );
         if ( ! isset( $_aOptions[ 'times' ] ) || ! is_array( $_aOptions[ 'times' ] ) ) {
             return $iTimestamp;
         }
-                
-        return $this->_getClosestSetTimestamp( 
+
+        return $this->_getClosestSetTimestamp(
             $this->_formatLastRunTime( $oTask->_last_run_time ),
             $this->_formatTimesArray( $_aOptions[ 'times' ] ),
             $this->_formatDaysArray( $_aOptions[ 'days' ] )
@@ -88,37 +92,37 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
         }
         
         /**
-         * Calculates the closest time from the given configrations.
+         * Calculates the closest time from the given configurations.
          * 
-         * @param       integer|float   The timestamp of the last run time of the task. Not GMT calcurated.
-         * @return      integer         The closest set timestamp.
+         * @param       integer|float   The timestamp of the last run time of the task. Not GMT calculated.
+         * @return      integer         The closest set timestamp without GMT offset.
          */
         private function _getClosestSetTimestamp( $nLastRunTimestamp, array $aTimes, array $aDays ) {
 
             // If today's day is checked,
-            if ( $this->_isTheDayChecked( $nLastRunTimestamp, $aDays ) ) {
+            if ( $this->_isTodayChecked( $aDays ) ) {
                 $_iTodaysClosestTime = $this->_getTodaysItem( $nLastRunTimestamp, $aTimes );
                 if ( $_iTodaysClosestTime ) {
                     return $_iTodaysClosestTime;
                 }
             }
 
-            // This value is not GMT-calcurated.
+            // This value is not GMT-calculated.
             return $this->_getNextClosestTime( $nLastRunTimestamp, $aDays, $aTimes );
-            
+
         }
         /**
          * Checks whether today's weekday is in the given days array.
          * @return      boolean
          */
-        private function _isTheDayChecked( $nTimestamp, array $aSelectedDays ) {
+        private function _isTodayChecked( array $aSelectedDays ) {
                 
-            $_iTheDay       = ( int ) date( 
+            $_iToday       = ( int ) date( 
                 'N',    // 1 to 7, Mon to Sun
-                $this->_getGMTOffsetTimestamp( $nTimestamp )
+                $this->_getGMTOffsetTimestamp( time() ) // current time stamp
             ); 
             return in_array( 
-                $_iTheDay,  // GMT not calcurated
+                $_iToday,  // GMT not calculated
                 $aSelectedDays
             );
             
@@ -126,49 +130,49 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
         /**
          * Checks if a time item larger than the current time on today.
          * 
-         * @return      integer     The today's closest time 
+         * @return      integer     The today's closest timestamp without GMT offset.
          */
-        private function _getTodaysItem( $nLastRunTimestamp, array $aTimes ) {
+        private function _getTodaysItem( $nLastRuntime, array $aTimes ) {
 
-            $_iGMTLastRunTIme       = $this->_getGMTOffsetTimestamp( $nLastRunTimestamp );            
+            $_iGMTLastRunTime       = $this->_getGMTOffsetTimestamp( $nLastRuntime );
             $_sGMTLastRunHourMinute = date( 
                 'G:i', // e.g. 3:42, 14:34 etc.
-                $_iGMTLastRunTIme 
+                $_iGMTLastRunTime
             );
-            $_iGMTLastRunHourMinute = $this->_getTimeInSeconds( $_sGMTLastRunHourMinute );
-
-            // $aTimes is oredered as the smallest to the largst.
+            $_iGMTLastRunHourMinute = $this->_getTimeInSeconds( $_sGMTLastRunHourMinute );        
+        
+            $_iGMTCurrentTime       = $this->_getGMTOffsetTimestamp( time() );            
+            $_sGMTCurrentHourMinute = date( 
+                'G:i', // e.g. 3:42, 14:34 etc.
+                $_iGMTCurrentTime
+            );
+            $_iGMTCurrentHourMinute = $this->_getTimeInSeconds( $_sGMTCurrentHourMinute );
+                        
+            // $aTimes is sorted as the smallest to the largest.
             foreach( $aTimes as $_sHourMinute ) {
                 
-                // If the set time is alrady passed, skip.
+                // If the set time is already passed, skip.
                 $_iSetHourMinuteInSeconds = $this->_getTimeInSeconds( $_sHourMinute );
-                if ( $_iSetHourMinuteInSeconds < $_iGMTLastRunHourMinute ) {
+                if ( $_iSetHourMinuteInSeconds <= $_iGMTLastRunHourMinute ) {
                     continue;
                 }
+                if ( $_iSetHourMinuteInSeconds <= $_iGMTCurrentHourMinute ) {
+                    continue;
+                }                
                 
                 // Return the set time as timestamp.
-                return $this->_getTodaysZeroOclockTimestamp() 
-                    + $_iSetHourMinuteInSeconds;
-                                    
+                return strtotime( '0:00:00' )           // today's 0 o'clock timestamp without GMT
+                    + $this->_getGMTRemovedTimestamp(   // remove the GMT adjustment
+                        $_iSetHourMinuteInSeconds       // this value is set hour-minutes in seconds WITH GMT (expected hour-minutes which are calculated with GMT offset)
+                    );
+
             }
             
             // not found
             return 0;
             
         }
-            /**
-             * 
-             * @remark      The GMT offset is counted.
-             * @return      integer     The unitx timestamp of today's 0'oclock. Today is calcurated with GMT.
-             */
-            private function _getTodaysZeroOclockTimestamp() {
-                
-                $_iCurrentTimestamp     = time();   // universal unix timestamp. (no GMT)
-                $_iGMTCurrentTimestamp  = current_time( 'timestamp' );
-                $_iGMTCurrentHourMinute = $this->_getTimeInSeconds( date( 'G:i:s', $_iGMTCurrentTimestamp ) );
-                return $_iCurrentTimestamp - $_iGMTCurrentHourMinute;
-                
-            }
+            
         /**
          * Gets the timestamp of the next closest 'date' from the checked week days.
          * 
@@ -179,14 +183,16 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
             $_iGMTLastRunTIme       = $this->_getGMTOffsetTimestamp( $nTimestamp );            
             $_iTheDay               = ( int ) date( 'N', $_iGMTLastRunTIme ); 
             
-            // Remvoe today's day from the array.
+            // Remove today's day from the array.
             $aDays                  = $this->_unsetArrayElementsByValue( $aDays, $_iTheDay );
             sort( $aDays );   
             
             $_iDaysToClosestDay     = $this->_getNumberOfDaysToClosestDay( $_iTheDay, $aDays );
-            return $this->_getTodaysZeroOclockTimestamp()
+            return strtotime( '0:00:00' )   // today's 0 o'clock timestamp without GMT
                 + ( $_iDaysToClosestDay * 3600 * 24 )   // seconds to the closest day
-                + $this->_getSmallestTimeInSeconds( $aTimes );
+                + $this->_getGMTRemovedTimestamp(
+                    $this->_getSmallestTimeInSeconds( $aTimes ) // this value is presumed to be calculated with GMT so the GMT offset must be removed
+                );
             
         }
             private function _unsetArrayElementsByValue( $aArray, $mValue ) {
@@ -215,7 +221,7 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
                     }
                 }
                 
-                // Not found. Returns the nuamber of days of one week (zero-based).
+                // Not found. Returns the number of days of one week (zero-based).
                 return 6;
                 
             }
@@ -232,7 +238,7 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
          *      '4:45:93',
          * )
          * `
-         * The elemetns will be sorted.
+         * The elements will be sorted.
          * 
          * @return      integer     seconds
          */    
@@ -265,19 +271,35 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
                 
             }
         /**
-         * Returns GMT calcurated timestamp from the given timestamp.
+         * Returns GMT calculated timestamp from the given timestamp.
          * 
          * @return      integer     timestamp (seconds)
          */
         private function _getGMTOffsetTimestamp( $iUnixTimestamp ) {
             
-            static $_iGMTOffset;
-            $_iGMTOffset = isset( $_iGMTOffset ) 
-                ? $_iGMTOffset
+            self::$_iGMTOffset = isset( self::$_iGMTOffset ) 
+                ? self::$_iGMTOffset
                 : get_option( 'gmt_offset' );
                 
-            return round( $iUnixTimestamp ) + ( $_iGMTOffset * 60*60 );
+            return round( $iUnixTimestamp ) + ( self::$_iGMTOffset * 60 * 60 );
             
         }
-    
+                
+        /**
+         * Returns a time stamp without GMT with the given GMT timestamp.
+         * @since       1.1.1
+         * @return      integer     timestamp in seconds
+         */
+        private function _getGMTRemovedTimestamp( $iGMTTimestamp ) {
+
+            self::$_iGMTOffset = isset( self::$_iGMTOffset ) 
+                ? self::$_iGMTOffset
+                : get_option( 'gmt_offset' );
+                
+            return round( $iGMTTimestamp ) - ( self::$_iGMTOffset * 60 * 60 );
+            
+        }   
+        
+            static private $_iGMTOffset;
+            
 }

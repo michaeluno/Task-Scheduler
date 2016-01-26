@@ -23,26 +23,26 @@ final class TaskScheduler_Option {
      * Represents the option structure and the default values.
      */
     static public $aDefaults = array(
-        'server_heartbeat'    =>    array(
-            'power'        =>    true,
-            'interval'    =>    24,
-            'query_string'    =>    array(
-                0    =>    true,
-                1    =>    'doing_server_heartbeat',
+        'server_heartbeat'    => array(
+            'power'        => true,
+            'interval'     => 24,
+            'query_string' => array(
+                0 => true,
+                1 => 'doing_server_heartbeat',
             ),
         ),
-        'email'    =>    array(
-            'message_body'    =>    null,
+        'email'    => array(
+            'message_body'    => null,
         ),
-        'task_default'        =>    array(
-            'max_root_log_count'    =>    0,
-            'max_execution_time'    =>    30,
+        'task_default'        => array(
+            'max_root_log_count'    => 0,
+            'max_execution_time'    => 30,
         ),
-        'routine'    =>    array(
-            'max_background_routine_count'    =>    12,
+        'routine'    => array(
+            'max_background_routine_count' => 12,
         ),        
-        'reset'    =>    array(
-            'reset_upon_deactivation'    =>    false,
+        'reset'    => array(
+            'reset_upon_deactivation'    => false,
         ),
     );
     
@@ -114,12 +114,12 @@ final class TaskScheduler_Option {
         if ( ! $asKey ) {
             return empty( $_oOption->aOptions )
                 ? $vDefault
-                : $_oOption->aOptions;
+                : $_oOption->aOptions + self::$aDefaults;
         }
 
         // Now either the section ID or field ID is given. 
         return TaskScheduler_AdminPageFramework_WPUtility::getArrayValueByArrayKeys( 
-            $_oOption->aOptions, 
+            $_oOption->aOptions + self::$aDefaults,
             array_values( TaskScheduler_AdminPageFramework_WPUtility::getAsArray( $asKey ) ), 
             $vDefault 
         );

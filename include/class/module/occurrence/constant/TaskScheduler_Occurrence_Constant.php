@@ -53,6 +53,8 @@ class TaskScheduler_Occurrence_Constant extends TaskScheduler_Occurrence_Base {
      * 
      * The constant occurrence type persistently schedules the task with the current type.
      * So the task action has to have its mechanism to delete the task by itself.
+     * 
+     * @return      integer|float     timestamp without GMT offset.
      */ 
     public function getNextRunTime( $iTimestamp, $oRoutine ) {
         return microtime( true ) + 3;    // give at least 3 seconds of interval

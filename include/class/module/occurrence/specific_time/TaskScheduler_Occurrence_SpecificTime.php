@@ -40,42 +40,50 @@ class TaskScheduler_Occurrence_SpecificTime extends TaskScheduler_Occurrence_Bas
         
     /**
      * Returns the next run time time-stamp.
+     * 
+     * @return      integer|float|null     timestamp without GMT offset.
      */ 
     public function getNextRunTime( $iTimestamp, $oTask )    {
     
         $_aOptions = $oTask->getMeta( $this->sSlug );
-        if ( ! isset( $_aOptions['when'] ) || ! is_array( $_aOptions['when'] ) ) {
+        if ( ! isset( $_aOptions[ 'when' ] ) || ! is_array( $_aOptions[ 'when' ] ) ) {
             return $iTimestamp;
         }
         
         // Convert the string date input to time-stamp
-        $_aSetTimes = $this->_convertDateToTimeStamp( $_aOptions['when'] );
+        $_aSetTimes    = $this->_getDateToTimeStamps( $_aOptions[ 'when' ] );
                 
-        // Compare with the last run time.
-        // Note that the '_last_run_time' is not GMP calculated.
+        $_iCurrentTime = time();
         $_nLastRunTime = $oTask->_last_run_time
             ? $oTask->_last_run_time
             : 0;        
-        foreach( $_aSetTimes as $_nSetTime ) {
+        
+        // The time stamps are not calculated with GMT offset.
+        foreach( $_aSetTimes as $_nSetFutureTime ) {
             
-            // Ignore items that supposingly have already done.
-            if ( $_nSetTime < $_nLastRunTime ) { continue; }
+            // Ignore items that supposedly have already done.
+            if ( $_nSetFutureTime <= $_nLastRunTime ) { 
+                continue; 
+            }
+            if ( $_nSetFutureTime <= $_iCurrentTime ) {
+                continue;
+            }
             
             // Return the first found item that have not passed the last executed time.
-            return $_nSetTime;
+            return $_nSetFutureTime;
             
         }
-        
-        return $iTimestamp;
-        
+        return 0;    // will be n/a 
+                
     }
         /**
          * Converts the given date-times to GMT calculated time-stamps.
          * 
          * @remark      The plugin uses non-GMT-calculated timestamps. On the other hand, the module UI form that let the user set date-time 
-         * assumes the time of the GMT is calcurated. So here subtracting GMT offset seconds from the current timestamp.
+         * assumes the time of the GMT is calculated. So here subtracting GMT offset seconds from the current timestamp.
+         * @return      array
          */        
-        private function _convertDateToTimeStamp( array $aDateTimes ) {
+        private function _getDateToTimeStamps( array $aDateTimes ) {
             
             $_aTimeStamps = array();
             foreach( $aDateTimes as $_sDateTime ) {

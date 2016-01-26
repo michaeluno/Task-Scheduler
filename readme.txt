@@ -2,8 +2,8 @@
 Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
-Tested up to:       4.2.3
-Stable tag:         1.0.2
+Tested up to:       4.4.1
+Stable tag:         1.1.0
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               access, tool, utility, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation, routine, routines
@@ -12,6 +12,7 @@ Provides a task management system.
 
 == Description ==
 
+<h3>Handle Massive Number of Actions</h4>
 Do you have specific tasks which need to run at your desired time? Do you use WordPress as a proxy to generate data from external sources? As WordPress has evolved into a phase of application platforms, a more enhanced task management system needed to emerge.
 
 Currently, with WP Cron, if you register a large number of actions, for example, 1000 tasks to run immediately and one of them stalls, it affects all the other actions preventing them from being loaded at the scheduled time. Also, the scheduled tasks won't be triggered if there is no visitor on the site. The goal of this plugin is to resolve such issues and become the perfect solution for WordPress powered back-end application servers to provide full-brown API functionalities.
@@ -213,6 +214,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 
 == Changelog ==
+
+= 1.1.1 =
+- Fixed a bug that multiple routine instances get created with the `Daily` occurrence type.
 
 = 1.1.0 - 2015/08/02 =
 - Added a built-in action module that cleans expired transients.

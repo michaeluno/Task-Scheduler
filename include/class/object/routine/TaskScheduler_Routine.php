@@ -52,9 +52,17 @@ final class TaskScheduler_Routine extends TaskScheduler_Routine_Taxonomy {
      */ 
     public function setNextRunTime( $iTimeStamp=null ) {
     
-        if ( ! $this->occurrence ) { return 0; }
+        if ( ! $this->occurrence ) { 
+            return 0; 
+        }
             
-        $iTimeStamp = apply_filters( "task_scheduler_filter_next_run_time_{$this->occurrence}", $iTimeStamp ? $iTimeStamp : $this->_next_run_time, $this );
+        $iTimeStamp = apply_filters( 
+            "task_scheduler_filter_next_run_time_{$this->occurrence}", 
+            $iTimeStamp 
+                ? $iTimeStamp 
+                : $this->_next_run_time, 
+            $this 
+        );
         $this->setMeta( '_next_run_time', $iTimeStamp );        
         return $iTimeStamp;
         
@@ -69,9 +77,16 @@ final class TaskScheduler_Routine extends TaskScheduler_Routine_Taxonomy {
         
     /**
      * Start the task.
+     * Called from the task listing table page with the `Run Now` action link.
+     * @return      void
      */
     public function start( $nTargetTime=null ) {
-        do_action( 'task_scheduler_action_spawn_routine', $this->ID, $nTargetTime );
+        do_action( 
+            'task_scheduler_action_spawn_routine', 
+            $this->ID, 
+            $nTargetTime ? $nTargetTime : microtime( true ),   // scheduled time time
+            false   // whether to update the next run time
+        );
     }
     
     /**

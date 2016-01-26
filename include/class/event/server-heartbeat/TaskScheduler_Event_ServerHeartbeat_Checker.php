@@ -20,10 +20,13 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
      */
     static public $sCheckActionTransientKey      = 'TS_checking_actions';
     static public $sRecheckActionTransientKey    = 'TS_rechecking_actions';
-        
+    
+    /**
+     * Sets up hooks.
+     */
     public function __construct() {
 
-        add_action( 'task_scheduler_action_spawn_routine', array( $this, '_replyToSpawnRoutine' ), 10, 2 );
+        add_action( 'task_scheduler_action_spawn_routine', array( $this, '_replyToSpawnTheRoutine' ), 10, 3 );
         add_action( 'task_scheduler_action_check_shceduled_actions', array( $this, '_replyToCheckScheduledActions' ) );
         
         // If doing actions, return.
@@ -32,7 +35,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         }
         
         // Do not check actions in certain pages.
-        if ( isset( $GLOBALS['pagenow'] ) && in_array( $GLOBALS['pagenow'], array( 'admin-ajax.php', ) ) ) {
+        if ( isset( $GLOBALS[ 'pagenow' ] ) && in_array( $GLOBALS[ 'pagenow' ], array( 'admin-ajax.php', ) ) ) {
             return;
         }
         
@@ -83,7 +86,10 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
      */
     public function _replyToSpawnRoutines() {
 
-        $_iSecondsFromNowToCheck        = TaskScheduler_Utility::canUseIniSet() ? TaskScheduler_Option::get( array( 'server_heartbeat', 'interval' ) ) : 0; // if the maximum execution time cannot be changed, only pick ones that exceeds the scheduled time.
+        $_iSecondsFromNowToCheck        = TaskScheduler_Utility::canUseIniSet() 
+            ? TaskScheduler_Option::get( array( 'server_heartbeat', 'interval' ) ) 
+            : 0; // if the maximum execution time cannot be changed, only pick ones that exceeds the scheduled time.
+
         $_iMaxAllowedNumberOfRoutines   = TaskScheduler_Option::get( array( 'routine', 'max_background_routine_count' ) );
         $_aScheduledRoutines            = TaskScheduler_RoutineUtility::getScheduled( $_iSecondsFromNowToCheck, $_iMaxAllowedNumberOfRoutines );
         $_iProcessingCount              = TaskScheduler_RoutineUtility::getProcessingCount();
@@ -98,18 +104,26 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         // Parse the retrieved routines.
         // If it is a task, update the next scheduled time, create a routine and return.
         // If it is a routine, spawn it.
-        // If it is a thread, check if the owner routine exists or not. If not, delete itself; otherwise, spawn it.
-        foreach ( $_aScheduledRoutines as $_iRoutineID ) {        
+        // If it is a thread, check if the owner routine exists or not. If not, delete itself; otherwise, spawn it.        
+        foreach ( $_aScheduledRoutines as $_iTaskID ) {        
         
-            $_oTask = TaskScheduler_Routine::getInstance( $_iRoutineID );
-            if ( ! is_object( $_oTask ) ) { continue; }    
-                             
-            // Check if the owner task exists or not. If not, delete the thread and skip the iteration.
-            if ( $_oTask->isThread() && ! is_object( TaskScheduler_Routine::getInstance( $_oTask->owner_routine_id ) ) ) {
-                $_oTask->delete();                   
+            $_oTask = TaskScheduler_Routine::getInstance( $_iTaskID );
+            if ( ! is_object( $_oTask ) ) { 
+                continue; 
             }
 
-            do_action( 'task_scheduler_action_spawn_routine', $_iRoutineID );
+            // If it is a thread and the owner task does not exist, delete the thread and skip the iteration.
+            if ( $this->_isThreadWithoutOwnerTask( $_oTask ) ) {
+                $_oTask->delete();
+                continue;
+            }
+            
+            do_action( 
+                'task_scheduler_action_spawn_routine', 
+                $_iTaskID, 
+                $_oTask->_next_run_time, // 1.1.1+ this next run time value is still the one used for the database query above.
+                true // update the next run time
+            );
             
         }
         
@@ -121,42 +135,49 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
             TaskScheduler_ServerHeartbeat::beat();
         }        
         
-    }
-                
+    }   
+        /**
+         * Checks if the given object is a thread and its owner task exists or not. 
+         * 
+         * @since       1.1.1
+         * @return      boolean
+         */
+        private function _isThreadWithoutOwnerTask( $oTask ) {
+            
+            if ( ! $oTask->isThread() ) {
+                return false;
+            }
+            return ! is_object( TaskScheduler_Routine::getInstance( $oTask->owner_routine_id ) );
+            
+        }
+        
     /**
      * Spawns the given routine.
      * 
-     * @param    integer    $iRoutineID        The routine ID
-     * @param    numeric    $nScheduledTime    The scheduled run time. This is also used to determine whether the call is made manually or automatically. 
-     * If the server heartbeat is running and pulsates, it does not the scheduled time but if the user presses the 'Run Now' link in the task listing table,
-     * it sets the scheduled time.
+     * @param    integer    $iRoutineID         The task/routine ID
+     * @param    numeric    $nScheduledTime     The scheduled run time. 
+     * @param    boolean    $bUpdateNextRunTime Whether to schedule the next run.
+     * @callback action     task_scheduler_action_spawn_routine
+     * @return   void
      */
-    public function _replyToSpawnRoutine( $iRoutineID, $nScheduledTime=null ) {
+    public function _replyToSpawnTheRoutine( $iRoutineID, $nScheduledTime, $bUpdateNextRunTime=true ) {
 
         // First check if it is a task 
         $_oRoutine = TaskScheduler_Routine::getInstance( $iRoutineID );
-        if ( ! is_object( $_oRoutine ) ) { return; }            
-
-        // For tasks,
-        if ( $_oRoutine->isTask() ) {
-               
-            $_iTaskID   = $iRoutineID;
-            $_oTask     = $_oRoutine;
-            $this->_updateTaskStatus( $_oTask, $nScheduledTime );
-                            
-            // Create a routine and spawn it.
-            $iRoutineID = TaskScheduler_RoutineUtility::derive( 
-                $_iTaskID,  // the owner task id.
-                array( 
-                    'parent_routine_log_id'    =>  $_oTask->log( __( 'Starting a routine.', 'task-scheduler' ), 0, true ),
-                ),
-                array(),    // system taxonomy terms
-                $_oTask->_force_execution   // allow duplicate
-            );
-            $_oRoutine = TaskScheduler_Routine::getInstance( $iRoutineID );
-            if ( ! is_object( $_oRoutine ) ) { return; }  
-            
+        if ( ! is_object( $_oRoutine ) ) { 
+            return;
         }
+
+        // For tasks, create a routine object.
+        if ( $_oRoutine->isTask() ) {
+            $this->_updateTaskStatus( $_oRoutine, $nScheduledTime, $bUpdateNextRunTime );
+            $_oRoutine = $this->_getRoutineFromTask( $_oRoutine );
+            if ( ! isset( $_oRoutine->ID ) ) {
+                return;
+            }
+            $iRoutineID = $_oRoutine->ID;
+        }
+
         
         // For routine instances,
         if ( $_oRoutine->isRoutine() ) {
@@ -164,7 +185,11 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         }
         
         $_nCurrentMicrotime = microtime( true );
-        do_action( 'task_scheduler_action_before_calling_routine', TaskScheduler_Routine::getInstance( $iRoutineID ), $_nCurrentMicrotime );
+        do_action( 
+            'task_scheduler_action_before_calling_routine', 
+            TaskScheduler_Routine::getInstance( $iRoutineID ), 
+            $_nCurrentMicrotime
+        );
         
         $_aDebugInfo = defined( 'WP_DEBUG' ) && WP_DEBUG
             ? array( 'spawning_routine' => $iRoutineID )
@@ -181,27 +206,68 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
             'spawn_routine'
         );        
 
-        // Do not call the action, 'task_scheduler_action_after_calling_routine', here.
-        // This is because the action will be called in the next page load and it is not called yet.
+        // Do not call the action, 'task_scheduler_action_after_calling_routine', here
+        // because the action will be called in the next page load and it is not called yet.
     
     }    
-    
+        /**
+         * Create a routine object from a task.
+         * @since       1.1.1
+         * @return      object|null
+         */
+        private function _getRoutineFromTask( $oTask ) {
+            
+            // Create a routine to spawn.
+            $_iRoutineID = TaskScheduler_RoutineUtility::derive( 
+                $oTask->ID,  // the owner task id.
+                array( 
+                    'parent_routine_log_id'    => $oTask->log( __( 'Starting a routine.', 'task-scheduler' ), 0, true ),
+
+                // @todo 1.1.1 Examine whether this is safe to do as this was set by routine in previous versions.
+                    // '_next_run_time'           => $oTask->_next_run_time,  // setting the scheduled time so that the routine can adjust the sleep duration
+                ),
+                array(),    // system taxonomy terms
+                $oTask->_force_execution   // allow duplicate
+            );
+            return TaskScheduler_Routine::getInstance( $_iRoutineID );
+        
+        }
+        
         /**
          * Updates the task meta data.
          */
-        private function _updateTaskStatus( $oTask, $nScheduledTime=0 ) {
+        private function _updateTaskStatus( $oTask, $nScheduledTime, $bUpdateNextRunTime ) {
             
-            $oTask->deleteMeta( '_eixt_code' );
+            $oTask->deleteMeta( '_exit_code' );
             $_sPreviousTaskStatus     = $oTask->_routine_status;
             $_iMaxTaskExecutionTime   = ( int ) $oTask->_max_execution_time;
             $oTask->setMeta( '_count_call',     $oTask->getMeta( '_count_call' ) + 1 );
-            $oTask->setMeta( '_last_run_time',  microtime( true ) );
+            
+            // When a task status is switched from Disabled to Enabled, the scheduled time is behind the current time.
+            // In that case, set the current time to the last run time.
+            // Otherwise, use the scheduled time (which is usually ahead because the routine is spawned prior to the actual scheduled time)
+            // as the last run time.
+            $_nNow = microtime( true );
+            $oTask->setMeta( 
+                '_last_run_time',  
+                $nScheduledTime >= $_nNow 
+                    ? $nScheduledTime 
+                    : $_nNow 
+            );
             
             // Update the scheduled time. If the user manually calls a routine, the scheduled time is set. 
             // In that case, do not update the scheduled time.
-            if ( ! $nScheduledTime ) {
-                $oTask->setMeta( '_next_run_time',  apply_filters( "task_scheduler_filter_next_run_time_{$oTask->occurrence}", '', $oTask ) );
+            if ( ! $bUpdateNextRunTime ) {
+                return;
             }
+            $oTask->setMeta( 
+                '_next_run_time', 
+                apply_filters( 
+                    "task_scheduler_filter_next_run_time_{$oTask->occurrence}", 
+                    microtime( true ), // '', // @todo time()
+                    $oTask 
+                ) 
+            );
 
         }
         
@@ -211,9 +277,14 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         private function _updateRoutineStatus( $oRoutine ) {
             
             $oRoutine->setMeta( '_count_call',     $oRoutine->getMeta( '_count_call' ) + 1 );
-            $oRoutine->setMeta( '_last_run_time',  microtime( true ) );             
-            $oRoutine->setMeta( '_next_run_time',  apply_filters( "task_scheduler_filter_next_run_time_{$oRoutine->occurrence}", '', $oRoutine ) );
-            
+            $oRoutine->setMeta( '_last_run_time',  microtime( true ) );        
+            $_iNextRunTime = apply_filters( 
+                "task_scheduler_filter_next_run_time_{$oRoutine->occurrence}", 
+                microtime( true ), 
+                $oRoutine 
+            );
+            $oRoutine->setMeta( '_next_run_time',  $_iNextRunTime );
+
         }
 
     /**

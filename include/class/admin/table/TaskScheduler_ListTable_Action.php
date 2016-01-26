@@ -102,7 +102,7 @@ class TaskScheduler_ListTable_Action extends WP_List_Table {
                 }                
                 break;
             case 'run':
-                foreach( ( array ) $_REQUEST['task_scheduler_task'] as $_sTaskPostID ) {
+                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
                     $_oTask = TaskScheduler_Routine::getInstance( $_sTaskPostID );
                     $_oTask->start( microtime( true ) + $_iApplied );                    
                     $this->setAdminNotice( __( 'The task has been called.', 'task-scheduler' ), 'updated' );

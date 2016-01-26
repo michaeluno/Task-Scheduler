@@ -13,6 +13,8 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
         
     /**
      * Checks if the same routine exists.
+     * 
+     * @return      boolean
      */
     static protected function hasSameRoutine( $aTaskMeta, $hWPQueryCallback ) {
                         
@@ -64,7 +66,7 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
                 '_edit_last',  
             )
         );
-        $_aQueryArguments = array( );
+        $_aQueryArguments = array();
         // Extract the top level argument elements and remvoe them from the meta array.
         foreach ( $_aCheckingTopLevelArguments as $_sCheckingKey ) {
             if ( isset( $aTaskMeta[ $_sCheckingKey ] ) ) {
