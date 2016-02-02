@@ -12,7 +12,7 @@ Provides a task management system.
 
 == Description ==
 
-<h3>Handle Massive Number of Actions</h4>
+<h4>Handle Massive Number of Actions</h4>
 Do you have specific tasks which need to run at your desired time? Do you use WordPress as a proxy to generate data from external sources? As WordPress has evolved into a phase of application platforms, a more enhanced task management system needed to emerge.
 
 Currently, with WP Cron, if you register a large number of actions, for example, 1000 tasks to run immediately and one of them stalls, it affects all the other actions preventing them from being loaded at the scheduled time. Also, the scheduled tasks won't be triggered if there is no visitor on the site. The goal of this plugin is to resolve such issues and become the perfect solution for WordPress powered back-end application servers to provide full-brown API functionalities.
