@@ -3,7 +3,7 @@
  * An abstract class of the 'Occurrence' wizard hidden tabbed pages.
  * 
  * @package      Task Scheduler
- * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @copyright    Copyright (c) 2014-2016, Michael Uno
  * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0

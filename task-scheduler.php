@@ -1,11 +1,11 @@
 <?php
 /* 
-	Plugin Name:    Task Scheduler
-	Plugin URI:     http://en.michaeluno.jp/
-	Description:    Provides an enhanced task management system for WordPress.
-	Author:         miunosoft (Michael Uno)
-	Author URI:     http://michaeluno.jp
-	Version:        1.1.1
+    Plugin Name:    Task Scheduler
+    Plugin URI:     http://en.michaeluno.jp/
+    Description:    Provides an enhanced task management system for WordPress.
+    Author:         miunosoft (Michael Uno)
+    Author URI:     http://michaeluno.jp
+    Version:        1.2.0b01
 */
 
 /**
@@ -15,31 +15,31 @@
  */
 class TaskScheduler_Registry_Base {
 
-	const VERSION        = '1.1.1';    // <--- DON'T FORGET TO CHANGE THIS AS WELL!!
-	const NAME           = 'Task Scheduler';
-	const DESCRIPTION    = 'Provides an enhanced task management system for WordPress.';
-	const URI            = 'http://en.michaeluno.jp/';
-	const AUTHOR         = 'miunosoft (Michael Uno)';
-	const AUTHOR_URI     = 'http://en.michaeluno.jp/';
-	const COPYRIGHT      = 'Copyright (c) 2014, Michael Uno';
-	const LICENSE        = 'GPL v2 or later';
-	const CONTRIBUTORS   = '';
-	
+    const VERSION        = '1.2.0b01';    // <--- DON'T FORGET TO CHANGE THIS AS WELL!!
+    const NAME           = 'Task Scheduler';
+    const DESCRIPTION    = 'Provides an enhanced task management system for WordPress.';
+    const URI            = 'http://en.michaeluno.jp/';
+    const AUTHOR         = 'miunosoft (Michael Uno)';
+    const AUTHOR_URI     = 'http://en.michaeluno.jp/';
+    const COPYRIGHT      = 'Copyright (c) 2014, Michael Uno';
+    const LICENSE        = 'GPL v2 or later';
+    const CONTRIBUTORS   = '';
+    
 }
 
 /**
  * Provides plugin information.
  */
 final class TaskScheduler_Registry extends TaskScheduler_Registry_Base {
-	        
-	// The plugin itself uses these values.
-	const TRANSIENT_PREFIX          = 'TS_';    // Up to 8 characters as transient name allows 45 characters or less ( 40 for site transients ) so that md5 (32 characters) can be added
-	const TEXT_DOMAIN               = 'task-scheduler';
-	const TEXT_DOMAIN_PATH          = '/language';
+            
+    // The plugin itself uses these values.
+    const TRANSIENT_PREFIX          = 'TS_';    // Up to 8 characters as transient name allows 45 characters or less ( 40 for site transients ) so that md5 (32 characters) can be added
+    const TEXT_DOMAIN               = 'task-scheduler';
+    const TEXT_DOMAIN_PATH          = '/language';
         
-	// These properties will be defined in the setUp() method.
-	static public $sFilePath = '';
-	static public $sDirPath  = '';	
+    // These properties will be defined in the setUp() method.
+    static public $sFilePath = '';
+    static public $sDirPath  = '';    
         
     /**
      * The plugin option key used for the options table.
@@ -117,24 +117,24 @@ final class TaskScheduler_Registry extends TaskScheduler_Registry_Base {
         // ),
     );  
         
-	/**
-	 * Sets up static properties.
-	 */
-	static function setUp( $sPluginFilePath=null ) {
-	                    
-		self::$sFilePath = $sPluginFilePath ? $sPluginFilePath : __FILE__;
-		self::$sDirPath  = dirname( self::$sFilePath );
-	    
-	}    
-	
-	/**
-	 * Returns the URL with the given relative path to the plugin path.
-	 * 
-	 * Example:  TaskScheduler_Registry::getPluginURL( 'asset/css/meta_box.css' );
-	 */
-	static public function getPluginURL( $sRelativePath='' ) {
-		return plugins_url( $sRelativePath, self::$sFilePath );
-	}
+    /**
+     * Sets up static properties.
+     */
+    static function setUp( $sPluginFilePath=null ) {
+                        
+        self::$sFilePath = $sPluginFilePath ? $sPluginFilePath : __FILE__;
+        self::$sDirPath  = dirname( self::$sFilePath );
+        
+    }    
+    
+    /**
+     * Returns the URL with the given relative path to the plugin path.
+     * 
+     * Example:  TaskScheduler_Registry::getPluginURL( 'asset/css/meta_box.css' );
+     */
+    static public function getPluginURL( $sRelativePath='' ) {
+        return plugins_url( $sRelativePath, self::$sFilePath );
+    }
 
     /**
      * Returns an information array of this class.

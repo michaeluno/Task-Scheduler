@@ -2,7 +2,7 @@
 /**
  * Task Scheduler
  * 
- * @copyright    Copyright (c) 2014-2015, Michael Uno
+ * @copyright    Copyright (c) 2014-2016, Michael Uno
  * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  */
