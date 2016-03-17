@@ -117,9 +117,7 @@ abstract class TaskScheduler_WPUtility_Post extends TaskScheduler_Utility {
      * Returns the excerpt of the given post.
      */
     public static function getExcerpt( $iPostID ) {
-
-        return get_post( $iPostID )->post_excerpt;    
-        
+        return get_post( $iPostID )->post_excerpt;
     }
     
     /**
@@ -178,26 +176,26 @@ abstract class TaskScheduler_WPUtility_Post extends TaskScheduler_Utility {
         
         $_aDefaults = array(
             // Plugin specific default values.
-            'post_type'             =>    $sPostTypeSlug,
-            'post_date'             =>    date( 'Y-m-d H:i:s' ),
-            'comment_status'        =>    'closed',
-            'ping_status'           =>    'closed',
-            'post_status'           =>    'publish',
+            'post_type'             => $sPostTypeSlug,
+            'post_date'             => date( 'Y-m-d H:i:s' ),
+            'comment_status'        => 'closed',
+            'ping_status'           => 'closed',
+            'post_status'           => 'publish',
         ) + array( 
             // WordPress built-in wp_insert_post() function's default values.
-            'post_author'           =>    $_iUserID,
-            'post_parent'           =>    0,
-            'menu_order'            =>    0,
-            'to_ping'               =>  '',
+            'post_author'           => $_iUserID,
+            'post_parent'           => 0,
+            'menu_order'            => 0,
+            'to_ping'               => '',
             'pinged'                => '',
-            'post_password'         =>    '',
-            'guid'                  =>    '',
-            'post_content_filtered' =>    '',
-            'post_excerpt'          =>    '',
-            'import_id'             =>    0,
-            'post_content'          =>    '',
-            'post_title'            =>    '',
-            'tax_input'             =>    null,    // should be an array
+            'post_password'         => '',
+            'guid'                  => '',
+            'post_content_filtered' => '',
+            'post_excerpt'          => '',
+            'import_id'             => 0,
+            'post_content'          => '',
+            'post_title'            => '',
+            'tax_input'             => null,    // should be an array
         );
             
         // Construct the post arguments array.
