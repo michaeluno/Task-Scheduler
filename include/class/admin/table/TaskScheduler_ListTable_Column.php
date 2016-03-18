@@ -73,21 +73,25 @@ abstract class TaskScheduler_ListTable_Column extends TaskScheduler_ListTable_Ac
                 . '</a>', 
                 get_permalink( $oRoutine->ID )  
             ),            
-            'run'       =>    sprintf( '<a href="%s">' . __( 'Run Now', 'task-scheduler' ) . '</a>', add_query_arg( array( 'action' => 'run', 'task_scheduler_task' => $oRoutine->ID, 'task_scheduler_nonce' => $this->sNonce ) ) ),
+            'run'       => sprintf( '<a href="%s">' . __( 'Run Now', 'task-scheduler' ) . '</a>', add_query_arg( array( 'action' => 'run', 'task_scheduler_task' => $oRoutine->ID, 'task_scheduler_nonce' => $this->sNonce ) ) ),
+            'clone'     => sprintf( '<a href="%s">' . __( 'Clone', 'task-scheduler' ) . '</a>', add_query_arg( array( 'action' => 'clone', 'task_scheduler_task' => $oRoutine->ID, 'task_scheduler_nonce' => $this->sNonce ) ) ),
         );
-        if ( isset( $_GET['status'] ) && 'disabled' == $_GET['status'] ) {
-            unset( $_aActions['disable'], $_aActions['run'] );
+        if ( ! $oRoutine->isTask() ) {
+            unset( $_aActions[ 'clone' ] );
         }
-        if ( ! isset( $_GET['status'] ) || 'enabled' == $_GET['status'] ) {    // the default Enabled view
-            unset( $_aActions['enable'], $_aActions['delete']  );
+        if ( isset( $_GET[ 'status' ] ) && 'disabled' === $_GET[ 'status' ] ) {
+            unset( $_aActions[ 'disable' ], $_aActions[ 'run' ] );
         }
-        if ( isset( $_GET['status'] ) && in_array( $_GET['status'], array( 'system', 'thread' ) ) ) {
-            unset( $_aActions['edit'], $_aActions['view'] );    
+        if ( ! isset( $_GET[ 'status' ] ) || 'enabled' === $_GET[ 'status' ] ) {    // the default Enabled view
+            unset( $_aActions[ 'enable' ], $_aActions[ 'delete' ]  );
+        }
+        if ( isset( $_GET[ 'status' ] ) && in_array( $_GET[ 'status' ], array( 'system', 'thread' ) ) ) {
+            unset( $_aActions[ 'edit' ], $_aActions[ 'view' ] );    
         }
         if ( $oRoutine->isEnabled() ) {
-            unset( $_aActions['enable'] );    
+            unset( $_aActions[ 'enable' ] );    
         } else {
-            unset( $_aActions['disable'] );    
+            unset( $_aActions[ 'disable' ] );    
         }
         
         $_aIDBox = array( 

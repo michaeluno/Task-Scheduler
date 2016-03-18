@@ -61,11 +61,11 @@ class TaskScheduler_ListTable_Action extends WP_List_Table {
     public function process_bulk_action() {
             
         // the key is defined as the singular slug and inserted in the input check boxes of the cb column.
-        if ( ! isset( $_REQUEST['task_scheduler_task'], $_REQUEST['task_scheduler_nonce'] ) ) { 
+        if ( ! isset( $_REQUEST[ 'task_scheduler_task' ], $_REQUEST[ 'task_scheduler_nonce' ] ) ) { 
             return; 
         }
             
-        if ( false === $this->getNonce( $_REQUEST['task_scheduler_nonce'] ) ) {
+        if ( false === $this->getNonce( $_REQUEST[ 'task_scheduler_nonce' ] ) ) {
             $this->setAdminNotice( __( 'The action has been already done or is invalid.', 'task-scheduler' ) );
             return;
         }
@@ -74,21 +74,21 @@ class TaskScheduler_ListTable_Action extends WP_List_Table {
         $_sAdminNotice = '';
         switch( strtolower( $this->current_action() ) ) {
             case 'enable':
-                foreach( ( array ) $_REQUEST['task_scheduler_task'] as $_sTaskPostID ) {
+                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
                     $_oTask = TaskScheduler_Routine::getInstance( $_sTaskPostID );
                     $_oTask->enable();                            
                     $this->setAdminNotice( __( 'The task has been enabled.', 'task-scheduler' ), 'updated' );                    
                 }
                 break;            
             case 'disable':
-                foreach( ( array ) $_REQUEST['task_scheduler_task'] as $_sTaskPostID ) {
+                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
                     $_oTask = TaskScheduler_Routine::getInstance( $_sTaskPostID );
                     $_oTask->disable();                
                     $this->setAdminNotice( __( 'The task has been disabled.', 'task-scheduler' ), 'updated' );                    
                 }
                 break;
             case 'delete':
-                foreach( ( array ) $_REQUEST['task_scheduler_task'] as $_sTaskPostID ) {
+                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
                     
                     $_sKey = array_search( $_sTaskPostID, $this->aData );
                     if ( false !== $_sKey ) {
@@ -110,7 +110,7 @@ class TaskScheduler_ListTable_Action extends WP_List_Table {
                 }
                 break;
             case 'reset_status':
-                foreach( ( array ) $_REQUEST['task_scheduler_task'] as $_sTaskPostID ) {
+                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
                     $_oTask = TaskScheduler_Routine::getInstance( $_sTaskPostID );
                     $_oTask->resetStatus();
                     $_iApplied++;
@@ -118,12 +118,26 @@ class TaskScheduler_ListTable_Action extends WP_List_Table {
                 }                    
                 break;    
             case 'reset_counts':
-                foreach( ( array ) $_REQUEST['task_scheduler_task'] as $_sTaskPostID ) {
+                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
                     $_oTask = TaskScheduler_Routine::getInstance( $_sTaskPostID );
                     $_oTask->resetCounts();
                     $_iApplied++;
                     $this->setAdminNotice( __( 'Reset the counts.', 'task-scheduler' ), 'updated' );
                 }                                
+                break;
+            case 'clone':
+                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
+                    $_oCloneTask = new TaskScheduler_CloneTask( $_sTaskPostID );
+                    $_ioTask      = $_oCloneTask->perform();
+                    if ( is_wp_error( $_ioTask ) ) {
+                       $this->setAdminNotice( $_ioTask->get_error_message() );
+                    } else {
+                        $_iApplied++;
+                    }
+                }
+                if ( $_iApplied ) { 
+                    $this->setAdminNotice( __( 'Cloned a task.', 'task-scheduler' ), 'updated' );
+                }
                 break;
             default:
                 break;    // do nothing.

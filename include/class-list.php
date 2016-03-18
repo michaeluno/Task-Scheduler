@@ -1,6 +1,6 @@
 <?php 
 /**
-	Task Scheduler v1.1.1b01 by miunosoft (Michael Uno) 
+	Task Scheduler v1.2.0b01 by miunosoft (Michael Uno) 
 	Provides an enhanced task management system for WordPress.
 	<http://en.michaeluno.jp/>
 	Copyright (c) 2014, Michael Uno; Licensed under GPL v2 or later */
@@ -107,6 +107,8 @@ $_aClassFiles = array(
 	"TaskScheduler_WPUtility"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/utility/TaskScheduler_WPUtility.php", 
 	"TaskScheduler_WPUtility_Option"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/utility/TaskScheduler_WPUtility_Option.php", 
 	"TaskScheduler_WPUtility_Post"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/utility/TaskScheduler_WPUtility_Post.php", 
+	"TaskScheduler_ClonePost"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/utility/clone/TaskScheduler_ClonePost.php", 
+	"TaskScheduler_CloneTask"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/utility/clone/TaskScheduler_CloneTask.php", 
 	"TaskScheduler_LogUtility"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/utility/log/TaskScheduler_LogUtility.php", 
 	"TaskScheduler_LogUtility_Add"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/utility/log/TaskScheduler_LogUtility_Add.php", 
 	"TaskScheduler_LogUtility_Base"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/utility/log/TaskScheduler_LogUtility_Base.php", 
