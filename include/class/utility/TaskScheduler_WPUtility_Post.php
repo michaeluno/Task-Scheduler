@@ -141,9 +141,7 @@ abstract class TaskScheduler_WPUtility_Post extends TaskScheduler_Utility {
     }
     
     public static function getParentPost( $iPostID ) {
-        
-        return get_post( $iPostID )->post_parent;
-        
+        return get_post( $iPostID )->post_parent;        
     }
     
     /**
@@ -165,11 +163,14 @@ abstract class TaskScheduler_WPUtility_Post extends TaskScheduler_Utility {
     /**
      * Creates a post of a specified custom post type with unit option meta fields.
      * 
+     * @return      integer|WP_Error
      */
     public static function insertPost( array $aPostMeta, $sPostTypeSlug ) {
         
         // If the database objects were not ready. Do nothing.
-        if ( ! is_object( $GLOBALS['wpdb'] ) || ! is_object( $GLOBALS['wp_rewrite'] ) ) return;
+        if ( ! is_object( $GLOBALS[ 'wpdb' ] ) || ! is_object( $GLOBALS[ 'wp_rewrite' ] ) ) {
+            return new WP_Error( 'wpdb_not_established', __( 'WPDB is not established.', 'task-scheduler' ) );
+        }
         
         static $_iUserID;
         $_iUserID = isset( $_iUserID ) ? $_iUserID : get_current_user_id();
@@ -202,22 +203,26 @@ abstract class TaskScheduler_WPUtility_Post extends TaskScheduler_Utility {
         $_aPostArguments = array();
         foreach( $_aDefaults as $_sKey => $_sValue ) {
             $_aPostArguments[ $_sKey ] = isset( $aPostMeta[ $_sKey ] )
-                ?    $aPostMeta[ $_sKey ]
-                :    $_sValue;
+                ? $aPostMeta[ $_sKey ]
+                : $_sValue;
         }
         
         // Create a custom post if it's a new unit.        
-        $_iPostID = wp_insert_post( $_aPostArguments );
-                    
-        // Remove the default post arguments. See the definition of wp_insert_post() in post.php    
+        $_ioPostID = wp_insert_post( $_aPostArguments );
+
+        if ( is_wp_error( $_ioPostID ) ) {
+            return $_ioPostID;
+        }
+        
+        // Remove the default post arguments. See the definition of wp_insert_post() in post.php.
         foreach( $_aDefaults as $_sKey => $_sFieldKey ) {
             unset( $aPostMeta[ $_sKey ] );
         }
         
         // Custom meta data needs to be updated as the wp_isnert_post() cannot handle them.
-        self::updatePostMeta( $_iPostID, $aPostMeta );
+        self::updatePostMeta( $_ioPostID, $aPostMeta );
                         
-        return $_iPostID;
+        return $_ioPostID;
         
     }    
     
@@ -225,11 +230,9 @@ abstract class TaskScheduler_WPUtility_Post extends TaskScheduler_Utility {
      * Updates post meta by the given ID and the array holding the meta data.
      */
     static public function updatePostMeta( $iPostID, $aPostMeta ) {
-        
         foreach( $aPostMeta as $_sFieldID => $_vValue ) {
             update_post_meta( $iPostID, $_sFieldID, $_vValue );
         }
-        
     }    
     
 }

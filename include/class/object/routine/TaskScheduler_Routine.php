@@ -21,7 +21,8 @@ final class TaskScheduler_Routine extends TaskScheduler_Routine_Taxonomy {
      * 
      * This is a modified version of the get_instance() method of WP_Post.
      * 
-     * @see        wp-includes/post.php
+     * @see         wp-includes/post.php
+     * @return      object|boolean
      */
     static public function getInstance( $iPostID ) {
         
@@ -29,7 +30,9 @@ final class TaskScheduler_Routine extends TaskScheduler_Routine_Taxonomy {
         
         $_sClassName = get_class();
         $iPostID = ( int ) $iPostID;
-        if ( ! $iPostID ) {  return false; }
+        if ( ! $iPostID ) {  
+            return false; 
+        }
         
         $_oPost = wp_cache_get( $iPostID, 'posts' );
         if ( ! $_oPost ) {
