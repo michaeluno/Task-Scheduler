@@ -64,28 +64,35 @@ class TaskScheduler_Action_Email extends TaskScheduler_Action_Base {
         
         // Handle each email per thread (spawn the subroutine in the background each)
         $_iThreads = 0;
+        $_iCount   = 0;
         $_aEmailOptions = $_aTaskMeta[ $this->sSlug ];
-        foreach( $_aEmailOptions['email_addresses'] as $_iIndex => $_sEmailAddress ) {
+        foreach( $_aEmailOptions['email_addresses'] as $_sEmailSet ) {
+            
+            foreach( preg_split( "/([\n\r](\s+)?)+/", $_sEmailSet ) as $_sEmailAddress ) {
+                
+                $_iCount++;
+                $_sEmailAddress = trim( $_sEmailAddress );
+                $_aTaskOptions  = array(
+                
+                    // Required
+                    'routine_action'        => 'task_scheduler_action_send_indiviual_email',
+                    'post_title'            => sprintf( __( 'Thread %1$s of %2$s', 'task-scheduler' ), $_iCount + 1, $oRoutine->post_title ),
+                    'parent_routine_log_id' => $oRoutine->log_id,        // the log_id key is set when a routine starts
+                                               
+                    // internal options        
+                    '_next_run_time'        => microtime( true ) + $_iCount,    // add an offset so that they will be loaded with a delay of a second each.
                     
-            $_aTaskOptions = array(
-            
-                // Required
-                'routine_action'        => 'task_scheduler_action_send_indiviual_email',
-                'post_title'            => sprintf( __( 'Thread %1$s of %2$s', 'task-scheduler' ), $_iIndex + 1, $oRoutine->post_title ),
-                'parent_routine_log_id' => $oRoutine->log_id,        // the log_id key is set when a routine starts
-                                           
-                // internal options        
-                '_next_run_time'        => microtime( true ) + $_iIndex,    // add an offset so that they will be loaded with a delay of a second each.
+                    // Routine specific options
+                    'email_address'         => $_sEmailAddress,    // this action specific custom argument
+                    'email_title'           => $_aEmailOptions['email_title'],
+                    'email_message'         => $_aEmailOptions['email_message'],
+                    
+                );
                 
-                // Routine specific options
-                'email_address'         => $_sEmailAddress,    // this action specific custom argument
-                'email_title'           => $_aEmailOptions['email_title'],
-                'email_message'         => $_aEmailOptions['email_message'],
+                $_iThreadTaskID = TaskScheduler_ThreadUtility::derive( $oRoutine->ID, $_aTaskOptions );
+                $_iThreads      = $_iThreadTaskID ? ++$_iThreads : $_iThreads;
                 
-            );
-            
-            $_iThreadTaskID = TaskScheduler_ThreadUtility::derive( $oRoutine->ID, $_aTaskOptions );
-            $_iThreads      = $_iThreadTaskID ? ++$_iThreads : $_iThreads;
+            }
 
         }
         
