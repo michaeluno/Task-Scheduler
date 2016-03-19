@@ -25,6 +25,7 @@ Currently, with WP Cron, if you register a large number of actions, for example,
 - <strong>Delete Posts</strong> - performs bulk deletion of posts based on the post type, post statuses, taxonomy, and taxonomy terms.
 - <strong>Send Email</strong> - sends email to specified email addresses.
 - <strong>Clean Transients</strong> - deletes expired transients (caches).
+- <strong>Check Web Sits</strong> - accesses specified web pages and checks certain keywords.
 
 <h4>Custom Action Modules</h4>
 - <strong>[Auto Post](https://wordpress.org/plugins/auto-post/)</strong> - creates posts automatically.
