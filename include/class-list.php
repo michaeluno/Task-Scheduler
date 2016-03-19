@@ -1,6 +1,6 @@
 <?php 
 /**
-	Task Scheduler v1.2.0b01 by miunosoft (Michael Uno) 
+	Task Scheduler v1.3.0b01 by miunosoft (Michael Uno) 
 	Provides an enhanced task management system for WordPress.
 	<http://en.michaeluno.jp/>
 	Copyright (c) 2014, Michael Uno; Licensed under GPL v2 or later */
@@ -68,6 +68,8 @@ $_aClassFiles = array(
 	"TaskScheduler_Action_PostDeleter_Wizard_3"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_3.php", 
 	"TaskScheduler_Action_TransientCleaner"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/transient_cleaner/TaskScheduler_Action_TransientCleaner.php", 
 	"TaskScheduler_Action_TransientCleaner_Wizard"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/transient_cleaner/admin/TaskScheduler_Action_TransientCleaner_Wizard.php", 
+	"TaskScheduler_Action_WebCheck"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/web_checker/TaskScheduler_Action_WebCheck.php", 
+	"TaskScheduler_Action_WebCheck_Wizard"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php", 
 	"TaskScheduler_Action_HungRoutineHandler_Thread"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/_hung_routine_handler/TaskScheduler_Action_HungRoutineHandler_Thread.php", 
 	"TaskScheduler_Action_RoutineLogDeleter"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/_routine_log_deleter/TaskScheduler_Action_RoutineLogDeleter.php", 
 	"TaskScheduler_Action_RoutineLogDeleter_Thread"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/_routine_log_deleter/TaskScheduler_Action_RoutineLogDeleter_Thread.php", 

@@ -215,6 +215,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
+= 1.3.0 =
+- Added a built-in action action module which checks specified web pages.
+
 = 1.2.0 - 2016/03/19 =
 - Added the ability to set multiple email addresses per input field of the `Send Email` action module.
 - Added the ability to clone tasks via an action link in the task listing table.

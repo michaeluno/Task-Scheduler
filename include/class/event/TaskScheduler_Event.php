@@ -88,6 +88,12 @@ class TaskScheduler_Event {
                 array()     // internal, no wizard
             );
             
+            // 1.3.0+
+            new TaskScheduler_Action_WebCheck(
+                'task_scheduler_action_web_check',
+                'TaskScheduler_Action_WebCheck_Wizard' // wizard class name
+            );
+            
         }
         
         /**
