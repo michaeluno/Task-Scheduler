@@ -3,7 +3,7 @@ Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
 Tested up to:       4.4.2
-Stable tag:         1.1.1
+Stable tag:         1.2.0
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               access, tool, utility, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation, routine, routines
@@ -215,7 +215,7 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.2.0 =
+= 1.2.0 - 2016/03/19 =
 - Added the ability to set multiple email addresses per input field of the `Send Email` action module.
 - Added the ability to clone tasks via an action link in the task listing table.
 
