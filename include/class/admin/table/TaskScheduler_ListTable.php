@@ -144,7 +144,7 @@ class TaskScheduler_ListTable extends TaskScheduler_ListTable_Views {
          * Set how many records per page to show
          */
 // @todo: let the user set this.        
-        $iItemsPerPage = 20;
+        $_iItemsPerPage = 20;
         
         /**
          * Define our column headers. 
@@ -168,25 +168,31 @@ class TaskScheduler_ListTable extends TaskScheduler_ListTable_Views {
         /**
          * For pagination.
          */
-        $iCurrentPageNumber = $this->get_pagenum();
-        $iTotalItems = count( $_aData );
+        $_iCurrentPageNumber = $this->get_pagenum();
+        $_iTotalItems = count( $_aData );
         $this->set_pagination_args( 
             array(
-                'total_items' => $iTotalItems,                      // calculate the total number of items
-                'per_page'    => $iItemsPerPage,                     // determine how many items to show on a page
-                'total_pages' => ceil( $iTotalItems / $iItemsPerPage )   // calculate the total number of pages
+                'total_items' => $_iTotalItems,                      // calculate the total number of items
+                'per_page'    => $_iItemsPerPage,                     // determine how many items to show on a page
+                'total_pages' => ceil( $_iTotalItems / $_iItemsPerPage )   // calculate the total number of pages
             )
         );
-        $_aData = array_slice( $_aData, ( ( $iCurrentPageNumber - 1 ) * $iItemsPerPage ), $iItemsPerPage );
+        $_aData = array_slice( $_aData, ( ( $_iCurrentPageNumber - 1 ) * $_iItemsPerPage ), $_iItemsPerPage );
         
         /*
          * Set data
          * */
         // Convert the array of IDs to task objects.
         $this->items = array();
-        foreach( $_aData as $_iIndex => $_iPostID ) {
-            $this->items[ $_iIndex ] = TaskScheduler_Routine::getInstance( $_iPostID );
+        foreach( $_aData as $_iPostID ) {
+            $_oRoutine = TaskScheduler_Routine::getInstance( $_iPostID );
+            if ( false === $_oRoutine ) {
+                continue;
+            }
+            $this->items[] = $_oRoutine;
         }
+        
+        
         
         /**
          * Sort the array.
@@ -202,12 +208,12 @@ class TaskScheduler_ListTable extends TaskScheduler_ListTable_Views {
          */
         public function usort_reorder( $a, $b ) {
             
-            $_sOrderBy = ! empty( $_REQUEST['orderby'] ) 
-                ? $_REQUEST['orderby'] 
+            $_sOrderBy = ! empty( $_REQUEST[ 'orderby' ] ) 
+                ? $_REQUEST[ 'orderby' ] 
                 : 'post_date'; 
-            $_sOrder   = ! empty( $_REQUEST['order'] )
-                ? $_REQUEST['order']   
-                : 'desc'; // desc: larget to smaller            
+            $_sOrder   = ! empty( $_REQUEST[ 'order' ] )
+                ? $_REQUEST[ 'order' ]   
+                : 'desc'; // desc: largest to smaller            
             $_iResult  = 1;
             if ( is_array( $a ) && is_array( $b ) ) {
                 $_iResult = strcmp( $a[ $_sOrderBy ], $b[ $_sOrderBy ] ); 

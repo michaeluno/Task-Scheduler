@@ -60,7 +60,7 @@ abstract class TaskScheduler_ListTable_Column extends TaskScheduler_ListTable_Ac
      * @remark      column_ + 'name'
      */
     public function column_name( $oRoutine ) {    
-                            
+                                   
         // Build row action links
         $_aActions = array(
             'edit'      => sprintf( '<a href="%s">' . __( 'Edit', 'task-scheduler' ) . '</a>', get_edit_post_link( $oRoutine->ID, true ) ),
