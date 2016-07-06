@@ -41,10 +41,10 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Reset extends TaskScheduler_
         $this->addSettingFields(
             'reset',    // the target section ID
             array(    
-                'field_id'        => 'reset_upon_deactivation',
-                'title'           => __( 'Delete Options upon Deactivation', 'task-scheduler' ),
+                'field_id'        => 'reset_on_uninstall',
+                'title'           => __( 'Delete Options upon Uninstall', 'task-scheduler' ),
                 'type'            => 'checkbox',
-                'label'           => __( 'Delete the settings when the plugin gets deactivated.', 'task-scheduler' ),
+                'label'           => __( 'Delete the settings when the plugin gets uninstalled.', 'task-scheduler' ),
             ),            
             array(    
                 'field_id'        => 'submit',

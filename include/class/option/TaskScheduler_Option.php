@@ -42,7 +42,8 @@ final class TaskScheduler_Option {
             'max_background_routine_count' => 12,
         ),        
         'reset'    => array(
-            'reset_upon_deactivation'    => false,
+            // 'reset_upon_deactivation'    => false, // @deprecated 1.3.1
+            'reset_on_uninstall'         => true,
         ),
     );
     
