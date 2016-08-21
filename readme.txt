@@ -2,7 +2,7 @@
 Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
-Tested up to:       4.5.3
+Tested up to:       4.6.0
 Stable tag:         1.3.1
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
@@ -215,6 +215,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 
 == Changelog ==
+
+= 1.3.2 =
+- Deprecated the ability for the Log functionality to create an item manually.
 
 = 1.3.1 - 2016/07/06 =
 - Added an option to delete options upon plugin uninstall.

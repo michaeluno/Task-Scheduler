@@ -33,10 +33,10 @@ abstract class TaskScheduler_PostType_Log_Base extends TaskScheduler_AdminPageFr
                     'parent'                  => __( 'Parent Log', 'task-scheduler' ),
                     // 'publish'                =>    __( 'Run', 'task-scheduler' ),
                     'plugin_listing_table_title_cell_link'    =>    '',    // framework specific key. [3.0.6+] - passing an empty will disable the automatic link insertion to the plugin listing table.
-                ),
+                ),            
                 'public'                  => true,
                 'show_ui'                 => true,
-                // 'show_in_menu'         => false, // Whether to show post type in the admin menu. 'show_ui' must be true for this to work. bool (defaults to 'show_ui')
+                // 'show_in_menu'            => false, // Whether to show post type in the admin menu. 'show_ui' must be true for this to work. bool (defaults to 'show_ui')
                 'show_in_menu'            => 'TaskScheduler_AdminPage',    // the plugin root admin page
                 'menu_position'           => 999,
                 'can_export'              => true,
@@ -50,10 +50,10 @@ abstract class TaskScheduler_PostType_Log_Base extends TaskScheduler_AdminPageFr
                 'screen_icon'             => TaskScheduler_Registry::getPluginURL( "/asset/image/screen_icon_32x32.png" ),
                 'exclude_from_search'     => true,
                 // 'show_table_filter'    => false,    // not working.
-                // 'capabilities' => array(
-                    // 'create_posts' => false,
-                // ),        
+                
+                'capability_type' => 'post',
                 'capabilities' => array(
+                    'create_posts'  => false, // Removes support for the "Add New" function ( use 'do_not_allow' instead of false for multisite set ups )
                     // 'read_private_posts'    =>    'none',
                     // 'delete_private_posts'    =>    'none',
                     // 'edit_private_posts'    =>    'none',
