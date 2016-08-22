@@ -3,7 +3,7 @@ Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
 Tested up to:       4.6.0
-Stable tag:         1.3.1
+Stable tag:         1.3.2
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               access, tool, utility, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation, routine, routines
@@ -216,7 +216,7 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.3.2 =
+= 1.3.2 - 2016/08/23 =
 - Fixed a compatibility issue with WordPress 4.6 that prevented routines from being processed.
 - Deprecated the ability for the Log functionality to create an item manually.
 
