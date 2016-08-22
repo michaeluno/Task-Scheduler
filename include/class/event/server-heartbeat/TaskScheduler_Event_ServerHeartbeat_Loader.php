@@ -26,7 +26,7 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
     public function __construct() {
         
         $this->_sTransientPrefix = TaskScheduler_Registry::TRANSIENT_PREFIX;
-    
+
         // At this point, the page is loaded for a specific routine(task/thread).
         if ( ! self::isCallingAction() ) { 
             return; 
@@ -48,14 +48,14 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
     }
         
     /**
-     * Executes an individual task and exists.
+     * Executes an individual task and then exits.
      * 
      * @callback    action      init
      * @return      void
      */
     public function _replyToDoRoutineAndExit() {
-        
-        $_oRoutine = TaskScheduler_Routine::getInstance( $_COOKIE[ 'server_heartbeat_action' ] );
+
+        $_oRoutine = TaskScheduler_Routine::getInstance( absint( $_COOKIE[ 'server_heartbeat_action' ] ) );
         if ( ! is_object( $_oRoutine ) )  {
             exit();        
         }        
@@ -65,9 +65,9 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
 
         // Check the spawned time in case simultaneous page loads triggered the same task.
         $_nSpawnedTime = isset( $_COOKIE[ 'server_heartbeat_spawned_time' ] ) 
-            ? $_COOKIE[ 'server_heartbeat_spawned_time' ] 
+            ? ( string ) $_COOKIE[ 'server_heartbeat_spawned_time' ] 
             : null;
-        if ( $_nSpawnedTime !== $_oRoutine->_spawned_time ) {
+        if ( $_nSpawnedTime !== ( string ) $_oRoutine->_spawned_time ) {
             exit();
         }
 
@@ -89,6 +89,10 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
      */    
     private function _doRoutine( $oRoutine, $nScheduledTime ) {
 
+        // 1.3.3+ Sanitize the parameter value as the cookies now all passes as a string.
+        $nScheduledTime = ( $nScheduledTime == ( integer ) $nScheduledTime ) 
+            ? ( integer ) $nScheduledTime : ( float ) $nScheduledTime;
+    
         // Set the max execution time and wait until the exact time.
         $_nSleepSeconds          = $this->_getRequiredSleepSeconds( $oRoutine, $nScheduledTime );
         if ( $_nSleepSeconds > TaskScheduler_Option::get( array( 'server_heartbeat', 'interval' ) ) ) {

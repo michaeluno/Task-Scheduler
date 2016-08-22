@@ -398,18 +398,25 @@ final class TaskScheduler_ServerHeartbeat {
         );        
 
         $aCookies    = $aCookies + array( 
-            'server_heartbeat_id'        =>    $_sID, 
-            'server_heartbeat_context'    =>    $sContext,
+            'server_heartbeat_id'        => $_sID,   
+            'server_heartbeat_context'   => $sContext,
         );
         $aCookies    = apply_filters( 'task_scheduler_filter_serverheartbeat_cookies', $aCookies, $sContext );
-        wp_remote_get(
+        
+        // [1.3.2+] Cast string for the bug in WP v4.6 https://core.trac.wordpress.org/ticket/37768
+        foreach( $aCookies as &$sCookie ) {
+            $sCookie = ( string ) $sCookie;
+        }
+        
+        $_aoResponse = wp_remote_get(
             $sTargetURL,    // the target URL
-            array(     // HTTP Request Argument
-                'timeout'    =>    0.01, 
-                'sslverify'    =>    false, 
-                'cookies'    =>    $aCookies,
+            array(          // HTTP Request Argument
+                'timeout'       => 0.01, 
+                // 'blocking'      => false,
+                'sslverify'     => false, 
+                'cookies'       => $aCookies,
             ) 
-        );            
+        );
 
     }
 

@@ -100,7 +100,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         // Set a check-action lock 
         TaskScheduler_WPUtility::deleteTransient( self::$sRecheckActionTransientKey );
         TaskScheduler_WPUtility::setTransient( self::$sCheckActionTransientKey, $_nNow, 60 );
-        
+
         // Parse the retrieved routines.
         // If it is a task, update the next scheduled time, create a routine and return.
         // If it is a routine, spawn it.
@@ -124,7 +124,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
                 $_oTask->_next_run_time, // 1.1.1+ this next run time value is still the one used for the database query above.
                 true // update the next run time
             );
-            
+
         }
         
         TaskScheduler_WPUtility::deleteTransient( self::$sCheckActionTransientKey );
@@ -162,7 +162,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
      */
     public function _replyToSpawnTheRoutine( $iRoutineID, $nScheduledTime, $bUpdateNextRunTime=true ) {
 
-        // First check if it is a task 
+        // First check if it is a task  
         $_oRoutine = TaskScheduler_Routine::getInstance( $iRoutineID );
         if ( ! is_object( $_oRoutine ) ) { 
             return;
@@ -178,32 +178,34 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
             $iRoutineID = $_oRoutine->ID;
         }
 
-        
         // For routine instances,
         if ( $_oRoutine->isRoutine() ) {
             $this->_updateRoutineStatus( $_oRoutine );
+      
         }
         
+        // Let other subroutines update routine meta such as `_is_spawned` etc.
         $_nCurrentMicrotime = microtime( true );
         do_action( 
             'task_scheduler_action_before_calling_routine', 
             TaskScheduler_Routine::getInstance( $iRoutineID ), 
             $_nCurrentMicrotime
         );
-        
+
         $_aDebugInfo = defined( 'WP_DEBUG' ) && WP_DEBUG
             ? array( 'spawning_routine' => $iRoutineID )
             : array();
         
         TaskScheduler_ServerHeartbeat::loadPage(
             add_query_arg( $_aDebugInfo, trailingslashit( site_url() ) ),    // the Apache log indicates that if a trailing slash misses, it redirects to the url WITH it.
-            array(
+            array( // cookies
                 'server_heartbeat_id'                => '',    // do not set the id so that the server heartbeat does not think it is a background call.
-                'server_heartbeat_action'            => $iRoutineID,
-                'server_heartbeat_scheduled_time'    => $nScheduledTime,
-                'server_heartbeat_spawned_time'      => $_nCurrentMicrotime,
+                // [1.3.2+] Cast string for the bug in WordPress v4.6 https://core.trac.wordpress.org/ticket/37768
+                'server_heartbeat_action'            => ( string ) $iRoutineID,
+                'server_heartbeat_scheduled_time'    => ( string ) $nScheduledTime,
+                'server_heartbeat_spawned_time'      => ( string ) $_nCurrentMicrotime,
             ),
-            'spawn_routine'
+            'spawn_routine' // context
         );        
 
         // Do not call the action, 'task_scheduler_action_after_calling_routine', here

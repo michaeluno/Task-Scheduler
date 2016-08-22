@@ -20,7 +20,6 @@ abstract class TaskScheduler_RoutineUtility_Get extends TaskScheduler_RoutineUti
      * - completed
      * - lost
      * 
-     * @param   boolean         $bInternal  Indicates whether or not the retrieving tasks are all internal.
      * @return  object          The WP Query return object holding the result. To retrieve the post ids call the 'posts' element like $oResult->posts.
      */
     static public function find( array $aArgs=array() ) {

@@ -217,6 +217,7 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 == Changelog ==
 
 = 1.3.2 =
+- Fixed a compatibility issue with WordPress 4.6 that prevented routines from being processed.
 - Deprecated the ability for the Log functionality to create an item manually.
 
 = 1.3.1 - 2016/07/06 =
