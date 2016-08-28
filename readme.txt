@@ -216,6 +216,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
+= 1.3.3 =
+- Fixed a bug that the ability to add Log items manually for multi-sites were not disabled in v1.3.2.
+
 = 1.3.2 - 2016/08/23 =
 - Fixed a compatibility issue with WordPress 4.6 that prevented routines from being processed.
 - Deprecated the ability for the Log functionality to create an item manually.

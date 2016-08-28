@@ -50,10 +50,12 @@ abstract class TaskScheduler_PostType_Log_Base extends TaskScheduler_AdminPageFr
                 'screen_icon'             => TaskScheduler_Registry::getPluginURL( "/asset/image/screen_icon_32x32.png" ),
                 'exclude_from_search'     => true,
                 // 'show_table_filter'    => false,    // not working.
-                
-                'capability_type' => 'post',
+                // 'map_meta_cap'            => true,  
+                'capability_type'         => 'post',
                 'capabilities' => array(
-                    'create_posts'  => false, // Removes support for the "Add New" function ( use 'do_not_allow' instead of false for multisite set ups )
+                    'create_posts'  => is_multisite()
+                        ? 'do_not_allow'
+                        : false, // Removes support for the "Add New" function ( use 'do_not_allow' instead of false for multisite set ups )
                     // 'read_private_posts'    =>    'none',
                     // 'delete_private_posts'    =>    'none',
                     // 'edit_private_posts'    =>    'none',
