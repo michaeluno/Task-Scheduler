@@ -3,7 +3,7 @@ Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
 Tested up to:       4.6.0
-Stable tag:         1.3.2
+Stable tag:         1.3.3
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               access, tool, utility, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation, routine, routines
@@ -216,7 +216,7 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.3.3 =
+= 1.3.3 - 2016/09/01 =
 - Fixed a bug that the ability to add Log items manually for multi-sites were not disabled in v1.3.2.
 
 = 1.3.2 - 2016/08/23 =
