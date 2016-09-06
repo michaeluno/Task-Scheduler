@@ -42,6 +42,7 @@ final class TaskScheduler_ServerHeartbeat {
     
     /**
      * Returns the heartbeat ID.
+     * @return      string      The cookie value is always string.
      */
     static public function getID() {        
         return isset( $_COOKIE{'server_heartbeat_id'} ) ? $_COOKIE{'server_heartbeat_id'} : '';
@@ -129,13 +130,15 @@ final class TaskScheduler_ServerHeartbeat {
         static private function _saveInfo( array $aSettings=array() ) {
             
             $_aInfo = array(
-                'interval'            =>    self::getInterval(),
+                'interval'            => self::getInterval(),
             ) + ( array ) self::_getInfo();
             
             if ( self::isBackground() ) {
-                $_aInfo['second_last_beat_time']    =    isset( $_aInfo['last_beat_time'] ) ? $_aInfo['last_beat_time'] : null;
-                $_aInfo['last_beat_time']            =    microtime( true );
-                $_aInfo['id']                        =    self::getID();
+                $_aInfo[ 'second_last_beat_time' ] = isset( $_aInfo[ 'last_beat_time' ] ) 
+                    ? $_aInfo[ 'last_beat_time' ] 
+                    : null;
+                $_aInfo[ 'last_beat_time' ]        = microtime( true );
+                $_aInfo[ 'id' ]                    = self::getID();
             }
             $_aInfo = $aSettings + array_filter( $_aInfo ); // drop non-true values.
             TaskScheduler_WPUtility::setTransient( self::$sTransientKey, $_aInfo );    // made it not vanish by itself
@@ -162,7 +165,9 @@ final class TaskScheduler_ServerHeartbeat {
         self::_scheduleToCheckBeat();
         
         // If it is alive, do nothing.
-        if ( $_bIsAlive ) { return false; }         
+        if ( $_bIsAlive ) {
+            return false;
+        }
         
         // Start the beat.    
         add_action( 'shutdown', array( get_class(), '_replyToStart' ) );
@@ -176,7 +181,9 @@ final class TaskScheduler_ServerHeartbeat {
 
             // Ensures it is done only once in a page load.
             static $_bIsCalled;
-            if ( $_bIsCalled ) { return; }
+            if ( $_bIsCalled ) { 
+                return; 
+            }
             $_bIsCalled = true;    
                                 
             // Load the page in the background
@@ -211,7 +218,9 @@ final class TaskScheduler_ServerHeartbeat {
         static public function _replyToBeat() {
             
             static $_bIsLoaded = false;
-            if ( $_bIsLoaded ) { return; }
+            if ( $_bIsLoaded ) { 
+                return; 
+            }
             $_bIsLoaded = true;
             
             // Set an empty value to the ID so that the page load will be regarded as a background call.
@@ -239,7 +248,9 @@ final class TaskScheduler_ServerHeartbeat {
         }        
         
         // At this point, the page is loaded in the background. Tell WordPress this is a background task by setting the Cron flag.
-        if ( ! defined( 'DOING_CRON' ) ) { define( 'DOING_CRON', true ); }                
+        if ( ! defined( 'DOING_CRON' ) ) { 
+            define( 'DOING_CRON', true ); 
+        } 
         ignore_user_abort( true );
         
         // Another heartbeat is already running. (this sometimes occurs but not sure why )
@@ -251,7 +262,7 @@ final class TaskScheduler_ServerHeartbeat {
         if ( false === self::_getInfo() ) {
             self::stop();
             
-            // Do not call exit() here because when the server heartbeat is disabled but the user wants to check actions manually, 
+            // Do not call `exit()` here because when the server heartbeat is disabled but the user wants to check actions manually, 
             // the action checker class needs to be loaded.
             return;    
         }
@@ -269,7 +280,9 @@ final class TaskScheduler_ServerHeartbeat {
          */
         static public function _replyToCheck() {
             
-            if ( ! self::getInterval() ) { return; }
+            if ( ! self::getInterval() ) { 
+                return; 
+            }
             self::run();
             
         }        
@@ -320,7 +333,7 @@ final class TaskScheduler_ServerHeartbeat {
                 // Be careful not to set 0 for the cache duration.
                 $_iTransientDuration = ( int ) floor( $nSleepDuration );
                 if ( $_iTransientDuration ) {                    
-                    TaskScheduler_WPUtility::setTransient( self::$sTransientKey_Sleep, self::getID(), $_iTransientDuration );                        
+                    TaskScheduler_WPUtility::setTransient( self::$sTransientKey_Sleep, self::getID(), $_iTransientDuration );
                 }
                 usleep( $nSleepDuration * 1000000 ); 
                 if ( $_iTransientDuration )     {
@@ -334,7 +347,6 @@ final class TaskScheduler_ServerHeartbeat {
             static private function _deleteSleepTransient() {                
             
                 // If the transient ID is different, it means another different heartbeat is pulsating.
-                // $_sSleepID = TaskScheduler_WPUtility::getTransient( self::$sTransientKey_Sleep );
                 $_sSleepID = TaskScheduler_WPUtility::getTransientWithoutCache( self::$sTransientKey_Sleep );
                 if ( false !== $_sSleepID && self::getID() !== $_sSleepID ) {
                     self::$_bStop = true;
@@ -349,11 +361,15 @@ final class TaskScheduler_ServerHeartbeat {
          */
         static private function _pulsate() {
                             
-            if ( self::$_bStop ) { return; }    
+            if ( self::$_bStop ) { 
+                return; 
+            }
                     
             // Ensures it is done only once in a page load.
             static $_bIsCalled;
-            if ( $_bIsCalled ) { return; }
+            if ( $_bIsCalled ) { 
+                return; 
+            }
             $_bIsCalled = true;        
             
             // For a safety net - check if the option is enabled.
@@ -369,8 +385,12 @@ final class TaskScheduler_ServerHeartbeat {
          */
         static private function _scheduleToCheckBeat() {
             
-            if ( self::$_bStop ) { return; }            
-            if ( wp_next_scheduled( self::$sServerHeartbeatActionHook ) ) { return; }
+            if ( self::$_bStop ) { 
+                return; 
+            } 
+            if ( wp_next_scheduled( self::$sServerHeartbeatActionHook ) ) { 
+                return; 
+            }
             wp_schedule_single_event( time() + self::getInterval() + 1, self::$sServerHeartbeatActionHook );
             
         }                
@@ -384,21 +404,30 @@ final class TaskScheduler_ServerHeartbeat {
      * This gives a hint to the callback functions that they should modify the given url or not.
      * Currently the following three slugs are used as the context.
      *  - start        : the heartbeat is starting
-     *     - pulsate    : the recurrent heartbeat page load
-     *     - beat        : an irregular background page load
+     *     - pulsate   : the recurrent heartbeat page load
+     *     - beat      : an irregular background page load
      */
     static public function loadPage( $sTargetURL='', $aCookies=array(), $sContext='pulsate' ) {
         
         $_sID        = self::getID();
-        $_sID        = $_sID ? $_sID : uniqid();
+        $_sID        = $_sID ? $_sID : ( string ) uniqid();
         $sTargetURL = apply_filters(
             'task_scheduler_filter_serverheartbeat_target_url', 
-            $sTargetURL ? $sTargetURL : add_query_arg( array( 'doing_server_heartbeat' => microtime( true ), 'id' => $_sID, 'context' => $sContext ), trailingslashit( site_url() ) ), // the Apache log indicates that if a trailing slash misses, it redirects to the url WITH it.
+            $sTargetURL 
+                ? $sTargetURL 
+                : add_query_arg( 
+                    array( 
+                        'doing_server_heartbeat' => microtime( true ), 
+                        'id'                     => $_sID, 
+                        'context'                => $sContext 
+                    ), 
+                    trailingslashit( site_url() ) 
+                ), // the Apache log indicates that if a trailing slash misses, it redirects to the url WITH it.
             $sContext 
         );        
 
         $aCookies    = $aCookies + array( 
-            'server_heartbeat_id'        => $_sID,   
+            'server_heartbeat_id'        => $_sID,
             'server_heartbeat_context'   => $sContext,
         );
         $aCookies    = apply_filters( 'task_scheduler_filter_serverheartbeat_cookies', $aCookies, $sContext );
@@ -412,7 +441,7 @@ final class TaskScheduler_ServerHeartbeat {
             $sTargetURL,    // the target URL
             array(          // HTTP Request Argument
                 'timeout'       => 0.01, 
-                // 'blocking'      => false,
+                // 'blocking'      => false, // this causes to fail on some servers.
                 'sslverify'     => false, 
                 'cookies'       => $aCookies,
             ) 
