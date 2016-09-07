@@ -47,11 +47,13 @@ This is designed to be fully extensible and developers can add custom modules in
 == Other Notes ==
 
 <h4>Create a Custom Action</h4>
-You can run your custom action with Task Scheduler and run it with scheduled times, once a day, with a fixed interval. or whatever you set with the plugin.
+You can run your custom action with Task Scheduler and run it at scheduled times, once a day, with a fixed interval, or whatever you set with the plugin.
+
+Place the code that includes the module in your plugin or `functions.php` of the activated theme.
 
 **1.** Decide your action slug which also serves as a WordPress _filter_ hook.
 
-Say you pick `my_custom_action` as an action name.
+Say, you pick `my_custom_action` as an action name.
 
 **2.** Use the `add_filter()` WordPress core function to hook into the action.
 
@@ -144,7 +146,7 @@ class TaskScheduler_SampleActionModule extends TaskScheduler_Action_Base {
 }
 `
 
-In the doAction() method of the above class, define the behaviour of your action what it does. The second parameter receives a routine object. The object has a public method named `getMeta()` which returns the associated arguments. 
+In the `doAction()` method of the above class, define the behaviour of your action what it does. The second parameter receives a routine object. The object has a public method named `getMeta()` which returns the associated arguments. 
 
 **2.** Use the `task_scheduler_action_after_loading_plugin` action hook to register your action module.
 
@@ -167,7 +169,13 @@ You can set your custom arguments in the **Argument (optional)** field if necess
 
 The set values will be stored in the argument element of the array returned by the `getMeta()` public method of the routine object.
 
-See the entire example plugin (https://github.com/michaeluno/task-scheduler-sample-action-module).
+It will be easier for you to modify an existent module. Get an example action module which comes as a plugin from [this page](https://github.com/michaeluno/task-scheduler-sample-action-module). Download and activate it on your test site. Then modify the code, especially the `doAction()` method which defines the behavior of the action.
+
+<h4>Terminologies</h4>
+
+- **Task** - a rule which defines what kind of action routine to be performed at a specified time.
+- **Routine** - a main action routine created by a task. Depending on the action, it creates an action thread to divide its routine.
+- **Thread** - a divided action sub-sequential routine created by a routine. For example, The email action creates threads and sends emails per thread instead of sending them all in one routine to avoid exceeding the PHP's maximum execution time.
 
 == Frequently Asked Questions ==
 
