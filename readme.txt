@@ -224,7 +224,7 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.3.1 - 2016/09/08 =
+= 1.3.4 - 2016/09/08 =
 - Fixed a bug which caused a fatal error `Cannot redeclare class TaskScheduler_Routine_Base` in WordPress 4.6.1.
 
 = 1.3.3 - 2016/09/01 =
