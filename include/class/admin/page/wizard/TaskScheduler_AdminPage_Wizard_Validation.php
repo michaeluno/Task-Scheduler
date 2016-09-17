@@ -44,7 +44,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
         $_aSavedValues = $this->_saveValidatedWizardOptions( $_aWizardOptions );
 
         // Passing a dummy value will prevent the framework from displaying an admin notice.
-        return array( 'dummy value' );    
+        return array( 'dummy value' );
         
     }
         
@@ -65,7 +65,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
             );
 
             TaskScheduler_WPUtility::setTransient( 
-                $_GET['transient_key'], 
+                $_GET[ 'transient_key' ], 
                 $aWizardOptions, 
                 30*60 
             );
