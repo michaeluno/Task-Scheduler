@@ -34,6 +34,8 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
      * In addition, _this_ wizard class will save the '_wizard_options' element in the class validation callback method into the transient.
      * The saved transient again here gets loaded and assigned as the form options.
      * 
+     * @callback    filter options_{class name}
+     * @return      array
      */
     public function options_TaskScheduler_AdminPage_Wizard( $aOptions ) {
         
@@ -63,8 +65,8 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
             : array();
         $_aSavingOptions = $aMergingOptions + $_aStoredOptions;    // not recursive for repeatable fields. 
         $_aSavingOptions = array_filter( $_aSavingOptions );
-        unset( $_aSavingOptions['submit'] );
-        TaskScheduler_WPUtility::setTransient( $sTransientKey, $_aSavingOptions, 30*60 );    // 30 minutes        
+        unset( $_aSavingOptions[ 'submit' ] );
+        TaskScheduler_WPUtility::setTransient( $sTransientKey, $_aSavingOptions, 30*60 );    // 30 minutes     
         return $_aSavingOptions;
         
     }
@@ -75,8 +77,8 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
     protected function _getWizardOptions( $sKey='' ) {
         
         static $_aWizardOptions;
-        $_sTransientKey = isset( $_GET['transient_key'] ) 
-            ? $_GET['transient_key'] 
+        $_sTransientKey = isset( $_GET[ 'transient_key' ] ) 
+            ? $_GET[ 'transient_key' ]
             : '';
         
         // If already retrieved, use it.
@@ -105,8 +107,8 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
         $sTransientKey = $sTransientKey 
             ? $sTransientKey
             : ( 
-                isset( $_GET['transient_key'] ) 
-                    ? $_GET['transient_key'] 
+                isset( $_GET[ 'transient_key' ] ) 
+                    ? $_GET[ 'transient_key' ] 
                     : '' 
             );
         TaskScheduler_WPUtility::deleteTransient( $sTransientKey );
@@ -132,5 +134,4 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
         
     }
     
-        
 }
