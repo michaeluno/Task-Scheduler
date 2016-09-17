@@ -1,6 +1,5 @@
 <?php
 /**
- * One of the base classes of the plugin admin page class for the wizard pages.
  * 
  * @package      Task Scheduler
  * @copyright    Copyright (c) 2014-2016, Michael Uno
@@ -9,6 +8,10 @@
  * @since        1.0.0
  */
 
+/**
+ * One of the base classes of the plugin admin page class for the wizard pages.
+ * @extends        TaskScheduler_AdminPage_Wizard_Tab_CreateTask
+ */
 abstract class TaskScheduler_AdminPage_Wizard_Setup extends TaskScheduler_AdminPage_Wizard_Tab_CreateTask {
     
     /**
@@ -18,8 +21,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Setup extends TaskScheduler_AdminP
      */         
     public function setUp() {
             
-        // $this->setRootMenuPageBySlug( 'edit.php?post_type=' . TaskScheduler_Registry::$aPostTypes[ 'task' ] );
-        $this->setRootMenuPageBySlug( TaskScheduler_Registry::$aAdminPages['root'] );
+        $this->setRootMenuPageBySlug( TaskScheduler_Registry::$aAdminPages[ 'root' ] );
         $this->addSubMenuItems(
             array(
                 'title'            => __( 'Add New Task', 'task-scheduler' ),    // page and menu title
@@ -72,8 +74,8 @@ abstract class TaskScheduler_AdminPage_Wizard_Setup extends TaskScheduler_AdminP
             )
         );            
     
-        $this->_sTransientKey = isset( $_GET['transient_key'] ) && $_GET['transient_key'] 
-            ? $_GET['transient_key'] 
+        $this->_sTransientKey = isset( $_GET[ 'transient_key' ] ) && $_GET[ 'transient_key' ]
+            ? $_GET[ 'transient_key' ] 
             : TaskScheduler_Registry::TRANSIENT_PREFIX . uniqid();
         $this->_registerCustomFieldTypes();
         
