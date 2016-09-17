@@ -394,31 +394,31 @@ abstract class TaskScheduler_Wizard_Base {
             
             // If repeatable or having sub-fields.
             if ( 
-                ( $_aField['repeatable'] || isset( $_aField[ 0 ] ) )
+                ( $_aField[ 'repeatable' ] || isset( $_aField[ 0 ] ) )
                 && is_array( $_aWizardOptions[ $this->_sSectionID ][ $_sFieldID ] ) 
             ) {
                         
                 // Set the values to the sub-fields.
-                $_aThisFieldValues = array_values( $_aWizardOptions[ $this->_sSectionID ][ $_sFieldID ] );
-                $_aField['value']  = array_shift( $_aThisFieldValues );    // extract and remove the first item.
+                $_aThisFieldValues  = array_values( $_aWizardOptions[ $this->_sSectionID ][ $_sFieldID ] );
+                $_aField[ 'value' ] = array_shift( $_aThisFieldValues );    // extract and remove the first item.
                 $_iIndex = 0;
                 foreach( $_aThisFieldValues as $_vValue ) {
-                    $_aField[ $_iIndex ]['value'] = $_vValue;                    
+                    $_aField[ $_iIndex ][ 'value' ] = $_vValue;                    
                     $_iIndex++;
                 }
                 continue;
             } 
             
             // Otherwise,
-            $_aField['value'] = $_aWizardOptions[ $this->_sSectionID ][ $_sFieldID ];
+            $_aField[ 'value' ] = $_aWizardOptions[ $this->_sSectionID ][ $_sFieldID ];
             
 
         }
 
         // Set the Back button's url.
         $_sCurrentURLKey = remove_query_arg( array( 'transient_key', 'settings-notice', 'settings-updated' ) );
-        if ( isset( $_aWizardOptions['previous_urls'][ $_sCurrentURLKey ] ) ) {
-            $aAllFields[ $this->_sSectionID ][ 'submit' ][ 0 ]['href'] = $_aWizardOptions['previous_urls'][ $_sCurrentURLKey ];
+        if ( isset( $_aWizardOptions[ 'previous_urls' ][ $_sCurrentURLKey ] ) ) {
+            $aAllFields[ $this->_sSectionID ][ 'submit' ][ 0 ][ 'href' ] = $_aWizardOptions[ 'previous_urls' ][ $_sCurrentURLKey ];
         }
                 
         return $aAllFields;
