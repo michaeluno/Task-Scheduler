@@ -1,13 +1,20 @@
 <?php
 /**
- * An abstract class of a custom post type for task logs.
- *
+ * Task Scheduler
+ * 
+ * Provides an enhanced task management system for WordPress.
+ * 
  * @package      Task Scheduler
  * @copyright    Copyright (c) 2014-2016, Michael Uno
  * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
 */
+
+/**
+ * An abstract class of a custom post type for task logs.
+ * @extends     TaskScheduler_AdminPageFramework_PostType
+ */
 abstract class TaskScheduler_PostType_Log_Base extends TaskScheduler_AdminPageFramework_PostType {
 
 
@@ -69,7 +76,9 @@ abstract class TaskScheduler_PostType_Log_Base extends TaskScheduler_AdminPageFr
                     // 'edit_post' => 'edit_movie',
                     // 'delete_post' => 'delete_movie',
                     // 'read_post' => 'read_movie',
-                ),                
+                ),   
+                
+                'submenu_order_manage'  => 30,  // 1.4.0+
             )        
         );
     
