@@ -1,6 +1,5 @@
 <?php
 /**
- * One of the base classes of the plugin admin page class for the wizard pages.
  * 
  * @package      Task Scheduler
  * @copyright    Copyright (c) 2014-2016, Michael Uno
@@ -9,8 +8,11 @@
  * @since        1.0.0
  */
 
+/**
+ * One of the base classes of the plugin admin page class for the wizard pages.
+ * @extends     TaskScheduler_AdminPageFramework
+ */
 abstract class TaskScheduler_AdminPage_Wizard_Start extends TaskScheduler_AdminPageFramework {
-// abstract class TaskScheduler_AdminPage_Wizard_Start extends AdminPageFramework {
     
     public function start() {
                 
