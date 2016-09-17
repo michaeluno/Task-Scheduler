@@ -1,6 +1,8 @@
 <?php
 /**
- * One of the abstract class of the plugin admin page class.
+ * Task Scheduler
+ * 
+ * Provides an enhanced task management system for WordPress.
  * 
  * @package      Task Scheduler
  * @copyright    Copyright (c) 2014-2016, Michael Uno
@@ -9,6 +11,11 @@
  * @since        1.0.0
  */
 
+ 
+/**
+ * One of the abstract class of the plugin admin page class.
+ * @extends     TaskScheduler_AdminPage_Setting_Form_Heartbeat
+ */
 final class TaskScheduler_AdminPage_Setting extends TaskScheduler_AdminPage_Setting_Form_Heartbeat {
 
     public function setUp() {
@@ -17,7 +24,8 @@ final class TaskScheduler_AdminPage_Setting extends TaskScheduler_AdminPage_Sett
         $this->addSubMenuItems(
             array(
                 'title'            => __( 'Settings', 'task-scheduler' ),    // page and menu title
-                'page_slug'        => TaskScheduler_Registry::$aAdminPages[ 'setting' ]    // page slug
+                'page_slug'        => TaskScheduler_Registry::$aAdminPages[ 'setting' ],    // page slug
+                'order'            => 40,  // sub-menu order
             )
         );        
                         
