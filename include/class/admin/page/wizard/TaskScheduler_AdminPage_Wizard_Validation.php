@@ -35,7 +35,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
             : array();
 
         // Check if necessary keys are set. If the transient is expired, the necessary elements will miss. In that case, let the user start over the process.
-        if ( ! isset( $_aWizardOptions['post_title'] ) || ! $_aWizardOptions['post_title'] ) {
+        if ( ! isset( $_aWizardOptions[ 'post_title' ] ) || ! $_aWizardOptions[ 'post_title' ] ) {
             $this->setSettingNotice( __( 'The wizard session has been expired. Please start from the beginning.', 'task-scheduler' ) );
             exit( TaskScheduler_PluginUtility::goToAddNewPage() );
         }
@@ -55,7 +55,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
          */
         protected function _saveValidatedWizardOptions( array $aWizardOptions ) {
 
-            if ( ! isset( $_GET['transient_key'] ) ) {
+            if ( ! isset( $_GET[ 'transient_key' ] ) ) {
                 return;
             }    
 
