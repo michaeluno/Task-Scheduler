@@ -1,6 +1,8 @@
 <?php
 /**
- * An abstract class of the 'Occurrence' wizard hidden tabbed pages.
+ * Task Scheduler
+ * 
+ * Provides an enhanced task management system for WordPress.
  * 
  * @package      Task Scheduler
  * @copyright    Copyright (c) 2014-2016, Michael Uno
@@ -9,9 +11,9 @@
  * @since        1.0.0
  */
 
- /**
-  * 
-  */
+/**
+ * An abstract class of the 'Occurrence' wizard hidden tabbed pages. 
+ */
 abstract class TaskScheduler_Wizard_Occurrence_Base extends TaskScheduler_Wizard_Base {
         
     /**
