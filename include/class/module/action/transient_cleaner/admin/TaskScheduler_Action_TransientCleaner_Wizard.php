@@ -32,6 +32,7 @@ final class TaskScheduler_Action_TransientCleaner_Wizard extends TaskScheduler_W
                 'field_id'           => 'transient_type',
                 'title'              => __( 'Network Transients', 'task-scheduler' ),
                 'type'               => 'radio',
+                'hidden'             => ! is_multisite(),
                 'if'                 => is_multisite(),
                 'label'              => array(
                     0   => __( 'Both', 'task-scheduler' ),

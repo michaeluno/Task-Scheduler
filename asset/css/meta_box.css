@@ -52,6 +52,11 @@ textarea[readonly] {
 }
   */
  
+/* 1.4.0+ Fix the excerpt title extra block margin */
+.task-scheduler-field-title #excerpt {
+    display: inline;
+}
+ 
 
 .task-scheduler-daily-module-days,
 .task-scheduler-daily-module-times

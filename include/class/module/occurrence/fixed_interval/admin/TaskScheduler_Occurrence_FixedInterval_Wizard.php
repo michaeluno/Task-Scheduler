@@ -126,6 +126,5 @@ final class TaskScheduler_Occurrence_FixedInterval_Wizard extends TaskScheduler_
                 . ' ' .  $_sUnit
             ;
         }
-    
-    
+        
 }

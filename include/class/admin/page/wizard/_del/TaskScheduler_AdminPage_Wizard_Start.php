@@ -11,6 +11,7 @@
 /**
  * One of the base classes of the plugin admin page class for the wizard pages.
  * @extends     TaskScheduler_AdminPageFramework
+ * @deprecated
  */
 abstract class TaskScheduler_AdminPage_Wizard_Start extends TaskScheduler_AdminPageFramework {
     

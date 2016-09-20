@@ -1,6 +1,8 @@
 <?php
 /**
- * One of the base classes of the plugin admin page class for the wizard pages.
+ * Task Scheduler
+ * 
+ * Provides an enhanced task management system for WordPress.
  * 
  * @package      Task Scheduler
  * @copyright    Copyright (c) 2014-2016, Michael Uno
@@ -9,12 +11,20 @@
  * @since        1.0.0
  */
 
+/**
+ * One of the base classes of the plugin admin page class for the wizard pages.
+ * 
+ * @extends     TaskScheduler_AdminPage_Wizard_Validation
+ * @deprecated  1.4.0
+ */
 abstract class TaskScheduler_AdminPage_Wizard_Tab_Wizard extends TaskScheduler_AdminPage_Wizard_Validation {
 
     /**
      * Defines the add_new form.
+     * 
+     * @deprecated  1.4.0
      */
-    protected function _setWizardForm_AddNewTask( $sTransientKey ) {
+   /*  protected function _setWizardForm_AddNewTask( $sTransientKey ) {
         
         $this->addSettingSections(
             TaskScheduler_Registry::$aAdminPages[ 'add_new' ],    // the target page slug
@@ -53,7 +63,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_Wizard extends TaskScheduler_A
                 'field_id'            => 'submit',
                 'type'                => 'submit',
                 'label'               => __( 'Next', 'task-scheduler' ),
-                'label_min_width'     => 0,
+                'label_min_width'     => '0px',
                 'attributes'          => array(
                     'field'    => array(
                         'style' => 'float:right; clear:none; display: inline;',
@@ -62,12 +72,16 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_Wizard extends TaskScheduler_A
             )    
         );
         
-    }
+    } */
     
     /**
      * Defines the 'occurrence' field of the 'wizard' section.
+     * 
+     * @callback        filter          field_definition_{class name}_{section id}_{field_id}
+     * @return          array
+     * @deprecated      1.4.0
      */
-    public function field_definition_TaskScheduler_AdminPage_Wizard_wizard_occurrence( $aField ) {
+/*     public function field_definition_TaskScheduler_AdminPage_Wizard_wizard_occurrence( $aField ) {
     
         // Set the first item as the default.
         $aField['label'] = apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_occurrence', $aField['label'] );
@@ -78,20 +92,22 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_Wizard extends TaskScheduler_A
             }            
         }
         
-        // Set the default.
+        // Set the default value.
         $_aLabels = array_keys( $aField['label'] );    // Avoid the PHP strict standard warning            
         $aField['default'] = array_shift( $_aLabels );        
         return $aField;
         
-    }    
+    }     */
     
     /**
      * The validation callback method for the wizard form section.
      * 
      * @since       1.0.0
      * @callback    filter      validation_{instantiated class name}_{section ID}
+     * 
+     * @deprecated  1.4.0
      */
-    public function validation_TaskScheduler_AdminPage_Wizard_wizard( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) { 
+    public function _validation_TaskScheduler_AdminPage_Wizard_wizard( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) { 
 
         $_aParams    = func_get_args() + array(
             null, null, null, null
@@ -139,15 +155,14 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_Wizard extends TaskScheduler_A
         
         // Save the wizard options.
         $_sPreviousURLKey = remove_query_arg( array( 'transient_key', 'settings-notice', 'settings-updated' ), $_sRedirectURL );
-        $aInput['previous_urls'] = $this->_getWizardOptions( 'previous_urls' );
+        $aInput['previous_urls'] = $this->getWizardOptions( 'previous_urls' );
         $aInput['previous_urls'] = is_array( $aInput['previous_urls'] ) ? $aInput['previous_urls'] : array();
         $aInput['previous_urls'][ $_sPreviousURLKey ] = add_query_arg( array( 'transient_key'    =>    $aInput['transient_key'], ) );
         
         $aInput['occurrence_label'] = apply_filters( "task_scheduler_filter_label_occurrence_" . $aInput['occurrence'], $aInput['occurrence'] );
-
-        $this->_saveWizardOptions( 
+        $this->saveWizardOptions( 
             $aInput['transient_key'], 
-            $aInput 
+            $aInput
         );
 
         // Go to the next page.

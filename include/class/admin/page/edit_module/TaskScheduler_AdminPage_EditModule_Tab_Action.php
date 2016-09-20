@@ -65,13 +65,13 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
                 'field_id'            => 'submit',
                 'type'                => 'submit',
                 'label'               => __( 'Next', 'task-scheduler' ),
-                'label_min_width'     => 0,
+                'label_min_width'     => '0px',
                 'attributes'          => array(
                     'field'    =>    array(
                         'style'    =>    'float:right; clear:none; display: inline;',
                     ),
                 ),    
-                 array(
+                array(
                     'value'            => __( 'Back', 'task-scheduler' ),
                     'href'             => TaskScheduler_PluginUtility::getEditTaskPageURL(),
                     'attributes'       => array(
@@ -92,7 +92,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
      */     
     public function field_definition_TaskScheduler_AdminPage_EditModule_edit_action_routine_action( $aField ) {
         
-        $aField = $this->_getRoutineActionField( $aField );
+        $aField = $this->getRoutineActionField( $aField );
                 
         // Re-set the default value as the routine action slug is not set in the first opening screen.
         $_sRoutineActionSlug = $this->_getActionSlug();
@@ -125,7 +125,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
         $_sRoutineActionSlug    = $this->_getActionSlug();
         $_sRoutineActionSlug    = $_sRoutineActionSlug
             ? $_sRoutineActionSlug
-            : $this->_getWizardOptions( 'routine_action' );
+            : $this->getWizardOptions( 'routine_action' );
         if ( ! array_key_exists ( $_sRoutineActionSlug, apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_action', array( -1 => '_dummy_value' ) ) ) ) {
             $aField['value']    = $_sRoutineActionSlug;
         }        
@@ -175,7 +175,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
             // Set the error array for the input fields.
             $this->setFieldErrors( $_aErrors );        
             $this->setSettingNotice( __( 'Please try again.', 'task-scheduler' ) );
-            $this->_saveWizardOptions( $aInput['transient_key'], $aInput );
+            $this->saveWizardOptions( $aInput['transient_key'], $aInput );
             return array();
             
         }
@@ -193,11 +193,11 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
         // Get the next page url
         $_sNextPageURL = $this->_getNextPageURL( $_aWizardOptions );
         $_sNextURLURLKey = remove_query_arg( array( 'transient_key', 'settings-notice', 'settings-updated' ), $_sNextPageURL );
-        $_aWizardOptions['previous_urls'] = $this->_getWizardOptions( 'previous_urls' );
+        $_aWizardOptions['previous_urls'] = $this->getWizardOptions( 'previous_urls' );
         $_aWizardOptions['previous_urls'] = is_array( $_aWizardOptions['previous_urls'] ) ? $_aWizardOptions['previous_urls'] : array();
         $_aWizardOptions['previous_urls'][ $_sNextURLURLKey ] = add_query_arg( array( 'transient_key'    =>    $aInput['transient_key'], ) );
         
-        $_aSavedValue = $this->_saveWizardOptions( $_aWizardOptions['transient_key'], $_aWizardOptions );
+        $_aSavedValue = $this->saveWizardOptions( $_aWizardOptions['transient_key'], $_aWizardOptions );
         
         // Go to the next page
         exit( wp_safe_redirect( $_sNextPageURL ) );

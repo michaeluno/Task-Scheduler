@@ -40,12 +40,19 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModuleOptions extend
      */
     public function _replyToLoadUpdateModuleTab( $oAdminPage ) {
 
-        $_aWizardOptions = $this->_getWizardOptions();
-        $this->_deleteWizardOptions();
+        $_aWizardOptions = $this->getWizardOptions();
+        $this->deleteWizardOptions();
 
         // Check the required keys - the user may comeback to the page from the browser's Back button.
-        if ( ! isset( $_GET['post'] ) ) {
-            $this->setSettingNotice( __( 'The wizard session has been expired. Please start from the beginning.', 'task-scheduler' ) );
+        if ( ! isset( $_GET[ 'post' ] ) ) {
+            $_bDebugInfo = $this->oUtil->isDebugMode()
+                ? '<h4>$_GET</h4><pre>' . print_r( $_GET, true ) . '</pre>'
+                    . '<h4>$_aWizardOptions' . __METHOD__ . '</h4><pre>' . print_r( $_aWizardOptions, true ) . '</pre>'
+                : '';
+            $this->setSettingNotice( 
+                __( 'The wizard session has been expired. Please start from the beginning.', 'task-scheduler' ) 
+                . $_bDebugInfo
+            );
             exit( TaskScheduler_PluginUtility::goToEditTaskPage() );            
         }
 
@@ -53,7 +60,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModuleOptions extend
         $_bUpdateSchedule   = isset( $_aWizardOptions['_update_next_schedule'] ) 
             ? $_aWizardOptions['_update_next_schedule'] 
             : false;
-        $_aWizardOptions    = $this->_dropUnnecessaryWizardOptions( $_aWizardOptions );
+        $_aWizardOptions    = $this->dropUnnecessaryWizardOptions( $_aWizardOptions );
 
         // Update the meta.
         TaskScheduler_WPUtility::updatePostMeta( $_GET['post'], $_aWizardOptions );        
@@ -74,7 +81,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModuleOptions extend
         /**
          * Drops unnecessary elements from the wizard options array.
          */
-        protected function _dropUnnecessaryWizardOptions( array $aWizardOptions ) {
+        public function dropUnnecessaryWizardOptions( array $aWizardOptions ) {
             
             unset( 
                 // The WordPress core adds these meta data but the plugin does not need these.
@@ -83,7 +90,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_UpdateModuleOptions extend
                 $aWizardOptions['_update_next_schedule']
             );
             
-            return parent::_dropUnnecessaryWizardOptions( $aWizardOptions );
+            return parent::dropUnnecessaryWizardOptions( $aWizardOptions );
 
         }        
     

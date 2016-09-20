@@ -118,25 +118,12 @@ class TaskScheduler_ListTable extends TaskScheduler_ListTable_Views {
      * Sets the given admin notice.
      */
     public function setAdminNotice( $sMessage, $sType='error' )    {
-        
-        $this->_aAdminNotices[ md5( trim( $sMessage ) . $sType ) ] = array( 'message' => $sMessage, 'type' => $sType );
-        
-        static $_bLoaded;
-        if ( $_bLoaded ) {
-            return;
-        }
-        $_bLoaded = true;
-        
-        add_action( 'admin_notices', array( $this, '_replyToPrintAdminNotice' ) );
-        
+        new TaskScheduler_AdminPageFramework_AdminNotice( 
+            $sMessage, 
+            array( 'class' => $sType ) 
+        );    
     }
-        public function _replyToPrintAdminNotice() {
-            foreach( $this->_aAdminNotices as $_aAdminNotice ) {
-                echo '<div class="' . $_aAdminNotice['type'] . '">'
-                        . '<p>' . $_aAdminNotice['message'] . '</p>'
-                    . '</div>';                    
-            }
-        }
+
 
     function prepare_items() {
             

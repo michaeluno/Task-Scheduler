@@ -57,13 +57,13 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
                 'field_id'          => 'submit',
                 'type'              => 'submit',
                 'label'             => __( 'Next', 'task-scheduler' ),
-                'label_min_width'   => 0,
+                'label_min_width'   => '0px',
                 'attributes'        => array(
                     'field'    =>    array(
                         'style'    => 'float:right; clear:none; display: inline;',
                     ),
                 ),
-                 array(
+                array(
                     'value'          => __( 'Back', 'task-scheduler' ),
                     'href'           => TaskScheduler_PluginUtility::getEditTaskPageURL(),
                     'attributes'     => array(
@@ -120,7 +120,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
         
         // Save the wizard options.
         $_sPreviousURLKey = remove_query_arg( array( 'transient_key', 'settings-notice', 'settings-updated' ), $_sRedirectURL );
-        $aInput['previous_urls'] = $this->_getWizardOptions( 'previous_urls' );
+        $aInput['previous_urls'] = $this->getWizardOptions( 'previous_urls' );
         $aInput['previous_urls'] = is_array( $aInput['previous_urls'] ) ? $aInput['previous_urls'] : array();
         $aInput['previous_urls'][ $_sPreviousURLKey ] = add_query_arg( array( 'transient_key'    =>    $aInput['transient_key'], ) );
         
@@ -129,7 +129,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
         // This will be checked when the meta data gets updated in the destination tab.
         $aInput['_update_next_schedule'] = true;
         
-        $this->_saveWizardOptions( $aInput['transient_key'], $aInput );
+        $this->saveWizardOptions( $aInput['transient_key'], $aInput );
     
         // Go to the next page.
         exit( wp_safe_redirect( $_sRedirectURL ) );

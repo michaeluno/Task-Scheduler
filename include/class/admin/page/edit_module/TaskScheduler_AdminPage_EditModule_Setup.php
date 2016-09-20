@@ -27,7 +27,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Setup extends TaskScheduler_Ad
             )
         );            
 
-        add_action( "load_" . $this->oProp->sClassName, array( $this, '_replyToLoadClassPage' ) );    // the method is defined in one of the base classes.
+        add_action( "load_" . $this->oProp->sClassName, array( $this, '_replyToLoadClassPages' ) );    // the method is defined in one of the base classes.
         add_action( "load_" . TaskScheduler_Registry::$aAdminPages[ 'edit_module' ], array( $this, '_replyToLoadPage' ) );
         
         $this->setPluginSettingsLinkLabel( '' );    // pass an empty string.
@@ -49,9 +49,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Setup extends TaskScheduler_Ad
             )
         );        
    
-        $this->_sTransientKey = isset( $_GET['transient_key'] ) && $_GET['transient_key'] ? $_GET['transient_key'] : TaskScheduler_Registry::TRANSIENT_PREFIX . uniqid();    
         $this->_defineInPageTabs();
-        $this->_registerCustomFieldTypes();
         $this->_defineForm();
         
     }

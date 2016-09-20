@@ -13,6 +13,7 @@
   * Defines the 'wizard_select_action' tab in the 'Add New' wizard admin page.
   * 
   * @filter        apply    task_scheduler_admin_filter_wizard_action_redirect_url_{action hook name}        Applies to the redirecting url after submitting the action selecting form.
+  * @deprecated    1.4.0
   */
 abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskScheduler_AdminPage_Wizard_Tab_Wizard {
 
@@ -61,7 +62,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
                 'type'              => 'submit',
                 'label'             => __( 'Next', 'task-scheduler' ),
                 'value'             => __( 'Next', 'task-scheduler' ),
-                'label_min_width'   => 0,
+                'label_min_width'   => '0px',
                 'attributes'        => array(
                     'field'    => array(
                         'style'    => 'float:right; clear:none; display: inline;',
@@ -80,60 +81,17 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
      */     
     public function field_definition_TaskScheduler_AdminPage_Wizard_wizard_select_action_routine_action( $aField ) {
     
-        return $this->_getRoutineActionField( $aField );
+        return $this->getRoutineActionField( $aField );
         
     }    
-        /**
-         * Get the redefined routine action field definition array.
-         * 
-         * @remark    The scope is protected because the extending Edit Module class also uses it.
-         */
-        protected function _getRoutineActionField( array $aField ) {
-            
-            $_sRoutineActionSlug = $this->_getWizardOptions( 'routine_action' );
-            $aField[ 'label' ]   = apply_filters( 
-                'task_scheduler_admin_filter_field_labels_wizard_action',
-                array()
-            );
 
-            // Set the default value.
-            $aField[ 'value' ] = array_key_exists ( $_sRoutineActionSlug, $aField['label'] )
-                ? "#description-{$_sRoutineActionSlug}"
-                : -1;
-
-            // Convert the keys to the 'revealer' field type specification.
-            $_aLabels = array(
-                -1    =>    '--- ' . __( 'Select Action', 'task-scheduler' ) . ' ---',
-            );
-            $_aDescriptions = array();
-            foreach( $aField['label'] as $_sSlug => $_sLabel ) {
-                
-                $_aLabels[ "#description-{$_sSlug}" ] = $_sLabel;
-                
-                // Create action description hidden elements.
-                $_sDescription    = apply_filters( "task_scheduler_filter_description_action_{$_sSlug}", '' );
-                if ( ! $_sDescription ) { continue; }
-                $_sDisplay        = $_sSlug === $_sRoutineActionSlug
-                    ? '' 
-                    : 'display:none;';
-                $_aDescriptions[] = "<p id='description-{$_sSlug}' style='{$_sDisplay}'>"
-                    . $_sDescription
-                 . "</p>";            
-                 
-            }
-            
-            $aField['label'] = $_aLabels;
-            $aField['after_fieldset'] = implode( PHP_EOL, $_aDescriptions );
-            return $aField;
-            
-        }
     
     /**
      * Redefines the 'custom_action' field of the 'wizard_select_action' section.
      */     
     public function field_definition_TaskScheduler_AdminPage_Wizard_wizard_select_action_custom_action( $aField ) {
         
-        $_sRoutineActionSlug    = $this->_getWizardOptions( 'routine_action' );
+        $_sRoutineActionSlug    = $this->getWizardOptions( 'routine_action' );
         if ( ! array_key_exists ( $_sRoutineActionSlug, apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_action', array( -1 => '_dummy_value' ) ) ) ) {
             $aField['value']    = $_sRoutineActionSlug;
         }        
@@ -146,7 +104,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
      */     
     public function field_definition_TaskScheduler_AdminPage_Wizard_wizard_select_action_submit( $aField ) {
         
-        $_aPreviousUrls  = $this->_getWizardOptions( 'previous_urls' );
+        $_aPreviousUrls  = $this->getWizardOptions( 'previous_urls' );
         $_sCurrentURLKey = remove_query_arg( array( 'transient_key', 'settings-notice', 'settings-updated' ) );
         $aField[ 0 ] = array(
             'value'         => __( 'Back', 'task-scheduler' ),
@@ -174,8 +132,8 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
         $oAdminPage  = $_aParams[ 2 ];
         $aSubmitInfo = $_aParams[ 3 ];      
  
-        $_bIsValid = true;
-        $_aErrors  = array();
+        $_bIsValid   = true;
+        $_aErrors    = array();
         
         // Do validation checks.
         if ( '-1' === ( string ) $aInput['routine_action'] && '' == trim( $aInput['custom_action'] ) ) {
@@ -202,13 +160,19 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
             // Set the error array for the input fields.
             $this->setFieldErrors( $_aErrors );        
             $this->setSettingNotice( __( 'Please try again.', 'task-scheduler' ) );
-            $this->_saveWizardOptions( $aInput['transient_key'], $aInput );
+            $this->saveWizardOptions( $aInput['transient_key'], $aInput );
             return array();
             
         }    
-        
-        if ( ! $this->_getWizardOptions( 'post_title' )  ) {
-            $this->setSettingNotice( __( 'The wizard session has been expired. Please start from the beginning.', 'task-scheduler' ) );         
+
+        if ( ! $this->getWizardOptions( 'post_title' )  ) {
+            $_sDebugInfo = $this->oUtil->isDebugMode()
+                ? '<h4>$_aWizardOptions' . __METHOD__ . '</h4><pre>' . print_r( $this->getWizardOptions(), true ) . '</pre>'
+                : '';
+            $this->setSettingNotice( 
+                __( 'The wizard session has been expired. Please start from the beginning.', 'task-scheduler' )
+                . $_sDebugInfo
+            );
             exit( TaskScheduler_PluginUtility::goToAddNewPage() );
         }        
         
@@ -230,7 +194,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
         // Get the next page url
         $_sNextPageURL   = $this->_getNextPageURL( $_aWizardOptions );
         $_sNextURLURLKey = remove_query_arg( array( 'transient_key', 'settings-notice', 'settings-updated' ), $_sNextPageURL );
-        $_aWizardOptions['previous_urls'] = $this->_getWizardOptions( 'previous_urls' );
+        $_aWizardOptions['previous_urls'] = $this->getWizardOptions( 'previous_urls' );
         $_aWizardOptions['previous_urls'] = is_array( $_aWizardOptions['previous_urls'] ) ? $_aWizardOptions['previous_urls'] : array();
         $_aWizardOptions['previous_urls'][ $_sNextURLURLKey ] = add_query_arg( 
             array( 
@@ -238,7 +202,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_SelectAction extends TaskSched
             ) 
         );
         
-        $this->_saveWizardOptions( 
+        $this->saveWizardOptions( 
             $_aWizardOptions['transient_key'], 
             $_aWizardOptions 
         );

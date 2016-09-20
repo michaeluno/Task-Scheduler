@@ -25,41 +25,44 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
                     'readonly'    => 'readonly',
                     'name'        => '',
                 ),
-            ),        
-            array()
+            )
         );    
     
     }
 
     /**
      * Redefines the 'occurrence' field.
+     * @callback    filter      field_definition_{class name}_{field id}
+     * @return      array   
      */
     public function field_definition_TaskScheduler_MetaBox_Occurrence_occurrence( $aField ) {
-        
+
         if ( ! $this->oTask ) { 
             return $aField; 
         }
-        $aField['value'] = apply_filters( 
+        $aField[ 'value' ] = apply_filters( 
             "task_scheduler_filter_label_occurrence_{$this->oTask->occurrence}", 
             $this->oTask->occurrence 
         );
-        return $aField;        
+        return $aField;      
         
     }
     
     /**
      * Redefines the form fields.
+     * @callback    filter      field_definition_{class name}
+     * @return      array
      */
-    public function field_definition_TaskScheduler_MetaBox_Occurrence( $aAllFields ) {    // field_definition_{class name}
+    public function field_definition_TaskScheduler_MetaBox_Occurrence( $aAllFields ) {    
 
         if ( ! $this->oTask ) { 
             return $aAllFields; 
         }    
-        if ( ! isset( $aAllFields['_default'] ) || ! is_array( $aAllFields['_default'] ) ) { 
+        if ( ! isset( $aAllFields[ '_default' ] ) || ! is_array( $aAllFields[ '_default' ] ) ) { 
             return $aAllFields; 
         }
         
-        $aAllFields['_default'] = $aAllFields['_default'] 
+        $aAllFields[ '_default' ] = $aAllFields[ '_default' ] 
             + $this->_getModuleFields( 
                 $this->oTask->occurrence, 
                 ( array ) $this->oTask->{$this->oTask->occurrence}

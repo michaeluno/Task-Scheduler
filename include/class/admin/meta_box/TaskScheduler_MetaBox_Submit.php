@@ -67,18 +67,19 @@ class TaskScheduler_MetaBox_Submit extends TaskScheduler_MetaBox_Base {
             array(
                 'field_id'        => '_is_enabled',
                 'type'            => 'radio',        
-                'title'           => __( 'Switch', 'task-scheduler' ),
+                'title'           => __( 'Status', 'task-scheduler' ),
                 'label'           => array(
                     1    =>    __( 'Enabled', 'task-scheduler' ),
                     0    =>    __( 'Disabled', 'task-scheduler' ),                
                 ),
+                'label_min_width' => 0,
                 // 'value'            =>    1,
             ),            
             array(
                 'field_id'        => 'task_submit',
                 'type'            => 'submit',
                 'value'           => __( 'Update', 'task-scheduler' ),
-                'label_min_width' => '',
+                'label_min_width' => '0px',
                 'attributes'      => array(
                     'fields' => array(
                         'style'    => 'width: auto; float:right;',

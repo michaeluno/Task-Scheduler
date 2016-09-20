@@ -12,6 +12,7 @@
 /**
  * Defines the behaviour when the user finishes defining a task.
  * 
+ * @deprecated  1.4.0
  */
 abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskScheduler_AdminPage_Wizard_Tab_SelectAction {
 
@@ -19,12 +20,12 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskSchedul
      * A callback method triggered when the 'wizard_create_task' tab is loaded in the 'ts_add_new' page.
      * 
      * @since           1.0.0
-     * @callback        action      load_ + page slug + tab
+     * @callback        action      load_{page slug}_{tab slug}
      */
     public function load_ts_add_new_wizard_create_task() {   
 
-        $_aWizardOptions = $this->_getWizardOptions();
-        $this->_deleteWizardOptions();
+        $_aWizardOptions = $this->getWizardOptions();
+        $this->deleteWizardOptions();
 
         // Check the required keys - the user may comeback to the page from the browser's Back button.
         if ( ! isset( $_aWizardOptions['post_title'], $_aWizardOptions['occurrence'], $_aWizardOptions['routine_action'] ) ) {
@@ -35,7 +36,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskSchedul
         }
 
         // Drop unnecessary form elements.
-        $_aWizardOptions = $this->_dropUnnecessaryWizardOptions( $_aWizardOptions );
+        $_aWizardOptions = $this->dropUnnecessaryWizardOptions( $_aWizardOptions );
         
         // Add advanced options - these will appear in the Advanced meta box in the task edit page.
         $_aWizardOptions['_max_root_log_count'] = TaskScheduler_Option::get( array( 'task_default', 'max_root_log_count' ) );
@@ -59,8 +60,9 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskSchedul
         
         /**
          * Removes unnecessary elements from the saving wizard options array.
+         * @deprecated      1.4.0 Moved to `TaskScheduler_AdminPage_Wizard`.
          */
-        protected function _dropUnnecessaryWizardOptions( array $aWizardOptions ) {
+/*         public function dropUnnecessaryWizardOptions( array $aWizardOptions ) {
 
             unset( 
                 $aWizardOptions['submit'], 
@@ -101,6 +103,6 @@ abstract class TaskScheduler_AdminPage_Wizard_Tab_CreateTask extends TaskSchedul
         
             return $aWizardOptions;
             
-        }
+        } */
     
 }

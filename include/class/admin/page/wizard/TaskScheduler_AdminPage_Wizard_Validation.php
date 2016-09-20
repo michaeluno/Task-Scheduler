@@ -11,32 +11,34 @@
 
  /**
   * 
-  * @filter        apply    task_scheduler_admin_filter_saving_wizard_options    Applies to the wizard options array that is about to be saved in the transient. This lets modules to insert custom keys into the options array.
+  * @extends        TaskScheduler_AdminPageFramework
+  * @filter         apply    task_scheduler_admin_filter_saving_wizard_options    Applies to the wizard options array that is about to be saved in the transient. This lets modules to insert custom keys into the options array.
   */
-abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_AdminPage_Wizard_Start {
+abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_AdminPageFramework {
 
     /**
      * The validation handler of the wizard admin pages for the entire class.
      * 
      * @callback        filter      validation_{class name}
      */
-    public function validation_TaskScheduler_AdminPage_Wizard( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) {
-
-        $_aParams    = func_get_args() + array(
-            null, null, null, null
-        );
-        $aInput      = $_aParams[ 0 ];
-        $aOldInput   = $_aParams[ 1 ];
-        $oAdminPage  = $_aParams[ 2 ];
-        $aSubmitInfo = $_aParams[ 3 ];        
-        
-        $_aWizardOptions = isset( $aInput[ '_wizard_options' ] ) 
-            ? $aInput[ '_wizard_options' ] 
-            : array();
+    public function validation_TaskScheduler_AdminPage_Wizard( $aInput, $aOldInput, $oAdminPage, $aSubmitInfo ) {
+// TaskScheduler_Debug::log( '$aInput' );
+// TaskScheduler_Debug::log( $aInput );
+// TaskScheduler_Debug::log( '$aOldInput' );
+// TaskScheduler_Debug::log( $aOldInput );
+        $_aWizardOptions = $this->oUtil->getElementAsArray( $aInput, array( '_wizard_options' ) )
+        ;
+            // + $this->oUtil->getElementAsArray( $aOldInput, array( '_wizard_options' ) );
 
         // Check if necessary keys are set. If the transient is expired, the necessary elements will miss. In that case, let the user start over the process.
-        if ( ! isset( $_aWizardOptions[ 'post_title' ] ) || ! $_aWizardOptions[ 'post_title' ] ) {
-            $this->setSettingNotice( __( 'The wizard session has been expired. Please start from the beginning.', 'task-scheduler' ) );
+        if ( ! $this->oUtil->getElement( $_aWizardOptions, array( 'post_title' ) ) ) {
+            $_sDebugInfo = $this->oUtil->isDebugMode()
+                ? '<h4>$_aWizardOptions - ' . __METHOD__ . '</h4><pre>' . print_r( $_aWizardOptions, true ) . '</pre>'
+                : '';            
+            $this->setSettingNotice( 
+                __( 'The wizard session has been expired. Please start from the beginning.', 'task-scheduler' ) 
+                . $_sDebugInfo
+            );
             exit( TaskScheduler_PluginUtility::goToAddNewPage() );
         }
 

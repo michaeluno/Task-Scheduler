@@ -98,7 +98,7 @@ class TaskScheduler_ListTable_Action extends WP_List_Table {
                     if ( is_object( $_oTask ) ) {    // sometimes the routine is already deleted by a different process
                         $_oTask->delete();
                     }
-                    $this->setAdminNotice( __( 'The task has been deleted.', 'task-scheduler' ) );
+                    $this->setAdminNotice( __( 'The task has been deleted.', 'task-scheduler' ), 'updated' );
                 }                
                 break;
             case 'run':

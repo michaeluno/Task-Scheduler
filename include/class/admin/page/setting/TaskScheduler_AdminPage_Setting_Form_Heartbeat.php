@@ -1,14 +1,19 @@
 <?php
 /**
- * One of the abstract class of the plugin admin page class.
+ * Task Scheduler
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * Provides an enhanced task management system for WordPress.
+ * 
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2016, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
 
+/**
+ * One of the abstract class of the plugin admin page class.
+ */
 abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskScheduler_AdminPage_Setting_Form_Task {
 
     public function _defineInPageTabs() {
@@ -32,45 +37,48 @@ abstract class TaskScheduler_AdminPage_Setting_Form_Heartbeat extends TaskSchedu
         $this->addSettingSections(
             TaskScheduler_Registry::$aAdminPages[ 'setting' ],    // the target page slug
             array(
-                'section_id'    =>    'server_heartbeat',
-                'tab_slug'        =>    'server_heartbeat',
-                'title'            =>    __( 'Server Heartbeat', 'task-scheduler' ),
+                'section_id'    => 'server_heartbeat',
+                'tab_slug'      => 'server_heartbeat',
+                'title'         => __( 'Server Heartbeat', 'task-scheduler' ),
             )            
         );        
         
         $this->addSettingFields(
             'server_heartbeat',    // the target section ID
             array(    
-                'field_id'            =>    'power',
-                'title'                =>    __( 'Server Heartbeat', 'task-scheduler' ),
-                'type'                =>    'radio',
-                'default'            =>    1,
-                'label'                =>    array(
+                'field_id'            => 'power',
+                'title'               => __( 'Server Heartbeat', 'task-scheduler' ),
+                'type'                => 'radio',
+                'default'             => 1,
+                'label'               => array(
                     1    =>    __( 'On', 'task-scheduler' ),
                     0    =>    __( 'Off', 'task-scheduler' ),
                 ),
-                'description'        =>    __( 'Decide whether the server checks the tasks in the background.', 'task-scheduler' ),
+                'description'         => __( 'Decide whether the server checks the tasks in the background.', 'task-scheduler' ),
             ),            
             array(
-                'field_id'            =>    'instruction',
-                'type'                =>    'text',
-                'if'                =>    ! TaskScheduler_Option::get( array( 'server_heartbeat', 'power' ) ),
-                'attributes'        =>    array(
-                    'readonly'    =>    'ReadOnly',
-                    'name'        =>    '',    // dummy
-                    'size'        =>    60,
+                'field_id'          => 'instruction',
+                'type'              => 'text',
+                'hidden'            => TaskScheduler_Option::get( array( 'server_heartbeat', 'power' ) ),
+                'if'                => ! TaskScheduler_Option::get( array( 'server_heartbeat', 'power' ) ),
+                'attributes'        => array(
+                    'readonly'    => 'ReadOnly',
+                    'name'        => '',    // dummy
+                    'size'        => 60,
                 ),
-                'value'                =>    site_url( '/?task_scheduler_checking_actions=1' ),
-                'before_fieldset'    =>    '<p class="warning">' . '* ' . __( 'Set up a Cron job that accesses the following url to check scheduled actions.', 'task-scheduler' ) . '</p>',    
+                'value'             => site_url( '/?task_scheduler_checking_actions=1' ),
+                'before_fieldset'   => '<p class="warning">' . '* ' . __( 'Set up a Cron job that accesses the following url to check scheduled actions.', 'task-scheduler' ) . '</p>',    
             ),
             array(    
-                'field_id'            =>    'status',
-                'title'                =>    __( 'Status', 'task-scheduler' ),
-                'type'                =>    'text',
-                'attributes'        =>    array(
-                    'readonly'    =>    'ReadOnly',
-                    'name'        =>    '',    // dummy
+                'field_id'        => 'status',
+                'title'           => __( 'Status', 'task-scheduler' ),
+                'type'            => 'text',
+                'attributes'      => array(
+                    'style'    => 'min-width: 200px;',
+                    'readonly' => 'ReadOnly',
+                    'name'     => '',    // dummy
                 ),
+                'save'          => false,
                 array(),    // sub-field to show last checked time
             ),            
             array(    

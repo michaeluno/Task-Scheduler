@@ -80,7 +80,7 @@ abstract class TaskScheduler_PostType_Task_Base extends TaskScheduler_AdminPageF
                 'not_found'             => __( 'No Task found for Task Scheduler', 'task-scheduler' ),
                 'not_found_in_trash'    => __( 'No Task Found for Task Scheduler in Trash', 'task-scheduler' ),
                 'parent'                => __( 'Parent Task', 'task-scheduler' ),
-                'plugin_listing_table_title_cell_link'    => '',    // framework specific key. [3.0.6+] - passing an empty will disable the automatic link insertion to the plugin listing table.
+                'plugin_action_link'    => '',    // framework specific key. [APF 3.7.3+] - passing an empty will disable the automatic link insertion to the plugin listing table.
             );
             
         }

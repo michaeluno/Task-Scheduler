@@ -39,6 +39,7 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
         
         // Register custom field types
         $_sClassName = get_class( $this );
+
         new TaskScheduler_DateTimeCustomFieldType( $_sClassName );
         new TaskScheduler_TimeCustomFieldType( $_sClassName );     
         new TaskScheduler_DateCustomFieldType( $_sClassName );        
@@ -64,12 +65,14 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
     }
     
     /**
-     * Returns fields of a particular module.
+     * Returns field definition arrays of a particular module.
      * 
      * This is used to display the stored values of module options.
      * 
+     * @remark   Called in the `field_definition_{class name}` filter hook.
      * @param    string   $sModuleSlug        The key name that holds the module options such as 'fixed_interval', 'send_email' that are used as the module slug.
      * @param    array    $aModularOptions    An array holding the stored modular options.
+     * @return   array
      */
     protected function _getModuleFields( $sModuleSlug, array $aModularOptions ) {
         
@@ -95,7 +98,9 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
             }
             $_aModularField = $_aModularFields[ $_sKey ];
             
-            $_aisValue = TaskScheduler_Utility::isJSON( $_aisValue ) ? json_decode( $_aisValue, true ) : $_aisValue;
+            $_aisValue = TaskScheduler_Utility::isJSON( $_aisValue ) 
+                ? json_decode( $_aisValue, true ) 
+                : $_aisValue;
             $_aisValue = maybe_unserialize( $_aisValue );
             
             if ( in_array( $_aModularField['type'], array( 'select', 'radio' ) ) && ! is_array( $_aisValue ) ) {
@@ -151,7 +156,7 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
         );            
         return "<div style='text-align: right; padding: 0.5em 0 1em;'>"
                 . "<a class='button button-secondary button-large' href='{$_sModuleEditPageURL}'>" 
-                    . __( 'Change', 'task-scheduler' ) 
+                    . __( 'Edit', 'task-scheduler' ) 
                 . "</a>"
             . "</div>"
         ;

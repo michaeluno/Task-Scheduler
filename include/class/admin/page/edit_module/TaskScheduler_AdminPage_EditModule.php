@@ -21,7 +21,7 @@ final class TaskScheduler_AdminPage_EditModule extends TaskScheduler_AdminPage_E
      */
     public function options_TaskScheduler_AdminPage_EditModule( $aOptions ) {
         
-        $_aWizardOptions = $this->_getWizardOptions();
+        $_aWizardOptions = $this->getWizardOptions();
         
         // If the wizard options are empty, assume it it is the first page of the editing module wizard screen.
         if ( empty( $_aWizardOptions ) && isset( $_GET['transient_key'] ) ) {

@@ -174,13 +174,13 @@ final class TaskScheduler_Bootstrap {
 
             // 3.2. Add New
             new TaskScheduler_AdminPage_Wizard( 
-                '', // passing an empty string will disable saving options.
+                '', // disable storing options
                 $this->_sFilePath 
             );        
             
             // 3.3. Edit Module Options
             new TaskScheduler_AdminPage_EditModule(
-                '', // passing an empty string will disable saving options.
+                '', // disable storing options
                 $this->_sFilePath 
             );    
             
@@ -205,7 +205,10 @@ final class TaskScheduler_Bootstrap {
          */
         protected function _registerMetaBoxes() {
             
-            if ( ! isset( $GLOBALS[ 'pagenow' ] ) || 'post.php' !== $GLOBALS[ 'pagenow' ] ) {
+            if ( ! isset( $GLOBALS[ 'pagenow' ] ) ) {
+                return;
+            }
+            if ( 'post.php' !== $GLOBALS[ 'pagenow' ] ) {
                 return;
             }
                         

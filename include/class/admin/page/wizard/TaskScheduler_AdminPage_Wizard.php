@@ -27,6 +27,7 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
         );
         
     }
+    
     /**
      * Sets the form options.
      * 
@@ -38,11 +39,11 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
      * @return      array
      */
     public function options_TaskScheduler_AdminPage_Wizard( $aOptions ) {
-        
+
         // Since the wizard options do not have a section dimension (in the first depth), store the options in each section.
         $_aOptions = apply_filters( 
             'task_scheduler_admin_filter_wizard_options', 
-            $this->_getWizardOptions() 
+            $this->getWizardOptions() 
         );
 
         return array(
@@ -56,8 +57,13 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
     
     /**
      * Saves the wizard options.
+     * 
+     * @since       unknown
+     * @since       1.4.0       Changed the visibility scope to `public` from `protected`.
+     * @since       1.4.0       Renamed from `_saveWizardOptions()`.
+     * @return      array
      */
-    protected function _saveWizardOptions( $sTransientKey, array $aMergingOptions ) {
+    public function saveWizardOptions( $sTransientKey, array $aMergingOptions ) {
         
         $_aStoredOptions = TaskScheduler_WPUtility::getTransient( $sTransientKey );
         $_aStoredOptions = $_aStoredOptions 
@@ -73,8 +79,12 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
     
     /**
      * Returns the wizard options stored in the transient.
+     * 
+     * @since       unknown
+     * @since       1.4.0       Changed the visibility scope to `public` from `protected` as this is accessed from the wizard base class.
+     * @since       1.4.0       Renamed from `_getWizardOptions()`.
      */
-    protected function _getWizardOptions( $sKey='' ) {
+    public function getWizardOptions( $sKey='' ) {
         
         static $_aWizardOptions;
         $_sTransientKey = isset( $_GET[ 'transient_key' ] ) 
@@ -101,8 +111,12 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
     
     /**
      * Deletes the wizard option transients.
+     * 
+     * @since       1.4.0       Changed the visibility scope to `public` from `protected` as delegatin classes access it.
+     * @since       1.4.0       Renamed from `_deleteWizardOptions()`.
+     * @return      void
      */
-    protected function _deleteWizardOptions( $sTransientKey='' ) {
+    public function deleteWizardOptions( $sTransientKey='' ) {
         
         $sTransientKey = $sTransientKey 
             ? $sTransientKey
@@ -114,15 +128,121 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
         TaskScheduler_WPUtility::deleteTransient( $sTransientKey );
         
     }
+       
+    /**
+     * Removes unnecessary elements from the saving wizard options array.
+     * 
+     * @since       unknown
+     * @since       1.4.0       Changed the visibility scope to `public` from `protected` as delegatin classes access it.
+     * @since       1.4.0       Renamed from `_dropUnnecessaryWizardOptions()`.
+     */
+    public function dropUnnecessaryWizardOptions( array $aWizardOptions ) {
+
+        unset( 
+            $aWizardOptions[ 'submit' ], 
+            $aWizardOptions[ 'transient_key' ], 
+            $aWizardOptions[ 'previous_urls' ],
+            $aWizardOptions[ 'action_label' ],
+            $aWizardOptions[ 'occurrence_label' ],
+            $aWizardOptions[ 'excerpt' ]    // @todo: find out when the 'excerpt' element gets added
+        );
         
+        // Remove section keys that are used for modules with multiple screens.
+        $_sMainActionSlug   = $aWizardOptions[ 'routine_action' ];
+        $_aSectionSlugs     = apply_filters( "task_scheduler_admin_filter_wizard_slugs_{$_sMainActionSlug}", array() );
+        foreach( $_aSectionSlugs as $_sSectionSlug ) {
+            if ( $_sSectionSlug === $_sMainActionSlug ) { 
+                continue; 
+            }
+            unset( $aWizardOptions[ $_sSectionSlug ] );
+        }    
+        
+        // Some are added while going back and force in the wizard screens.
+        $_aOccurrenceSlugs = apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_occurrence', array() );
+        $_aOccurrenceSlugs = array_keys( $_aOccurrenceSlugs );
+        foreach( $_aOccurrenceSlugs as $_sOccurrenceSlug ) {
+            if ( $_sOccurrenceSlug === $aWizardOptions['occurrence'] ) { 
+                continue; 
+            }
+            unset( $aWizardOptions[ $_sOccurrenceSlug ] );            
+        }
+        $_aActionSlugs = apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_action', array() );
+        $_aActionSlugs = array_keys( $_aActionSlugs );
+        foreach( $_aActionSlugs as $_sActionSlug ) {
+            if ( $_sActionSlug === $aWizardOptions['routine_action'] ) { 
+                continue; 
+            }
+            unset( $aWizardOptions[ $_sActionSlug ] );                        
+        }
+    
+        return $aWizardOptions;
+        
+    }       
+       
+       
+    /**
+     * Get the redefined routine action field definition array.
+     * 
+     * Used to redefine the 'routine_action' field of the 'wizard_select_action' section.
+     * 
+     * @remark    The scope is protected because the extending Edit Module class also uses it.
+     * @since     unknown
+     * @since     1.4.0     Renamed
+     * @since     1.4.0     Changed the scope from `protected`.
+     * @return    array
+     */
+    public function getRoutineActionField( array $aField ) {
+        
+        $_sRoutineActionSlug = $this->getWizardOptions( 'routine_action' );
+        $aField[ 'label' ]   = apply_filters( 
+            'task_scheduler_admin_filter_field_labels_wizard_action',
+            array()
+        );
+
+        // Set the default value.
+        $aField[ 'value' ] = array_key_exists ( $_sRoutineActionSlug, $aField['label'] )
+            ? "#description-{$_sRoutineActionSlug}"
+            : -1;
+
+        // Convert the keys to the 'revealer' field type specification.
+        $_aLabels = array(
+            -1    =>    '--- ' . __( 'Select Action', 'task-scheduler' ) . ' ---',
+        );
+        $_aDescriptions = array();
+        foreach( $aField['label'] as $_sSlug => $_sLabel ) {
+            
+            $_aLabels[ "#description-{$_sSlug}" ] = $_sLabel;
+            
+            // Create action description hidden elements.
+            $_sDescription    = apply_filters( "task_scheduler_filter_description_action_{$_sSlug}", '' );
+            if ( ! $_sDescription ) { continue; }
+            $_sDisplay        = $_sSlug === $_sRoutineActionSlug
+                ? '' 
+                : 'display:none;';
+            $_aDescriptions[] = "<p id='description-{$_sSlug}' style='{$_sDisplay}'>"
+                . $_sDescription
+             . "</p>";            
+             
+        }
+        
+        $aField['label'] = $_aLabels;
+        $aField['after_fieldset'] = implode( PHP_EOL, $_aDescriptions );
+        return $aField;
+        
+    }
+       
+       
+       
     /**
      * Retrieves the wizard options of the given transient key.
+     * 
+     * Used by the `TaskScheduler_Wizard_Base` class.
      * 
      * @callback        filter      task_scheduler_admin_filter_get_wizard_options
      */
     public function _replyToGetWizardOptions( $vDefault, $sKey='' ) {
 
-        $_vReturn = $this->_getWizardOptions( $sKey );
+        $_vReturn = $this->getWizardOptions( $sKey );
 
         if ( is_null( $_vReturn ) ) {
             return $vDefault;
