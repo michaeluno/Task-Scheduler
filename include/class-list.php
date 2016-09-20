@@ -1,9 +1,9 @@
 <?php 
 /**
-	Task Scheduler v1.3.0b01 by miunosoft (Michael Uno) 
+	Task Scheduler v1.4.0b01 by miunosoft (Michael Uno) 
 	Provides an enhanced task management system for WordPress.
 	<http://en.michaeluno.jp/>
-	Copyright (c) 2014, Michael Uno; Licensed under GPL v2 or later */
+	Copyright (c) 2014-2016, Michael Uno; Licensed under GPL v2 or later */
 $_aClassFiles = array( 
 	"TaskScheduler_Bootstrap"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/TaskScheduler_Bootstrap.php", 
 	"TaskScheduler_MetaBox_Action"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/meta_box/TaskScheduler_MetaBox_Action.php", 
@@ -33,11 +33,22 @@ $_aClassFiles = array(
 	"TaskScheduler_AdminPage_System_Start"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/system/TaskScheduler_AdminPage_System_Start.php", 
 	"TaskScheduler_AdminPage_Wizard"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/TaskScheduler_AdminPage_Wizard.php", 
 	"TaskScheduler_AdminPage_Wizard_Setup"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/TaskScheduler_AdminPage_Wizard_Setup.php", 
-	"TaskScheduler_AdminPage_Wizard_Start"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/TaskScheduler_AdminPage_Wizard_Start.php", 
-	"TaskScheduler_AdminPage_Wizard_Tab_CreateTask"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/TaskScheduler_AdminPage_Wizard_Tab_CreateTask.php", 
-	"TaskScheduler_AdminPage_Wizard_Tab_SelectAction"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php", 
-	"TaskScheduler_AdminPage_Wizard_Tab_Wizard"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/TaskScheduler_AdminPage_Wizard_Tab_Wizard.php", 
 	"TaskScheduler_AdminPage_Wizard_Validation"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/TaskScheduler_AdminPage_Wizard_Validation.php", 
+	"TaskScheduler_AdminPage_Wizard__Page__AddNewTask"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/page/TaskScheduler_AdminPage_Wizard__Page__AddNewTask.php", 
+	"TaskScheduler_AdminPage_Wizard__Section__SelectAction"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__SelectAction.php", 
+	"TaskScheduler_AdminPage_Wizard__Section__Wizard"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__Wizard.php", 
+	"TaskScheduler_AdminPage_Wizard__Tab__AddNewTask"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/tab/TaskScheduler_AdminPage_Wizard__Tab__AddNewTask.php", 
+	"TaskScheduler_AdminPage_Wizard__Tab__CreateTask"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/tab/TaskScheduler_AdminPage_Wizard__Tab__CreateTask.php", 
+	"TaskScheduler_AdminPage_Wizard__Tab__SelectAction"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/tab/TaskScheduler_AdminPage_Wizard__Tab__SelectAction.php", 
+	"TaskScheduler_AdminPage_Wizard_Start"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/_del/TaskScheduler_AdminPage_Wizard_Start.php", 
+	"TaskScheduler_AdminPage_Wizard_Tab_CreateTask"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/_del/TaskScheduler_AdminPage_Wizard_Tab_CreateTask.php", 
+	"TaskScheduler_AdminPage_Wizard_Tab_SelectAction"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/_del/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php", 
+	"TaskScheduler_AdminPage_Wizard_Tab_Wizard"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/_del/TaskScheduler_AdminPage_Wizard_Tab_Wizard.php", 
+	"TaskScheduler_AdminPage_Page_Base"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/_abstract/TaskScheduler_AdminPage_Page_Base.php", 
+	"TaskScheduler_AdminPage_RootBase"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/_abstract/TaskScheduler_AdminPage_RootBase.php", 
+	"TaskScheduler_AdminPage_Section_Base"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/_abstract/TaskScheduler_AdminPage_Section_Base.php", 
+	"TaskScheduler_AdminPage_Tab_Base"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/_abstract/TaskScheduler_AdminPage_Tab_Base.php", 
+	"TaskScheduler_AdminPage_Tab_ReadMeBase"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/_abstract/TaskScheduler_AdminPage_Tab_ReadMeBase.php", 
 	"TaskScheduler_ListTable"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/table/TaskScheduler_ListTable.php", 
 	"TaskScheduler_ListTable_Action"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/table/TaskScheduler_ListTable_Action.php", 
 	"TaskScheduler_ListTable_Column"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/table/TaskScheduler_ListTable_Column.php", 
@@ -131,13 +142,4 @@ $_aClassFiles = array(
 	"TaskScheduler_ThreadUtility_Edit"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/utility/thread/TaskScheduler_ThreadUtility_Edit.php", 
 	"TaskScheduler_ThreadUtility_Get"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/utility/thread/TaskScheduler_ThreadUtility_Get.php", 
 	"TaskScheduler_Walker_Log"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/utility/walker/TaskScheduler_Walker_Log.php", 
-	"TaskScheduler_AutoCompleteCustomFieldType"	=>	TaskScheduler_Registry::$sDirPath . "/include/library/custom-field-types/autocomplete-custom-field-type/TaskScheduler_AutoCompleteCustomFieldType.php", 
-	"TaskScheduler_DateCustomFieldType"	=>	TaskScheduler_Registry::$sDirPath . "/include/library/custom-field-types/date-time-custom-field-types/TaskScheduler_DateCustomFieldType.php", 
-	"TaskScheduler_DateRangeCustomFieldType"	=>	TaskScheduler_Registry::$sDirPath . "/include/library/custom-field-types/date-time-custom-field-types/TaskScheduler_DateRangeCustomFieldType.php", 
-	"TaskScheduler_DateTimeCustomFieldType"	=>	TaskScheduler_Registry::$sDirPath . "/include/library/custom-field-types/date-time-custom-field-types/TaskScheduler_DateTimeCustomFieldType.php", 
-	"TaskScheduler_DateTimeRangeCustomFieldType"	=>	TaskScheduler_Registry::$sDirPath . "/include/library/custom-field-types/date-time-custom-field-types/TaskScheduler_DateTimeRangeCustomFieldType.php", 
-	"TaskScheduler_TimeCustomFieldType"	=>	TaskScheduler_Registry::$sDirPath . "/include/library/custom-field-types/date-time-custom-field-types/TaskScheduler_TimeCustomFieldType.php", 
-	"TaskScheduler_TimeRangeCustomFieldType"	=>	TaskScheduler_Registry::$sDirPath . "/include/library/custom-field-types/date-time-custom-field-types/TaskScheduler_TimeRangeCustomFieldType.php", 
-	"TaskScheduler_MultipleTextInputFieldType"	=>	TaskScheduler_Registry::$sDirPath . "/include/library/custom-field-types/multiple-text-input-filed-type/TaskScheduler_MultipleTextInputFieldType.php", 
-	"TaskScheduler_RevealerCustomFieldType"	=>	TaskScheduler_Registry::$sDirPath . "/include/library/custom-field-types/revealer-custom-field-type/TaskScheduler_RevealerCustomFieldType.php", 
 );
