@@ -1,14 +1,19 @@
 <?php
 /**
- * Creates wizard pages for the 'Email' action.
+ * Task Scheduler
+ * 
+ * Provides an enhanced task management system for WordPress.
  * 
  * @package      Task Scheduler
  * @copyright    Copyright (c) 2014-2016, Michael Uno
  * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
- * @since        1.0.0
  */
 
+/**
+ * Creates wizard pages for the 'Email' action.
+ * @since      1.0.0
+ */
 final class TaskScheduler_Action_Email_Wizard extends TaskScheduler_Wizard_Action_Base {
 
     /**
