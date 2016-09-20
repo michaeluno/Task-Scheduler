@@ -42,7 +42,7 @@ class TaskScheduler_AdminPage_EditModule__Page__EditOptions extends TaskSchedule
             $this->sPageSlug,
             array(    
                 'tab_slug'            => 'edit_action',    
-                'title'               => __( 'Edit Action', 'task-scheduler' ),
+                'title'               => '', // __( 'Edit Action', 'task-scheduler' ),
                 'show_in_page_tab'    => false,
             )            
         );        
