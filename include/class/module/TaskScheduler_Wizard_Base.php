@@ -152,7 +152,6 @@ abstract class TaskScheduler_Wizard_Base {
         add_filter( "tabs_{$this->_sMainAdminPageClassName}_{$this->_sMainAdminPageSlug}", array( $this, '_replyToAddInPageTab' ) );
         add_filter( "sections_{$this->_sMainAdminPageClassName}", array( $this, '_replyToAddFormSection' ) );
         add_filter( "fields_{$this->_sMainAdminPageClassName}", array( $this, '_replyToAddFormFields' ), 1, 1 );
-        // add_filter( "field_definition_{$this->_sMainAdminPageClassName}", array( $this, '_replyToRedefineFields' ), 10, 1 );
         add_filter( "field_definition_{$this->_sMainAdminPageClassName}_{$this->_sSectionID}_prevnext", array( $this, '_replyToRedefinePrevNextButtonField' ), 10, 1 );   // 1.4.0+        
         add_filter( "validation_{$this->_sMainAdminPageClassName}_{$this->_sSectionID}", array( $this, 'validateSettings' ), 10, 4 );
         add_filter( "validation_{$this->_sMainAdminPageSlug}_{$this->sSlug}", array( $this, '_replytToValidateTabSettings' ), 10, 4 ); // sSlug is also used as the tab slug
@@ -164,7 +163,6 @@ abstract class TaskScheduler_Wizard_Base {
         add_filter( "tabs_{$this->_sEditAdminPageClassName}_{$this->_sEditAdminPageSlug}", array( $this, '_replyToAddInPageTab' ) );
         add_filter( "sections_{$this->_sEditAdminPageClassName}", array( $this, '_replyToAddFormSection' ) );
         add_filter( "fields_{$this->_sEditAdminPageClassName}", array( $this, '_replyToAddFormFields' ), 1, 1 );
-        // add_filter( "field_definition_{$this->_sEditAdminPageClassName}", array( $this, '_replyToRedefineFields' ), 10, 1 );
         add_filter( "field_definition_{$this->_sEditAdminPageClassName}_{$this->_sSectionID}_prevnext", array( $this, '_replyToRedefinePrevNextButtonField' ), 10, 1 );   // 1.4.0+
         add_filter( "validation_{$this->_sEditAdminPageClassName}_{$this->_sSectionID}", array( $this, 'validateSettings' ), 10, 4 );
         add_filter( "validation_{$this->_sEditAdminPageSlug}_{$this->sSlug}", array( $this, '_replytToValidateTabSettings' ), 10, 4 );    // sSlug is used as the tab slug also.
@@ -405,7 +403,7 @@ abstract class TaskScheduler_Wizard_Base {
         return $aOptions;
         
     }
-            
+        
     /**
      * @return      array
      * @since       1.4.0
@@ -448,7 +446,7 @@ abstract class TaskScheduler_Wizard_Base {
     }
     
     /**
-     * The callback function for tab settings validation.
+     * Validates tab settings.
      * 
      * @callback        filter      validation_{page slug}_{tab slug}
      */
@@ -471,15 +469,13 @@ abstract class TaskScheduler_Wizard_Base {
         }
         
         // Insert the wizard section. If multiple wizard screens are registered to this module, merge their options.
-        $_aWizardOptions[ $this->_sSectionID ] = apply_filters(
-                "task_scheduler_admin_filter_wizard_options_{$this->sMainWizardSlug}",
-                $aInput[ $this->_sSectionID ]
+        $_aWizardOptions[ $this->_sSectionID ] = $oAdminPage->oUtil->getAsArray(
+                apply_filters(
+                    "task_scheduler_admin_filter_wizard_options_{$this->sMainWizardSlug}",
+                    $aInput[ $this->_sSectionID ]
+                )
             )
-            + ( 
-                isset( $_aOldWizardOptions[ $this->sMainWizardSlug ] )
-                    ? $_aOldWizardOptions[ $this->sMainWizardSlug ]
-                    : array()
-            );
+            + $oAdminPage->oUtil->getElementAsArray( $_aOldWizardOptions, array( $this->sMainWizardSlug ) );
         unset( $_aWizardOptions[ $this->_sSectionID ][ 'prevnext' ] );
 
         /// The other grouped sections should be updated to the merged input array.
@@ -538,7 +534,14 @@ abstract class TaskScheduler_Wizard_Base {
     public function getFields() { 
         return array(); 
     }
-        
+    
+    
+    /**
+     * Validates section settings. An extended class should override this method.
+     * 
+     * @callback    filter      validation_{class name}_{section ID}
+     * @return      array
+     */ 
     public function validateSettings( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) { 
         $_aParams    = func_get_args() + array(
             null, null, null, null
@@ -547,7 +550,6 @@ abstract class TaskScheduler_Wizard_Base {
         $aOldInput   = $_aParams[ 1 ];
         $oAdminPage  = $_aParams[ 2 ];
         $aSubmitInfo = $_aParams[ 3 ];    
-    
         return $aInput; 
     }
     
