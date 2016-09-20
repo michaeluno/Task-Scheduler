@@ -2,9 +2,9 @@
 /**
  * One of the abstract class of the plugin admin page class.
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2016, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
@@ -159,8 +159,10 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
     }
     /**
      * Triggered when the 'check_actions_now' submit button is pressed.
+     * 
+     * @callback        action      submit_{instantiated class name}_{section id}_{field id}
      */
-    public function submit_TaskScheduler_AdminPage_task_listing_table_check_actions_now() {    // submit_{instantiated class name}_{section id}_{field id}
+    public function submit_TaskScheduler_AdminPage_task_listing_table_check_actions_now() {    
         
         do_action( 'task_scheduler_action_check_shceduled_actions' );
         $this->setSettingNotice( __( 'Checking actions now.', 'task-scheduler' ), 'updated' );
@@ -169,8 +171,10 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
     
     /**
      * Inserts the table at the top of the 'task_listing_table' section output.
+     * 
+     * @callback    filter      content_{page slug}
      */
-    public function content_ts_task_list( $sHTML ) {    // content_{page slug}
+    public function content_ts_task_list( $sHTML ) {    
 
         return $this->_getHeartbeatStatus()
             . $this->_getTableOutput()
