@@ -53,7 +53,7 @@ class TaskScheduler_AdminPage_Wizard__Section__SelectAction extends TaskSchedule
                 'description'       => __( 'Set the arguments passed to the action.', 'task-scheduler' ),
             ),                        
             array(    
-                'field_id'          => 'submit',
+                'field_id'          => 'prevnext',
                 'type'              => 'submit',
                 'label'             => __( 'Next', 'task-scheduler' ),
                 'value'             => __( 'Next', 'task-scheduler' ),
@@ -70,7 +70,7 @@ class TaskScheduler_AdminPage_Wizard__Section__SelectAction extends TaskSchedule
         $_aFieldIDsToRedefine = array(
             'routine_action',
             'custom_action',
-            'submit',
+            'prevnext',
         );
         foreach( $_aFieldIDsToRedefine as $_sFieldID ) {            
             add_filter( 
@@ -104,9 +104,9 @@ class TaskScheduler_AdminPage_Wizard__Section__SelectAction extends TaskSchedule
         }    
         
         /**
-         * Redefines the 'submit' field of the 'wizard_select_action' section.
+         * Redefines the 'prevnext' field of the 'wizard_select_action' section.
          */     
-        public function _defineField_submit( $aField ) {
+        public function _defineField_prevnext( $aField ) {
             
             $_aPreviousUrls  = $this->oFactory->getWizardOptions( 'previous_urls' );
             $_sCurrentURLKey = remove_query_arg( array( 'transient_key', 'settings-notice', 'settings-updated' ) );

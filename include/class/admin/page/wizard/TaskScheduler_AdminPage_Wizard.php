@@ -71,7 +71,7 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
             : array();
         $_aSavingOptions = $aMergingOptions + $_aStoredOptions;    // not recursive for repeatable fields. 
         $_aSavingOptions = array_filter( $_aSavingOptions );
-        unset( $_aSavingOptions[ 'submit' ] );
+        unset( $_aSavingOptions[ 'prevnext' ] );
         TaskScheduler_WPUtility::setTransient( $sTransientKey, $_aSavingOptions, 30*60 );    // 30 minutes     
         return $_aSavingOptions;
         
@@ -139,7 +139,7 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
     public function dropUnnecessaryWizardOptions( array $aWizardOptions ) {
 
         unset( 
-            $aWizardOptions[ 'submit' ], 
+            $aWizardOptions[ 'prevnext' ], 
             $aWizardOptions[ 'transient_key' ], 
             $aWizardOptions[ 'previous_urls' ],
             $aWizardOptions[ 'action_label' ],

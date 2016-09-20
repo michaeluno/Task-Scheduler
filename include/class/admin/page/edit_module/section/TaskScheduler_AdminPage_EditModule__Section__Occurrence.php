@@ -41,7 +41,7 @@ class TaskScheduler_AdminPage_EditModule__Section__Occurrence extends TaskSchedu
                 'label'             => array(),
             ),            
             array(    
-                'field_id'          => 'submit',
+                'field_id'          => 'prevnext',
                 'type'              => 'submit',
                 'label'             => __( 'Next', 'task-scheduler' ),
                 'label_min_width'   => '0px',

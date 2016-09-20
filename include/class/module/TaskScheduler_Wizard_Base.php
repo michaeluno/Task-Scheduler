@@ -152,8 +152,8 @@ abstract class TaskScheduler_Wizard_Base {
         add_filter( "tabs_{$this->_sMainAdminPageClassName}_{$this->_sMainAdminPageSlug}", array( $this, '_replyToAddInPageTab' ) );
         add_filter( "sections_{$this->_sMainAdminPageClassName}", array( $this, '_replyToAddFormSection' ) );
         add_filter( "fields_{$this->_sMainAdminPageClassName}", array( $this, '_replyToAddFormFields' ), 1, 1 );
-        add_filter( "field_definition_{$this->_sMainAdminPageClassName}", array( $this, '_replyToRedefineFields' ), 10, 1 );
-        add_filter( "field_definition_{$this->_sMainAdminPageClassName}_{$this->_sSectionID}_submit", array( $this, '_replyToRedefinePrevNextButtonField' ), 10, 1 );   // 1.4.0+        
+        // add_filter( "field_definition_{$this->_sMainAdminPageClassName}", array( $this, '_replyToRedefineFields' ), 10, 1 );
+        add_filter( "field_definition_{$this->_sMainAdminPageClassName}_{$this->_sSectionID}_prevnext", array( $this, '_replyToRedefinePrevNextButtonField' ), 10, 1 );   // 1.4.0+        
         add_filter( "validation_{$this->_sMainAdminPageClassName}_{$this->_sSectionID}", array( $this, 'validateSettings' ), 10, 4 );
         add_filter( "validation_{$this->_sMainAdminPageSlug}_{$this->sSlug}", array( $this, '_replytToValidateTabSettings' ), 10, 4 ); // sSlug is also used as the tab slug
         add_filter( "validation_saved_options_{$this->_sMainAdminPageSlug}_{$this->sSlug}", array( $this, '_replyToModifySavedTabOptions' ), 10, 2 );
@@ -164,8 +164,8 @@ abstract class TaskScheduler_Wizard_Base {
         add_filter( "tabs_{$this->_sEditAdminPageClassName}_{$this->_sEditAdminPageSlug}", array( $this, '_replyToAddInPageTab' ) );
         add_filter( "sections_{$this->_sEditAdminPageClassName}", array( $this, '_replyToAddFormSection' ) );
         add_filter( "fields_{$this->_sEditAdminPageClassName}", array( $this, '_replyToAddFormFields' ), 1, 1 );
-        add_filter( "field_definition_{$this->_sEditAdminPageClassName}", array( $this, '_replyToRedefineFields' ), 10, 1 );
-        add_filter( "field_definition_{$this->_sEditAdminPageClassName}_{$this->_sSectionID}_submit", array( $this, '_replyToRedefinePrevNextButtonField' ), 10, 1 );   // 1.4.0+
+        // add_filter( "field_definition_{$this->_sEditAdminPageClassName}", array( $this, '_replyToRedefineFields' ), 10, 1 );
+        add_filter( "field_definition_{$this->_sEditAdminPageClassName}_{$this->_sSectionID}_prevnext", array( $this, '_replyToRedefinePrevNextButtonField' ), 10, 1 );   // 1.4.0+
         add_filter( "validation_{$this->_sEditAdminPageClassName}_{$this->_sSectionID}", array( $this, 'validateSettings' ), 10, 4 );
         add_filter( "validation_{$this->_sEditAdminPageSlug}_{$this->sSlug}", array( $this, '_replytToValidateTabSettings' ), 10, 4 );    // sSlug is used as the tab slug also.
         add_filter( "validation_saved_options_{$this->_sEditAdminPageSlug}_{$this->sSlug}", array( $this, '_replyToModifySavedTabOptions' ), 10, 2 );
@@ -183,7 +183,7 @@ abstract class TaskScheduler_Wizard_Base {
         // Meta box form output.
         add_filter( 
             'task_scheduler_admin_filter_meta_box_content_' . $this->sSlug,
-            array( $this, 'getMetaboxOutput' ),
+            array( $this, 'getMetaBoxOutput' ),
             10,
             2
         );
@@ -355,7 +355,7 @@ abstract class TaskScheduler_Wizard_Base {
                 );
             $_aSubmitField = array(    
                 'section_id'        => $this->_sSectionID,
-                'field_id'          => 'submit',
+                'field_id'          => 'prevnext',
                 'type'              => 'submit',
                 'label'             => $_sButtonLabel,
                 'label_min_width'   => '0px',
@@ -386,6 +386,8 @@ abstract class TaskScheduler_Wizard_Base {
     
     /**
      * Set values of the stored wizard options to the wizard form fields.
+     * @since       1.4.0
+     * @return      array
      */
     public function _replyToModifyOptions( $aOptions ) {
 
@@ -403,123 +405,11 @@ abstract class TaskScheduler_Wizard_Base {
         return $aOptions;
         
     }
-    
-    /**
-     * The callback function for field definition arrays.
-     * 
-     * This callback gets called before the filters of `field_dfinition_{class name}_{section_id}_{field_id}`.
-     * 
-     * @callback    filter       field_definition_{class name}
-     * @return      array
-     */
-    public function _replyToRedefineFields( $aAllFields ) {
-return $aAllFields;
-        if ( ! $this->_canRedefineFields( $aAllFields ) ) {
-            return $aAllFields;
-        }
-                
-        // Retrieve the wizard options.
-        $_aWizardOptions = apply_filters( 'task_scheduler_admin_filter_get_wizard_options', array() );
-                
-        // Set the values of the wizard options to the fields
-        foreach( $aAllFields[ $this->_sSectionID ] as $_sFieldID => &$_aField ) {
             
-            if ( ! isset( $_aWizardOptions[ $this->_sSectionID ][ $_sFieldID ] ) ) { 
-                continue; 
-            }
-            $_asWizardOption = $_aWizardOptions[ $this->_sSectionID ][ $_sFieldID ];
-            
-            // If repeatable or having sub-fields.
-            if ( $this->_isDynamicField( $_sFieldID, $_aField, $_asWizardOption ) ) {
-                        
-                // Set the values to the sub-fields.
-                $_aThisFieldValues  = array_values( $_asWizardOption );
-                $_aField[ 'value' ] = array_shift( $_aThisFieldValues );    // extract and remove the first item.
-                $_iIndex = 0;
-                foreach( $_aThisFieldValues as $_vValue ) {
-                    $_aField[ $_iIndex ][ 'value' ] = $_vValue;                    
-                    $_iIndex++;
-                }
-                continue;
-            } 
-            
-            // Otherwise,
-            $_aField[ 'value' ] = $_asWizardOption;
-            
-        }
-               
-        // @deprecated 1.4.0
-        // $aAllFields = $this->_getSubmitButtonFieldModified( $aAllFields, $_aWizardOptions );
-                
-        return $aAllFields;
-        
-    }    
-        /**
-         * Set the Back button's url.
-         * @return      array
-         * @since       1.4.0
-         * @deprecated  1.4.0
-         */
-        private function _getSubmitButtonFieldModified( $aAllFields, $_aWizardOptions ) {
-
-            $_sCurrentURLKey = remove_query_arg( array( 'transient_key', 'settings-notice', 'settings-updated' ) );
-            if ( ! isset( $_aWizardOptions[ 'previous_urls' ][ $_sCurrentURLKey ] ) ) {
-                return $aAllFields;
-            }
-            
-            $aAllFields[ $this->_sSectionID ][ 'submit' ][ 0 ][ 'href' ] = $_aWizardOptions[ 'previous_urls' ][ $_sCurrentURLKey ];
-TaskScheduler_Debug::log( $aAllFields[ $this->_sSectionID ][ 'submit' ] );
-            return $aAllFields;
-            
-        }
-    
-        /**
-         * Checks whether the given field definitions can be modified.
-         * @since       1.4.0
-         * @return      boolean
-         */
-        private function _canRedefineFields( $aAllFields ) {
-
-            if ( ! $this->_sTransientKey ) {
-                return false;
-            }
-            
-            if ( ! isset( $aAllFields[ $this->_sSectionID ] ) ) {
-                return false;
-            }
-            
-            // Check if the modifying field(s) exists.
-            // if ( ! isset( $aAllFields[ $this->_sSectionID ][ 'submit' ] ) ) {
-                // return false;
-            // }
-            
-            return true;
-
-        }
-        
-        /**
-         * @return      boolean
-         * @since       1.4.0
-         */
-        private function _isDynamicField( $sFieldID, $aField, $aWizardOption ) {
-
-            $aField = $aField + array(
-                'repeatable' => null,
-            );  
-        
-            // If repeatable or having sub-fields.
-            $_bEitherTrue = ( boolean ) ( $aField[ 'repeatable' ] || isset( $aField[ 0 ] ) );
-            if ( ! $_bEitherTrue ) {
-                return false;
-            }
-        
-            return is_array( $aWizardOption );
-        
-        }    
-        
     /**
      * @return      array
      * @since       1.4.0
+     * @callback    filter      field_definition_{class name}_{section id}_{field id}"
      */
     public function _replyToRedefinePrevNextButtonField( $aFieldset ) {
         
@@ -574,9 +464,6 @@ TaskScheduler_Debug::log( $aAllFields[ $this->_sSectionID ][ 'submit' ] );
 
         $_aOldWizardOptions = $oAdminPage->oUtil->getElementAsArray( $aOldInput, array( '_wizard_options' ) );
         
-// @deprecated [1.4.0] Changed it to use `getWizardOptions()` as `$aOldInput` no longer holds values since the update of APF.
-// $_aOldWizardOptions = $oAdminPage->getWizardOptions();
-
         // If the user wants an error to be displayed without saving the options, an empty array will be returned.
         if ( ! $oAdminPage->hasSettingNotice( 'error' ) ) { 
             $_sNextURLKey    = remove_query_arg( array( 'transient_key', 'settings-notice', 'settings-updated' ), add_query_arg( array( 'tab' => $this->sNextTabSlug ) ) );
@@ -593,7 +480,7 @@ TaskScheduler_Debug::log( $aAllFields[ $this->_sSectionID ][ 'submit' ] );
                     ? $_aOldWizardOptions[ $this->sMainWizardSlug ]
                     : array()
             );
-        unset( $_aWizardOptions[ $this->_sSectionID ][ 'submit' ] );
+        unset( $_aWizardOptions[ $this->_sSectionID ][ 'prevnext' ] );
 
         /// The other grouped sections should be updated to the merged input array.
         $_aSlugs = apply_filters( "task_scheduler_admin_filter_wizard_slugs_{$this->sMainWizardSlug}", array() );

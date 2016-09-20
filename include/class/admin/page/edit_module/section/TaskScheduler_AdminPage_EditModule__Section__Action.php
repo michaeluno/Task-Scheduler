@@ -46,7 +46,7 @@ class TaskScheduler_AdminPage_EditModule__Section__Action extends TaskScheduler_
                 'description'         => __( 'If none of the action you want to execute is listed above, specify the action name here.', 'task-scheduler' ),
             ),                
             array(    
-                'field_id'            => 'submit',
+                'field_id'            => 'prevnext',
                 'type'                => 'submit',
                 'label'               => __( 'Next', 'task-scheduler' ),
                 'label_min_width'     => '0px',

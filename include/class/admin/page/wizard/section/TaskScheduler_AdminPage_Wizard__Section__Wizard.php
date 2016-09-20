@@ -51,7 +51,7 @@ class TaskScheduler_AdminPage_Wizard__Section__Wizard extends TaskScheduler_Admi
                 'label'               => array(),    // redefined in the 'field_definition_{...}' callback.
             ),    
             array(    
-                'field_id'            => 'submit',
+                'field_id'            => 'prevnext',
                 'type'                => 'submit',
                 'label'               => __( 'Next', 'task-scheduler' ),
                 'label_min_width'     => '0px',

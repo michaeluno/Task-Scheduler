@@ -89,7 +89,7 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
             
         }    
         
-        unset( $aInput['submit'] );
+        unset( $aInput[ 'prevnext' ] );
         
         // Now these options will be stored in the 'on_exit_code' meta key. However, the exit code event handler needs the meta data being saved in the top level
         // to perform the query and process the tasks with the 'on_exit_code' occurrence type.
@@ -109,7 +109,7 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
         }
     
     /**
-     * Sets the submit form data in the top level of the wizard options so that they will be stored as the top level meta keys.
+     * Sets the submitted form data in the top level of the wizard options so that they will be stored as the top level meta keys.
      */
     public function _replyToSetTopLevelMetaData( $aWizardOptions ) {
             
@@ -119,7 +119,7 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
         
         // At the moment, set only two exit code options.
         $aWizardOptions[ '__on_exit_code' ]          = $this->_aSubmit[ 'exit_code' ];
-        $aWizardOptions[ '__on_exit_code_task_ids' ] = $this->_getSetTaskIDs( $this->_aSubmit['task_ids'] );
+        $aWizardOptions[ '__on_exit_code_task_ids' ] = $this->_getSetTaskIDs( $this->_aSubmit[ 'task_ids' ] );
         if ( empty( $aWizardOptions[ '__on_exit_code_task_ids' ] ) ) {
             unset( $aWizardOptions[ '__on_exit_code_task_ids' ] );
         }
@@ -140,10 +140,10 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
             $_aJSONTaskIDs = json_decode( $sJSONTaskIDs, true );
             $_aTaskIDs = array();
             foreach( $_aJSONTaskIDs as $_aTaskID ) {
-                if ( ! isset( $_aTaskID['id'] ) ) { 
+                if ( ! isset( $_aTaskID[ 'id' ] ) ) { 
                     continue; 
                 }
-                $_aTaskIDs[] = $_aTaskID['id'];
+                $_aTaskIDs[] = $_aTaskID[ 'id' ];
             }
             return $_aTaskIDs;
             
