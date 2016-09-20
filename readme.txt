@@ -26,6 +26,7 @@ Currently, with WP Cron, if you register a large number of actions, for example,
 - <strong>Send Email</strong> - sends email to specified email addresses.
 - <strong>Clean Transients</strong> - deletes expired transients (caches).
 - <strong>Check Web Sits</strong> - accesses specified web pages and checks certain keywords.
+- <strong>Run PHP Scripts</strong> - runs specified PHP scripts.
 
 <h4>Custom Action Modules</h4>
 - <strong>[Auto Post](https://wordpress.org/plugins/auto-post/)</strong> - creates posts automatically.
@@ -223,6 +224,10 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 
 == Changelog ==
+
+= 1.4.0 =
+- Added the `Run PHP Script` action module.
+- Tweaked the settings UI.
 
 = 1.3.4 - 2016/09/08 =
 - Fixed a bug which caused a fatal error `Cannot redeclare class TaskScheduler_Routine_Base` in WordPress 4.6.1.

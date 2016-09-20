@@ -1,6 +1,6 @@
 <?php 
 /**
-	Task Scheduler v1.4.0b01 by miunosoft (Michael Uno) 
+	Task Scheduler v1.4.0b03 by miunosoft (Michael Uno) 
 	Provides an enhanced task management system for WordPress.
 	<http://en.michaeluno.jp/>
 	Copyright (c) 2014-2016, Michael Uno; Licensed under GPL v2 or later */
@@ -79,6 +79,9 @@ $_aClassFiles = array(
 	"TaskScheduler_Action_Email"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/email/TaskScheduler_Action_Email.php", 
 	"TaskScheduler_Action_Email_Thread"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/email/TaskScheduler_Action_Email_Thread.php", 
 	"TaskScheduler_Action_Email_Wizard"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php", 
+	"TaskScheduler_Action_PHPScript"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/php_script/TaskScheduler_Action_PHPScript.php", 
+	"TaskScheduler_Action_PHPScript_Thread"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/php_script/TaskScheduler_Action_PHPScript_Thread.php", 
+	"TaskScheduler_Action_PHPScript_Wizard"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/php_script/admin/TaskScheduler_Action_PHPScript_Wizard.php", 
 	"TaskScheduler_Action_PostDeleter"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/post_deleter/TaskScheduler_Action_PostDeleter.php", 
 	"TaskScheduler_Action_PostDeleter_Thread"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/post_deleter/TaskScheduler_Action_PostDeleter_Thread.php", 
 	"TaskScheduler_Action_PostDeleter_Wizard"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard.php", 

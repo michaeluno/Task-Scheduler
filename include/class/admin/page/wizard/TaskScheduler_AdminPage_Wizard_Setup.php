@@ -114,7 +114,8 @@ abstract class TaskScheduler_AdminPage_Wizard_Setup extends TaskScheduler_AdminP
             new TaskScheduler_DateCustomFieldType( $this->oProp->sClassName );
             new TaskScheduler_AutoCompleteCustomFieldType( $this->oProp->sClassName );
             new TaskScheduler_RevealerCustomFieldType( $this->oProp->sClassName );
-        
+            new TaskScheduler_PathCustomFieldType( $this->oProp->sClassName );
+
         }        
             
 }

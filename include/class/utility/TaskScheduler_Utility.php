@@ -1,15 +1,19 @@
 <?php
 /**
- * The class that provides utility methods without WordPress built-in functions.
+ * Task Scheduler
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, <Michael Uno>
- * @author        Michael Uno
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2016, <Michael Uno>
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
- * @since        1.0.0
  */
 
-abstract class TaskScheduler_Utility {
+/**
+ * The class that provides utility methods without WordPress built-in functions.
+ * 
+ * @since        1.0.0
+ */
+abstract class TaskScheduler_Utility extends TaskScheduler_AdminPageFramework_FrameworkUtility {
     
     /**
      * Checks if a string is JSON encoded.
