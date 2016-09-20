@@ -24,9 +24,9 @@ abstract class TaskScheduler_PostType_Log_Base extends TaskScheduler_AdminPageFr
             array(            // argument - for the array structure, refer to http://codex.wordpress.org/Function_Reference/register_post_type#Arguments
                 'labels'                =>    array(
                     'name'                    => __( 'Task Scheduler Log', 'task-scheduler' ),
-                    'all_items'               => __( 'Logs', 'task-scheduler' ),    // sub menu label
+                    'all_items'               => __( 'Log', 'task-scheduler' ),    // sub menu label
                     'singular_name'           => __( 'Log', 'task-scheduler' ),
-                    'menu_name'               => __( 'Logs', 'task-scheduler' ),    // this changes the root menu name 
+                    'menu_name'               => __( 'Log', 'task-scheduler' ),    // this changes the root menu name 
                     'add_new'                 => __( 'Add New Log', 'task-scheduler' ),
                     'add_new_item'            => __( 'Add New Log', 'task-scheduler' ),
                     'edit'                    => __( 'Edit', 'task-scheduler' ),
@@ -34,7 +34,7 @@ abstract class TaskScheduler_PostType_Log_Base extends TaskScheduler_AdminPageFr
                     'new_item'                => __( 'New Log', 'task-scheduler' ),
                     'view'                    => __( 'View', 'task-scheduler' ),
                     'view_item'               => __( 'View Log', 'task-scheduler' ),
-                    'search_items'            => __( 'Search Logs', 'task-scheduler' ),
+                    'search_items'            => __( 'Search Log', 'task-scheduler' ),
                     'not_found'               => __( 'No Log found for Task Scheduler', 'task-scheduler' ),
                     'not_found_in_trash'      => __( 'No Log Found for Task Scheduler in Trash', 'task-scheduler' ),
                     'parent'                  => __( 'Parent Log', 'task-scheduler' ),
