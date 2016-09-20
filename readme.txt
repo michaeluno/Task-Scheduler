@@ -3,7 +3,7 @@ Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
 Tested up to:       4.6.1
-Stable tag:         1.3.4
+Stable tag:         1.4.0
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               access, tool, utility, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation, routine, routines
@@ -26,7 +26,7 @@ Currently, with WP Cron, if you register a large number of actions, for example,
 - <strong>Send Email</strong> - sends email to specified email addresses.
 - <strong>Clean Transients</strong> - deletes expired transients (caches).
 - <strong>Check Web Sits</strong> - accesses specified web pages and checks certain keywords.
-- <strong>Run PHP Scripts</strong> - runs specified PHP scripts.
+- <strong>Run PHP Scripts</strong> - runs PHP scripts of your choosing.
 
 <h4>Custom Action Modules</h4>
 - <strong>[Auto Post](https://wordpress.org/plugins/auto-post/)</strong> - creates posts automatically.
@@ -86,7 +86,7 @@ Return `1` if the task completes and `0` when there is a problem. You can pass a
   
 The action slug set in the field will be triggered at the scheduled time.
 
-See an example plugin (https://gist.github.com/michaeluno/5819636448947e7ab733).
+It will be easier for you to modify an [existent code](https://gist.github.com/michaeluno/5819636448947e7ab733). You can download the zip file and install it on your site.
 
 <h4>Create a Custom Action Module</h4>
 If you want your action to be listed in the **Select Action** screen, you need to create an action module. 
@@ -194,6 +194,9 @@ e.g.
 = Is it possible to send an email when a particular task completes? =
 Yes. Create a task with the `Exit Code` occurrence type and the `Send Email` action. The `Exit Code` occurrence type lets you choose which task and what exit code should trigger an email to be sent.
 
+= Is it possible to execute a PHP script? = 
+The `PHP Script` action module lets you run PHP scripts located on your server. One thing to keep in mind is that the plugin just includes the PHP file using `include()` so it does not technically execute a PHP script. 
+
 = How can I know what exit code is returned from an action? =
 The most built-in actions return `1` when they succeed and `0` on failure. You can check what exit code will be returned by enabling the log. 
 
@@ -225,7 +228,7 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.4.0 =
+= 1.4.0 - 2016/09/21 =
 - Added the `Run PHP Script` action module.
 - Tweaked the settings UI.
 
