@@ -191,7 +191,7 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
      * @since     1.4.0     Changed the scope from `protected`.
      * @return    array
      */
-    public function getRoutineActionField( array $aField ) {
+    public function getRoutineActionField( $aField ) {
         
         $_sRoutineActionSlug = $this->getWizardOptions( 'routine_action' );
         $aField[ 'label' ]   = apply_filters( 
@@ -200,7 +200,7 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
         );
 
         // Set the default value.
-        $aField[ 'value' ] = array_key_exists ( $_sRoutineActionSlug, $aField['label'] )
+        $aField[ 'value' ] = array_key_exists ( $_sRoutineActionSlug, $aField[ 'label' ] )
             ? "#description-{$_sRoutineActionSlug}"
             : -1;
 
@@ -209,24 +209,23 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
             -1    =>    '--- ' . __( 'Select Action', 'task-scheduler' ) . ' ---',
         );
         $_aDescriptions = array();
-        foreach( $aField['label'] as $_sSlug => $_sLabel ) {
+        foreach( $aField[ 'label' ] as $_sSlug => $_sLabel ) {
             
             $_aLabels[ "#description-{$_sSlug}" ] = $_sLabel;
             
             // Create action description hidden elements.
             $_sDescription    = apply_filters( "task_scheduler_filter_description_action_{$_sSlug}", '' );
-            if ( ! $_sDescription ) { continue; }
-            $_sDisplay        = $_sSlug === $_sRoutineActionSlug
-                ? '' 
-                : 'display:none;';
-            $_aDescriptions[] = "<p id='description-{$_sSlug}' style='{$_sDisplay}'>"
+            if ( ! $_sDescription ) { 
+                continue; 
+            }
+            $_aDescriptions[ $_sSlug ] = "<p id='description-{$_sSlug}' class='description' style='display: none;'>"
                 . $_sDescription
              . "</p>";            
              
         }
         
-        $aField['label'] = $_aLabels;
-        $aField['after_fieldset'] = implode( PHP_EOL, $_aDescriptions );
+        $aField[ 'label' ] = $_aLabels;
+        $aField[ 'after_fieldset' ]  = implode( PHP_EOL, $_aDescriptions );
         return $aField;
         
     }
