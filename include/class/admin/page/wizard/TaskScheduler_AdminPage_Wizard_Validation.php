@@ -22,13 +22,8 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
      * @callback        filter      validation_{class name}
      */
     public function validation_TaskScheduler_AdminPage_Wizard( $aInput, $aOldInput, $oAdminPage, $aSubmitInfo ) {
-// TaskScheduler_Debug::log( '$aInput' );
-// TaskScheduler_Debug::log( $aInput );
-// TaskScheduler_Debug::log( '$aOldInput' );
-// TaskScheduler_Debug::log( $aOldInput );
-        $_aWizardOptions = $this->oUtil->getElementAsArray( $aInput, array( '_wizard_options' ) )
-        ;
-            // + $this->oUtil->getElementAsArray( $aOldInput, array( '_wizard_options' ) );
+
+        $_aWizardOptions = $this->oUtil->getElementAsArray( $aInput, array( '_wizard_options' ) );
 
         // Check if necessary keys are set. If the transient is expired, the necessary elements will miss. In that case, let the user start over the process.
         if ( ! $this->oUtil->getElement( $_aWizardOptions, array( 'post_title' ) ) ) {
