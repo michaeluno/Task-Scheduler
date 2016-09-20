@@ -38,7 +38,7 @@ final class TaskScheduler_Action_PostDeleter_Wizard extends TaskScheduler_Wizard
         add_filter(
             'field_definition_TaskScheduler_MetaBox_Action',
             array( $this, '_replyToModifyFieldOrder' ),
-            30 // low priority to let the `TaskScheduler_MetaBox_Action` class process the fileter
+            30 // low priority to let the `TaskScheduler_MetaBox_Action` class process the filter.
         );
 
     }
