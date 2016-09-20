@@ -68,7 +68,7 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
                 ( array ) $this->oTask->{$this->oTask->occurrence}
             )
         ;
-        
+
         return $aAllFields;        
         
     }    

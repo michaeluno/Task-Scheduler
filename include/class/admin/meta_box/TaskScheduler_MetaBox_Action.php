@@ -90,13 +90,15 @@ class TaskScheduler_MetaBox_Action extends TaskScheduler_MetaBox_Base {
         if ( ! $this->oTask ) { 
             return $aAllFields; 
         }
-        if ( ! isset( $aAllFields['_default'] ) || ! is_array( $aAllFields['_default'] ) ) { 
+        if ( ! isset( $aAllFields[ '_default' ] ) || ! is_array( $aAllFields[ '_default' ] ) ) { 
             return $aAllFields; 
         }
         
-        $aAllFields['_default'] = $aAllFields['_default'] 
-            + $this->_getModuleFields( $this->oTask->routine_action, ( array ) $this->oTask->{$this->oTask->routine_action} )
-        ;
+        $aAllFields[ '_default' ] = $aAllFields[ '_default' ] 
+            + $this->_getModuleFields( 
+                $this->oTask->routine_action, 
+                ( array ) $this->oTask->{$this->oTask->routine_action} 
+            );
         
         return $aAllFields;
         

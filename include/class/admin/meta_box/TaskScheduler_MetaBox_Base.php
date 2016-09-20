@@ -75,21 +75,13 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
      * @return   array
      */
     protected function _getModuleFields( $sModuleSlug, array $aModularOptions ) {
-        
-        $_aFields                    = array();
+
+        $_aFields = array();
         if ( empty( $aModularOptions ) ) { 
             return $_aFields; 
         }
-        
-        $_aModularFields = array();
-        $_aWizardSlugs   = apply_filters( "task_scheduler_admin_filter_wizard_slugs_{$sModuleSlug}", array() );
-        foreach( $_aWizardSlugs as $sSlug ) {
-            $_aWizardFieldsWithSection    = apply_filters( "task_scheduler_filter_fields_{$sSlug}", array() );
-            $_aWizardFields               = isset( $_aWizardFieldsWithSection[ $sSlug ] ) 
-                ? $_aWizardFieldsWithSection[ $sSlug ] 
-                : array();
-            $_aModularFields              = $_aModularFields + $_aWizardFields;
-        }
+
+        $_aModularFields = $this->_getModularFieldsBySlug( $sModuleSlug ); 
         foreach( $aModularOptions as $_sKey => $_aisValue ) {
             
             // Check if the parsing option key exists in the fields array.
@@ -130,12 +122,36 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
                     . "</div>";
             }            
             
-            $_aFields[ $_aModularField['field_id'] ] = $_aModularField;            
+            $_aFields[ $_aModularField[ 'field_id' ] ] = $_aModularField;            
             
         }
         return $_aFields;
         
     }
+        /**
+         * @since       1.4.0
+         * @return      array
+         */
+        private function _getModularFieldsBySlug( $sModuleSlug ){
+
+            $_aModularFields = array();
+            $_aWizardSlugs   = $this->oUtil->getAsArray( 
+                apply_filters( "task_scheduler_admin_filter_wizard_slugs_{$sModuleSlug}", array() )
+            );
+            foreach( $_aWizardSlugs as $_sSlug ) {
+                $_aWizardFieldsWithSection    = $this->oUtil->getAsArray( 
+                    apply_filters( "task_scheduler_filter_fields_{$_sSlug}", array() )
+                );
+                $_aWizardFields               = $this->oUtil->getElementAsArray(
+                    $_aWizardFieldsWithSection,
+                    array( $_sSlug )
+                );
+                $_aModularFields              = $_aModularFields + $_aWizardFields;
+            }        
+            unset( $_aModularFields[ 'prevnext' ] );
+            return $_aModularFields;
+            
+        }    
     
     /**
      * Returns the module edit link.
