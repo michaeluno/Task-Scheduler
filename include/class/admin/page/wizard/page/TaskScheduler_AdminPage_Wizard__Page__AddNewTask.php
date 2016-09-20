@@ -1,6 +1,8 @@
 <?php
 /**
+ * Task Scheduler
  * 
+ * Provides an enhanced task management system for WordPress.
  * 
  * @package      Task Scheduler
  * @copyright    Copyright (c) 2014-2016, Michael Uno

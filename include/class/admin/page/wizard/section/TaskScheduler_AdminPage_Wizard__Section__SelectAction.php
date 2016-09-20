@@ -67,21 +67,17 @@ class TaskScheduler_AdminPage_Wizard__Section__SelectAction extends TaskSchedule
             )    
         );        
         
-        add_filter( 
-            'field_definition_' .  $oFactory->oProp->sClassName . '_' . $sSectionID . '_' . 'routine_action',
-            array( $this, '_defineRoutineActionField' )
+        $_aFieldIDsToRedefine = array(
+            'routine_action',
+            'custom_action',
+            'submit',
         );
-
-        add_filter( 
-            'field_definition_' .  $oFactory->oProp->sClassName . '_' . $sSectionID . '_' . 'custom_action',
-            array( $this, '_defineCustomActionField' )
-        );        
-
-        add_filter( 
-            'field_definition_' .  $oFactory->oProp->sClassName . '_' . $sSectionID . '_' . 'submit',
-            array( $this, '_defineSubmitField' )
-        );                
-        
+        foreach( $_aFieldIDsToRedefine as $_sFieldID ) {            
+            add_filter( 
+                'field_definition_' .  $oFactory->oProp->sClassName . '_' . $sSectionID . '_' . $_sFieldID,
+                array( $this, '_defineField_' . $_sFieldID )
+            );
+        }                     
         
     }
         
@@ -90,14 +86,14 @@ class TaskScheduler_AdminPage_Wizard__Section__SelectAction extends TaskSchedule
          * 
          * If the saved action slug is not listed in the label array, it forces to select -1 to let it set a custom action slug.
          */     
-        public function _defineRoutineActionField( $aField ) {
+        public function _defineField_routine_action( $aField ) {
             return $this->oFactory->getRoutineActionField( $aField );        
         }    
     
         /**
          * Redefines the 'custom_action' field of the 'wizard_select_action' section.
          */     
-        public function _defineCustomActionField( $aField ) {
+        public function _defineField_custom_action( $aField ) {
             
             $_sRoutineActionSlug    = $this->oFactory->getWizardOptions( 'routine_action' );
             if ( ! array_key_exists ( $_sRoutineActionSlug, apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_action', array( -1 => '_dummy_value' ) ) ) ) {
@@ -110,7 +106,7 @@ class TaskScheduler_AdminPage_Wizard__Section__SelectAction extends TaskSchedule
         /**
          * Redefines the 'submit' field of the 'wizard_select_action' section.
          */     
-        public function _defineSubmitField( $aField ) {
+        public function _defineField_submit( $aField ) {
             
             $_aPreviousUrls  = $this->oFactory->getWizardOptions( 'previous_urls' );
             $_sCurrentURLKey = remove_query_arg( array( 'transient_key', 'settings-notice', 'settings-updated' ) );

@@ -53,5 +53,23 @@ final class TaskScheduler_AdminPage_EditModule extends TaskScheduler_AdminPage_E
             return $_aPostMeta;
             
         }
+        
+    /**
+     * Drops unnecessary elements from the wizard options array.
+     * 
+     * @remark      overrides the method defined in one of the parent classes.
+     */
+    public function dropUnnecessaryWizardOptions( array $aWizardOptions ) {
+        
+        unset( 
+            // The WordPress core adds these meta data but the plugin does not need these.
+            $aWizardOptions['_edit_lock'],
+            $aWizardOptions['_edit_last'],
+            $aWizardOptions['_update_next_schedule']
+        );
+        
+        return parent::dropUnnecessaryWizardOptions( $aWizardOptions );
+
+    }          
     
 }

@@ -1,50 +1,37 @@
 <?php
 /**
- * One of the base classes of the editing module options pages.
+ * Task Scheduler
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * Provides an enhanced task management system for WordPress.
+ * 
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2016, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
 
-abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskScheduler_AdminPage_EditModule_Tab_Action {
+/**
+ * Defines the section.
+ * 
+ * @since   1.4.0
+ */
+class TaskScheduler_AdminPage_EditModule__Section__Occurrence extends TaskScheduler_AdminPage_Section_Base {
 
-    protected function _defineInPageTabs() {
-                    
-        $this->addInPageTabs(
-            TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],    // the target page slug                    
-            array(    // the landing page of the editing page of occurrence module options.
-                'tab_slug'            => 'edit_occurrence',    
-                'title'               => __( 'Edit Occurrence', 'task-scheduler' ),
-                'order'               => 1,    // this must be the 'default' tab
-                'show_in_page_tab'    => false,
-            )
-        );
-        
-        parent::_defineInPageTabs();
-        
-    }
-    
-    protected function _defineForm() {
-    
-        $this->addSettingSections(
-            TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],    // the target page slug
-            array(
-                'section_id'    => 'edit_occurrence',
-                'tab_slug'      => 'edit_occurrence',
-                'title'         => __( 'Occurrence', 'task-scheduler' ),
-            )            
-        );        
+    /**
+     * 
+     * 
+     * @since           1.4.0
+     */ 
+    public function addFields( $oFactory, $sSectionID ) {
             
-        $this->addSettingFields(
-            'edit_occurrence',    // the target section ID        
+        $oFactory->addSettingFields(
+            $sSectionID,    // the target section ID
             array(
                 'field_id'          => 'transient_key',
                 'type'              => 'text',                
                 'hidden'            => true,
-                'value'             => $this->_sTransientKey,
+                'value'             => $oFactory->sTransientKey,
             ),            
             array(    
                 'field_id'          => 'occurrence',
@@ -71,16 +58,24 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
                     ),                        
                 ),                 
             )    
-        );
-
-        parent::_defineForm();
+        );        
         
+        $_aFieldIDsToRedefine = array(
+            'occurrence',
+        );
+        foreach( $_aFieldIDsToRedefine as $_sFieldID ) {            
+            add_filter( 
+                'field_definition_' .  $oFactory->oProp->sClassName . '_' . $sSectionID . '_' . $_sFieldID,
+                array( $this, '_defineField_' . $_sFieldID )
+            );
+        }
+
     }
-    
+        
     /**
      * Defines the 'occurrence' field of the 'edit_occurrence' section.
      */
-    public function field_definition_TaskScheduler_AdminPage_EditModule_edit_occurrence_occurrence( $aField ) {
+    public function _defineField_occurrence( $aField ) {
     
         $aField['label']   = apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_occurrence', $aField['label'] );    
         foreach( $aField['label'] as $_sSlug => $_sLabel ) {
@@ -99,7 +94,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
      * @since       1.0.0
      * @callback    filter      validation_{instantiated class name}_{section ID}
      */
-    public function validation_TaskScheduler_AdminPage_EditModule_edit_occurrence( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) {
+    public function validate( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) {
     
         $_aParams    = func_get_args() + array(
             null, null, null, null
@@ -120,7 +115,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
         
         // Save the wizard options.
         $_sPreviousURLKey = remove_query_arg( array( 'transient_key', 'settings-notice', 'settings-updated' ), $_sRedirectURL );
-        $aInput['previous_urls'] = $this->getWizardOptions( 'previous_urls' );
+        $aInput['previous_urls'] = $oAdminPage->getWizardOptions( 'previous_urls' );
         $aInput['previous_urls'] = is_array( $aInput['previous_urls'] ) ? $aInput['previous_urls'] : array();
         $aInput['previous_urls'][ $_sPreviousURLKey ] = add_query_arg( array( 'transient_key'    =>    $aInput['transient_key'], ) );
         
@@ -129,11 +124,12 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Occurrence extends TaskSch
         // This will be checked when the meta data gets updated in the destination tab.
         $aInput['_update_next_schedule'] = true;
         
-        $this->saveWizardOptions( $aInput['transient_key'], $aInput );
+        $oAdminPage->saveWizardOptions( $aInput['transient_key'], $aInput );
     
         // Go to the next page.
         exit( wp_safe_redirect( $_sRedirectURL ) );
         
     }
+
     
 }

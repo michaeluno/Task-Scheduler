@@ -63,38 +63,43 @@ class TaskScheduler_AdminPage_Wizard__Section__Wizard extends TaskScheduler_Admi
             )    
         );        
         
-        add_filter( 
-            'field_definition_' .  $oFactory->oProp->sClassName . '_' . $sSectionID . '_' . 'occurrence',
-            array( $this, '_defineOccurrenceField' )
+        $_aFieldIDsToRedefine = array(
+            'occurrence',
         );
+        foreach( $_aFieldIDsToRedefine as $_sFieldID ) {            
+            add_filter( 
+                'field_definition_' .  $oFactory->oProp->sClassName . '_' . $sSectionID . '_' . $_sFieldID,
+                array( $this, '_defineField_' . $_sFieldID )
+            );
+        }        
 
     }
         
-        /**
-         * Defines the 'occurrence' field of the 'wizard' section.
-         * 
-         * @callback    filter          field_definition_{class name}_{section id}_{field_id}
-         * @since       1.0.0
-         * @since       1.4.0           Renamed from `field_definition_TaskScheduler_AdminPage_Wizard_wizard_occurrence()`.
-         * @return      array
-         */
-        public function _defineOccurrenceField( $aField ) {
+    /**
+     * Defines the 'occurrence' field of the 'wizard' section.
+     * 
+     * @callback    filter          field_definition_{class name}_{section id}_{field_id}
+     * @since       1.0.0
+     * @since       1.4.0           Renamed from `field_definition_TaskScheduler_AdminPage_Wizard_wizard_occurrence()`.
+     * @return      array
+     */
+    public function _defineField_occurrence( $aField ) {
+    
+        // Set the first item as the default.
+        $aField[ 'label' ] = apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_occurrence', $aField[ 'label' ] );
+        foreach( $aField[ 'label' ] as $_sSlug => $_sLabel ) {
+            $_sDescription = apply_filters( "task_scheduler_filter_description_occurrence_{$_sSlug}", '' );
+            if ( $_sDescription ) {
+                $aField[ 'label' ][ $_sSlug ] = $_sLabel . ' - ' . "<span class='description'>" . $_sDescription . "</span>";
+            }            
+        }
         
-            // Set the first item as the default.
-            $aField[ 'label' ] = apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_occurrence', $aField[ 'label' ] );
-            foreach( $aField[ 'label' ] as $_sSlug => $_sLabel ) {
-                $_sDescription = apply_filters( "task_scheduler_filter_description_occurrence_{$_sSlug}", '' );
-                if ( $_sDescription ) {
-                    $aField[ 'label' ][ $_sSlug ] = $_sLabel . ' - ' . "<span class='description'>" . $_sDescription . "</span>";
-                }            
-            }
-            
-            // Set the default value.
-            $_aLabels = array_keys( $aField[ 'label' ] );    // Avoid the PHP strict standard warning            
-            $aField[ 'default' ] = array_shift( $_aLabels );        
-            return $aField;
-            
-        }        
+        // Set the default value.
+        $_aLabels = array_keys( $aField[ 'label' ] );    // Avoid the PHP strict standard warning            
+        $aField[ 'default' ] = array_shift( $_aLabels );        
+        return $aField;
+        
+    }        
     
     /**
      * The validation callback method for the wizard form section.

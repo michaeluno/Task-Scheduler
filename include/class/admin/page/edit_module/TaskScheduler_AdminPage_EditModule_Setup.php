@@ -9,7 +9,12 @@
  * @since        1.0.0
  */
 
-abstract class TaskScheduler_AdminPage_EditModule_Setup extends TaskScheduler_AdminPage_EditModule_Tab_Occurrence {
+abstract class TaskScheduler_AdminPage_EditModule_Setup extends TaskScheduler_AdminPage_EditModule_Validation {
+    
+    /**
+     * Overrides the parent method as it does parent-specific routines.
+     */
+    public function start() {}
     
     /**
      * Defines the admin pages of the plugin.
@@ -18,17 +23,21 @@ abstract class TaskScheduler_AdminPage_EditModule_Setup extends TaskScheduler_Ad
      */         
     public function setUp() {
             
-        $this->setRootMenuPageBySlug( TaskScheduler_Registry::$aAdminPages['root'] );
-        $this->addSubMenuItems(
+        $this->setRootMenuPageBySlug( TaskScheduler_Registry::$aAdminPages[ 'root' ] );
+        
+        new TaskScheduler_AdminPage_EditModule__Page__EditOptions(
+            $this, 
             array(
                 'title'         => __( 'Edit Module Options', 'task-scheduler' ),    // page and menu title
                 'page_slug'     => TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],    // page slug
                 'show_in_menu'  => false,        // do not add in the sub menu
             )
-        );            
+        );        
 
-        add_action( "load_" . $this->oProp->sClassName, array( $this, '_replyToLoadClassPages' ) );    // the method is defined in one of the base classes.
-        add_action( "load_" . TaskScheduler_Registry::$aAdminPages[ 'edit_module' ], array( $this, '_replyToLoadPage' ) );
+        // add_action( 
+            // "load_" . TaskScheduler_Registry::$aAdminPages[ 'edit_module' ], 
+            // array( $this, '_replyToLoadPage' ) 
+        // );
         
         $this->setPluginSettingsLinkLabel( '' );    // pass an empty string.
         
@@ -36,8 +45,10 @@ abstract class TaskScheduler_AdminPage_EditModule_Setup extends TaskScheduler_Ad
     
     /**
      * Called when the framework page loads.
+     * 
+     * @deprecated
      */
-    public function _replyToLoadPage( $oAdminPage ) {
+/*     public function _replyToLoadPage( $oAdminPage ) {
 
         $this->addInPageTabs(
             TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],    // the target page slug
@@ -53,5 +64,5 @@ abstract class TaskScheduler_AdminPage_EditModule_Setup extends TaskScheduler_Ad
         $this->_defineForm();
         
     }
-
+ */
 }

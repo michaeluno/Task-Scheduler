@@ -9,7 +9,7 @@
  * @since        1.0.0
  */
 
-abstract class TaskScheduler_AdminPage_EditModule_Validation extends TaskScheduler_AdminPage_EditModule_Start {
+abstract class TaskScheduler_AdminPage_EditModule_Validation extends TaskScheduler_AdminPage_Wizard {
     
     /**
      * The validation handler of the wizard admin pages for the entire class.

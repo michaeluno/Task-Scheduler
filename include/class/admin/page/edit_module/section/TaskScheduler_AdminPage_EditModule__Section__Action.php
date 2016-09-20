@@ -1,53 +1,37 @@
 <?php
 /**
- * One of the base classes of the editing module options pages.
+ * Task Scheduler
  * 
- * @package     Task Scheduler
- * @copyright   Copyright (c) 2014, Michael Uno
- * @author        Michael Uno
+ * Provides an enhanced task management system for WordPress.
+ * 
+ * @package      Task Scheduler
+ * @copyright    Copyright (c) 2014-2016, Michael Uno
+ * @author       Michael Uno
  * @authorurl    http://michaeluno.jp
  * @since        1.0.0
  */
 
- /**
-  * 
-  */
-abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskScheduler_AdminPage_EditModule_Tab_UpdateModuleOptions {
+/**
+ * Defines the section.
+ * 
+ * @since   1.4.0
+ */
+class TaskScheduler_AdminPage_EditModule__Section__Action extends TaskScheduler_AdminPage_Section_Base {
 
-    protected function _defineInPageTabs() {
-                    
-        $this->addInPageTabs(
-            TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],    // the target page slug                    
-            array(    // the landing page of the editing page of action module options.
-                'tab_slug'            => 'edit_action',    
-                'title'               => __( 'Edit Action', 'task-scheduler' ),
-                'show_in_page_tab'    => false,
-            )    
-        );
-                
-        parent::_defineInPageTabs();
-        
-    }
-    
-    protected function _defineForm() {
-
-        $this->addSettingSections(
-            TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],    // the target page slug
-            array(
-                'section_id'    => 'edit_action',
-                'tab_slug'      => 'edit_action',
-                'title'         => __( 'Action', 'task-scheduler' ),
-            )            
-        );        
+    /**
+     * 
+     * 
+     * @since           1.4.0
+     */ 
+    public function addFields( $oFactory, $sSectionID ) {
             
-        // Here the 'argument' field is not set here because it is editable in the post edition page(post.php).
-        $this->addSettingFields(
-            'edit_action',    // the target section ID        
+        $oFactory->addSettingFields(
+            $sSectionID,    // the target section ID
             array(
                 'field_id'            => 'transient_key',
                 'type'                => 'text',                
                 'hidden'              => true,
-                'value'               => $this->_sTransientKey,
+                'value'               => $oFactory->sTransientKey,
             ),            
             array(
                 'field_id'            => 'routine_action',
@@ -79,20 +63,30 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
                     ),                        
                 ),                 
             )    
-        );    
+        );        
         
-        parent::_defineForm();
-        
+        $_aFieldIDsToRedefine = array(
+            'routine_action',
+            'custom_action',
+        );
+        foreach( $_aFieldIDsToRedefine as $_sFieldID ) {            
+            add_filter( 
+                'field_definition_' .  $oFactory->oProp->sClassName . '_' . $sSectionID . '_' . $_sFieldID,
+                array( $this, '_defineField_' . $_sFieldID )
+            );
+        }
+
     }
-    
+        
+
     /**
      * Redefines the 'routine_action' field of the 'edit_action' section.
      * 
      * If the saved action slug is not listed in the label array, it forces to select -1 to let it set a custom action slug.
      */     
-    public function field_definition_TaskScheduler_AdminPage_EditModule_edit_action_routine_action( $aField ) {
+    public function _defineField_routine_action( $aField ) {
         
-        $aField = $this->getRoutineActionField( $aField );
+        $aField = $this->oFactory->getRoutineActionField( $aField );
                 
         // Re-set the default value as the routine action slug is not set in the first opening screen.
         $_sRoutineActionSlug = $this->_getActionSlug();
@@ -102,6 +96,9 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
         return $aField;
                 
     }    
+        /**
+         * @return      string
+         */
         private function _getActionSlug() {
             
             if ( ! isset( $_GET[ 'post' ] ) ) {
@@ -120,12 +117,12 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
     /**
      * Redefines the 'custom_action' field of the 'edit_action' section.
      */     
-    public function field_definition_TaskScheduler_AdminPage_EditModule_edit_action_custom_action( $aField ) {
+    public function _defineField_custom_action( $aField ) {
         
         $_sRoutineActionSlug    = $this->_getActionSlug();
         $_sRoutineActionSlug    = $_sRoutineActionSlug
             ? $_sRoutineActionSlug
-            : $this->getWizardOptions( 'routine_action' );
+            : $this->oFactory->getWizardOptions( 'routine_action' );
         if ( ! array_key_exists ( $_sRoutineActionSlug, apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_action', array( -1 => '_dummy_value' ) ) ) ) {
             $aField['value']    = $_sRoutineActionSlug;
         }        
@@ -139,7 +136,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
      * @since       1.0.0
      * @callback    filter      validation_{instantiated class name}_{section ID}
      */
-    public function validation_TaskScheduler_AdminPage_EditModule_edit_action( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) {
+    public function validate( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) {
 
         $_aParams    = func_get_args() + array(
             null, null, null, null
@@ -173,9 +170,9 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
         if ( ! $_bIsValid ) {
 
             // Set the error array for the input fields.
-            $this->setFieldErrors( $_aErrors );        
-            $this->setSettingNotice( __( 'Please try again.', 'task-scheduler' ) );
-            $this->saveWizardOptions( $aInput['transient_key'], $aInput );
+            $oAdminPage->setFieldErrors( $_aErrors );        
+            $oAdminPage->setSettingNotice( __( 'Please try again.', 'task-scheduler' ) );
+            $oAdminPage->saveWizardOptions( $aInput['transient_key'], $aInput );
             return array();
             
         }
@@ -193,11 +190,11 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
         // Get the next page url
         $_sNextPageURL = $this->_getNextPageURL( $_aWizardOptions );
         $_sNextURLURLKey = remove_query_arg( array( 'transient_key', 'settings-notice', 'settings-updated' ), $_sNextPageURL );
-        $_aWizardOptions['previous_urls'] = $this->getWizardOptions( 'previous_urls' );
+        $_aWizardOptions['previous_urls'] = $oAdminPage->getWizardOptions( 'previous_urls' );
         $_aWizardOptions['previous_urls'] = is_array( $_aWizardOptions['previous_urls'] ) ? $_aWizardOptions['previous_urls'] : array();
         $_aWizardOptions['previous_urls'][ $_sNextURLURLKey ] = add_query_arg( array( 'transient_key'    =>    $aInput['transient_key'], ) );
         
-        $_aSavedValue = $this->saveWizardOptions( $_aWizardOptions['transient_key'], $_aWizardOptions );
+        $_aSavedValue = $oAdminPage->saveWizardOptions( $_aWizardOptions['transient_key'], $_aWizardOptions );
         
         // Go to the next page
         exit( wp_safe_redirect( $_sNextPageURL ) );
@@ -222,6 +219,6 @@ abstract class TaskScheduler_AdminPage_EditModule_Tab_Action extends TaskSchedul
             );
             return $_sRedirectURL;            
             
-        }
-
+        }        
+        
 }

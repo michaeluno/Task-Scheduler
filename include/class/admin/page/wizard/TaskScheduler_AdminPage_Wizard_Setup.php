@@ -65,8 +65,6 @@ abstract class TaskScheduler_AdminPage_Wizard_Setup extends TaskScheduler_AdminP
             )
         );
         
-        // add_action( "load_" . $this->oProp->sClassName, array( $this, '_replyToLoadClassPages' ) );
-
         $this->setPluginSettingsLinkLabel( '' );
         
     }
