@@ -127,8 +127,10 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
                     ),
                 );                            
             }
-
-            $_oResults = new WP_Query( $_aQueryArgs );
+            
+            $_oResults = new WP_Query( 
+                apply_filters( 'task_scheduler_filter_delete_post_query_arguments', $_aQueryArgs ) 
+            );
             return $_oResults->posts;        
                         
         }

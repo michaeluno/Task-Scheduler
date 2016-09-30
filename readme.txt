@@ -3,7 +3,7 @@ Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
 Tested up to:       4.6.1
-Stable tag:         1.4.0
+Stable tag:         1.4.1
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               access, tool, utility, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation, routine, routines
@@ -228,7 +228,8 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.4.1 =
+= 1.4.1 - 2016/09/30 =
+- Added a filter for post query arguments of the `Delete Posts` action module.
 - Fixed PHP warnings of `Declaration of TaskScheduler_Utility::uniteArrays() should be compatible with...`.
 
 = 1.4.0 - 2016/09/21 =
