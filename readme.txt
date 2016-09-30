@@ -228,6 +228,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
+= 1.4.1 =
+- Fixed PHP warnings of `Declaration of TaskScheduler_Utility::uniteArrays() should be compatible with...`.
+
 = 1.4.0 - 2016/09/21 =
 - Added the `Run PHP Script` action module.
 - Tweaked the settings UI.

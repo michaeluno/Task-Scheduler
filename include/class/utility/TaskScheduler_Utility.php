@@ -59,11 +59,12 @@ abstract class TaskScheduler_Utility extends TaskScheduler_AdminPageFramework_Fr
      * The advantage of using this method over the array unite operator or array_merge() is that it merges recursively and the null values of the preceding array will be overridden.
      *
      * @static
-     * @access            public
-     * @remark            The parameters are variadic and can add arrays as many as necessary.
-     * @return            array            the united array.
+     * @access          public
+     * @remark          The parameters are variadic and can add arrays as many as necessary.
+     * @return          array            the united array.
+     * @deprecated      1.4.1   Defined in a parent class.
      */
-    static public function uniteArrays( $arrPrecedence, $arrDefault1 ) {
+/*     static public function uniteArrays( $arrPrecedence, $arrDefault1 ) {
                 
         $arrArgs = array_reverse( func_get_args() );
         $arrArray = array();
@@ -72,7 +73,7 @@ abstract class TaskScheduler_Utility extends TaskScheduler_AdminPageFramework_Fr
             
         return $arrArray;
         
-    }
+    } */
     /**
      * Merges two multi-dimensional arrays recursively.
      * 
@@ -85,8 +86,9 @@ abstract class TaskScheduler_Utility extends TaskScheduler_AdminPageFramework_Fr
      * @param            array            $arrPrecedence            the array that overrides the same keys.
      * @param            array            $arrDefault                the array that is going to be overridden.
      * @return            array            the united array.
+     * @deprecated      1.4.1   Defined in a parent class.
      */ 
-    static public function uniteArraysRecursive( $arrPrecedence, $arrDefault ) {
+/*     static public function uniteArraysRecursive( $arrPrecedence, $arrDefault ) {
                 
         if ( is_null( $arrPrecedence ) ) $arrPrecedence = array();
         
@@ -106,7 +108,7 @@ abstract class TaskScheduler_Utility extends TaskScheduler_AdminPageFramework_Fr
             }
         }
         return $arrPrecedence;        
-    }
+    } */
     
     /**
      * Determines whether or not the ini_set() function can be used on the server.
