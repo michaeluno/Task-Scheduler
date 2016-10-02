@@ -63,6 +63,8 @@ final class TaskScheduler_Action_PostDeleter_Wizard extends TaskScheduler_Wizard
                 'title'         => __( 'Post Statuses', 'task-scheduler' ),
                 'type'          => 'checkbox',
                 'label'         => TaskScheduler_WPUtility::getRegisteredPostStatusLabels(),
+                'select_all_button'  => true,
+                'select_none_button' => true,
                 'default'       => array( 'trash' => 1 ),                
                 'description'   => __( 'Select post statuses with witch the posts get deleted.', 'task-scheduler' ),
             ),            
@@ -83,7 +85,10 @@ final class TaskScheduler_Action_PostDeleter_Wizard extends TaskScheduler_Wizard
         $_bIsValid = true;
         $_aErrors = array();    
 
-        $_aCheckedPostStatuses = isset( $aInput['post_statuses_of_deleting_posts'] ) ? $aInput['post_statuses_of_deleting_posts'] : array();
+        $_aCheckedPostStatuses = isset( $aInput[ 'post_statuses_of_deleting_posts' ] ) 
+            ? $aInput[ 'post_statuses_of_deleting_posts' ] 
+            : array();
+            
         $_aCheckedPostStatuses = array_filter( $_aCheckedPostStatuses );    // drop unchecked items.
         if ( empty( $_aCheckedPostStatuses ) ) {
 
