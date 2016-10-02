@@ -228,6 +228,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
+= 1.4.2 =
+- Fixed PHP warnigns of `Notice: Undefined property: stdClass::$delete_posts class-wp-posts-list-table.php on line 403` in the `Log` page.
+
 = 1.4.1 - 2016/09/30 =
 - Added a filter for post query arguments of the `Delete Posts` action module.
 - Fixed PHP warnings of `Declaration of TaskScheduler_Utility::uniteArrays() should be compatible with...`.

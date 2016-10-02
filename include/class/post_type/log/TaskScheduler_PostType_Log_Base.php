@@ -56,8 +56,8 @@ abstract class TaskScheduler_PostType_Log_Base extends TaskScheduler_AdminPageFr
                 'show_admin_column'       => true,
                 'screen_icon'             => TaskScheduler_Registry::getPluginURL( "/asset/image/screen_icon_32x32.png" ),
                 'exclude_from_search'     => true,
-                // 'show_table_filter'    => false,    // not working.
-                // 'map_meta_cap'            => true,  
+                // 'show_table_filter'    => false,    // not working.                
+                
                 'capability_type'         => 'post',
                 'capabilities' => array(
                     'create_posts'  => is_multisite()
@@ -79,6 +79,14 @@ abstract class TaskScheduler_PostType_Log_Base extends TaskScheduler_AdminPageFr
                 ),   
                 
                 'submenu_order_manage'  => 30,  // 1.4.0+
+                
+                /**
+                 * To disable a warning, `Notice: Undefined property: stdClass::$delete_posts class-wp-posts-list-table.php on line 403`.
+                 * @see         https://core.trac.wordpress.org/ticket/31500 
+                 * @since       1.4.2
+                 */
+                'map_meta_cap'            => true,  
+                
             )        
         );
     
