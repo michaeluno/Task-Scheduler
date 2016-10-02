@@ -87,15 +87,18 @@ class TaskScheduler_Action_PostDeleter extends TaskScheduler_Action_Base {
                 // 'occurrence'                         => 'constant',            // must be 'constant' so that the thread will stay forever until the job gets done.
                 'parent_routine_log_id'                 => $oRoutine->log_id,
                 // module specific arguments
-                'post_type_of_deleting_posts'           => $_aRoutineArguments['post_type_of_deleting_posts'],
-                'post_statuses_of_deleting_posts'       => $_aRoutineArguments['post_statuses_of_deleting_posts'],
-                'taxonomy_of_deleting_posts'            => $_aRoutineArguments['taxonomy_of_deleting_posts'],
-                'term_ids_of_deleting_posts'            => isset( $_aRoutineArguments['term_ids_of_deleting_posts'] ) 
+                'post_type_of_deleting_posts'           => $_aRoutineArguments[ 'post_type_of_deleting_posts' ],
+                'post_statuses_of_deleting_posts'       => $_aRoutineArguments[ 'post_statuses_of_deleting_posts' ],
+                'taxonomy_of_deleting_posts'            => $_aRoutineArguments[ 'taxonomy_of_deleting_posts' ],
+                'term_ids_of_deleting_posts'            => isset( $_aRoutineArguments[ 'term_ids_of_deleting_posts' ] ) 
                     ? $_aRoutineArguments['term_ids_of_deleting_posts'] 
                     : null,
-                'number_of_posts_to_delete_per_routine' => $_aRoutineArguments['number_of_posts_to_delete_per_routine'] 
+                'number_of_posts_to_delete_per_routine' => $_aRoutineArguments[ 'number_of_posts_to_delete_per_routine' ] 
                     ? $_aRoutineArguments['number_of_posts_to_delete_per_routine'] 
                     : null,
+                
+                // 1.4.2+
+                'elapsed_time'                          => $this->getElementAsArray( $_aRoutineArguments, 'elapsed_time' ),
             )            
         );
 

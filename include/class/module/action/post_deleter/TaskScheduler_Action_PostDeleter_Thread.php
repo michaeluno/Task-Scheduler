@@ -39,7 +39,9 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
     public function doAction( $isExitCode, $oThread ) {
         
         $_oTask = $oThread->getOwner();
-        if ( ! is_object( $_oTask ) ) { return 1; }
+        if ( ! is_object( $_oTask ) ) { 
+            return 1; 
+        }
 
         $_aThreadMeta = $oThread->getMeta();
         if ( 
@@ -47,7 +49,8 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
                 $_aThreadMeta[ 'post_type_of_deleting_posts' ],
                 $_aThreadMeta[ 'post_statuses_of_deleting_posts' ],
                 $_aThreadMeta[ 'taxonomy_of_deleting_posts' ],
-                $_aThreadMeta[ 'term_ids_of_deleting_posts' ]
+                $_aThreadMeta[ 'term_ids_of_deleting_posts' ],
+                $_aThreadMeta[ 'elapsed_time' ]
             )
         ) {
             $_oTask->log( 'Required keys are missing.', $oThread->parent_routine_log_id );
@@ -55,15 +58,14 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
         }
 
         // Process up to 20 posts by default.
-        $_iNumberOfPostsToDelete = isset( $_aThreadMeta[ 'number_of_posts_to_delete_per_routine' ] )
-            ? $_aThreadMeta[ 'number_of_posts_to_delete_per_routine' ]
-            : 20;
-            
-        $_aPostIDsToDelete = $this->_getPostIDs(
+        $_iNumberOfPostsToDelete = $this->getElement( $_aThreadMeta, 'number_of_posts_to_delete_per_routine', 20 );
+        
+        $_aPostIDsToDelete = $this->_getPostIDsToDelete(
             $_aThreadMeta[ 'post_type_of_deleting_posts' ],
             $_aThreadMeta[ 'post_statuses_of_deleting_posts' ],
             $_aThreadMeta[ 'taxonomy_of_deleting_posts' ],
             $_aThreadMeta[ 'term_ids_of_deleting_posts' ],
+            $_aThreadMeta[ 'elapsed_time' ],
             $_iNumberOfPostsToDelete + 1    
         );
         
@@ -104,21 +106,79 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
     }
         
         /**
-         * Returns an array of post IDs 
+         * Returns an array of post IDs to be deleted.
+         * 
+         * @since       unknown
+         * @since       1.4.2       Added the `$aElapsedTime` parameter.
+         * @return      array       An array holding post IDs to be deleted.
          */
-        private function _getPostIDs( $asPostType, $asPostStatus, $sTaxonomy=-1, $aTerms=array(), $iLimit=200 ) {
+        private function _getPostIDsToDelete( $asPostType, $asPostStatus, $sTaxonomy=-1, $aTerms=array(), $aElapsedTime=array(), $iLimit=200 ) {
             
             // Construct the query argument array.
             $_aQueryArgs = array(
                 'post_type'      => $asPostType,
                 'post_status'    => array_keys( array_filter( $asPostStatus ) ),
-                'posts_per_page' => $iLimit,   // -1 for all            
-                'orderby'        => 'date ID', // another option: 'ID',    
-                'order'          => 'ASC', // 'DESC': the newest comes first, 'ASC': the oldest comes first
-                'fields'         => 'ids', // return only post IDs by default.
+                'posts_per_page' => $iLimit,   // `-1` for all            
+                'orderby'        => 'date ID', // another option: `ID`,
+                'order'          => 'ASC',     // 'DESC': the newest comes first, `ASC`: the oldest comes first
+                'fields'         => 'ids',     // return only post IDs by default.
             );
-            if ( $sTaxonomy && '-1' !== ( string ) $sTaxonomy && ! empty( $aTerms ) ) {
-                $_aQueryArgs['tax_query'] = array(
+            $_aQueryArgs = $this->_getTaxonomyQueries( $_aQueryArgs, $sTaxonomy, $aTerms );
+            $_aQueryArgs = $this->_getDateQueries( $_aQueryArgs, $aElapsedTime );            
+            $_oResults   = new WP_Query( 
+                apply_filters( 'task_scheduler_filter_delete_post_query_arguments', $_aQueryArgs ) 
+            );
+            return $_oResults->posts;        
+                        
+        }
+            /**
+             * @since       1.4.2
+             * @return      array       An updated post query argument array.
+             */
+            private function _getDateQueries( $aQueryArgs, $aElapsedTime ) {
+                
+                // For v1.4.1 or below, the option is not set; therefore, the value shouod be empty.
+                if ( empty( $aElapsedTime ) ) {
+                    return $aQueryArgs;
+                }
+                
+                // If the user sets `0` to the `size` argument, do not add any criteia.
+                $_iSize = intval( $this->getElement( $aElapsedTime, array( 'size' ), 0 ) );
+                if ( ! $_iSize ) {
+                    return $aQueryArgs;
+                }
+                
+                // Otherwise, add the `date_query` argument.
+                $_sUnit        = $this->getElement( $aElapsedTime, array( 'unit' ), 'days' );              
+                $_sElapsedTime = ( -1 * $_iSize ) . ' ' . $_sUnit;
+                $aQueryArgs[ 'date_query' ] = array(
+                    'before' => $this->getSiteReadableDate( 
+                        strtotime( $_sElapsedTime ),    // timestamp
+                        'Y-m-d h:i',                    // format
+                        true                            // GMT adjusting
+                    ),
+                );
+                return $aQueryArgs;
+                
+            }
+        
+            /**
+             * @since       1.4.2
+             * @return      array       An updated post query argument array.
+             */
+            private function _getTaxonomyQueries( $aQueryArgs, $sTaxonomy, $aTerms ) {
+                
+                if ( empty( $aTerms ) ) {
+                    return $aQueryArgs;
+                }
+                if ( ! $sTaxonomy ) {
+                    return $aQueryArgs;
+                }
+                if ( '-1' === ( string ) $sTaxonomy ) {
+                    return $aQueryArgs;
+                }
+                
+                $aQueryArgs[ 'tax_query' ] = array(
                     'relation'     => 'AND',
                     array(
                         'taxonomy' => $sTaxonomy,
@@ -126,13 +186,8 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
                         'terms'    => array_keys( array_filter( $aTerms ) ),
                     ),
                 );                            
+                return $aQueryArgs;
+                
             }
-            
-            $_oResults = new WP_Query( 
-                apply_filters( 'task_scheduler_filter_delete_post_query_arguments', $_aQueryArgs ) 
-            );
-            return $_oResults->posts;        
-                        
-        }
         
 }

@@ -72,7 +72,25 @@ final class TaskScheduler_Action_PostDeleter_Wizard_3 extends TaskScheduler_Wiza
                     'min'    => 1,
                     'step'   => 1,
                 ),
-            ),                    
+            ),   
+            array(    
+                'field_id'          => 'elapsed_time',
+                'title'             => __( 'Elapsed Time', 'task-scheduler' ),
+                'type'              => 'size',
+                'units'             => array( 
+                    'hours'   => __( 'hour(s)', 'task-scheduler' ),
+                    'days'    => __( 'day(s)', 'task-scheduler' ),         
+                ),     
+                'default' => array(  
+                    'size'      => 0, 
+                    'unit'      => 'day'  
+                ),
+                'description'       => __( 'Matched posts will be deleted only if they are older than the set time.', 'task-scheduler' )
+                    . ' ' . __( 'Set <code>0</code> to simply delete matched posts with any date.', 'task-scheduler' ),
+                'attributes'        => array(
+                    'step'   => 1,
+                ),
+            ),                
         );
         
     }    
