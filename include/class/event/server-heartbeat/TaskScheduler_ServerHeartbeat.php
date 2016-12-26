@@ -243,13 +243,13 @@ final class TaskScheduler_ServerHeartbeat {
     static public function pulsate() {
         
         $_sClassName = get_class();    
-        
+
         // If the page load is not in the background, just check to resume the heartbeat.
         if ( ! self::isBackground() ) {
             add_action( self::$sServerHeartbeatActionHook, array( $_sClassName, '_replyToCheck' ) );
             return;
         }        
-        
+
         // At this point, the page is loaded in the background. Tell WordPress this is a background task by setting the Cron flag.
         self::___setBackgroundFlags();
         

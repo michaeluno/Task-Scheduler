@@ -36,6 +36,9 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
         if ( ! defined( 'DOING_CRON' ) ) { 
             define( 'DOING_CRON', true );
         }
+        if ( ! defined( 'WP_USE_THEMES' ) ) {
+            define( 'WP_USE_THEMES', false );
+        }
         ignore_user_abort( true );
     
         // Let other third-party scripts load their necessary components by hooking the 'init' action instead of calling the method right here.
@@ -72,16 +75,20 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
         }
 
         do_action( 'task_scheduler_action_after_calling_routine', $_oRoutine );
-        $this->_doRoutine( 
-            $_oRoutine,
-            isset( $_COOKIE[ 'server_heartbeat_scheduled_time' ] ) 
-                ? $_COOKIE[ 'server_heartbeat_scheduled_time' ] 
-                : 0
-        );
+        $this->_doRoutine( $_oRoutine, $this->___getScheduledTime() );
         exit();
     
     }
-        
+        /**
+         * @return      double      Cast `double` as the cookie values are string.
+         * @since       1.4.3
+         */
+        private function ___getScheduledTime() {
+            return isset( $_COOKIE[ 'server_heartbeat_scheduled_time' ] )
+                ? ( double ) $_COOKIE[ 'server_heartbeat_scheduled_time' ]
+                : ( double ) 0;
+        }
+
     /**
      * Do the routine
      * 
@@ -89,19 +96,16 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
      */    
     private function _doRoutine( $oRoutine, $nScheduledTime ) {
 
-        // 1.3.3+ Sanitize the parameter value as the cookies now all passes as a string.
-        $nScheduledTime = ( $nScheduledTime == ( integer ) $nScheduledTime ) 
-            ? ( integer ) $nScheduledTime : ( float ) $nScheduledTime;
-    
         // Set the max execution time and wait until the exact time.
-        $_nSleepSeconds          = $this->_getRequiredSleepSeconds( $oRoutine, $nScheduledTime );
-        if ( $_nSleepSeconds > TaskScheduler_Option::get( array( 'server_heartbeat', 'interval' ) ) ) {
+        $_dSleepSeconds            = $this->_getRequiredSleepSeconds( $oRoutine, $nScheduledTime );
+        $_dServerheartbeatInterval = ( double ) TaskScheduler_Option::get( array( 'server_heartbeat', 'interval' ) );
+        if ( $_dSleepSeconds > $_dServerheartbeatInterval ) {
             // The sleep duration is too long.
             do_action( "task_scheduler_action_cancel_routine" , $oRoutine );
             return;             
         }
-        $_iActionLockDuration    = $this->_setMaxExecutionTime( $oRoutine, $_nSleepSeconds );
-        $this->_sleep( $_nSleepSeconds );
+        $_iActionLockDuration    = $this->_setMaxExecutionTime( $oRoutine, $_dSleepSeconds );
+        $this->_sleep( $_dSleepSeconds );
     
         // Check the action lock.
         $_sActionLockKey = $this->_sTransientPrefix . $oRoutine->ID;
@@ -127,58 +131,58 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
         /**
          * Returns the required sleep duration in seconds.
          * 
-         * @return    float    The required sleep duration in seconds.
+         * @return    double    The required sleep duration in seconds.
          */
         private function _getRequiredSleepSeconds( $oRoutine, $nNextRunTimeStamp ) {
             
-            $nNextRunTimeStamp = $this->_getNextRunTimeStamp( $nNextRunTimeStamp, $oRoutine );            
-            $_nSleepSeconds    = ( $nNextRunTimeStamp - microtime( true ) ) + 0;    // plus zero will convert the value to numeric.
-            $_nSleepSeconds    = $_nSleepSeconds <= 0 
+            $_dNextRunTimeStamp = $this->_getNextRunTimeStamp( $nNextRunTimeStamp, $oRoutine );
+            $_nSleepSeconds     = ( $_dNextRunTimeStamp - microtime( true ) ) + 0;    // plus zero will convert the value to numeric.
+            $_nSleepSeconds     = $_nSleepSeconds <= 0
                 ? 0 
                 : $_nSleepSeconds;
-            return $_nSleepSeconds;
+            return ( double ) $_nSleepSeconds;
             
         }        
             /**
-             * @return      numeric
+             * @return      double
              * @since       1.1.1
              */
             private function _getNextRunTimeStamp( $nNextRunTimeStamp, $oRoutine ) {
                 
                 if ( $nNextRunTimeStamp ) {
-                    return $nNextRunTimeStamp;
+                    return ( double ) $nNextRunTimeStamp;
                 }
                
                 // If the routine next run time is not set use the value of the task
                 $_oTask   = TaskScheduler_Routine::getInstance( $oRoutine->owner_task_id );
                 return isset( $_oTask->_next_run_time )
-                    ? $_oTask->_next_run_time
-                    : $nNextRunTimeStamp;
+                    ? ( double ) $_oTask->_next_run_time
+                    : ( double ) $nNextRunTimeStamp;
              
             }
             
         /**
          * Sets the required maximum script execution time.
          * 
-         * @return    numeric    The required duration for the action lock, 
+         * @return    integer    The required duration for the action lock,
          * which represents the expected time duration (in seconds) that the routine completes.
          */
         private function _setMaxExecutionTime( $oRoutine, $nSecondsToSleep ){
                                 
             // Make sure the script can sleep plus execute the action.
             $_iExpectedTaskExecutionTime    = ( int ) $oRoutine->_max_execution_time ? $oRoutine->_max_execution_time : 30;    // avoid 0 because it is used for the transient duration and if 0 the transient won't expire.
-            $_nElapsedSeconds                = timer_stop( 0, 6 );
-            $_nRequiredExecutionDuration    = ceil( $nSecondsToSleep ) + $_nElapsedSeconds + $_iExpectedTaskExecutionTime;
+            $_dElapsedSeconds               = ( double ) timer_stop( 0, 6 );
+            $_nRequiredExecutionDuration    = ceil( $nSecondsToSleep ) + $_dElapsedSeconds + $_iExpectedTaskExecutionTime;
             
             // Some servers disable this function.
             if ( ! TaskScheduler_Utility::canUseIniSet() ) {
-                return $_iExpectedTaskExecutionTime;
+                return ( integer ) $_iExpectedTaskExecutionTime;
             }            
             
             // If the server set max execution time is 0, the script can continue endlessly.
             $_iServerAllowedMaxExecutionTime    = TaskScheduler_Utility::getServerAllowedMaxExecutionTime( 30 );
             if ( 0 === $_iServerAllowedMaxExecutionTime || '0' === $_iServerAllowedMaxExecutionTime ) {
-                return $_iExpectedTaskExecutionTime;
+                return ( integer ) $_iExpectedTaskExecutionTime;
             }
             
             // If the user sets 0 to the task max execution time option, set the ini setting to 0.
@@ -191,22 +195,21 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
                 @ini_set( 'max_execution_time', $_nRequiredExecutionDuration );
             }    
             
-            return $_iExpectedTaskExecutionTime;
+            return ( integer ) $_iExpectedTaskExecutionTime;
             
         }    
 
         /**
-         * Sleeps.
+         * Sleeps until the next scheduled time
          */
         private function _sleep( $nSleepSeconds ) {
 
-            // Sleep until the next scheduled time
             if ( $nSleepSeconds <= 0 ) { 
                 return; 
             }
             $_iSleepDurationMicroSeconds = ceil( $nSleepSeconds ) * 1000000;
             if ( $_iSleepDurationMicroSeconds > 0 ) {
-                usleep( $_iSleepDurationMicroSeconds ); 
+                usleep( ( integer ) $_iSleepDurationMicroSeconds );
             }
 
         }                
