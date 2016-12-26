@@ -2,7 +2,7 @@
 Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
-Tested up to:       4.6.1
+Tested up to:       4.7.0
 Stable tag:         1.4.2
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
@@ -228,9 +228,12 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
+= 1.4.3 -2016/12/27 =
+- Optimized the performance of server-heartbeat.
+
 = 1.4.2 - 2016/10/03 =
 - Added the `Elapsed Time` option for the `Delete Posts` action module.
-- Fixed PHP warnigns of `Notice: Undefined property: stdClass::$delete_posts class-wp-posts-list-table.php on line 403` in the `Log` page.
+- Fixed PHP warnings of `Notice: Undefined property: stdClass::$delete_posts class-wp-posts-list-table.php on line 403` in the `Log` page.
 - Tweaked the settings UI.
 
 = 1.4.1 - 2016/09/30 =
