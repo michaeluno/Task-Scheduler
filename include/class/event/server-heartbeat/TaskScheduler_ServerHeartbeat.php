@@ -99,11 +99,14 @@ final class TaskScheduler_ServerHeartbeat {
     }    
     /**
      * Retrieves the interval.
+     * @return      integer
      */
     static public function getInterval() {
             
         static $_iCached;
-        $_iCached = isset( $_iCached ) ? $_iCached : ( int ) self::_getInfo( 'interval' );
+        $_iCached = isset( $_iCached )
+            ? $_iCached
+            : ( int ) self::_getInfo( 'interval' );
         return ( int ) apply_filters( 'task_scheduler_filter_serverheartbeat_interval', $_iCached );
         
     }
@@ -248,17 +251,14 @@ final class TaskScheduler_ServerHeartbeat {
         }        
         
         // At this point, the page is loaded in the background. Tell WordPress this is a background task by setting the Cron flag.
-        if ( ! defined( 'DOING_CRON' ) ) { 
-            define( 'DOING_CRON', true ); 
-        } 
-        ignore_user_abort( true );
+        self::___setBackgroundFlags();
         
         // Another heartbeat is already running. (this sometimes occurs but not sure why )
         if ( self::isSleeping() ) {
             return;
         }
                 
-        // If the transient does not exists, it means the user has stopped the beat.
+        // If the transient does not exist, it means the user has stopped the beat.
         if ( false === self::_getInfo() ) {
             self::stop();
             
@@ -274,6 +274,20 @@ final class TaskScheduler_ServerHeartbeat {
         add_action( 'wp_loaded', array( $_sClassName, '_replyToSleepAndExit' ), 20 );
                 
     }
+        /**
+         * Tells WordPress this is a background task.
+         * @since   1.4.3
+         * @return  void
+         */
+        static private function ___setBackgroundFlags() {
+            if ( ! defined( 'DOING_CRON' ) ) {
+                define( 'DOING_CRON', true );
+            }
+            if ( ! defined( 'WP_USE_THEMES' ) ) {
+                define( 'WP_USE_THEMES', false );
+            }
+            ignore_user_abort( true );
+        }
         
         /**
          * Checks the heart beat.
@@ -296,12 +310,16 @@ final class TaskScheduler_ServerHeartbeat {
                         
             $_iInterval                 = self::getInterval();
             $_iReservedSeconds          = 3;    // wp_remove_get() sometimes stalls
-            $_nElapsedTime              = timer_stop( 0, 6 );
-            $_nSleepDuration            = ( $_iInterval - $_nElapsedTime ) < 0 ? 0 : $_iInterval - $_nElapsedTime;    // to not allow a negative value.
-            $_iMaxExecutionTime         = function_exists( 'ini_get' ) ? ini_get( 'max_execution_time' ) : 25;
+            $_nElapsedTime              = ( float ) timer_stop( 0, 6 );
+            $_nSleepDuration            = ( $_iInterval - $_nElapsedTime ) < 0
+                ? 0
+                : $_iInterval - $_nElapsedTime;    // to not allow a negative value.
+            $_iMaxExecutionTime         = function_exists( 'ini_get' )
+                ? ( integer ) ini_get( 'max_execution_time' )
+                : 25;
             $_iSecondsToLimit           = $_iMaxExecutionTime - ceil( $_nElapsedTime );
             $_nEstimatedRequiredTime    = $_nSleepDuration + $_iReservedSeconds;
-            
+
             // If the estimated required time for the rest of the script execution is longer then the PHP max-execution time, 
             // attempt to override it.
             if ( $_iSecondsToLimit < $_nEstimatedRequiredTime ) {
@@ -312,7 +330,8 @@ final class TaskScheduler_ServerHeartbeat {
                 } else {
                     // Shorten the sleep time.
                     $_nSleepDuration = $_iSecondsToLimit - $_iReservedSeconds;    
-                }        
+                }
+
             }                             
             
             self::_sleep( $_nSleepDuration );
@@ -322,10 +341,12 @@ final class TaskScheduler_ServerHeartbeat {
         } 
             /**
              * Sleeps.
+             *
+             * Give the interval - for example, to wait for 2 seconds, pass 2000000.
              */
             static private function _sleep( $nSleepDuration ) {
-                
-                // Give the interval - for example, to wait for 2 seconds, pass 2000000. 
+
+                $nSleepDuration = ( float ) $nSleepDuration;
                 if ( $nSleepDuration <= 0 ) { 
                     return; 
                 }
