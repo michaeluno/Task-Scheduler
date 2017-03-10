@@ -37,7 +37,7 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
      * Return 'NOT_DELETE' not to delete the thread to continue, otherwise, to delete the thread.
      */
     public function doAction( $isExitCode, $oThread ) {
-        
+
         $_oTask = $oThread->getOwner();
         if ( ! is_object( $_oTask ) ) { 
             return 1; 
@@ -49,7 +49,7 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
                 $_aThreadMeta[ 'post_type_of_deleting_posts' ],
                 $_aThreadMeta[ 'post_statuses_of_deleting_posts' ],
                 $_aThreadMeta[ 'taxonomy_of_deleting_posts' ],
-                $_aThreadMeta[ 'term_ids_of_deleting_posts' ],
+                // $_aThreadMeta[ 'term_ids_of_deleting_posts' ], // 1.4.4b Some tasks do not have this option.
                 $_aThreadMeta[ 'elapsed_time' ]
             )
         ) {
@@ -78,7 +78,7 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
         // Divide the found posts by 20 - this should creates two chunks, the first part to delete and the rest to check if there are remained posts.
         $_aChunks_PostIDs = array_chunk( $_aPostIDsToDelete, $_iNumberOfPostsToDelete );
         $_bHasRemain      = isset( $_aChunks_PostIDs[ 1 ] ) && 0 < count( $_aChunks_PostIDs[ 1 ] );
-        
+
         // Do delete posts - we are going to delete up to 20 items to prevent exhausting the PHP max execution time.
         $_aDeleted = array();
         foreach( $_aChunks_PostIDs[ 0 ] as $_iPostID ) {

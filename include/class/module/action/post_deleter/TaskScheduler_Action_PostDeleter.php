@@ -69,7 +69,7 @@ class TaskScheduler_Action_PostDeleter extends TaskScheduler_Action_Base {
         ) {
             return 0;    // failed
         }
-        
+
         if ( $oRoutine->hasThreads() ) {
             $oRoutine->log( 'There is a thread already.' );
             return 0;
@@ -106,7 +106,6 @@ class TaskScheduler_Action_PostDeleter extends TaskScheduler_Action_Base {
         if ( $_iThreadTaskID ) {            
             do_action( 'task_scheduler_action_check_shceduled_actions' );
         }
-        
         return null;    // exit code: do not log; it will be, when the threads finish.
         
     }

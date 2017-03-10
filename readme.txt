@@ -228,7 +228,10 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.4.3 -2016/12/27 =
+= 1.4.4 =
+- Fixed a bug in the Delete Posts action module that some posts without taxonomy items could not be deleted.
+
+= 1.4.3 - 2016/12/27 =
 - Optimized the performance of server-heartbeat.
 
 = 1.4.2 - 2016/10/03 =
