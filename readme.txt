@@ -2,11 +2,11 @@
 Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
-Tested up to:       4.7.0
-Stable tag:         1.4.3
+Tested up to:       4.7.3
+Stable tag:         1.4.4
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
-Tags:               access, tool, utility, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, cron, automation, routine, routines
+Tags:               access, tool, utility, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, delete posts, cron, automation, routine, routines
 
 Provides a task management system.
 
@@ -228,7 +228,7 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.4.4 =
+= 1.4.4 - 2017/03/11 =
 - Fixed a bug in the Delete Posts action module that some posts without taxonomy items could not be deleted.
 
 = 1.4.3 - 2016/12/27 =
