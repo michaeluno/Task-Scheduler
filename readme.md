@@ -29,10 +29,6 @@ Task Scheduler is an open source WordPress plugin that provides easier UI for re
 
 The latest development version can be downloaded [here](https://github.com/michaeluno/admin-page-framework/archive/master.zip).
 
-It includes the demo plugin which uses the framework and is ready to be installed as a WordPress plugin. Just upload the unpacked folder to the `...\wp-content\plugins` folder then activate it. The sample pages will be created.
-
-## Install ##
-
 1. Upload **`task-scheduler.php`** and other files compressed in the zip folder to the **`/wp-content/plugins/`** directory.,
 2. Activate the plugin through the `Plugins` menu in WordPress.
 
