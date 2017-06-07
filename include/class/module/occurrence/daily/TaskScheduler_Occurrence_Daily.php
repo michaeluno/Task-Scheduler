@@ -54,22 +54,12 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
         }
 
         return $this->_getClosestSetTimestamp(
-            $this->_formatLastRunTime( $oTask->_last_run_time ),
             $this->_formatTimesArray( $_aOptions[ 'times' ] ),
             $this->_formatDaysArray( $_aOptions[ 'days' ] )
         );
         
     }
-        /**
-         * Formats the last run time.
-         * @return      integer     unix timestamp without GMT offset.
-         */
-        private function _formatLastRunTime( $nLastRunTime ) {
-            $_iLastRunTime = round( $nLastRunTime );
-            return $_iLastRunTime 
-                ? $_iLastRunTime
-                : time();
-        }
+
         /**
          * Sort the time array and re-index the elements.
          * 
@@ -96,19 +86,23 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
          * 
          * @param       integer|float   The timestamp of the last run time of the task. Not GMT calculated.
          * @return      integer         The closest set timestamp without GMT offset.
+         * @since       unknown
+         * @since       1.4.5           Removed the $nLastRunTime parameter as it is replaced with the current time generated with `time()`.
          */
-        private function _getClosestSetTimestamp( $nLastRunTimestamp, array $aTimes, array $aDays ) {
+        private function _getClosestSetTimestamp( array $aTimes, array $aDays ) {
+
+            $_iCurrentTime = time();
 
             // If today's day is checked,
             if ( $this->_isTodayChecked( $aDays ) ) {
-                $_iTodaysClosestTime = $this->_getTodaysItem( $nLastRunTimestamp, $aTimes );
+                $_iTodaysClosestTime = $this->_getTodaysItem( $_iCurrentTime, $aTimes );
                 if ( $_iTodaysClosestTime ) {
                     return $_iTodaysClosestTime;
                 }
             }
 
             // This value is not GMT-calculated.
-            $_iNextRunTime = $this->_getNextClosestTime( $nLastRunTimestamp, $aDays, $aTimes );
+            $_iNextRunTime = $this->_getNextClosestTime( $_iCurrentTime, $aDays, $aTimes );
             return $_iNextRunTime;
             
         }
@@ -189,15 +183,10 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
             sort( $aDays );   
 
             $_iDaysToClosestDay     = $this->_getNumberOfDaysToClosestDay( $_iTheDay, $aDays );
-                   
-            // $this->_getTodaysZeroOclockTimestamp() // 
-            return // strtotime( '0:00:00' )   // today's 0 o'clock timestamp without GMT
-                $this->_getTodaysZeroOclockTimestamp()
+
+            return $this->_getTodaysZeroOclockTimestamp()
                 + ( $_iDaysToClosestDay * 3600 * 24 )   // seconds to the closest day
                 + $this->_getSmallestTimeInSeconds( $aTimes ) // this value is presumed to be calculated with GMT so the GMT offset must be removed
-                // + $this->_getGMTRemovedTimestamp(
-                    // $this->_getSmallestTimeInSeconds( $aTimes ) // this value is presumed to be calculated with GMT so the GMT offset must be removed
-                // )
                 ;
             
         }
@@ -228,7 +217,7 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
                 }
                 
                 // Not found. Returns the number of days of one week (zero-based).
-                return 6;
+                return 7;
                 
             }
        

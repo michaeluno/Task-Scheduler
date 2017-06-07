@@ -228,6 +228,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
+= 1.4.5 =
+- Fixed a bug with the `Daily` occurrence type that did not set the correct time for cases of 7 days ahead.
+
 = 1.4.4 - 2017/03/11 =
 - Fixed a bug in the Delete Posts action module that some posts without taxonomy items could not be deleted.
 
