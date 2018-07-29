@@ -27,7 +27,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
     public function __construct() {
 
         add_action( 'task_scheduler_action_spawn_routine', array( $this, '_replyToSpawnTheRoutine' ), 10, 3 );
-        add_action( 'task_scheduler_action_check_shceduled_actions', array( $this, '_replyToCheckScheduledActions' ) );
+        add_action( 'task_scheduler_action_check_scheduled_actions', array( $this, '_replyToCheckScheduledActions' ) );
         
         // If doing actions, return.
         if ( isset( $_COOKIE[ 'server_heartbeat_action' ] ) ) {

@@ -53,7 +53,7 @@ class TaskScheduler_AdminPage_Wizard__Tab__CreateTask extends TaskScheduler_Admi
             $_oTask    = TaskScheduler_Routine::getInstance( $_iPostID );
             $_oTask->setNextRunTime();
             // @todo: perform the heartbeat only if the next scheduled time is very close.
-            do_action( 'task_scheduler_action_check_shceduled_actions' );
+            do_action( 'task_scheduler_action_check_scheduled_actions' );
             $oFactory->setSettingNotice( __( 'A task has been created.', 'task-scheduler' ), 'updated' );
         }
         

@@ -71,7 +71,7 @@ class TaskScheduler_Action_RoutineLogDeleter extends TaskScheduler_Action_Base {
         
         // Check actions in the background.
         $oRoutine->setMeta( '_routine_status', 'queued' );
-        do_action( 'task_scheduler_action_check_shceduled_actions' );
+        do_action( 'task_scheduler_action_check_scheduled_actions' );
         
         return 'NOT_DELETE';   
                 

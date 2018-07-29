@@ -98,7 +98,7 @@ class TaskScheduler_Action_PostDeleter_Thread extends TaskScheduler_Action_Base 
         }
         
         // Keep continuing. The system will not delete the thread if 'NOT_DELETE' is passed as the exit code.
-        do_action( 'task_scheduler_action_check_shceduled_actions' );
+        do_action( 'task_scheduler_action_check_scheduled_actions' );
         $oThread->setMeta( '_next_run_time', microtime( true ) );
         $oThread->setMeta( '_routine_status','queued' );
         return 'NOT_DELETE';

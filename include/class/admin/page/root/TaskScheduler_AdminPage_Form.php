@@ -164,7 +164,7 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
      */
     public function submit_TaskScheduler_AdminPage_task_listing_table_check_actions_now() {    
         
-        do_action( 'task_scheduler_action_check_shceduled_actions' );
+        do_action( 'task_scheduler_action_check_scheduled_actions' );
         $this->setSettingNotice( __( 'Checking actions now.', 'task-scheduler' ), 'updated' );
         
     }

@@ -91,7 +91,7 @@ class TaskScheduler_Action_PHPScript extends TaskScheduler_Action_Base {
         
         // Check actions in the background.
         if ( $_iThreads ) {
-            do_action( 'task_scheduler_action_check_shceduled_actions' );
+            do_action( 'task_scheduler_action_check_scheduled_actions' );
         }
         
         return null;    // exit code: do not log; it will be, when the threads finish.

@@ -79,7 +79,7 @@ class TaskScheduler_Event_Log {
             if ( $_iRoutineID ) {
                 $_oRoutine = TaskScheduler_Routine::getInstance( $_iRoutineID );
                 $_oRoutine->setNextRunTime();
-                do_action( 'task_scheduler_action_check_shceduled_actions' );
+                do_action( 'task_scheduler_action_check_scheduled_actions' );
             }        
 
         } 
