@@ -54,12 +54,23 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
         }
 
         return $this->_getClosestSetTimestamp(
+            $this->___getLastRunTimeFormatted( $oTask->_last_run_time ),
             $this->_formatTimesArray( $_aOptions[ 'times' ] ),
             $this->_formatDaysArray( $_aOptions[ 'days' ] )
         );
         
     }
-
+        /**
+         * Formats the last run time.
+         * @return      integer     unix timestamp without GMT offset.
+         * @since       1.4.6
+         */
+        private function ___getLastRunTimeFormatted( $nLastRunTime ) {
+            $_iLastRunTime = round( $nLastRunTime );
+            return $_iLastRunTime
+                ? $_iLastRunTime
+                : time();
+        }
         /**
          * Sort the time array and re-index the elements.
          * 
@@ -88,21 +99,20 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
          * @return      integer         The closest set timestamp without GMT offset.
          * @since       unknown
          * @since       1.4.5           Removed the $nLastRunTime parameter as it is replaced with the current time generated with `time()`.
+         * @since       1.4.6           Revived the $nLastRunTime parameter as using time() always caused double spawning routines.
          */
-        private function _getClosestSetTimestamp( array $aTimes, array $aDays ) {
-
-            $_iCurrentTime = time();
+        private function _getClosestSetTimestamp( $nLastRunTime, array $aTimes, array $aDays ) {
 
             // If today's day is checked,
             if ( $this->_isTodayChecked( $aDays ) ) {
-                $_iTodaysClosestTime = $this->_getTodaysItem( $_iCurrentTime, $aTimes );
+                $_iTodaysClosestTime = $this->_getTodaysItem( $nLastRunTime, $aTimes );
                 if ( $_iTodaysClosestTime ) {
                     return $_iTodaysClosestTime;
                 }
             }
 
             // This value is not GMT-calculated.
-            $_iNextRunTime = $this->_getNextClosestTime( $_iCurrentTime, $aDays, $aTimes );
+            $_iNextRunTime = $this->_getNextClosestTime( $nLastRunTime, $aDays, $aTimes );
             return $_iNextRunTime;
             
         }

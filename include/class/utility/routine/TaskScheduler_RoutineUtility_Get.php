@@ -79,7 +79,8 @@ abstract class TaskScheduler_RoutineUtility_Get extends TaskScheduler_RoutineUti
      * @return        array        An array holding the found routine(post) IDs.
      */
     static public function getScheduled( $iSecondsFromNow=30, $iLimit=-1 ) {
-        
+
+        $_iTimeToSearch = microtime( true ) + $iSecondsFromNow; // current time stamp + php max execution time in seconds
         $_aArgs = array(
             'posts_per_page'     => $iLimit,    // -1 for all            
             'orderby'            => 'meta_value_num',    // 'ID' also works
@@ -91,13 +92,13 @@ abstract class TaskScheduler_RoutineUtility_Get extends TaskScheduler_RoutineUti
                     'key'        => '_next_run_time',
                     'value'      => array( 0, '' ),
                     'compare'    => 'NOT IN',
-                ),                
+                ),
                 array(
                     'key'        => '_next_run_time',
-                    'value'      => microtime( true ) + $iSecondsFromNow, 
+                    'value'      => $_iTimeToSearch,
                     'type'       => 'numeric',
                     'compare'    => '<=',
-                ),                
+                ),
                 array(
                     'key'        => '_is_spawned',
                     'value'      => '_',     // for the issue #23268 see https://core.trac.wordpress.org/ticket/23268
@@ -107,7 +108,7 @@ abstract class TaskScheduler_RoutineUtility_Get extends TaskScheduler_RoutineUti
                     'key'        => '_routine_status',
                     'value'      => array( 'inactive', 'ready', 'queued' ),     // 'inactive' is for backward compatibility.
                     'compare'    => 'IN',
-                ),                
+                ),
             ),
         );        
         

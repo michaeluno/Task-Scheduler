@@ -2,11 +2,11 @@
 Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
-Tested up to:       4.8
+Tested up to:       4.9.7
 Stable tag:         1.4.5
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
-Tags:               access, tool, utility, background, backend, server, admin, task, management, system, event, scheduler, bulk, action, email, delete, post, delete posts, cron, automation, routine, routines
+Tags:               tool, utility, background, backend, task, system, event, scheduler, email, delete posts, cron, automation, routine
 
 Provides a task management system.
 
@@ -228,7 +228,10 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.4.5 * 2017/06/11 =
+= 1.4.6 =
+- Fixed a bug with the `Daily` occurrence type that spawned routines multiple times on some servers.
+
+= 1.4.5 - 2017/06/11 =
 - Fixed a bug with the `Daily` occurrence type that did not set the correct time for cases of 7 days ahead.
 
 = 1.4.4 - 2017/03/11 =
