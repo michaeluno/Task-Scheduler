@@ -3,7 +3,7 @@ Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
 Tested up to:       4.9.7
-Stable tag:         1.4.5
+Stable tag:         1.4.6
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               tool, utility, background, backend, task, system, event, scheduler, email, delete posts, cron, automation, routine
@@ -228,7 +228,8 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.4.6 =
+= 1.4.6 - 2018/08/01 =
+- Added default and Japanese language files.
 - Fixed a bug with the `Daily` occurrence type that spawned routines multiple times on some servers.
 
 = 1.4.5 - 2017/06/11 =
