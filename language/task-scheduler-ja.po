@@ -1,0 +1,2039 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Task Scheduler\n"
+"POT-Creation-Date: 2018-08-01 17:40+0900\n"
+"PO-Revision-Date: 2018-08-01 20:38+0900\n"
+"Last-Translator: Michael Uno <michael@michaeluno.jp>\n"
+"Language-Team: \n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: task-scheduler.php\n"
+"X-Poedit-SearchPath-1: include\n"
+
+#: include/class/TaskScheduler_Bootstrap.php:89
+msgid "Deactivating the plugin"
+msgstr "プラグインの停止中"
+
+#: include/class/TaskScheduler_Bootstrap.php:217
+msgid "Main"
+msgstr "メイン"
+
+#: include/class/TaskScheduler_Bootstrap.php:224
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Occurrence.php:22
+#: include/class/admin/page/edit_module/section/TaskScheduler_AdminPage_EditModule__Section__Occurrence.php:38
+#: include/class/admin/page/edit_module/tab/TaskScheduler_AdminPage_EditModule__Tab__Occurrence.php:36
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_Occurrence.php:37
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_Occurrence.php:51
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__Wizard.php:48
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:118
+msgid "Occurrence"
+msgstr "発動"
+
+#: include/class/TaskScheduler_Bootstrap.php:231
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Action.php:32
+#: include/class/admin/page/edit_module/section/TaskScheduler_AdminPage_EditModule__Section__Action.php:38
+#: include/class/admin/page/edit_module/tab/TaskScheduler_AdminPage_EditModule__Tab__Action.php:36
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_Action.php:39
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_Action.php:54
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__SelectAction.php:38
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php:43
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:119
+#: include/class/event/TaskScheduler_Event_Routine.php:142
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:148
+msgid "Action"
+msgstr "操作"
+
+#: include/class/TaskScheduler_Bootstrap.php:238
+msgid "Advanced"
+msgstr "詳細"
+
+#: include/class/TaskScheduler_Bootstrap.php:245
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Submit.php:81
+#: include/class/module/TaskScheduler_Wizard_Base.php:351
+msgid "Update"
+msgstr "更新"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Action.php:41
+msgid "Action Slug"
+msgstr "アクション名"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Action.php:50
+msgid "Arguments"
+msgstr "引数"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Advanced.php:18
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Task.php:62
+msgid "Max Count of Log Entries"
+msgstr "ログエントリーの最大数"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Advanced.php:24
+msgid "Set the maximum number of log items."
+msgstr "ログアイテムの最大値を設定します。"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Advanced.php:25
+msgid "Set 0 to disable it."
+msgstr "無効化するには0を指定します。"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Advanced.php:29
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Task.php:72
+msgid "Max Task Execution Time"
+msgstr "タスクの最大実行時間"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Advanced.php:31
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:88
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Task.php:74
+#: include/class/module/occurrence/fixed_interval/admin/TaskScheduler_Occurrence_FixedInterval_Wizard.php:47
+msgid "second(s)"
+msgstr "秒"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Advanced.php:32
+msgid "Set the expected duration that the task will take to complete."
+msgstr "タスクが完了までに要すると思われる持続時間を設定します。"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Advanced.php:43
+msgid "Force Execution"
+msgstr "強制実行"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Advanced.php:45
+msgid "Execute the action even when the last routine is not completed."
+msgstr "最後のルーティンが完了していなくてもアクションを実行します。"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Advanced.php:50
+msgid "Handling Hung Routines"
+msgstr "停止ルーティンの扱い"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Advanced.php:53
+msgid "Do nothing."
+msgstr "何もしない。"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Advanced.php:55
+#, php-format
+msgid "Terminate the routine and change the status to <code>%1$s</code>."
+msgstr "ルーティンを終了しステータスを<code>%1$s</code>に変更します。"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Advanced.php:56
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:163
+msgid "Ready"
+msgstr "待機中"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Advanced.php:58
+msgid "Terminate and remove the routine."
+msgstr "ルーティンを終了し削除します。"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Advanced.php:60
+msgid ""
+"Choose which action you would like to take for hung routines which exceed "
+"the set execution time."
+msgstr "設定した実行時間を超えた停止ルーティンに対するアクションを選択します。"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Base.php:121
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:107
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:62
+msgid "Key"
+msgstr "キー"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Base.php:121
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:63
+msgid "Value"
+msgstr "値"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Base.php:175
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:66
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:32
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:74
+msgid "Edit"
+msgstr "編集"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Main.php:18
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__Wizard.php:43
+msgid "Description"
+msgstr "詳細"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Submit.php:50
+msgid "Last Run Time"
+msgstr "最後の実行時間"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Submit.php:60
+msgid "Next Run Time"
+msgstr "次の実行時間"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Submit.php:70
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:74
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:20
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:134
+msgid "Status"
+msgstr "状態"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Submit.php:72
+#: include/class/admin/table/TaskScheduler_ListTable_Views.php:27
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:123
+msgid "Enabled"
+msgstr "有効"
+
+#: include/class/admin/meta_box/TaskScheduler_MetaBox_Submit.php:73
+#: include/class/admin/table/TaskScheduler_ListTable_Views.php:29
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:124
+msgid "Disabled"
+msgstr "無効"
+
+#: include/class/admin/page/edit_module/TaskScheduler_AdminPage_EditModule_Setup.php:31
+#: include/class/admin/page/edit_module/page/TaskScheduler_AdminPage_EditModule__Page__EditOptions.php:33
+msgid "Edit Module Options"
+msgstr "モジュール設定の編集"
+
+#: include/class/admin/page/edit_module/page/TaskScheduler_AdminPage_EditModule__Page__EditOptions.php:56
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_Occurrence.php:20
+msgid "Edit Occurrence"
+msgstr "発動の編集"
+
+#: include/class/admin/page/edit_module/page/TaskScheduler_AdminPage_EditModule__Page__EditOptions.php:68
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_UpdateModuleOptions.php:28
+msgid "Update Module Options"
+msgstr "モジュール設定の更新"
+
+#: include/class/admin/page/edit_module/page/TaskScheduler_AdminPage_EditModule__Page__EditOptions.php:85
+#: include/class/admin/page/wizard/page/TaskScheduler_AdminPage_Wizard__Page__AddNewTask.php:74
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:133
+msgid "Debug Info"
+msgstr "デバッグ情報"
+
+#: include/class/admin/page/edit_module/page/TaskScheduler_AdminPage_EditModule__Page__EditOptions.php:86
+#: include/class/admin/page/wizard/page/TaskScheduler_AdminPage_Wizard__Page__AddNewTask.php:75
+msgid "Saved Wizard Options"
+msgstr "保存されたウィザード設定"
+
+#: include/class/admin/page/edit_module/section/TaskScheduler_AdminPage_EditModule__Section__Action.php:44
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_Action.php:60
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__SelectAction.php:44
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php:49
+msgid "Custom Action"
+msgstr "カスタムアクション"
+
+#: include/class/admin/page/edit_module/section/TaskScheduler_AdminPage_EditModule__Section__Action.php:46
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_Action.php:62
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__SelectAction.php:46
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php:51
+msgid ""
+"If none of the action you want to execute is listed above, specify the "
+"action name here."
+msgstr ""
+"もし実行させたいアクションがリストされていない場合、アクション名をここで指定"
+"します。"
+
+#: include/class/admin/page/edit_module/section/TaskScheduler_AdminPage_EditModule__Section__Action.php:51
+#: include/class/admin/page/edit_module/section/TaskScheduler_AdminPage_EditModule__Section__Occurrence.php:46
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_Action.php:67
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_Occurrence.php:59
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__SelectAction.php:58
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__SelectAction.php:59
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__Wizard.php:56
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php:63
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php:64
+#: include/class/module/TaskScheduler_Wizard_Base.php:347
+#: include/class/module/TaskScheduler_Wizard_Base.php:352
+msgid "Next"
+msgstr "次へ"
+
+#: include/class/admin/page/edit_module/section/TaskScheduler_AdminPage_EditModule__Section__Action.php:59
+#: include/class/admin/page/edit_module/section/TaskScheduler_AdminPage_EditModule__Section__Occurrence.php:54
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_Action.php:75
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_Occurrence.php:67
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__SelectAction.php:114
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php:110
+#: include/class/module/TaskScheduler_Wizard_Base.php:373
+msgid "Back"
+msgstr "戻る"
+
+#: include/class/admin/page/edit_module/section/TaskScheduler_AdminPage_EditModule__Section__Action.php:156
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_Action.php:159
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__SelectAction.php:142
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php:142
+msgid "At least an action must be set."
+msgstr "少なくとも一つのアクションが設定されている必要があります。"
+
+#: include/class/admin/page/edit_module/section/TaskScheduler_AdminPage_EditModule__Section__Action.php:164
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_Action.php:167
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__SelectAction.php:150
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php:150
+msgid "Only one action can be set."
+msgstr "1つのアクションのみ設定可能です。"
+
+#: include/class/admin/page/edit_module/section/TaskScheduler_AdminPage_EditModule__Section__Action.php:174
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_Action.php:177
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__SelectAction.php:162
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__Wizard.php:134
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php:162
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_Wizard.php:142
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:102
+#: include/class/module/action/php_script/admin/TaskScheduler_Action_PHPScript_Wizard.php:60
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard.php:105
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_3.php:134
+#: include/class/module/action/transient_cleaner/admin/TaskScheduler_Action_TransientCleaner_Wizard.php:71
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:118
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:97
+#: include/class/module/occurrence/exit_code/admin/TaskScheduler_Occurrence_ExitCode_Wizard.php:87
+#: include/class/module/occurrence/fixed_interval/admin/TaskScheduler_Occurrence_FixedInterval_Wizard.php:78
+#: include/class/module/occurrence/specific_time/admin/TaskScheduler_Occurrence_SpecificTime_Wizard.php:84
+msgid "Please try again."
+msgstr "もう一度お試しください。"
+
+#: include/class/admin/page/edit_module/tab/TaskScheduler_AdminPage_EditModule__Tab__UpdateOptions.php:41
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_UpdateModuleOptions.php:56
+#: include/class/admin/page/wizard/TaskScheduler_AdminPage_Wizard_Validation.php:34
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__SelectAction.php:173
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php:173
+msgid "The wizard session has been expired. Please start from the beginning."
+msgstr "ウィザートのセッションが終了しました。初めからやり直して下さい。"
+
+#: include/class/admin/page/edit_module/tab/TaskScheduler_AdminPage_EditModule__Tab__UpdateOptions.php:62
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_UpdateModuleOptions.php:77
+msgid "The task has been updated."
+msgstr "タスクが更新されました。"
+
+#: include/class/admin/page/edit_module/_del.bak/TaskScheduler_AdminPage_EditModule_Tab_Action.php:23
+msgid "Edit Action"
+msgstr "アクションの編集"
+
+#: include/class/admin/page/root/TaskScheduler_AdminPage_Form.php:149
+msgid "Check Actions Now"
+msgstr "今すぐアクションをチェック"
+
+#: include/class/admin/page/root/TaskScheduler_AdminPage_Form.php:168
+msgid "Checking actions now."
+msgstr "今アクションをチェック中です。"
+
+#: include/class/admin/page/root/TaskScheduler_AdminPage_Form.php:192
+msgid "Running"
+msgstr "実行中"
+
+#: include/class/admin/page/root/TaskScheduler_AdminPage_Form.php:193
+msgid "Not Running"
+msgstr "未実行"
+
+#: include/class/admin/page/root/TaskScheduler_AdminPage_Form.php:195
+msgid "The last checked time"
+msgstr "最後のチェック時間"
+
+#: include/class/admin/page/root/TaskScheduler_AdminPage_Form.php:197
+msgid "The current server set time"
+msgstr "現在のサーバーの設定時刻"
+
+#: include/class/admin/page/root/TaskScheduler_AdminPage_Form.php:199
+#, php-format
+msgid "The background task monitoring routine is <strong>%1$s</strong>."
+msgstr ""
+"バックグラウンドタスクのモニタリング中のルーティンは<strong>%1$s</strong>で"
+"す。"
+
+#: include/class/admin/page/root/TaskScheduler_AdminPage_Setup.php:20
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:68
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:71
+msgid "Task Scheduler"
+msgstr "タスクスケジューラー"
+
+#: include/class/admin/page/root/TaskScheduler_AdminPage_Setup.php:25
+#: include/class/module/occurrence/exit_code/admin/TaskScheduler_Occurrence_ExitCode_Wizard.php:39
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:69
+msgid "Tasks"
+msgstr "タスク"
+
+#: include/class/admin/page/root/TaskScheduler_AdminPage_Start.php:46
+msgid "Manage Tasks"
+msgstr "タスクの管理"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting.php:26
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:90
+msgid "Settings"
+msgstr "設定"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:25
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:42
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:50
+msgid "Server Heartbeat"
+msgstr "サーバーハートビート"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:54
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:121
+msgid "On"
+msgstr "オン"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:55
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:122
+msgid "Off"
+msgstr "オフ"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:57
+msgid "Decide whether the server checks the tasks in the background."
+msgstr "バックグラウンドでタスクをチェックするか決めます。"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:70
+msgid ""
+"Set up a Cron job that accesses the following url to check scheduled actions."
+msgstr ""
+"スケジュールされたアクションをチェックするために以下のURLにアクセスするクロン"
+"ジョブをセットアップして下さい。"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:86
+#: include/class/module/occurrence/fixed_interval/admin/TaskScheduler_Occurrence_FixedInterval_Wizard.php:29
+#: include/class/module/occurrence/fixed_interval/admin/TaskScheduler_Occurrence_FixedInterval_Wizard.php:108
+msgid "Interval"
+msgstr "インターバル"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:89
+msgid ""
+"Set the interval in seconds that the plugin checks the tasks in the "
+"background."
+msgstr ""
+"プラグインがタスクをバックグラウンドでチェックするインターバルを秒数で設定し"
+"ます。"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:90
+msgid ""
+"This may not take effect if the server has a restriction on PHP's maximum "
+"execution time and the <code>ini_set()</code> function."
+msgstr ""
+"もしサーバーのPHPの設定において、 <code>ini_set()</code>関数や最大実行時間を"
+"PHPスクリプトで変更できないように制限されている場合、これは効力がありません。"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:101
+msgid "URL"
+msgstr "URL"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:104
+msgid ""
+"Show the query string in the request URL of the background page-load to "
+"indicate the server heartbeat."
+msgstr ""
+"サーバーハートビートとわかるようにクエリ文字列をバックグラウンドのページロー"
+"ドに挿入します。"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:114
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Reset.php:52
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Task.php:87
+#: include/class/admin/page/system/TaskScheduler_AdminPage_System_Form.php:37
+msgid "Save"
+msgstr "保存"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:133
+msgid "Last Beat Time"
+msgstr "最後のビート時間"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Heartbeat.php:134
+msgid "Next Check"
+msgstr "次のチェック"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Reset.php:20
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Reset.php:37
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Reset.php:64
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:118
+msgid "Reset"
+msgstr "リセット"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Reset.php:45
+msgid "Delete Options upon Uninstall"
+msgstr "アンインストール時の設定の削除"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Reset.php:47
+msgid "Delete the settings when the plugin gets uninstalled."
+msgstr "プラグインアンインストール時に設定を消去します。"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Reset.php:63
+msgid "Reset Options"
+msgstr "設定のリセット"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Task.php:20
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Task.php:37
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:70
+msgid "Task"
+msgstr "タスク"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Task.php:38
+msgid "The general settings regarding task routines."
+msgstr "タスクルーティンに関する一般設定。"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Task.php:43
+msgid "Default"
+msgstr "デフォルト"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Task.php:44
+msgid "The settings of individual tasks take precedence."
+msgstr "タスク個別の設定は優先されます。"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Task.php:52
+msgid "Max Number of Background Routines"
+msgstr "バックグラウウンドルーティンの最大数"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Task.php:54
+msgid ""
+"The larger the number, the faster the tasks get completed but consume server "
+"resources."
+msgstr ""
+"大きい数値ほどタスクは速く完了しますが、サーバーのリソースを消費します。"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Task.php:64
+msgid "The default number of allowed max count of log items."
+msgstr "ログアイテムの最大数の初期値。"
+
+#: include/class/admin/page/setting/TaskScheduler_AdminPage_Setting_Form_Task.php:75
+msgid "The default duration of the max task execution."
+msgstr "タスク実行のための最大持続時間の初期値。"
+
+#: include/class/admin/page/system/TaskScheduler_AdminPage_System.php:20
+#: include/class/admin/page/system/TaskScheduler_AdminPage_System_Form.php:23
+#: include/class/admin/table/TaskScheduler_ListTable_Views.php:31
+msgid "System"
+msgstr "システム"
+
+#: include/class/admin/page/system/TaskScheduler_AdminPage_System_Form.php:30
+msgid "Site System Information"
+msgstr "サイトのシステム情報"
+
+#: include/class/admin/page/wizard/TaskScheduler_AdminPage_Wizard.php:209
+#: include/class/admin/page/wizard/tab/TaskScheduler_AdminPage_Wizard__Tab__SelectAction.php:36
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php:30
+msgid "Select Action"
+msgstr "アクションを選択"
+
+#: include/class/admin/page/wizard/TaskScheduler_AdminPage_Wizard_Setup.php:63
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:72
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:73
+msgid "Add New Task"
+msgstr "新規タスクの追加"
+
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__SelectAction.php:50
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php:55
+msgid "Argument"
+msgstr "引数"
+
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__SelectAction.php:50
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__Wizard.php:43
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php:55
+msgid "optional"
+msgstr "任意"
+
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__SelectAction.php:53
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_SelectAction.php:58
+msgid "Set the arguments passed to the action."
+msgstr "アクションに渡す引数を設定します。"
+
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__Wizard.php:38
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:18
+msgid "Task Name"
+msgstr "タスク名"
+
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__Wizard.php:119
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_Wizard.php:127
+msgid "A task name must be set."
+msgstr "タスク名が設定されている必要があります。"
+
+#: include/class/admin/page/wizard/section/TaskScheduler_AdminPage_Wizard__Section__Wizard.php:125
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_Wizard.php:133
+msgid "At least one item must be selected."
+msgstr "少なくとも一つの項目が選択されている必要があります。"
+
+#: include/class/admin/page/wizard/tab/TaskScheduler_AdminPage_Wizard__Tab__AddNewTask.php:36
+msgid "Task Creation Wizard"
+msgstr "タスク作成ウィザード"
+
+#: include/class/admin/page/wizard/tab/TaskScheduler_AdminPage_Wizard__Tab__CreateTask.php:37
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_CreateTask.php:33
+msgid "Required data are missing. Please start from the beginning."
+msgstr "必要なデータが欠如しています。初めからやり直し下さい。"
+
+#: include/class/admin/page/wizard/tab/TaskScheduler_AdminPage_Wizard__Tab__CreateTask.php:57
+#: include/class/admin/page/wizard/_del.bak/TaskScheduler_AdminPage_Wizard_Tab_CreateTask.php:53
+msgid "A task has been created."
+msgstr "タスクが発動しました。"
+
+#: include/class/admin/page/_abstract/TaskScheduler_AdminPage_RootBase.php:47
+#: include/library/apf/factory/_common/_abstract/AdminPageFramework_Factory.php:144
+#, php-format
+msgid "The method is not defined: %1$s"
+msgstr "メソッドが定義されていません: %1$s"
+
+#: include/class/admin/page/_abstract/TaskScheduler_AdminPage_Section_Base.php:104
+msgid "There was something wrong with your input."
+msgstr "入力に誤りがあります。"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Action.php:31
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:68
+msgid "Disable"
+msgstr "無効化"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Action.php:32
+msgid "Reset Status"
+msgstr "ステータスのリセット"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Action.php:33
+msgid "Reset Counts"
+msgstr "カウントのリセット"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Action.php:38
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:67
+msgid "Enable"
+msgstr "有効化"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Action.php:39
+#: include/class/admin/table/TaskScheduler_ListTable_Action.php:44
+#: include/class/admin/table/TaskScheduler_ListTable_Action.php:49
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:69
+msgid "Delete"
+msgstr "削除"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Action.php:69
+msgid "The action has been already done or is invalid."
+msgstr "アクションは実行済みか無効です。"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Action.php:80
+msgid "The task has been enabled."
+msgstr "タスクは有効にされました。"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Action.php:87
+msgid "The task has been disabled."
+msgstr "タスクは無効にされました。"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Action.php:101
+msgid "The task has been deleted."
+msgstr "タスクは消去されました。"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Action.php:108
+msgid "The task has been called."
+msgstr "タスクは呼び出されました。"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Action.php:117
+msgid "Reset the status."
+msgstr "ステータスをリセットします。"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Action.php:125
+msgid "Reset the counts."
+msgstr "カウントをリセットします。"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Action.php:139
+msgid "Cloned a task."
+msgstr "タスクを複製しました。"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:19
+msgid "Details"
+msgstr "詳細"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:23
+msgid "Last Run"
+msgstr "最後の実行"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:24
+msgid "Next Run"
+msgstr "次の実行"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:71
+#, php-format
+msgid "View &#8220;%s&#8221;"
+msgstr "閲覧 &#8220;%s&#8221;"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:72
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:35
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:77
+msgid "View"
+msgstr "閲覧"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:76
+#: include/class/post_type/task/TaskScheduler_PostType_Task.php:72
+msgid "Run Now"
+msgstr "今すぐ実行"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:77
+msgid "Clone"
+msgstr "複製"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:98
+#: include/class/event/TaskScheduler_Event_Routine.php:141
+msgid "ID"
+msgstr "ID"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:100
+msgid "Owner"
+msgstr "所有者"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:129
+#, php-format
+msgid "%1$s threads"
+msgstr "%1$s スレッド"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:130
+msgid "No thread"
+msgstr "スレッドはありません"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:135
+#: include/class/post_type/thread/TaskScheduler_PostType_Thread.php:18
+msgid "Threads"
+msgstr "スレッド"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:136
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_3.php:78
+msgid "Elapsed Time"
+msgstr "経過時間"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:136
+#, php-format
+msgid "Elapsed %1$s"
+msgstr "%1$s経過"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:142
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:159
+msgid "n/a"
+msgstr "n/a"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:147
+#, php-format
+msgid "%1$s seconds"
+msgstr "%s 秒"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:161
+msgid "Queued"
+msgstr "待受中"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:165
+msgid "Processing"
+msgstr "処理中"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:167
+msgid "Awaiting"
+msgstr "待機中"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:177
+msgid "Indicates how many times a valid exit code has been returned."
+msgstr "どれだけの数の有効な終了コードが返されたかを示します。"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:178
+msgid "Indicates the last exit code returned from the action."
+msgstr "アクションから返された最後の終了コードを示します。"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:185
+msgid "Exit Count"
+msgstr "終了数"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:191
+msgid "Hung Count"
+msgstr "停止数"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:200
+msgid "Indicates how many times the action has been called."
+msgstr "何回アクションが呼び出されたかを示します。"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:201
+msgid "Indicates how many times the action has run."
+msgstr "何回アクションが実行されたかを示します。"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:202
+msgid "This does not necessarily mean the action did the expected job."
+msgstr ""
+"これはアクションが期待された仕事をしたかどうかを必ずしも意味するわけではあり"
+"ません。"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:207
+msgid "Call Count"
+msgstr "呼出数"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Column.php:211
+msgid "Run Count"
+msgstr "実行数"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Views.php:33
+msgid "Routine"
+msgstr "ルーティン"
+
+#: include/class/admin/table/TaskScheduler_ListTable_Views.php:35
+msgid "Thread"
+msgstr "スレッド"
+
+#: include/class/event/TaskScheduler_Event_Log.php:69
+#, php-format
+msgid "Delete Logs of %1$s"
+msgstr "%1$sのログを消去"
+
+#: include/class/event/TaskScheduler_Event_Log.php:70
+#, php-format
+msgid ""
+"Deletes the logs of the task %1$s. This task will be gone when unnecessary "
+"logs are deleted."
+msgstr ""
+"タスク %1$s のログを消去します。 不要なログが消去されるとこのタスクは無くなり"
+"ます。"
+
+#: include/class/event/TaskScheduler_Event_Routine.php:139
+msgid "Starting the thread."
+msgstr "スレッドを開始します。"
+
+#: include/class/event/TaskScheduler_Event_Routine.php:140
+msgid "Starting the routine."
+msgstr "ルーティンを開始します。"
+
+#: include/class/event/TaskScheduler_Event_Routine.php:169
+msgid "Still have threads."
+msgstr "まだスレッドがあります。"
+
+#: include/class/event/TaskScheduler_Event_Routine.php:170
+#: include/class/event/TaskScheduler_Event_Routine.php:193
+#: include/class/module/occurrence/exit_code/TaskScheduler_Occurrence_ExitCode.php:26
+#: include/class/module/occurrence/exit_code/admin/TaskScheduler_Occurrence_ExitCode_Wizard.php:34
+msgid "Exit Code"
+msgstr "終了コード"
+
+#: include/class/event/TaskScheduler_Event_Routine.php:193
+msgid "Completed the task."
+msgstr "タスクは完了しました。"
+
+#: include/class/event/TaskScheduler_Event_Routine.php:194
+msgid "The action did not return an exit code."
+msgstr "アクションは終了コードを返しませんでした。"
+
+#: include/class/event/TaskScheduler_Event_Thread.php:52
+#, php-format
+msgid "Finished the thread: %1$s"
+msgstr "スレッド終了: %1$s"
+
+#: include/class/event/TaskScheduler_Event_Thread.php:71
+msgid "Completed all the threads."
+msgstr "全てのスレッドが終了しました。"
+
+#: include/class/event/TaskScheduler_Event_Thread.php:72
+#, php-format
+msgid "Exit Code: %1$s"
+msgstr "終了コード: %1$s"
+
+#: include/class/event/server-heartbeat/TaskScheduler_Event_ServerHeartbeat_Checker.php:226
+msgid "Starting a routine."
+msgstr "ルーティンを開始します。"
+
+#: include/class/module/TaskScheduler_Wizard_Base.php:346
+#: include/class/post_type/task/TaskScheduler_PostType_Task.php:92
+msgid "Create"
+msgstr "作成"
+
+#: include/class/module/action/debug/TaskScheduler_Action_Debug.php:27
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:138
+msgid "Debug"
+msgstr "デバッグ"
+
+#: include/class/module/action/debug/TaskScheduler_Action_Debug.php:34
+msgid "Creates a log file in the wp-content folder."
+msgstr "wp-content フォルダにログファイルを生成します。"
+
+#: include/class/module/action/email/TaskScheduler_Action_Email.php:37
+msgid "Send Emails"
+msgstr "Eメールの送信"
+
+#: include/class/module/action/email/TaskScheduler_Action_Email.php:44
+msgid "Sends an email to specified email addresses."
+msgstr "指定されたEメールアドレスにEメールを送信します。"
+
+#: include/class/module/action/email/TaskScheduler_Action_Email.php:79
+#: include/class/module/action/php_script/TaskScheduler_Action_PHPScript.php:76
+#: include/class/module/action/post_deleter/TaskScheduler_Action_PostDeleter.php:85
+#: include/class/module/action/_routine_log_deleter/TaskScheduler_Action_RoutineLogDeleter.php:60
+#, php-format
+msgid "Thread %1$s of %2$s"
+msgstr "スレッド %1$s の %2$s"
+
+#: include/class/module/action/email/TaskScheduler_Action_Email_Thread.php:37
+msgid "Send Each Email"
+msgstr "個別Eメールの送信"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:29
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:151
+msgid "Email Addresses"
+msgstr "Eメールのアドレス"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:32
+msgid "Set an address per line."
+msgstr "1行ごとに分けて入力します。"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:36
+msgid "Email Title"
+msgstr "Eメールのタイトル"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:38
+msgid "Automated Email Notice of %task_name% - %site_name%"
+msgstr "自動Eメール通知 %task_name% - %site_name%"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:45
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:159
+msgid "Email Message"
+msgstr "Eメール内容"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:49
+#, php-format
+msgid ""
+"This is an automated email message from %1$s (%2$s), sent by the task, %3$s, "
+"with the %4$s occurrence type."
+msgstr ""
+"これはタスク%3$s, 発動タイプ%4$sによる%1$s (%2$s)からの自動Eメール内容です。"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:56
+msgid "Available variables"
+msgstr "利用可能変数"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:58
+msgid "the task name"
+msgstr "タスク名"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:59
+msgid "the task description"
+msgstr "タスクの詳細"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:60
+msgid "the occurrence type"
+msgstr "発動タイプ"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:61
+msgid "the action name"
+msgstr "アクション名"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:62
+msgid "the site url"
+msgstr "サイトURL"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:63
+msgid "the site name"
+msgstr "サイト名"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:64
+msgid "the admin email address"
+msgstr "管理用Eメールアドレス"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:90
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:79
+#: include/class/module/occurrence/specific_time/admin/TaskScheduler_Occurrence_SpecificTime_Wizard.php:57
+msgid "At least one item needs to be set."
+msgstr "少なくとも1つの項目が設定されている必要があります。"
+
+#: include/class/module/action/email/admin/TaskScheduler_Action_Email_Wizard.php:156
+msgid "Email Subject"
+msgstr "Eメール件名"
+
+#: include/class/module/action/php_script/TaskScheduler_Action_PHPScript.php:39
+msgid "Run PHP Scripts"
+msgstr "PHPスクリプトの実行"
+
+#: include/class/module/action/php_script/TaskScheduler_Action_PHPScript.php:46
+msgid "Runs specified PHP scripts."
+msgstr "指定のPHPスクリプトを実行します。"
+
+#: include/class/module/action/php_script/TaskScheduler_Action_PHPScript_Thread.php:34
+msgid "Run a PHP Script"
+msgstr "PHPスクリプトの実行"
+
+#: include/class/module/action/php_script/admin/TaskScheduler_Action_PHPScript_Wizard.php:29
+msgid "PHP Script Paths"
+msgstr "PHPスクリプトのパス"
+
+#: include/class/module/action/php_script/admin/TaskScheduler_Action_PHPScript_Wizard.php:35
+msgid "Select PHP scripts to run."
+msgstr "実行するPHPスクリプトを選択します。"
+
+#: include/class/module/action/post_deleter/TaskScheduler_Action_PostDeleter.php:38
+msgid "Delete Posts"
+msgstr "投稿の削除"
+
+#: include/class/module/action/post_deleter/TaskScheduler_Action_PostDeleter.php:45
+msgid "Deletes posts by post type, taxonomy, and taxonomy terms."
+msgstr "投稿タイプ, 分類, 分類の言葉による投稿の削除を行います。"
+
+#: include/class/module/action/post_deleter/TaskScheduler_Action_PostDeleter.php:86
+#, php-format
+msgid "Deletes posts defined in %1$s"
+msgstr "%1$sで定義された投稿の消去"
+
+#: include/class/module/action/post_deleter/TaskScheduler_Action_PostDeleter_Thread.php:31
+msgid "Deleting Posts"
+msgstr "投稿を削除中"
+
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard.php:56
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_2.php:25
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_3.php:26
+msgid "Post Type"
+msgstr "投稿タイプ"
+
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard.php:59
+msgid "Select which post type of posts should be deleted."
+msgstr "どの投稿タイプの投稿を削除するかを選択します。"
+
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard.php:63
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_2.php:39
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_3.php:36
+msgid "Post Statuses"
+msgstr "投稿ステータス"
+
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard.php:69
+msgid "Select post statuses with witch the posts get deleted."
+msgstr "削除する投稿の投稿ステータスを選択します。"
+
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard.php:96
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_3.php:125
+msgid "At least one item needs to be checked."
+msgstr "少なくとも１つの項目がチェックされている必要があります。"
+
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_2.php:49
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_3.php:46
+msgid "Taxonomy"
+msgstr "分類"
+
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_2.php:52
+msgid "All Posts"
+msgstr "全投稿"
+
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_2.php:59
+msgid "Select a taxonomy that deleting posts are associated with."
+msgstr "削除する投稿が関連付けられている分類を選択します。"
+
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_3.php:57
+msgid "Terms"
+msgstr "ターム"
+
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_3.php:67
+msgid "Number of Posts to Process per Routine"
+msgstr "ルーティン毎に処理する投稿の数"
+
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_3.php:70
+msgid ""
+"This determines how many posts will be processed per a page load. Set a "
+"smaller number if the task gets hung."
+msgstr ""
+"一ページロード毎に処理される投稿の数を決定します。もしタスクが停止するようで"
+"あれば少ない数字を設定します。"
+
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_3.php:81
+#: include/class/module/occurrence/fixed_interval/admin/TaskScheduler_Occurrence_FixedInterval_Wizard.php:49
+msgid "hour(s)"
+msgstr "時"
+
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_3.php:82
+#: include/class/module/occurrence/fixed_interval/admin/TaskScheduler_Occurrence_FixedInterval_Wizard.php:50
+msgid "day(s)"
+msgstr "日"
+
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_3.php:88
+msgid "Matched posts will be deleted only if they are older than the set time."
+msgstr "設定時間よりも古い投稿で、条件に該当する投稿は削除されます。"
+
+#: include/class/module/action/post_deleter/admin/TaskScheduler_Action_PostDeleter_Wizard_3.php:89
+msgid "Set <code>0</code> to simply delete matched posts with any date."
+msgstr "日付に該当する投稿を消去するには<code>0</code> を指定します。"
+
+#: include/class/module/action/transient_cleaner/TaskScheduler_Action_TransientCleaner.php:30
+msgid "Clean Transients"
+msgstr "一時データの消去"
+
+#: include/class/module/action/transient_cleaner/TaskScheduler_Action_TransientCleaner.php:37
+msgid "Deletes expired transient items."
+msgstr "期限切れの一時データを消去しました。"
+
+#: include/class/module/action/transient_cleaner/TaskScheduler_Action_TransientCleaner.php:71
+#, php-format
+msgid "Cleaned %1$s transients."
+msgstr "%1$s の一時データを消去しました。"
+
+#: include/class/module/action/transient_cleaner/admin/TaskScheduler_Action_TransientCleaner_Wizard.php:27
+msgid "Transient Prefix"
+msgstr "一時データ接頭語"
+
+#: include/class/module/action/transient_cleaner/admin/TaskScheduler_Action_TransientCleaner_Wizard.php:29
+msgid ""
+"Set the transient prefix. Set empty if you want to delete all the expired "
+"transients."
+msgstr ""
+"一時データの接頭辞を設定します。全ての時間切れの一時データを消去する場合は、"
+"空白にします。"
+
+#: include/class/module/action/transient_cleaner/admin/TaskScheduler_Action_TransientCleaner_Wizard.php:33
+msgid "Network Transients"
+msgstr "サイトネットワーク一時データ"
+
+#: include/class/module/action/transient_cleaner/admin/TaskScheduler_Action_TransientCleaner_Wizard.php:38
+msgid "Both"
+msgstr "両方"
+
+#: include/class/module/action/transient_cleaner/admin/TaskScheduler_Action_TransientCleaner_Wizard.php:39
+msgid "Site transients"
+msgstr "サイトの一時データ"
+
+#: include/class/module/action/transient_cleaner/admin/TaskScheduler_Action_TransientCleaner_Wizard.php:40
+msgid "Network transients"
+msgstr "ネットワーク一時データ"
+
+#: include/class/module/action/web_checker/TaskScheduler_Action_WebCheck.php:30
+msgid "Check Web Site"
+msgstr "ウェブサイトをチェック"
+
+#: include/class/module/action/web_checker/TaskScheduler_Action_WebCheck.php:37
+msgid "Accesses a specified web site and checks if the site is up."
+msgstr "指定のウェブサイトにアクセスし、サイトが生きているかチェックします。"
+
+#: include/class/module/action/web_checker/TaskScheduler_Action_WebCheck.php:38
+msgid ""
+"This can be used for triggering WordPress Cron jobs from a separate remote "
+"site."
+msgstr ""
+"これはWordPressの内部クロンジョブ(WPCron API)を別サイトから稼働させるのに使用"
+"できます。"
+
+#: include/class/module/action/web_checker/TaskScheduler_Action_WebCheck.php:60
+msgid "A required argument is missing"
+msgstr "必須の引数が欠如しています"
+
+#: include/class/module/action/web_checker/TaskScheduler_Action_WebCheck.php:73
+msgid "Connection Failed"
+msgstr "接続に失敗"
+
+#: include/class/module/action/web_checker/TaskScheduler_Action_WebCheck.php:82
+#: include/class/module/action/web_checker/TaskScheduler_Action_WebCheck.php:91
+#: include/class/module/action/web_checker/TaskScheduler_Action_WebCheck.php:103
+msgid "Status Code"
+msgstr "ステータスコード"
+
+#: include/class/module/action/web_checker/TaskScheduler_Action_WebCheck.php:115
+msgid "Keyword(s) found in the source code."
+msgstr "ソースコードからキーワードが見つかりました。"
+
+#: include/class/module/action/web_checker/TaskScheduler_Action_WebCheck.php:116
+msgid "Keyword(s) not found in the source code."
+msgstr "ソースコードにキーワードが見つかりませんでした。"
+
+#: include/class/module/action/web_checker/TaskScheduler_Action_WebCheck.php:122
+msgid "Error: The PHP DOMDocument extension must be installed."
+msgstr "エラー: PHP DOMDocument 拡張がインストールされている必要があります。"
+
+#: include/class/module/action/web_checker/TaskScheduler_Action_WebCheck.php:130
+msgid "Keyword(s) found."
+msgstr "キーワードが見つかりました。"
+
+#: include/class/module/action/web_checker/TaskScheduler_Action_WebCheck.php:131
+msgid "Keyword(s) not found."
+msgstr "キーワードが見つかりません。"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:26
+msgid "Web Page URL"
+msgstr "ウェブページのURL"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:28
+msgid "Set a url to check."
+msgstr "チェックするURLを設定します。"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:35
+msgid "SSL Verify"
+msgstr "SSL認証"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:37
+msgid "Whether to verify SSL. Uncheck this if the check keeps failing."
+msgstr ""
+"SSLを認証の確認をするかどうか。もし失敗が続くようであればチェックを外します。"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:42
+msgid "Timeout"
+msgstr "タイムアウト"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:48
+msgid "HTTP Request Method"
+msgstr "HTTPリクエスト方法"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:59
+msgid "Query Arguments"
+msgstr "クエリ引数"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:65
+msgid ""
+"Set parameters of key-value pairs to be sent to the server with the url."
+msgstr "URLとともにサーバーに送られるキー・バリューペアの引数を設定します。"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:70
+msgid "Keywords to Search"
+msgstr "検索キーワード"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:72
+msgid ""
+"Set keywords to find in the loaded page. Leave it blank to just confirm it "
+"does not return HTTP response error."
+msgstr ""
+"読み込まれたページで探すキーワードを設定します。ただHTTPレスポンスエラーが出"
+"ていないかの確認であれば、空白にします。"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:77
+msgid "Find All"
+msgstr "全てを見つける"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:79
+msgid "Whether all the above keywords must be present."
+msgstr "全てのキーワードが存在しなくてはならないかどうか。"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:80
+msgid "Uncheck this if at least one of them should be included."
+msgstr "もし少なくとも一つが含まれているべきであれば、チェックを外します。"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:85
+msgid "Search in HTML Source Code"
+msgstr "HTMLソースコードから検索"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:87
+msgid "Whether to search the above keywords in the HTML source code."
+msgstr "上のキーワードをHTMLソースコードの中から検索するかどうか。"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:88
+msgid ""
+"Uncheck this if you want to check particular keywords in the displayed text "
+"on the page."
+msgstr ""
+"もし特定のキーワードをページ上に表示されたテキストから検索する場合はチェック"
+"を外します。"
+
+#: include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php:111
+msgid "The specified URL is not valid."
+msgstr "指定のURLは無効です。"
+
+#: include/class/module/action/_hung_routine_handler/TaskScheduler_Action_HungRoutineHandler_Thread.php:45
+#, php-format
+msgid "Hung Routine Handler of \"%1$s\""
+msgstr "\"%1$s\"の停止ルーティンの扱い"
+
+#: include/class/module/action/_hung_routine_handler/TaskScheduler_Action_HungRoutineHandler_Thread.php:46
+#, php-format
+msgid "Do some clearance if the task \"%1$s\" is hung."
+msgstr "タスク \"%1$s\" が停止した場合は消去する。"
+
+#: include/class/module/action/_hung_routine_handler/TaskScheduler_Action_HungRoutineHandler_Thread.php:69
+msgid "Handle Hung Task"
+msgstr "停止タスクを扱う"
+
+#: include/class/module/action/_routine_log_deleter/TaskScheduler_Action_RoutineLogDeleter.php:37
+msgid "Delete Task Log"
+msgstr "タスクログの消去"
+
+#: include/class/module/action/_routine_log_deleter/TaskScheduler_Action_RoutineLogDeleter_Thread.php:31
+msgid "Thread of Deleting Task Log "
+msgstr "タスクログ削除のスレッド"
+
+#: include/class/module/occurrence/constant/TaskScheduler_Occurrence_Constant.php:29
+msgid "Constant"
+msgstr "定数"
+
+#: include/class/module/occurrence/constant/TaskScheduler_Occurrence_Constant.php:36
+msgid "Triggers actions constantly, used by system internal routines."
+msgstr ""
+"システムの内部ルーティンにより使用されたアクションをコンスタントに発動させま"
+"す。"
+
+#: include/class/module/occurrence/daily/TaskScheduler_Occurrence_Daily.php:26
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:123
+msgid "Daily"
+msgstr "デイリー"
+
+#: include/class/module/occurrence/daily/TaskScheduler_Occurrence_Daily.php:33
+msgid "Triggers actions daily at the specified time."
+msgstr "日毎に指定時間でのアクションを発動させます。"
+
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:24
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:140
+msgid "Time"
+msgstr "回数"
+
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:34
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:167
+msgid "Days"
+msgstr "曜日"
+
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:39
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:157
+msgid "Sunday"
+msgstr "日曜"
+
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:40
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:158
+msgid "Monday"
+msgstr "月曜"
+
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:41
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:159
+msgid "Tuesday"
+msgstr "火曜"
+
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:42
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:160
+msgid "Wednesday"
+msgstr "水曜"
+
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:43
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:161
+msgid "Thursday"
+msgstr "木曜"
+
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:44
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:162
+msgid "Friday"
+msgstr "金曜"
+
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:45
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:163
+msgid "Saturday"
+msgstr "土曜"
+
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:85
+msgid "At least one day needs to be selected."
+msgstr "少なくとも1つの曜日が選択されている必要があります。"
+
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:122
+#: include/class/module/occurrence/fixed_interval/admin/TaskScheduler_Occurrence_FixedInterval_Wizard.php:106
+#: include/class/module/occurrence/specific_time/admin/TaskScheduler_Occurrence_SpecificTime_Wizard.php:111
+msgid "Type"
+msgstr "種類"
+
+#: include/class/module/occurrence/daily/admin/TaskScheduler_Occurrence_Daily_Wizard.php:136
+#: include/class/module/occurrence/specific_time/admin/TaskScheduler_Occurrence_SpecificTime_Wizard.php:113
+msgid "Times"
+msgstr "回数"
+
+#: include/class/module/occurrence/exit_code/TaskScheduler_Occurrence_ExitCode.php:33
+msgid "Triggers actions when the specified exit code is received."
+msgstr "特定の終了コードを受け取った時に、アクションを発動させます。"
+
+#: include/class/module/occurrence/exit_code/admin/TaskScheduler_Occurrence_ExitCode_Wizard.php:41
+msgid "Leave this empty to apply to any tasks."
+msgstr "どのようなタスクにも適用する場合は空白にします。"
+
+#: include/class/module/occurrence/exit_code/admin/TaskScheduler_Occurrence_ExitCode_Wizard.php:46
+msgid "Type a task name."
+msgstr "タスク名を入力します。"
+
+#: include/class/module/occurrence/exit_code/admin/TaskScheduler_Occurrence_ExitCode_Wizard.php:71
+msgid "An exit code need to be set."
+msgstr "終了コードが設定されている必要があります。"
+
+#: include/class/module/occurrence/exit_code/admin/TaskScheduler_Occurrence_ExitCode_Wizard.php:78
+msgid "Task IDs are required."
+msgstr "タスクIDが必要です。"
+
+#: include/class/module/occurrence/fixed_interval/TaskScheduler_Occurrence_FixedInterval.php:26
+msgid "Fixed Interval"
+msgstr "固定インターバル"
+
+#: include/class/module/occurrence/fixed_interval/TaskScheduler_Occurrence_FixedInterval.php:33
+msgid "Triggers actions at the set interval."
+msgstr "固定のインターバルでアクションを発動させます。"
+
+#: include/class/module/occurrence/fixed_interval/admin/TaskScheduler_Occurrence_FixedInterval_Wizard.php:48
+msgid "minute(s)"
+msgstr "分"
+
+#: include/class/module/occurrence/fixed_interval/admin/TaskScheduler_Occurrence_FixedInterval_Wizard.php:69
+msgid "The interval must be greater than 0."
+msgstr "インターバルは1以上でなければなりません。"
+
+#: include/class/module/occurrence/specific_time/TaskScheduler_Occurrence_SpecificTime.php:26
+msgid "Specific Time"
+msgstr "指定の時刻"
+
+#: include/class/module/occurrence/specific_time/TaskScheduler_Occurrence_SpecificTime.php:33
+msgid "Triggers actions at the specified time."
+msgstr "指定時刻にアクションを発動させます。"
+
+#: include/class/module/occurrence/specific_time/admin/TaskScheduler_Occurrence_SpecificTime_Wizard.php:24
+msgid "When"
+msgstr "いつ"
+
+#: include/class/module/occurrence/specific_time/admin/TaskScheduler_Occurrence_SpecificTime_Wizard.php:72
+msgid "A future time needs to be set, not past."
+msgstr "過去ではなく未来の時間を設定する必要があります。"
+
+#: include/class/module/occurrence/volatile/TaskScheduler_Occurrence_Volatile.php:29
+msgid "Volatile"
+msgstr "揮発性"
+
+#: include/class/module/occurrence/volatile/TaskScheduler_Occurrence_Volatile.php:36
+msgid "Triggers actions only once, used mostly by threads."
+msgstr "一度だけアクションを発動させます。主にスレッドによって使用されます。"
+
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:26
+msgid "Task Scheduler Log"
+msgstr "タスクスケジューラーログ"
+
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:27
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:28
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:29
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:118
+msgid "Log"
+msgstr "ログ"
+
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:30
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:31
+msgid "Add New Log"
+msgstr "新規ログの追加"
+
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:33
+msgid "Edit Log"
+msgstr "ログの編集"
+
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:34
+msgid "New Log"
+msgstr "新規ログ"
+
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:36
+msgid "View Log"
+msgstr "ログ閲覧"
+
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:37
+msgid "Search Log"
+msgstr "ログの検索"
+
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:38
+msgid "No Log found for Task Scheduler"
+msgstr "タスクスケジューラー用のログは見つかりません"
+
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:39
+msgid "No Log Found for Task Scheduler in Trash"
+msgstr "ゴミ箱にタスクスケジューラー用のログは見つかりませんでした。"
+
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:40
+msgid "Parent Log"
+msgstr "親ログ"
+
+#: include/class/post_type/log/TaskScheduler_PostType_Log_Base.php:138
+msgid "title"
+msgstr "タイトル"
+
+#: include/class/post_type/routine/TaskScheduler_PostType_Routine.php:18
+msgid "Routines"
+msgstr "ルーティン"
+
+#: include/class/post_type/task/TaskScheduler_PostType_Task.php:78
+msgid "Set the task name here."
+msgstr "タスク名を設定してして下さい。"
+
+#: include/class/post_type/task/TaskScheduler_PostType_Task.php:119
+#: include/class/post_type/task/TaskScheduler_PostType_Task.php:120
+msgid "Task updated"
+msgstr "タスクがアップデートされました"
+
+#: include/class/post_type/task/TaskScheduler_PostType_Task.php:121
+msgid "Task created"
+msgstr "タスクが作成されました"
+
+#: include/class/post_type/task/TaskScheduler_PostType_Task.php:122
+msgid "Task saved"
+msgstr "タスクを保存しました"
+
+#: include/class/post_type/task/TaskScheduler_PostType_Task.php:123
+msgid "Task submitted"
+msgstr "タスクが送信されました"
+
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:43
+msgid "Task Scheduler System Label"
+msgstr "タスクスケジューラー用システムラベル"
+
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:44
+msgid "Add New Label"
+msgstr "新規ラベルの追加"
+
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:45
+msgid "New Label"
+msgstr "新規ラベル"
+
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:75
+msgid "Edit Task"
+msgstr "タスクの編集"
+
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:76
+msgid "New Task"
+msgstr "新規タスク"
+
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:78
+msgid "View Tasks"
+msgstr "タスクの閲覧"
+
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:79
+msgid "Search Tasks"
+msgstr "タスクを検索"
+
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:80
+msgid "No Task found for Task Scheduler"
+msgstr "タスクスケジューラー用のタスクは見つかりませんでした"
+
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:81
+msgid "No Task Found for Task Scheduler in Trash"
+msgstr "ゴミ箱にタスクスケジューラー用のタスクは見つかりませんでした"
+
+#: include/class/post_type/task/TaskScheduler_PostType_Task_Base.php:82
+msgid "Parent Task"
+msgstr "親タスク"
+
+#: include/class/utility/TaskScheduler_WPUtility_Post.php:172
+msgid "WPDB is not established."
+msgstr "WPDBが作られていません"
+
+#: include/class/utility/clone/TaskScheduler_ClonePost.php:100
+#, php-format
+msgid "Copy of %1$s"
+msgstr "%1$sのコピー"
+
+#: include/class/utility/routine/TaskScheduler_RoutineUtility_Add.php:59
+#, php-format
+msgid "Routine instance of %1$s"
+msgstr "%1$sのルーティンインスタンス"
+
+#: include/class/utility/walker/TaskScheduler_Walker_Log.php:38
+#, php-format
+msgid "#%d"
+msgstr "#%d"
+
+#: include/library/apf/admin-page-framework.php:46
+#, php-format
+msgid "The method is called too early. Perform <code>%2$s</code> earlier."
+msgstr ""
+"メソッドは呼び出しが早すぎました。<code>%2$s</code> を早めに実行して下さい。"
+
+#: include/library/apf/custom-field-types/autocomplete-custom-field-type/AutoCompleteCustomFieldType.php:177
+msgid "Type the title of posts."
+msgstr "投稿のタイトルを入力して下さい。"
+
+#: include/library/apf/custom-field-types/date-time-custom-field-types/DateRangeCustomFieldType.php:209
+#: include/library/apf/custom-field-types/date-time-custom-field-types/DateTimeRangeCustomFieldType.php:214
+#: include/library/apf/custom-field-types/date-time-custom-field-types/TimeRangeCustomFieldType.php:212
+msgid "From"
+msgstr "From"
+
+#: include/library/apf/custom-field-types/date-time-custom-field-types/DateRangeCustomFieldType.php:210
+#: include/library/apf/custom-field-types/date-time-custom-field-types/DateTimeRangeCustomFieldType.php:215
+#: include/library/apf/custom-field-types/date-time-custom-field-types/TimeRangeCustomFieldType.php:213
+msgid "To"
+msgstr "To"
+
+#: include/library/apf/custom-field-types/path-custom-field-type/PathCustomFieldType.php:466
+#: include/library/apf/custom-field-types/path-custom-field-type/PathCustomFieldType.php:488
+msgid "Select Path"
+msgstr "パスの選択"
+
+#: include/library/apf/custom-field-types/revealer-custom-field-type/RevealerCustomFieldType.php:185
+#, php-format
+msgid ""
+"This revealer field type version requires Admin Page Framework %1$s to "
+"function properly."
+msgstr ""
+"このリビーラーフィールドタイプは適切に動作するには Admin Page Framework %1$s "
+"が必要です。"
+
+#: include/library/apf/custom-field-types/revealer-custom-field-type/RevealerCustomFieldType.php:186
+#, php-format
+msgid "You are using the framework version %2$s."
+msgstr "フレームワークバージョン %2$s を利用しています。"
+
+#: include/library/apf/factory/admin_page/AdminPageFramework.php:371
+#, php-format
+msgid "The method is deprecated: %1$s. Use %2$s instead."
+msgstr "非推奨のメソッドです: %1$s。 %2$s をご利用下さい。"
+
+#: include/library/apf/factory/admin_page/_model/delegate/AdminPageFramework_Model__FormSubmission.php:85
+#, php-format
+msgid "The hook <code>%1$s</code>is deprecated. Use <code>%2$s</code> instead."
+msgstr ""
+"フック <code>%1$s</code> は廃止予定です。代わりに <code>%2$s</code> をお使い"
+"下さい。"
+
+#: include/library/apf/factory/page_meta_box/AdminPageFramework_MetaBox_Page.php:9
+#, php-format
+msgid ""
+"The class <code>%1$s</code> is deprecated. Use <code>%2$s</code> instead."
+msgstr ""
+"クラス <code>%1$s</code> は廃止予定です。代わりに <code>%2$s</code> をお使い"
+"下さい。"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:65
+msgid "No browser information found."
+msgstr "ブラウザ情報は見つかりませんでした。"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:92
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "Version"
+msgstr "バージョン"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:92
+msgid "Language"
+msgstr ":"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:92
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "Memory Limit"
+msgstr "メモリ制限:"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:92
+msgid "Multi-site"
+msgstr "マルチサイト"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:92
+msgid "Permalink Structure"
+msgstr "パーマリンク構造"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:92
+msgid "Active Theme"
+msgstr "有効なテーマ"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:92
+msgid "Registered Post Statuses"
+msgstr "登録された投稿ステータス"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:92
+msgid "Table Prefix"
+msgstr "テーブル接頭辞"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:92
+msgid "Table Prefix Length"
+msgstr "テーブル接頭辞の長さ"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:92
+msgid "Table Prefix Status"
+msgstr "テーブル接頭辞のステータス"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:92
+msgid "Multibite String Extension"
+msgstr "複数の文字列の拡張子"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:92
+msgid "WP_CONTENT_DIR Writeable"
+msgstr "WP_CONTENT_DIR 書き込み可"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:92
+msgid "Active Plugins"
+msgstr "有効なプラグイン"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:92
+msgid "Network Active Plugins"
+msgstr "ネットワーク上の有効なプラグイン"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:92
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "Constants"
+msgstr "定数"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "Safe Mode"
+msgstr "セーフモード"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "Upload Max Size"
+msgstr "アップロードファイルの最大サイズ"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "Post Max Size"
+msgstr "投稿最大サイズ"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "Upload Max File Size"
+msgstr "アップロードファイルの最大サイズ"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "Max Execution Time"
+msgstr "最大実行時間"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "Max Input Vars"
+msgstr "Input Vars (フォームのinputタグ) の最大数"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "Argument Separator"
+msgstr "引数区切り"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "Allow URL File Open"
+msgstr "URL File Open の許可"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "Display Errors"
+msgstr "表示エラー"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "Log Errors"
+msgstr "ログエラー"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "Error log location"
+msgstr "エラーログの場所"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "Error Reporting Level"
+msgstr "エラーレポートレベル"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "FSOCKOPEN"
+msgstr "FSOCKOPEN"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "cURL"
+msgstr "cURL ライブラリ"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "SOAP"
+msgstr "SOAP"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:168
+msgid "SUHOSIN"
+msgstr "SUHOSIN"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:172
+msgid "Web Server"
+msgstr "ウェブサーバー"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:172
+msgid "Session"
+msgstr "セッション"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:172
+msgid "Session Name"
+msgstr "セッション名"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:172
+msgid "Session Cookie Path"
+msgstr "セッションクッキーのパス"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:172
+msgid "Session Save Path"
+msgstr "セッション保存パス"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:172
+msgid "Session Use Cookies"
+msgstr "セッションはクッキーを使用"
+
+#: include/library/apf/factory/_common/form/field_type/AdminPageFramework_FieldType_system.php:172
+msgid "Session Use Only Cookies"
+msgstr "セッションはクッキのみ使用"
+
+#: include/library/apf/factory/_common/form/_view/sectionset/AdminPageFramework_Form_View___FieldTitle.php:59
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:140
+msgid ""
+"This information will be disabled when <code>WP_DEBUG</code> is set to "
+"<code>false</code> in <code>wp-config.php</code>."
+msgstr ""
+"<code>wp-config.php</code>において、<code>WP_DEBUG</code> が<code>false</"
+"code>に設定されている場合、この情報は見えなくなります。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:56
+msgid "The options have been updated."
+msgstr "設定は更新されました。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:57
+msgid "The options have been cleared."
+msgstr "設定は消去されました。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:58
+msgid "Export"
+msgstr "エクスポート"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:59
+msgid "Export Options"
+msgstr "設定のエクスポート"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:60
+msgid "Import"
+msgstr "インポート"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:61
+msgid "Import Options"
+msgstr "設定のインポート"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:62
+msgid "Submit"
+msgstr "送信"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:63
+msgid "An error occurred while uploading the import file."
+msgstr "インポートファイルをアップロード中にエラーが発生しました。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:64
+#, php-format
+msgid "The uploaded file type is not supported: %1$s"
+msgstr "アップロードされたファイルタイプはサポートされていません: %1$s"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:65
+msgid "Could not load the importing data."
+msgstr "インポートするデータを読み込めませんでした。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:66
+msgid "The uploaded file has been imported."
+msgstr "アップロードファイルはインポートされました。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:67
+msgid "No data could be imported."
+msgstr "設定をインポートできませんでした。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:68
+msgid "Upload Image"
+msgstr "画像アップロード"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:69
+msgid "Use This Image"
+msgstr "この画像を使う"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:70
+msgid "Insert from URL"
+msgstr "URL から挿入"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:71
+msgid "Are you sure you want to reset the options?"
+msgstr "本当に設定をリセットしていいですか ?"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:72
+msgid "Please confirm your action."
+msgstr "アクションを確認して下さい。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:73
+msgid "The specified options have been deleted."
+msgstr "指定の設定は削除されました。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:74
+msgid "A problem occurred while processing the form data. Please try again."
+msgstr "フォームデータを処理中に問題が生じました。もう一度お試しください。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:75
+#, php-format
+msgid ""
+"Not all form fields could not be sent. Please check your server settings of "
+"PHP <code>max_input_vars</code> and consult the server administrator to "
+"increase the value. <code>max input vars</code>: %1$s. <code>$_POST</code> "
+"count: %2$s"
+msgstr ""
+"いくつかのフォームフィールドが送信されませんでした。サーバー側でPHPの"
+"<code>max_input_vars</code>の値を調べ、サーバー管理者に値を上げるようにお問い"
+"合わせ下さい。<code>max input vars</code>: %1$s. <code>$_POST</code> count: "
+"%2$s"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:76
+msgid "Is it okay to send the email?"
+msgstr "Eメールを送信してもよろしいですか？"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:77
+msgid "The email has been sent."
+msgstr "Eメールは送信されました。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:78
+msgid "The email has been scheduled."
+msgstr "Eメールはスケジュールされました。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:79
+msgid "There was a problem sending the email"
+msgstr "Eメールの送信に問題がありました。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:80
+msgid "Title"
+msgstr "タイトル"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:81
+msgid "Author"
+msgstr "作成者"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:82
+msgid "Categories"
+msgstr "カテゴリー"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:83
+msgid "Tags"
+msgstr "タグ"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:84
+msgid "Comments"
+msgstr "コメント"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:85
+msgid "Date"
+msgstr "日付"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:86
+msgid "Show All"
+msgstr "全て表示"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:87
+msgid "Show All Authors"
+msgstr "すべてのカテゴリーを見る"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:88
+msgid "Thank you for creating with"
+msgstr "作ってくれてありがとうございます。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:89
+msgid "and"
+msgstr "と"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:91
+msgid "Manage"
+msgstr "編集"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:92
+msgid "Select Image"
+msgstr "画像を選択"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:93
+msgid "Upload File"
+msgstr "ファイルをアップロード"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:94
+msgid "Use This File"
+msgstr "このファイルを使う"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:95
+msgid "Select File"
+msgstr "ファイルを選択"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:96
+msgid "Remove Value"
+msgstr "値を除去"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:97
+msgid "Select All"
+msgstr "すべて選択"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:98
+msgid "Select None"
+msgstr "選択無し"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:99
+msgid "No term found."
+msgstr "タームが見つかりません"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:100
+msgid "Select"
+msgstr "選択"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:101
+msgid "Insert"
+msgstr "挿入"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:102
+msgid "Use This"
+msgstr "これを使用"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:103
+msgid "Return to Library"
+msgstr "ライブラリへ戻る"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:104
+#, php-format
+msgid "%1$s queries in %2$s seconds."
+msgstr "%2$s秒中に%1$sのクエリ。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:105
+#, php-format
+msgid "%1$s out of %2$s MB (%3$s) memory used."
+msgstr "%2$s MB (%3$s) 中の%1$s MBが使用されました。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:106
+#, php-format
+msgid "Peak memory usage %1$s MB."
+msgstr "ピークメモリ使用量は%1$sMBです。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:107
+#, php-format
+msgid "Initial memory usage  %1$s MB."
+msgstr "初期メモリ使用量は%1$sMBです。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:108
+msgid "The allowed maximum number of fields is {0}."
+msgstr "最大 {0} 個までのフィールドが複製できます。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:109
+msgid "The allowed minimum number of fields is {0}."
+msgstr "最小 {0} 個のフィールドが必要です。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:110
+msgid "Add"
+msgstr "追加"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:111
+msgid "Remove"
+msgstr "削除"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:112
+msgid "The allowed maximum number of sections is {0}"
+msgstr "最大 {0} 個までのセクションが複製できます。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:113
+msgid "The allowed minimum number of sections is {0}"
+msgstr "最小 {0} 個のセクションが必要です。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:114
+msgid "Add Section"
+msgstr "セクションを追加する"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:115
+msgid "Remove Section"
+msgstr "セクションの削除"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:116
+msgid "Toggle All"
+msgstr "全てを切り替える"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:117
+msgid "Toggle all collapsible sections"
+msgstr "全ての折りたたみ可能セクションの切り替え"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:119
+msgid "Yes"
+msgstr "はい"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:120
+msgid "No"
+msgstr "いいえ"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:125
+msgid "Supported"
+msgstr "サポート済"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:126
+msgid "Not Supported"
+msgstr "非サポート"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:127
+msgid "Functional"
+msgstr "機能中"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:128
+msgid "Not Functional"
+msgstr "非機能"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:129
+msgid "Too Long"
+msgstr "非常に長い"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:130
+msgid "Acceptable"
+msgstr "許容可"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:131
+msgid "No log found."
+msgstr "ログが見つかりません。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:132
+#, php-format
+msgid "The method is called too early: %1$s"
+msgstr "メソッドの呼び出しが早すぎます: %1$s"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:134
+msgid "Click here to expand to view the contents."
+msgstr "コンテンツを開くにはここをクリックします。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:135
+msgid "Click here to collapse the contents."
+msgstr "コンテンツを折りたたむにはここをクリック。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:136
+msgid "Loading..."
+msgstr "読込中..."
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:137
+msgid "Please enable JavaScript for better experience."
+msgstr ""
+"よりよいユーザーエクスペリエンスのために、ブラウザのJavaScriptを有効にして下"
+"さい。"
+
+#: include/library/apf/factory/_common/_abstract/_model/AdminPageFramework_Message.php:139
+msgid "Field Arguments"
+msgstr "フィールド引数"
