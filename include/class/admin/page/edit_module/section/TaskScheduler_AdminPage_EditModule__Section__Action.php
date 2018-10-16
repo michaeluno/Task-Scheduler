@@ -136,16 +136,8 @@ class TaskScheduler_AdminPage_EditModule__Section__Action extends TaskScheduler_
      * @since       1.0.0
      * @callback    filter      validation_{instantiated class name}_{section ID}
      */
-    public function validate( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) {
+    public function validate( $aInput, $aOldInput, $oAdminPage, $aSubmitInfo ) {
 
-        $_aParams    = func_get_args() + array(
-            null, null, null, null
-        );
-        $aInput      = $_aParams[ 0 ];
-        $aOldInput   = $_aParams[ 1 ];
-        $oAdminPage  = $_aParams[ 2 ];
-        $aSubmitInfo = $_aParams[ 3 ];    
-    
         $_bIsValid   = true;
         $_aErrors    = array();
         

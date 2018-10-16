@@ -228,6 +228,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
+= 1.4.7 =
+- Fixed a bug that caused a PHP warning of strict standards.
+
 = 1.4.6 - 2018/08/01 =
 - Added default and Japanese language files.
 - Fixed a bug with the `Daily` occurrence type that spawned routines multiple times on some servers.

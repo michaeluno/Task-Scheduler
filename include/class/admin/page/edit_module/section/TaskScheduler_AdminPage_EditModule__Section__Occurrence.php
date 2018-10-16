@@ -94,16 +94,8 @@ class TaskScheduler_AdminPage_EditModule__Section__Occurrence extends TaskSchedu
      * @since       1.0.0
      * @callback    filter      validation_{instantiated class name}_{section ID}
      */
-    public function validate( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) {
-    
-        $_aParams    = func_get_args() + array(
-            null, null, null, null
-        );
-        $aInput      = $_aParams[ 0 ];
-        $aOldInput   = $_aParams[ 1 ];
-        $oAdminPage  = $_aParams[ 2 ];
-        $aSubmitInfo = $_aParams[ 3 ];
-    
+    public function validate( $aInput, $aOldInput, $oAdminPage, $aSubmitInfo ) {
+
         // The transient key must be embedded in the url.
         $_sRedirectURL = add_query_arg( array( 'transient_key'    =>    $aInput['transient_key'], ));    
         $_sRedirectURL = add_query_arg(
