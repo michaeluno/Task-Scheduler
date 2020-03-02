@@ -12,6 +12,32 @@
 class TaskScheduler_WPUtility extends TaskScheduler_WPUtility_Option {
 
     /**
+     * Converts a string time into a unix timestamp.
+     *
+     * `strtotime()` cannot distinguish the format, m/d/Y and d/m/Y and consider it as m/d/Y when / is present.
+     * However, some users set the site date format as `d/m/Y` so this method takes care of such cases.
+     * @see     https://stackoverflow.com/questions/2891937/strtotime-doesnt-work-with-dd-mm-yyyy-format
+     *
+     * @param string $sStringTime The date string to convert.
+     *
+     * @return  integer     The converted timestamp
+     * @since   1.4.8
+     */
+    static public function getStringToTime( $sStringTime ) {
+        $_sSiteDateFormat = get_option( 'date_format' );
+        $_biPosition_d    = strpos( $_sSiteDateFormat, 'd' );
+        if ( false === $_biPosition_d ) {
+            return strtotime( $sStringTime );
+        }
+        $_iPosition_d     = ( integer ) $_biPosition_d;
+        $_iPosition_m     = ( integer ) strpos( $_sSiteDateFormat, 'm' );
+        if ( $_iPosition_d < $_iPosition_m ) {
+            $sStringTime = str_replace('/', '-', $sStringTime );
+        }
+        return strtotime( $sStringTime );
+    }
+
+    /**
      * Returns the label of the given taxonomy slug.
      * 
      * This is used as the labels to construct a 'select' input field.

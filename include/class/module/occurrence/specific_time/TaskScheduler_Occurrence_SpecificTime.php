@@ -51,7 +51,7 @@ class TaskScheduler_Occurrence_SpecificTime extends TaskScheduler_Occurrence_Bas
         }
         
         // Convert the string date input to time-stamp
-        $_aSetTimes    = $this->_getDateToTimeStamps( $_aOptions[ 'when' ] );
+        $_aSetTimes    = $this->___getDateToTimeStamps( $_aOptions[ 'when' ] );
                 
         $_iCurrentTime = time();
         $_nLastRunTime = $oTask->_last_run_time
@@ -83,11 +83,11 @@ class TaskScheduler_Occurrence_SpecificTime extends TaskScheduler_Occurrence_Bas
          * assumes the time of the GMT is calculated. So here subtracting GMT offset seconds from the current timestamp.
          * @return      array
          */        
-        private function _getDateToTimeStamps( array $aDateTimes ) {
+        private function ___getDateToTimeStamps( array $aDateTimes ) {
             
             $_aTimeStamps = array();
             foreach( $aDateTimes as $_sDateTime ) {
-                $_aTimeStamps[] = strtotime( $_sDateTime ) - ( get_option( 'gmt_offset' ) * 60*60 );
+                $_aTimeStamps[] = $this->getStringToTime( $_sDateTime ) - ( get_option( 'gmt_offset' ) * 60*60 );
             }
             asort( $_aTimeStamps );            
             return $_aTimeStamps;

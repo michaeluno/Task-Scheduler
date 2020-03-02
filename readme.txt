@@ -228,6 +228,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
+= 1.4.8 =
+- Fixed a bug with the `Specific Time` occurrence type that the `d/m/Y` date format caused time miscalculations.
+
 = 1.4.7- 2018/10/17 =
 - Fixed a bug that caused a PHP warning of strict standards.
 

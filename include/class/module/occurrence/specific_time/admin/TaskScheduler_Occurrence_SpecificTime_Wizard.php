@@ -50,8 +50,8 @@ final class TaskScheduler_Occurrence_SpecificTime_Wizard extends TaskScheduler_W
         $_bIsValid = true;
         $_aErrors  = array();
         
-        $aInput['when'] = array_filter( $aInput['when'] );    // drop non-true values.
-        if ( empty( $aInput['when'] ) ) {
+        $aInput[ 'when' ] = array_filter( $aInput[ 'when' ] );    // drop non-true values.
+        if ( empty( $aInput[ 'when' ] ) ) {
             
             // $aVariable[ 'sectioni_id' ]['field_id']
             $_aErrors[ $this->_sSectionID ][ 'when' ] = __( 'At least one item needs to be set.', 'task-scheduler' );
@@ -59,12 +59,12 @@ final class TaskScheduler_Occurrence_SpecificTime_Wizard extends TaskScheduler_W
             
         }
         $_bUnset = false;
-        foreach( $aInput['when'] as $_iIndex => $_sDateTime ) {
-            $_iSetTimeStamp = strtotime( $_sDateTime );
+        foreach( $aInput[ 'when' ] as $_iIndex => $_sDateTime ) {
+            $_iSetTimeStamp = TaskScheduler_WPUtility::getStringToTime( $_sDateTime );
             $_iCurrentTimeStamp = current_time( 'timestamp' );
             if ( $_iSetTimeStamp < $_iCurrentTimeStamp ) {
                 $_bUnset = true;            
-                unset( $aInput['when'][ $_iIndex ] );
+                unset( $aInput[ 'when' ][ $_iIndex ] );
             }
         }
         if ( $_bUnset ) {
