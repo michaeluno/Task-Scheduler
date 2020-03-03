@@ -23,15 +23,16 @@ final class TaskScheduler_Occurrence_SpecificTime_Wizard extends TaskScheduler_W
                 'field_id'          => 'when',
                 'title'             => __( 'When', 'task-scheduler' ),
                 'type'              => 'date_time',
-                'time_format'       => 'hh:mm',    // H:mm is the default format.
+                'date_format'       => 'yy-mm-dd',
+                'time_format'       => 'HH:mm',    // H:mm is the default format.
                 'repeatable'        => true,
                 'attributes'        => array(
                     'size' => 20,
                 ),
-                'options'    => "{
-                    numberOfMonths: 2,
-                    minDate: 0
-                }"
+                'options'       => array(
+                    'numberOfMonths'    => 2,
+                    'minDate'           => 0,
+                ),
             ),                        
         );
         
@@ -53,14 +54,14 @@ final class TaskScheduler_Occurrence_SpecificTime_Wizard extends TaskScheduler_W
         $aInput[ 'when' ] = array_filter( $aInput[ 'when' ] );    // drop non-true values.
         if ( empty( $aInput[ 'when' ] ) ) {
             
-            // $aVariable[ 'sectioni_id' ]['field_id']
+            // $aVariable[ 'section_id' ][ 'field_id' ]
             $_aErrors[ $this->_sSectionID ][ 'when' ] = __( 'At least one item needs to be set.', 'task-scheduler' );
             $_bIsValid = false;            
             
         }
         $_bUnset = false;
         foreach( $aInput[ 'when' ] as $_iIndex => $_sDateTime ) {
-            $_iSetTimeStamp = TaskScheduler_WPUtility::getStringToTime( $_sDateTime );
+            $_iSetTimeStamp     = TaskScheduler_WPUtility::getStringToTime( $_sDateTime );
             $_iCurrentTimeStamp = current_time( 'timestamp' );
             if ( $_iSetTimeStamp < $_iCurrentTimeStamp ) {
                 $_bUnset = true;            
@@ -75,7 +76,7 @@ final class TaskScheduler_Occurrence_SpecificTime_Wizard extends TaskScheduler_W
                 : $_sMessage;
         }
         // reorder the array to be numerically indexed
-        $aInput['when'] = array_values( $aInput['when'] );
+        $aInput[ 'when' ] = array_values( $aInput[ 'when' ] );
         
         if ( ! $_bIsValid ) {
 

@@ -24,13 +24,18 @@ class TaskScheduler_WPUtility extends TaskScheduler_WPUtility_Option {
      * @since   1.4.8
      */
     static public function getStringToTime( $sStringTime ) {
-        $_sSiteDateFormat = get_option( 'date_format' );
-        $_biPosition_d    = strpos( $_sSiteDateFormat, 'd' );
+        $_sSiteDateFormat  = get_option( 'date_format' );
+        $_biPosition_Slash = strpos( $_sSiteDateFormat, '/' );
+        if ( false === $_biPosition_Slash ) {
+            return strtotime( $sStringTime );
+        }
+        // check if 'd' comes before 'm' in the date format such as d/m/Y.
+        $_biPosition_d     = strpos( $_sSiteDateFormat, 'd' );
         if ( false === $_biPosition_d ) {
             return strtotime( $sStringTime );
         }
-        $_iPosition_d     = ( integer ) $_biPosition_d;
-        $_iPosition_m     = ( integer ) strpos( $_sSiteDateFormat, 'm' );
+        $_iPosition_d      = ( integer ) $_biPosition_d;
+        $_iPosition_m      = ( integer ) strpos( $_sSiteDateFormat, 'm' );
         if ( $_iPosition_d < $_iPosition_m ) {
             $sStringTime = str_replace('/', '-', $sStringTime );
         }
