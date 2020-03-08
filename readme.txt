@@ -2,8 +2,8 @@
 Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
-Tested up to:       4.9.8
-Stable tag:         1.4.7
+Tested up to:       5.3.2
+Stable tag:         1.4.8
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               tool, utility, background, backend, task, system, event, scheduler, email, delete posts, cron, automation, routine
@@ -228,7 +228,8 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.4.8 =
+= 1.4.8 - 2020/03/08 =
+- Added an admin notice to appear when the site timezone is not set.
 - Fixed a bug with the `Specific Time` occurrence type that the `d/m/Y` date format caused time miscalculations.
 
 = 1.4.7- 2018/10/17 =

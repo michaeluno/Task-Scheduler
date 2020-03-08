@@ -55,7 +55,16 @@ final class TaskScheduler_AdminPage_Setting extends TaskScheduler_AdminPage_Sett
      */
     public function _replyToLoadSettingPage( $oAdminPage ) {
         $this->_defineInPageTabs();
-        $this->_defineForm();    
+        $this->_defineForm();
+        $_idnsGMTOffset = get_option( 'gmt_offset' );
+        if ( ! strlen( $_idnsGMTOffset ) ) {
+            $_sMessage  = __( 'The time zone needs to be set for the plugin to run properly.', 'task-scheduler' );
+            $_sMessage .= ' ' . sprintf(
+                __( 'Go to the <a href="%1$s">General Setting</a> section to set a timezone.', 'task-scheduler' ),
+                esc_url( admin_url( 'options-general.php' ) )
+            );
+            $oAdminPage->setAdminNotice( $_sMessage, 'error' );
+        }
     }
     
 }
