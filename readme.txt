@@ -228,6 +228,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
+= 1.4.9 - 2020/08/19 =
+- Fixed an incompatibility issue with WordPress 5.5 regarding radio input buttons.
+
 = 1.4.8 - 2020/03/08 =
 - Added an admin notice to appear when the site timezone is not set.
 - Fixed a bug with the `Specific Time` occurrence type that the `d/m/Y` date format caused time miscalculations.

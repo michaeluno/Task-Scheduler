@@ -1,3 +1,7 @@
+= 1.0.4 =
+- Supported repeatable sections.
+- Made the repeatable handling mechanism compatible with Admin Page Framework v3.8.10.
+- Fixed a bug with the `selectors` argument witch caused hiding unnecessary elements.
 = 1.0.3 =
 - Supported repeatable sections.
 = 1.0.2 =

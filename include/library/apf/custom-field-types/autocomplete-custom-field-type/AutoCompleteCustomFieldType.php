@@ -111,6 +111,7 @@ if ( ! class_exists( 'TaskScheduler_AutoCompleteCustomFieldType' ) ) :
  * @since       1.0.0
  * @package     TaskScheduler_AdminPageFrameworkFieldTypePack
  * @subpackage  CustomFieldType
+ * @version     1.0.1
  */
 class TaskScheduler_AutoCompleteCustomFieldType extends TaskScheduler_AdminPageFramework_FieldType {
         
@@ -524,10 +525,10 @@ class TaskScheduler_AutoCompleteCustomFieldType extends TaskScheduler_AdminPageF
                 . "<label for='{$aField['input_id']}'>"
                     . $aField['before_input']
                     . ( $aField['label'] && ! $aField['repeatable']
-                        ? "<span class='task-scheduler-input-label-string' style='min-width:" . $this->sanitizeLength( $aField['label_min_width'] ) . ";'>" . $aField['label'] . "</span>"
+                        ? "<span class='task-scheduler-input-label-string' style='min-width:" . $this->getLengthSanitized( $aField['label_min_width'] ) . ";'>" . $aField['label'] . "</span>"
                         : "" 
                     )
-                    . "<input " . $this->generateAttributes( $aInputAttributes ) . " />"    // this method is defined in the base class
+                    . "<input " . $this->getAttributes( $aInputAttributes ) . " />"    // this method is defined in the base class
                     . $aField['after_input']
                     . "<div class='repeatable-field-buttons'></div>"    // the repeatable field buttons will be replaced with this element.
                 . "</label>"

@@ -117,7 +117,7 @@ if ( ! class_exists( 'TaskScheduler_RevealerCustomFieldType' ) ) :
  * @since       1.0.0
  * @package     TaskScheduler_AdminPageFrameworkFieldTypePack
  * @subpackage  CustomFieldType
- * @version     1.0.3
+ * @version     1.0.4
  */
 class TaskScheduler_RevealerCustomFieldType extends TaskScheduler_AdminPageFramework_FieldType {
         
@@ -234,10 +234,13 @@ class TaskScheduler_RevealerCustomFieldType extends TaskScheduler_AdminPageFrame
 jQuery( document ).ready( function(){
     
     jQuery().registerTaskScheduler_AdminPageFrameworkCallbacks( {     
-        added_repeatable_field: function( oClonedField, sFieldType, sFieldTagID, sCallType ) {
-            oClonedField.find( 'select[data-reveal],input[type=\"checkbox\"][data-reveal],input[type=\"radio\"][data-reveal]' )
-                .setTaskScheduler_AdminPageFrameworkRevealer();
-        }
+        /**
+         * Called when a field of this field type gets repeated.
+         */
+        repeated_field: function( oCloned, aModel ) {
+            oCloned.find( 'select[data-reveal],input[type=\"checkbox\"][data-reveal],input[type=\"radio\"][data-reveal]' )
+                .setTaskScheduler_AdminPageFrameworkRevealer();          
+        },
     },
     {$_aJSArray}
     );
@@ -271,18 +274,21 @@ JAVASCRIPTS;
         $aField     = $this->_sanitizeInnerFieldArray( $aField );
         $_aOutput[] = $this->geFieldOutput( $aField );
         $_aOutput[] = $this->_getRevealerScript( $aField[ 'input_id' ] );
+        $_aLabels   = empty( $aField[ 'selectors' ] )
+            ? $aField[ 'label' ] 
+            : array_flip( $aField[ 'selectors' ] );
         switch( $aField[ 'select_type' ] ) {
             default:
             case 'select':
             case 'radio':                          
-                $_aOutput[] = $this->_getConcealerScript( $aField[ 'input_id' ], $aField[ 'label' ], $aField[ 'value' ] );
+                $_aOutput[] = $this->_getConcealerScript( $aField[ 'input_id' ], $_aLabels, $aField[ 'value' ] );
                 break;
                 
             case 'checkbox':
                 $_aSelections = is_array( $aField[ 'value' ] )
                     ? array_keys( array_filter( $aField[ 'value' ] ) )
                     : $aField[ 'label' ];                  
-                $_aOutput[] = $this->_getConcealerScript( $aField[ 'input_id' ], $aField[ 'label' ], $_aSelections );
+                $_aOutput[] = $this->_getConcealerScript( $aField[ 'input_id' ], $_aLabels, $_aSelections );
                 break;
   
         }
@@ -356,7 +362,7 @@ JAVASCRIPTS;
                 . "</script>";    
         }        
         private function _getConcealerScript( $sSelectorID, $aLabels, $asCurrentSelection ) {
-            
+
             $aLabels            = $this->getAsArray( $aLabels );
             $_aCurrentSelection = $this->getAsArray( $asCurrentSelection );
             unset( $_aCurrentSelection[ 'undefined' ] );    // an internal reserved key    
@@ -366,24 +372,31 @@ JAVASCRIPTS;
             $_sCurrentSelection = json_encode( $_aCurrentSelection );            
             
             unset( $aLabels[ 'undefined' ] );
-            $aLabels    = array_keys( $aLabels );
-            $_sLabels   = json_encode( $aLabels );    // encode it to be usable in JavaScript
+            $aLabels        = array_keys( $aLabels );
+            $_sJSONLabels   = json_encode( $aLabels );    // encode it to be usable in JavaScript
+            $_sSelectors    = implode( ',', $aLabels );
             return 
                 "<script type='text/javascript' class='task-scheduler-revealer-field-type-concealer-script'>"
                     . '/* <![CDATA[ */ '
                     . "jQuery( document ).ready( function(){
 
-                        jQuery.each( {$_sLabels}, function( iIndex, sValue ) {
-
+                        jQuery.each( {$_sJSONLabels}, function( iIndex, sValue ) {
+                        
                             /* If it is the selected item, show it */
                             if ( jQuery.inArray( sValue, {$_sCurrentSelection} ) !== -1 ) { 
                                 jQuery( sValue ).fadeIn();
                                 return true;    // continue
                             }
-                            
                             jQuery( sValue ).hide();
                                 
                         });
+                        
+                        // Embed all the selectors for the field so that the other members can be referred when showing an item. 
+                        // This is especially needed for repeatable sections.
+                        jQuery( 'select[data-id=\"{$sSelectorID}\"][data-reveal], input[type=radio][data-id=\"{$sSelectorID}\"], input[type=checkbox][data-id=\"{$sSelectorID}\"][data-reveal]' )
+                            .attr( 'data-selectors', '{$_sSelectors}' );
+                            
+                        // Trigger  the reveler event.
                         jQuery( 'select[data-id=\"{$sSelectorID}\"][data-reveal], input:checked[type=radio][data-id=\"{$sSelectorID}\"], input:checked[type=checkbox][data-id=\"{$sSelectorID}\"][data-reveal]' )
                             .trigger( 'change' );
                     });"
@@ -399,52 +412,55 @@ JAVASCRIPTS;
     public function _replyToAddRevealerjQueryPlugin() {
                 
         $_sScript = "
-        ( function ( $ ) {
+( function ( $ ) {
+    
+    /**
+     * Binds the revealer event to the element.
+     */
+    $.fn.setTaskScheduler_AdminPageFrameworkRevealer = function() {
+
+        var _sLastRevealedSelector;
+        this.unbind( 'change' ); // for repeatable fields
+        this.change( function() {
             
-            /**
-             * Binds the revealer event to the element.
-             */
-            $.fn.setTaskScheduler_AdminPageFrameworkRevealer = function() {
-
-                var _sLastRevealedSelector;
-                this.unbind( 'change' ); // for repeatable fields
-                this.change( function() {
-                    
-                    var _sTargetSelector        = $( this ).is( 'select' )
-                        ? $( this ).children( 'option:selected' ).data( 'reveal' )
-                        : $( this ).data( 'reveal' );
-                    
-                    // For checkboxes       
-                    if ( $( this ).is(':checkbox') ) {
-                        var _oElementToReveal       = $( _sTargetSelector );
-                        if ( $( this ).is( ':checked' ) ) {
-                            _oElementToReveal.fadeIn();
-                        } else {
-                            _oElementToReveal.hide();    
-                        }                      
-                        return;
-                    }
-                    
-                    // For other types (select and radio).
-                    // var _sTargetSelector        = $( this ).val();
-                    var _oElementToReveal       = $( _sTargetSelector );
-
-                    // Hide the previously hidden element.
-                    $( _sLastRevealedSelector ).hide();    
-                                        
-                    // Store the last revealed item in the local and the outer local variables.
-                    _sLastRevealedSelector = _sTargetSelector;
-                    
-                    if ( 'undefined' === _sTargetSelector ) { 
-                        return; 
-                    }
-                    _oElementToReveal.fadeIn();                                       
-                    
-                });
-                
-            };
+            var _sTargetSelector        = $( this ).is( 'select' )
+                ? $( this ).children( 'option:selected' ).data( 'reveal' )
+                : $( this ).data( 'reveal' );
                         
-        }( jQuery ));";
+            // For check-boxes       
+            if ( $( this ).is( ':checkbox' ) ) {
+                var _oElementToReveal       = $( _sTargetSelector );
+                if ( $( this ).is( ':checked' ) ) {
+                    _oElementToReveal.fadeIn();
+                } else {
+                    _oElementToReveal.hide();    
+                }                      
+                return;
+            }
+            
+            // For other types (select and radio).
+            var _oElementToReveal       = $( _sTargetSelector );
+
+            // Elements to hide
+            var _sSelectors = $( this ).data( 'selectors' );            
+            $( _sSelectors ).not( ':selected, :checked' ).hide();
+
+            // Hide the previously hidden element.
+            $( _sLastRevealedSelector ).hide();    
+                                
+            // Store the last revealed item in the local and the outer local variables.
+            _sLastRevealedSelector = _sTargetSelector;
+            
+            if ( 'undefined' === _sTargetSelector ) { 
+                return; 
+            }
+            _oElementToReveal.fadeIn();                                       
+            
+        });
+        
+    };
+                
+}( jQuery ));";
         
         echo "<script type='text/javascript' class='task-scheduler-revealer-jQuery-plugin'>"
                 . '/* <![CDATA[ */ '

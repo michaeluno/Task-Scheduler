@@ -1,2 +1,5 @@
-= 1.0.0 =
-- Released.
+=== 1.0.1 
+- Made the repeatable handling mechanism compatible with Admin Page Framework v3.8.10.
+- Fixed an issue of using deprecated methods.
+=== 1.0.0
+- Released

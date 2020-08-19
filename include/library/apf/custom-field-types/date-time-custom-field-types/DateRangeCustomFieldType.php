@@ -40,7 +40,7 @@ if ( ! class_exists( 'TaskScheduler_DateRangeCustomFieldType' ) ) :
  * @since       1.0.0
  * @package     TaskScheduler_AdminPageFrameworkFieldTypePack
  * @subpackage  CustomFieldType
- * @version     1.0.0
+ * @version     1.0.1
  */
 class TaskScheduler_DateRangeCustomFieldType extends TaskScheduler_AdminPageFramework_FieldType {
         
@@ -116,45 +116,28 @@ class TaskScheduler_DateRangeCustomFieldType extends TaskScheduler_AdminPageFram
         $_aJSArray = json_encode( $this->aFieldTypeSlugs );
         /*    The below function will be triggered when a new repeatable field is added. */
         return "
-            jQuery( document ).ready( function(){
-                jQuery().registerTaskScheduler_AdminPageFrameworkCallbacks( {
-                    /**
-                     * The repeatable field callback for the add event.
-                     * 
-                     * @param    object    oCloned
-                     * @param    string    the field type slug
-                     * @param    string    the field container tag ID
-                     * @param    integer    the caller type. 1 : repeatable sections. 0 : repeatable fields.
-                     */                        
-                    added_repeatable_field: function( oCloned, sFieldType, sFieldTagID, sCallType ) {
-            
-                        /* If it is not this field type, do nothing. */
-                        if ( jQuery.inArray( sFieldType, {$_aJSArray} ) <= -1 ) {
-                            return;
-                        }
-            
-                        /* If the input tag is not found, do nothing  */
-                        if ( oCloned.find( 'input.datepicker' ).length <= 0 ) {
-                            return;
-                        }
-                        
-                        /* (Re)bind the date picker script */
-                        var oDatePickerInput = jQuery( oCloned ).find( 'input.datepicker.from' );    
-                        var oDatePickerInput_To = jQuery( oCloned ).find( 'input.datepicker.to' );    
-                        var sOptionID = jQuery( oCloned ).closest( '.task-scheduler-sections' ).attr( 'id' ) 
-                            + '_' 
-                            + jQuery( oCloned ).closest( '.task-scheduler-fields' ).attr( 'id' );    // sections id + _ + fields id 
-                        var aOptions_From = jQuery( '#' + oDatePickerInput.attr( 'id' ) ).getDateTimePickerOptions( sOptionID + '_from' );
-                        var aOptions_To = jQuery( '#' + oDatePickerInput_To.attr( 'id' ) ).getDateTimePickerOptions( sOptionID + '_to' );
-                        oDatePickerInput.apf_date_range( oDatePickerInput_To.attr( 'id' ), aOptions_From, aOptions_To );                        
-                        
-                    }
-                                        
-                },
-                {$_aJSArray}
-                );
-            });        
-        
+jQuery( document ).ready( function(){
+    jQuery().registerTaskScheduler_AdminPageFrameworkCallbacks( {
+        /**
+         * Called when a field of this field type gets repeated.
+         */
+        repeated_field: function( oCloned, aModel ) {
+            /* (Re)bind the date picker script */
+            var oDatePickerInput    = jQuery( oCloned ).find( 'input.datepicker.from' );    
+            var oDatePickerInput_To = jQuery( oCloned ).find( 'input.datepicker.to' );    
+            var sOptionID           = jQuery( oCloned ).closest( '.task-scheduler-sections' ).attr( 'id' ) 
+                + '_' 
+                + jQuery( oCloned ).closest( '.task-scheduler-fields' ).attr( 'id' );    // sections id + _ + fields id 
+            var aOptions_From = jQuery( '#' + oDatePickerInput.attr( 'id' ) ).getDateTimePickerOptions( sOptionID + '_from' );
+            var aOptions_To   = jQuery( '#' + oDatePickerInput_To.attr( 'id' ) ).getDateTimePickerOptions( sOptionID + '_to' );
+            oDatePickerInput.apf_date_range( oDatePickerInput_To.attr( 'id' ), aOptions_From, aOptions_To );
+         
+        },                            
+    },
+    {$_aJSArray}
+    );
+});        
+
         " . PHP_EOL;
         
     } 
@@ -219,19 +202,19 @@ class TaskScheduler_DateRangeCustomFieldType extends TaskScheduler_AdminPageFram
                 . "<label for='{$aField['input_id']}_from'>"
                     . $aField['before_input']
                     . ( $aField['label'] 
-                        ? "<span class='task-scheduler-input-label-string' style='min-width:" . $this->sanitizeLength( $aField['label_min_width'] ) . ";'>" . $aField['label']['from'] . "</span>"
+                        ? "<span class='task-scheduler-input-label-string' style='min-width:" . $this->getLengthSanitized( $aField['label_min_width'] ) . ";'>" . $aField['label']['from'] . "</span>"
                         : "" 
                     )
-                    . "<input " . $this->generateAttributes( $_aInputAttributes_From ) . " />"
+                    . "<input " . $this->getAttributes( $_aInputAttributes_From ) . " />"
                     . $aField['after_input']
                 . "</label>"
                 . "<label for='{$aField['input_id']}_to'>"
                     . $aField['before_input']
                     . ( $aField['label'] 
-                        ? "<span class='task-scheduler-input-label-string' style='min-width:" . $this->sanitizeLength( $aField['label_min_width'] ) . ";'>" . $aField['label']['to'] . "</span>"
+                        ? "<span class='task-scheduler-input-label-string' style='min-width:" . $this->getLengthSanitized( $aField['label_min_width'] ) . ";'>" . $aField['label']['to'] . "</span>"
                         : "" 
                     )
-                    . "<input " . $this->generateAttributes( $_aInputAttributes_To ) . " />"
+                    . "<input " . $this->getAttributes( $_aInputAttributes_To ) . " />"
                     . $aField['after_input']
                 . "</label>"                
                 . "<label><div class='repeatable-field-buttons'></div></label>"    // the repeatable field buttons will be replaced with this element.

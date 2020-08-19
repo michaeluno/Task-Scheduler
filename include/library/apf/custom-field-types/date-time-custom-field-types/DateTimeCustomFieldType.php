@@ -172,43 +172,26 @@ class TaskScheduler_DateTimeCustomFieldType extends TaskScheduler_AdminPageFrame
         $_aJSArray = json_encode( $this->aFieldTypeSlugs );
         /*    The below function will be triggered when a new repeatable field is added. */
         return "
-            jQuery( document ).ready( function(){
-                jQuery().registerTaskScheduler_AdminPageFrameworkCallbacks( {            
-                    /**
-                     * The repeatable field callback for the add event.
-                     * 
-                     * @param    object    oCloned
-                     * @param    string    the field type slug
-                     * @param    string    the field container tag ID
-                     * @param    integer    the caller type. 1 : repeatable sections. 0 : repeatable fields.
-                     */                
-                    added_repeatable_field: function( oCloned, sFieldType, sFieldTagID, iCallerType ) {
-            
-                        /* If it is not this field type, do nothing. */
-                        if ( jQuery.inArray( sFieldType, {$_aJSArray} ) <= -1 ) {
-                            return;
-                        }
-
-                        /* If the input tag is not found, do nothing  */
-                        if ( oCloned.find( 'input.datetime_picker' ).length <= 0 ) {
-                            return;
-                        }
-                        
-                        /* (Re)bind the date picker script */
-                        var oDateTimePickerInput = jQuery( oCloned ).find( 'input.datetime_picker' );
-                        oDateTimePickerInput.removeClass( 'hasDatepicker' );
-                        var sOptionID = jQuery( oCloned ).closest( '.task-scheduler-sections' ).attr( 'id' ) 
-                            + '_' 
-                            + jQuery( oCloned ).closest( '.task-scheduler-fields' ).attr( 'id' );    // sections id + _ + fields id 
-                        var aOptions = jQuery( '#' + oDateTimePickerInput.attr( 'id' ) ).getDateTimePickerOptions( sOptionID );
-                        oDateTimePickerInput.datetimepicker( aOptions );                        
-                        
-                    }
-                                 
-                },
-                {$_aJSArray}
-                );
-            });        
+jQuery( document ).ready( function(){
+    jQuery().registerTaskScheduler_AdminPageFrameworkCallbacks( {  
+        /**
+         * Called when a field of this field type gets repeated.
+         */
+        repeated_field: function( oCloned, aModel ) {
+            /* (Re)bind the date picker script */
+            var oDateTimePickerInput = jQuery( oCloned ).find( 'input.datetime_picker' );
+            oDateTimePickerInput.removeClass( 'hasDatepicker' );
+            var sOptionID = jQuery( oCloned ).closest( '.task-scheduler-sections' ).attr( 'id' ) 
+                + '_' 
+                + jQuery( oCloned ).closest( '.task-scheduler-fields' ).attr( 'id' );    // sections id + _ + fields id 
+            var aOptions = jQuery( '#' + oDateTimePickerInput.attr( 'id' ) ).getDateTimePickerOptions( sOptionID );
+            oDateTimePickerInput.datetimepicker( aOptions );
+        }
+                     
+    },
+    {$_aJSArray}
+    );
+});        
         
         " . PHP_EOL;
         
@@ -241,10 +224,10 @@ class TaskScheduler_DateTimeCustomFieldType extends TaskScheduler_AdminPageFrame
                 . "<label for='{$aField['input_id']}'>"
                     . $aField['before_input']
                     . ( $aField['label'] && ! $aField['repeatable']
-                        ? "<span class='task-scheduler-input-label-string' style='min-width:" . $this->sanitizeLength( $aField['label_min_width'] ) . ";'>" . $aField['label'] . "</span>"
+                        ? "<span class='task-scheduler-input-label-string' style='min-width:" . $this->getLengthSanitized( $aField['label_min_width'] ) . ";'>" . $aField['label'] . "</span>"
                         : "" 
                     )
-                    . "<input " . $this->generateAttributes( $aInputAttributes ) . " />"    // this method is defined in the base class
+                    . "<input " . $this->getAttributes( $aInputAttributes ) . " />"    // this method is defined in the base class
                     . $aField['after_input']
                     . "<div class='repeatable-field-buttons'></div>"    // the repeatable field buttons will be replaced with this element.
                 . "</label>"

@@ -2,7 +2,6 @@
  * jQuery Plugin: Options Handler of the DateTime picker jQuery plugin for Admin Page Framework.
  *
  */
-
 (function ($) {
 	$.fn.setDateTimePickerOptions = function( sID, aOptions1 ) {
 		if ( ! $.fn.aDateTimePickerOptions ) $.fn.aDateTimePickerOptions = {};

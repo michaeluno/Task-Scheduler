@@ -57,7 +57,7 @@ if ( ! class_exists( 'TaskScheduler_TimeCustomFieldType' ) ) :
  * @since       1.0.0
  * @package     TaskScheduler_AdminPageFrameworkFieldTypePack
  * @subpackage  CustomFieldType
- * @version     1.0.0
+ * @version     1.0.1
  */
 class TaskScheduler_TimeCustomFieldType extends TaskScheduler_AdminPageFramework_FieldType {
 
@@ -118,43 +118,27 @@ class TaskScheduler_TimeCustomFieldType extends TaskScheduler_AdminPageFramework
         $_aJSArray = json_encode( $this->aFieldTypeSlugs );
         /*    The below function will be triggered when a new repeatable field is added. */
         return "
-            jQuery( document ).ready( function(){
-                jQuery().registerTaskScheduler_AdminPageFrameworkCallbacks( {        
-                    /**
-                     * The repeatable field callback for the add event.
-                     * 
-                     * @param    object    oCloned
-                     * @param    string    the field type slug
-                     * @param    string    the field container tag ID
-                     * @param    integer    the caller type. 1 : repeatable sections. 0 : repeatable fields.
-                     */                            
-                    added_repeatable_field: function( oCloned, sFieldType, sFieldTagID ) {
-            
-                        /* If it is not this field type, do nothing. */
-                        if ( jQuery.inArray( sFieldType, {$_aJSArray} ) <= -1 ) {
-                            return;
-                        }
+jQuery( document ).ready( function(){
+    jQuery().registerTaskScheduler_AdminPageFrameworkCallbacks( {   
+        /**
+         * Called when a field of this field type gets repeated.
+         */
+        repeated_field: function( oCloned, aModel ) {
 
-                        /* If the input tag is not found, do nothing  */
-                        if ( oCloned.find( 'input.time_picker' ).length <= 0 ) {
-                            return;
-                        }
-
-                        /* (Re)bind the date picker script */
-                        var oTimePickerInput = jQuery( oCloned ).find( 'input.time_picker' );    
-                        oTimePickerInput.removeClass( 'hasDatepicker' );
-                        var sOptionID = jQuery( oCloned ).closest( '.task-scheduler-sections' ).attr( 'id' ) 
-                            + '_' 
-                            + jQuery( oCloned ).closest( '.task-scheduler-fields' ).attr( 'id' );    // sections id + _ + fields id 
-                        var aOptions = jQuery( '#' + oTimePickerInput.attr( 'id' ) ).getDateTimePickerOptions( sOptionID );
-                        oTimePickerInput.timepicker( aOptions );                        
-                        
-                    }              
-                },
-                {$_aJSArray}
-                );
-            });        
+            /* (Re)bind the date picker script */
+            var oTimePickerInput = jQuery( oCloned ).find( 'input.time_picker' );    
+            oTimePickerInput.removeClass( 'hasDatepicker' );
+            var sOptionID = jQuery( oCloned ).closest( '.task-scheduler-sections' ).attr( 'id' ) 
+                + '_' 
+                + jQuery( oCloned ).closest( '.task-scheduler-fields' ).attr( 'id' );    // sections id + _ + fields id 
+            var aOptions = jQuery( '#' + oTimePickerInput.attr( 'id' ) ).getDateTimePickerOptions( sOptionID );
+            oTimePickerInput.timepicker( aOptions );        
         
+        },                      
+    },
+    {$_aJSArray}
+    );
+});                
         " . PHP_EOL;
         
     }
@@ -185,10 +169,10 @@ class TaskScheduler_TimeCustomFieldType extends TaskScheduler_AdminPageFramework
                 . "<label for='{$aField['input_id']}'>"
                     . $aField['before_input']
                     . ( $aField['label'] && ! $aField['repeatable']
-                        ? "<span class='task-scheduler-input-label-string' style='min-width:" . $this->sanitizeLength( $aField['label_min_width'] ) . ";'>" . $aField['label'] . "</span>"
+                        ? "<span class='task-scheduler-input-label-string' style='min-width:" . $this->getLengthSanitized( $aField['label_min_width'] ) . ";'>" . $aField['label'] . "</span>"
                         : "" 
                     )
-                    . "<input " . $this->generateAttributes( $aInputAttributes ) . " />"    // this method is defined in the base class
+                    . "<input " . $this->getAttributes( $aInputAttributes ) . " />"    // this method is defined in the base class
                     . $aField['after_input']
                     . "<div class='repeatable-field-buttons'></div>"    // the repeatable field buttons will be replaced with this element.
                 . "</label>"

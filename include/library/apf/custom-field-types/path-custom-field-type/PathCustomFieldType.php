@@ -5,7 +5,7 @@
  * Facilitates WordPress plugin and theme development.
  *
  * @author      Michael Uno <michael@michaeluno.jp>
- * @copyright   2013-2016 (c) Michael Uno
+ * @copyright   2013-2019 (c) Michael Uno
  * @license     MIT <http://opensource.org/licenses/MIT>
  * @package     TaskScheduler_AdminPageFramework
  */
@@ -15,7 +15,8 @@ if ( ! class_exists( 'TaskScheduler_PathCustomFieldType' ) ) :
  * A field type that lets the user pick a file located on the server.
  * 
  * @since       3.8.4
- * @version     0.0.1b
+ * @version     0.0.3b
+ * @requires    Admin Page Framework 3.8.8
  */
 class TaskScheduler_PathCustomFieldType extends TaskScheduler_AdminPageFramework_FieldType_image {
 
@@ -181,39 +182,28 @@ class TaskScheduler_PathCustomFieldType extends TaskScheduler_AdminPageFramework
                 bindFileTree( this );
             });
 
-            jQuery().registerAPFCallback( {
+            jQuery().registerTaskScheduler_AdminPageFrameworkCallbacks( {
                 /**
-                * The repeatable field callback.
-                *
-                * When a repeat event occurs and a field is copied, this method will be triggered.
-                *
-                * @param  object  oCopied     the copied node object.
-                * @param  string  sFieldType  the field type slug
-                * @param  string  sFieldTagID the field container tag ID
-                * @param  integer iCallType   the caller type. 1 : repeatable sections. 0 : repeatable fields.
-                */
-                added_repeatable_field: function( oCopied, sFieldType, sFieldTagID, iCallType ) {
-                    
-                    if ( jQuery.inArray( sFieldType, {$_aJSArray} ) <= -1 ) {
-                        return;
-                    }
-                    
-                    var _oFieldsContainer   = jQuery( oCopied ).closest( '.task-scheduler-fields' );
-                    var _iFieldIndex        = Number( _oFieldsContainer.attr( 'data-largest_index' ) - 1 );
-                    var _sFieldTagIDModel   = _oFieldsContainer.attr( 'data-field_tag_id_model' );
-                    jQuery( oCopied ).find( '.select_path, .select_path_file_trees_container, .select_path_file_trees' ).incrementAttributes(
-                        ['id', 'data-id', 'href' ], // attribute name
-                        _iFieldIndex, // increment from
-                        _sFieldTagIDModel // digit model
-                    );                    
-                                        
-                    oCopied.find( '.select_path_file_trees' ).each( function () {
+                 * Called when a field of this field type gets repeated.
+                 */
+                repeated_field: function( oCloned, aModel ) {
+                                
+                    // Increment element IDs.
+                    oCloned.find( '.select_path, .select_path_file_trees_container, .select_path_file_trees' ).incrementAttributes(
+                        [ 'id', 'data-id', 'href' ], // attribute name
+                        aModel[ 'incremented_from' ], // increment from
+                        aModel[ 'id' ] // digit model
+                    );
+                        
+                    // Initialize the event bindings.
+                    oCloned.find( '.select_path_file_trees' ).each( function () {
                         bindFileTree( this );
-                    });
+                    });                    
                     
-                    return;
-                }
-            });
+                },
+            },
+            [ 'path' ]  // subject field type slugs
+            );
 
         });";
     }
