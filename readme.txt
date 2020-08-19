@@ -2,8 +2,8 @@
 Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
-Tested up to:       5.3.2
-Stable tag:         1.4.8
+Tested up to:       5.5
+Stable tag:         1.4.9
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               tool, utility, background, backend, task, system, event, scheduler, email, delete posts, cron, automation, routine
