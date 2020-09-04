@@ -1,3 +1,6 @@
+= 1.0.5 - 08/27/2020 =
+- Added the ability for the checkbox type to have a single value, not an array of multiple select items.
+- Fixed a bug that even binding to input changes from other scripts got unbound.
 = 1.0.4 =
 - Supported repeatable sections.
 - Made the repeatable handling mechanism compatible with Admin Page Framework v3.8.10.
