@@ -43,6 +43,7 @@ class TaskScheduler_Action_Debug extends TaskScheduler_Action_Base {
      */
     public function doAction( $isExitCode, $oRoutine ) {
 
+        TaskScheduler_Debug::log( 'Called from the Debug action.' );
         TaskScheduler_Debug::log( $oRoutine->getMeta() );
         return 1; // Exit Code
 
