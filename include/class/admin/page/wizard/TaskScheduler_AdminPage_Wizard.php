@@ -223,7 +223,12 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
              . "</p>";            
              
         }
-        
+
+        // Selectors
+        $aField[ 'selectors' ] = array(
+            -1 => '.custom-action, .arguments'
+        );
+
         $aField[ 'label' ] = $_aLabels;
         $aField[ 'after_fieldset' ]  = implode( PHP_EOL, $_aDescriptions );
         return $aField;

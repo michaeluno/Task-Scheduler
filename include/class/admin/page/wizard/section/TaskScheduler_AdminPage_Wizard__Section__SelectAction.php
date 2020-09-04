@@ -44,6 +44,9 @@ class TaskScheduler_AdminPage_Wizard__Section__SelectAction extends TaskSchedule
                 'title'             => __( 'Custom Action', 'task-scheduler' ),
                 'type'              => 'text',
                 'description'       => __( 'If none of the action you want to execute is listed above, specify the action name here.', 'task-scheduler' ),
+                'class'             => array(
+                    'fieldrow' => 'custom-action',
+                ),
             ),            
             array(
                 'field_id'          => 'argument',
@@ -51,6 +54,9 @@ class TaskScheduler_AdminPage_Wizard__Section__SelectAction extends TaskSchedule
                 'type'              => 'text',
                 'repeatable'        => true,
                 'description'       => __( 'Set the arguments passed to the action.', 'task-scheduler' ),
+                'class'             => array(
+                    'fieldrow' => 'arguments',
+                ),
             ),                        
             array(    
                 'field_id'          => 'prevnext',
@@ -98,7 +104,7 @@ class TaskScheduler_AdminPage_Wizard__Section__SelectAction extends TaskSchedule
             $_sRoutineActionSlug    = $this->oFactory->getWizardOptions( 'routine_action' );
             if ( ! array_key_exists ( $_sRoutineActionSlug, apply_filters( 'task_scheduler_admin_filter_field_labels_wizard_action', array( -1 => '_dummy_value' ) ) ) ) {
                 $aField[ 'value' ]    = $_sRoutineActionSlug;
-            }        
+            }
             return $aField;
             
         }    
