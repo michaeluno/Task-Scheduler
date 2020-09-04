@@ -23,7 +23,11 @@ abstract class TaskScheduler_Action_Base extends TaskScheduler_Module_Factory {
     public function __construct( $sSlug='', $asWizardClasses=array( 'TaskScheduler_Wizard_Action_Default' ) ) {
         
         $sSlug = empty( $sSlug )
-            ? strtolower( get_class( $this ) )
+            ? (
+                $this->sSlug
+                    ? $this->sSlug
+                    : strtolower( get_class( $this ) )
+            )
             : $sSlug;
         
         parent::__construct( 
