@@ -39,7 +39,25 @@ final class TaskScheduler_Action_Email_Wizard extends TaskScheduler_Wizard_Actio
                 'attributes'         => array(
                     'size'    => 60,
                 ),
-            ),            
+            ),
+            array(
+                'field_id'           => 'from_full_name',
+                'title'              => __( 'From: Full Name', 'task-scheduler' ),
+                'type'               => 'text',
+                'description'        => __( 'The name set to the From: part.', 'task-scheduler' ),
+                'attributes'         => array(
+                    'size'    => 60,
+                ),
+            ),
+            array(
+                'field_id'           => 'from_email',
+                'title'              => __( 'From: Email Address', 'task-scheduler' ),
+                'type'               => 'text',
+                'description'        => __( 'The email address set to the From: part.', 'task-scheduler' ),
+                'attributes'         => array(
+                    'size'    => 60,
+                ),
+            ),
             array(    
                 'field_id'            => 'email_message',
                 'title'               => __( 'Email Message', 'task-scheduler' ),
@@ -69,31 +87,31 @@ final class TaskScheduler_Action_Email_Wizard extends TaskScheduler_Wizard_Actio
         
     }    
 
-    public function validateSettings( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) { 
+    public function validateSettings( /* $aInputs, $aOldInput, $oAdminPage, $aSubmitInfo */ ) { 
 
         $_aParams    = func_get_args() + array(
             null, null, null, null
         );
-        $aInput      = $_aParams[ 0 ];
-        $aOldInput   = $_aParams[ 1 ];
+        $aInputs     = $_aParams[ 0 ];
+        $aOldInputs  = $_aParams[ 1 ];
         $oAdminPage  = $_aParams[ 2 ];
         $aSubmitInfo = $_aParams[ 3 ];      
     
         $_bIsValid   = true;
         $_aErrors    = array();
                 
-        $aInput[ 'email_addresses' ] = $this->_getEmailAddressesSanitized( $aInput[ 'email_addresses' ] );             
+        $aInputs[ 'email_addresses' ] = $this->___getEmailAddressesSanitized( $aInputs[ 'email_addresses' ] );
         
-        if ( empty( $aInput['email_addresses'] ) ) {
+        if ( empty( $aInputs[ 'email_addresses' ] ) ) {
             
-            // $aVariable[ 'sectioni_id' ]['field_id']
+            // $aVariable[ 'section_id' ]['field_id']
             $_aErrors[ $this->_sSectionID ][ 'email_addresses' ] = __( 'At least one item needs to be set.', 'task-scheduler' );
             $_bIsValid = false;            
             
         }
                 
         // Make it numeric array
-        $aInput[ 'email_addresses' ] = array_values( $aInput[ 'email_addresses' ] );    // re-order numerically
+        $aInputs[ 'email_addresses' ] = array_values( $aInputs[ 'email_addresses' ] );    // re-order numerically
         
         if ( ! $_bIsValid ) {
 
@@ -103,20 +121,19 @@ final class TaskScheduler_Action_Email_Wizard extends TaskScheduler_Wizard_Actio
             
         }    
     
-        return $aInput;         
+        return $aInputs;         
 
     }
     
         /**
          * @since       1.2.0
+         * @since       1.5.0   Uncommented the major part of the code.
          * @return      array
          */
-        private function _getEmailAddressesSanitized( array $_aEmailSets ) {           
-        
-            $_aEmailSets = array_filter( $_aEmailSets );
-            
+        private function ___getEmailAddressesSanitized( array $_aEmailSets ) {
+
             // Drop non-email elements.
-            /* foreach( $_aEmailSets as $_iSetIndex => $_sEmailSet ) {
+            foreach( array_filter( $_aEmailSets ) as $_iSetIndex => $_sEmailSet ) {
                 $_aEmailAddresses = preg_split( "/([\n\r](\s+)?)+/", $_sEmailSet );
                 foreach( $_aEmailAddresses as $_iIndex => $_sEmailAdderss ) {
                     if ( ! filter_var( $_sEmailAdderss, FILTER_VALIDATE_EMAIL ) ) {
@@ -124,8 +141,7 @@ final class TaskScheduler_Action_Email_Wizard extends TaskScheduler_Wizard_Actio
                     }
                 }
                 $_aEmailSets[ $_iSetIndex ] = implode( PHP_EOL, $_aEmailAddresses );
-            } */
-            
+            }
             return $_aEmailSets;
             
         }    
@@ -157,7 +173,13 @@ final class TaskScheduler_Action_Email_Wizard extends TaskScheduler_Wizard_Actio
         $_aOutputs[] = "<input type='text' readonly='readonly' value='" . esc_attr( $_aOptions[ 'email_title' ] ) . "' style='width:80%;' />";
         
         $_aOutputs[] = "<h4>" . __( 'Email Message', 'task-scheduler' ) . ":</h4>";
-        $_aOutputs[] = "<textarea readonly='readonly' style='width:80%;'>" . esc_textarea( $_aOptions[ 'email_message' ] ) . "</textarea>";        
+        $_aOutputs[] = "<textarea readonly='readonly' style='width:80%;'>" . esc_textarea( $_aOptions[ 'email_message' ] ) . "</textarea>";
+
+        $_aOutputs[] = "<h4>" . __( 'From: Full Name', 'task-scheduler' ) . ":</h4>";
+        $_aOutputs[] = "<input type='text' readonly='readonly' value='" . esc_attr( $_aOptions[ 'from_full_name' ] ) . "' style='width:80%;' />";
+        $_aOutputs[] = "<h4>" . __( 'From: Email Address', 'task-scheduler' ) . ":</h4>";
+        $_aOutputs[] = "<input type='text' readonly='readonly' value='" . esc_attr( $_aOptions[ 'from_email' ] ) . "' style='width:80%;' />";
+
         return implode( '', $_aOutputs );
                 
     }    

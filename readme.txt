@@ -2,7 +2,7 @@
 Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
-Tested up to:       5.5
+Tested up to:       5.5.1
 Stable tag:         1.4.9
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
@@ -229,6 +229,8 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 == Changelog ==
 
 = 1.5.0 =
+- Added the ability for the Email action to set the name and address of the from field.
+- Fixed a bug with the Email action that sending Emails failed due to the invalid email address set for the from field.
 - Tweaked the setting UI regarding redundant visible fields.
 - Fixed an incompatibility issue with form button icons in WordPress 5.3 or above.
 
