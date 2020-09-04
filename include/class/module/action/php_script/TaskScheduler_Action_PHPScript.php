@@ -24,7 +24,7 @@ class TaskScheduler_Action_PHPScript extends TaskScheduler_Action_Base {
     public function construct() {
                                     
         new TaskScheduler_Action_PHPScript_Thread(
-            'task_scheduler_action_run_indiviual_php_script',
+            'task_scheduler_action_run_individual_php_script',
             array() // internal, no wizard
         );
         
@@ -72,7 +72,7 @@ class TaskScheduler_Action_PHPScript extends TaskScheduler_Action_Base {
             $_aThreadOptions = array(
             
                 // Required
-                'routine_action'        => 'task_scheduler_action_run_indiviual_php_script',
+                'routine_action'        => 'task_scheduler_action_run_individual_php_script',
                 'post_title'            => sprintf( __( 'Thread %1$s of %2$s', 'task-scheduler' ), $_iCount + 1, $oRoutine->post_title ),
                 'parent_routine_log_id' => $oRoutine->log_id,        // the log_id key is set when a routine starts
                                            
