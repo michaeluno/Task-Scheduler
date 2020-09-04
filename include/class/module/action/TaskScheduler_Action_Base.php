@@ -44,11 +44,33 @@ abstract class TaskScheduler_Action_Base extends TaskScheduler_Module_Factory {
         add_filter( $sSlug, array( $this, 'doAction' ), 10, 3 );
 
     }
-    
+
     /**
      * 
      * @callback        filter      $this->sSlug
      */
     public function doAction( $isExitCode, $oRoutine ) {}
-    
+
+    /**
+     * Creates a thread.
+     *
+     * @since  1.5.0
+     * @remark A wrapper method for `TaskScheduler_ThreadUtility::derive()`.
+     * @param  string                $sThreadActionHookName The action hook name of the thread.
+     * @param  TaskScheduler_Routine $oRoutine              The owner routine object.
+     * @param  array                 $aThreadOptions        Thread arguments.
+     * @param  array                 $aSystemTaxonomyTerms  Taxonomy terms for the system.
+     * @param  boolean               $bAllowDuplicate       Whether to allow duplicate threads to be created.
+     * @return integer               The thread ID.
+     */
+    public function createThread( $sThreadActionHookName, $oRoutine, array $aThreadOptions, array $aSystemTaxonomyTerms=array(), $bAllowDuplicate=false ) {
+        $aThreadOptions = $aThreadOptions + array(
+            'routine_action'        => $sThreadActionHookName,
+            'post_title'            => sprintf( __( 'Thread of %1$s', 'task-scheduler' ), $oRoutine->post_title ),
+            'parent_routine_log_id' => $oRoutine->log_id,
+            '_next_run_time'        => microtime( true ),
+        );
+        return TaskScheduler_ThreadUtility::derive( $oRoutine->ID, $aThreadOptions, $aSystemTaxonomyTerms, $bAllowDuplicate );
+    }
+
 }
