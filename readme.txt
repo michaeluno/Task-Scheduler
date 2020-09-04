@@ -93,7 +93,7 @@ If you want your action to be listed in the **Select Action** screen, you need t
 
 To create an action module, you need to define a class by extending a base class that Task Scheduler prepares for you.
 
-**1.** Define your custom action module class by extending the TaskScheduler_Action_Base class. 
+**1.** Define your custom action module class by extending the `TaskScheduler_Action_Base` class.
 
 `
 class TaskScheduler_SampleActionModule extends TaskScheduler_Action_Base {
@@ -103,12 +103,7 @@ class TaskScheduler_SampleActionModule extends TaskScheduler_Action_Base {
      * 
      * This method is automatically called at the end of the class constructor.
      */
-    public function construct() {
-        
-        // Debug 
-        // TaskScheduler_Debug::log(  get_object_vars( $this ) );
-        
-    }
+    public function construct() {}
 
     /**
      * Returns the readable label of this action.
@@ -171,6 +166,213 @@ You can set your custom arguments in the **Argument (optional)** field if necess
 The set values will be stored in the argument element of the array returned by the `getMeta()` public method of the routine object.
 
 It will be easier for you to modify an existent module. Get an example action module which comes as a plugin from [this page](https://github.com/michaeluno/task-scheduler-sample-action-module). Download and activate it on your test site. Then modify the code, especially the `doAction()` method which defines the behavior of the action.
+
+<h4>Create Threads</h4>
+When your routine is too heavy and gets hung often, you can create threads that performs sub-routines of the main routine.
+
+**1.** Define your thread class the `TaskScheduler_Action_Base` class.
+`
+class TaskScheduler_SampleActionModule_Thread extends TaskScheduler_Action_Base {
+
+    /**
+     * Returns the readable label of this action.
+     *
+     * This will be called when displaying the action in an pull-down select option, task listing table, or notification email message.
+     */
+    public function getLabel( $sLabel ) {
+        return __( 'Run a PHP Script', 'task-scheduler' );
+    }
+
+    /**
+     * Defines the behavior of the task action.
+     */
+    public function doAction( $isExitCode, $oThread ) {
+
+        // Do your stuff
+        $_aThreadArguments = $oThread->getMeta();
+        TaskScheduler_Debug::log( $_aThreadArguments );
+        return 1;
+
+    }
+}
+`
+
+**2.** Instantiate the thread class.
+
+In the `construct()` method of your action module class introduced above that calls threads, instantiate the thread class by passing a custom action name. Here we pass `task_scheduler_my_thread` as an example.
+
+`
+class TaskScheduler_SampleActionModule extends TaskScheduler_Action_Base {
+
+    public function construct() {
+        new TaskScheduler_SampleActionModule_Thread( 'task_scheduler_my_thread' );
+    }
+
+    ...
+
+}
+`
+
+**3.** Create a thread.
+
+In the `doAction()` method of your action module class, create a thread with the `createThread()` method. The parameters are:
+
+`createThread( $sThreadActionHookName, $oRoutine, array $aThreadOptions, array $aSystemTaxonomyTerms=array(), $bAllowDuplicate )`
+    1. `$sThreadActionHookName` - (string, required) the slug that serves as an action hook name
+    2. `$oRoutine` - (object, required) the routine object that is passed to the second parameter of `doAction()`` method.
+    3. `$aThreadOptions` - (array, required) an associative array holding arguments to pass to the thread.
+    4. `$aSystemTaxonomyTerms` - (array, optional) an array holding taxonomy terms for the system the plugin provides. Default: `array()``.
+    5. `$bAllowDuplicate` - (boolean, optional) whether to allow threads to be created with same arguments. Default: `false`.
+
+Make sure the return value is `null` so that the routine will not close. Here we assume the `$_aData` variable holds lots of items so it must be processed separately by threads.
+
+`
+class TaskScheduler_SampleActionModule extends TaskScheduler_Action_Base {
+    ...
+    public function doAction( $isExitCode, $oRoutine ) {
+
+        // Assuming this is big.
+        $_aData = array(
+            array(  'a', 'b', 'c' ),
+            array(  'd', 'e', 'f', 'g' ),
+            array(  'h', 'i' ),
+        );
+
+        foreach( $_aData as $_aDatum ) {
+            $_aArguments = array(
+                'datum' => $_aDatum,
+                'foo'   => 'bar',
+            );
+            $this->createThread( 'task_scheduler_my_thread', $oRoutine, $_aArguments );
+        }
+
+        // Do not close this routine by returning `null`. When all the threads are done, this routine will be automatically closed.
+        return null;
+
+    }
+    ...
+}
+`
+
+**4.** Process Passed Data from a Routine to a Thread.
+In the thread class, retrieve the passed data.
+
+`
+class TaskScheduler_SampleActionModule_Thread extends TaskScheduler_Action_Base {
+
+    ...
+
+    /**
+     * Defines the behavior of the task action.
+     */
+    public function doAction( $isExitCode, $oThread ) {
+
+        // Do your stuff
+        $_aArguments = $oThread->getMeta();
+        $_sFoo       = $_aArguments[ 'foo' ];  // is `bar`
+        $_aDatum     =  $_aArguments[ 'datum' ]; // is either array(  'a', 'b', 'c' ), array(  'd', 'e', 'f', 'g' ), or array(  'h', 'i' )
+
+        TaskScheduler_Debug::log( $_aArguments );
+        return 1;
+
+    }
+
+}
+`
+
+The entire code will look like this.
+
+Action Module Class:
+`
+class TaskScheduler_SampleActionModule extends TaskScheduler_Action_Base {
+
+    /**
+     * The user constructor.
+     *
+     * This method is automatically called at the end of the class constructor.
+     */
+    public function construct() {
+        new TaskScheduler_SampleActionModule_Thread( 'task_scheduler_my_thread' );
+    }
+
+
+    /**
+     * Returns the readable label of this action.
+     *
+     * This will be called when displaying the action in an pull-down select option, task listing table, or notification email message.
+     */
+    public function getLabel( $sLabel ) {
+        return __( 'Sample Action Module', 'task-scheduler-sample-action-module' );
+    }
+
+    /**
+     * Returns the description of the module.
+     */
+    public function getDescription( $sDescription ) {
+        return __( 'This is a sample action module.', 'task-scheduler-sample-action-module' );
+    }
+
+    public function doAction( $isExitCode, $oRoutine ) {
+
+        // Assuming this is big.
+        $_aData = array(
+            array(  'a', 'b', 'c' ),
+            array(  'd', 'e', 'f', 'g' ),
+            array(  'h', 'i' ),
+        );
+
+        foreach( $_aData as $_aDatum ) {
+            $_aArguments = array(
+                'datum' => $_aDatum,
+                'foo'   => 'bar',
+            );
+            $this->createThread( 'task_scheduler_my_thread', $oRoutine, $_aArguments );
+        }
+
+        // Do not close this routine by returning `null`. When all the threads are done, this routine will be automatically closed.
+        return null;
+
+    }
+
+}
+`
+Thread Class:
+`
+class TaskScheduler_SampleActionModule_Thread extends TaskScheduler_Action_Base {
+
+    /**
+     * Returns the readable label of this action.
+     *
+     * This will be called when displaying the action in an pull-down select option, task listing table, or notification email message.
+     */
+    public function getLabel( $sLabel ) {
+        return __( 'Run a PHP Script', 'task-scheduler' );
+    }
+
+    /**
+     * Defines the behavior of the task action.
+     */
+    public function doAction( $isExitCode, $oThread ) {
+
+        // Do your stuff
+        $_aArguments = $oThread->getMeta();
+        $_sFoo       = $_aArguments[ 'foo' ];  // is `bar`
+        $_aDatum     =  $_aArguments[ 'datum' ]; // is either array(  'a', 'b', 'c' ), array(  'd', 'e', 'f', 'g' ), or array(  'h', 'i' )
+
+        TaskScheduler_Debug::log( $_aArguments );
+        return 1;
+
+    }
+
+}
+`
+
+Don't forget to instantiate the action module class.
+
+`
+new TaskScheduler_SampleActionModule;
+`
+
 
 <h4>Terminologies</h4>
 
