@@ -111,8 +111,10 @@ class TaskScheduler_Action_HungRoutineHandler_Thread extends TaskScheduler_Actio
         $_iHandleType = ( integer ) $_oRoutine->getMeta( '_hung_routine_handle_type' );
         if ( 1 === $_iHandleType ) {
             $_oRoutine->setMeta( '_routine_status', 'ready' );
+            return 2;
         } else if ( 2 == $_iHandleType ){
-            $_oRoutine->delete(); 
+            $_oRoutine->delete();
+            return 3;
         }
         
         return 1;    // exit code.

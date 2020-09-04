@@ -13,7 +13,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
     require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
-class TaskScheduler_ListTable_Action extends WP_List_Table {
+class TaskScheduler_ListTable_Action extends TaskScheduler_ListTable_Base {
     
     /**
      * Defines the bulk actions.
@@ -40,10 +40,6 @@ class TaskScheduler_ListTable_Action extends WP_List_Table {
                 );
                 
             case 'routine':
-                return array(
-                    'delete'    => __( 'Delete', 'task-scheduler' ),
-                );
-                
             case 'thread':
                 return array(
                     'delete'    => __( 'Delete', 'task-scheduler' ),
@@ -77,7 +73,7 @@ class TaskScheduler_ListTable_Action extends WP_List_Table {
                 foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
                     $_oTask = TaskScheduler_Routine::getInstance( $_sTaskPostID );
                     $_oTask->enable();                            
-                    $this->setAdminNotice( __( 'The task has been enabled.', 'task-scheduler' ), 'updated' );                    
+                    $this->setAdminNotice( __( 'The task has been enabled.', 'task-scheduler' ), 'updated' );
                 }
                 break;            
             case 'disable':

@@ -75,6 +75,12 @@ final class TaskScheduler_Routine extends TaskScheduler_Routine_Taxonomy {
      * Deletes the task.
      */
     public function delete() {
+
+        /**
+         * Delete belonging threads.
+         * @since   1.5.0
+         */
+
         return wp_delete_post( $this->ID, true );    // true: force delete, false : trash
     }
         
