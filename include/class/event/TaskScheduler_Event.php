@@ -66,7 +66,7 @@ class TaskScheduler_Event {
                     'TaskScheduler_Action_PostDeleter_Wizard_3'
                 ) 
             );
-            new TaskScheduler_Action_Debug( 'task_scheduler_action_debug' );
+            new TaskScheduler_Action_Debug;
             new TaskScheduler_Action_Email( '', 'TaskScheduler_Action_Email_Wizard' ); // wizard class name
             new TaskScheduler_Action_RoutineLogDeleter( 
                 'task_scheduler_action_delete_task_log', 
@@ -80,11 +80,8 @@ class TaskScheduler_Event {
             );
             
             // 1.1.0+ Revived
-            new TaskScheduler_Action_HungRoutineHandler_Thread( 
-                'task_scheduler_action_handle_hung_task',
-                array()     // internal, no wizard
-            );
-            
+            new TaskScheduler_Action_HungRoutineHandler_Thread( '', array() );     // internal, no wizard
+
             // 1.3.0+
             new TaskScheduler_Action_WebCheck(
                 'task_scheduler_action_web_check',

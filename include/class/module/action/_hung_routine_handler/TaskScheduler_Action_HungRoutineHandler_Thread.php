@@ -15,7 +15,9 @@
  * @action    add    task_scheduler_action_add_hung_routine_handler_thread    Called when a routine is about to be spawned.
  */
 class TaskScheduler_Action_HungRoutineHandler_Thread extends TaskScheduler_Action_Base {
-        
+
+    protected $sSlug = 'task_scheduler_action_handle_hung_task';
+
     /**
      * The user constructor.
      * 
@@ -41,7 +43,6 @@ class TaskScheduler_Action_HungRoutineHandler_Thread extends TaskScheduler_Actio
             $_aThreadOptions = array(
             
                 '_next_run_time'        => 10 + microtime( true ) + ( int ) $oRoutine->_max_execution_time,
-                'routine_action'        => $this->sSlug,
                 'post_title'            => sprintf( __( 'Hung Routine Handler of "%1$s"', 'task-scheduler' ), $oRoutine->post_title ),
                 'post_excerpt'          => sprintf( __( 'Do some clearance if the task "%1$s" is hung.', 'task-scheduler' ), $oRoutine->post_title ),
                 '_max_root_log_count'   => 0,    // disable logs of the thread itself.
@@ -51,12 +52,14 @@ class TaskScheduler_Action_HungRoutineHandler_Thread extends TaskScheduler_Actio
                 '_owner_spawned_time'   => $oRoutine->_spawned_time,
                 
             );    
-            
-            $_iThreadID = TaskScheduler_ThreadUtility::derive( 
-                $oRoutine->ID, 
-                $_aThreadOptions, 
-                array( 'system', 'internal' ) 
-            );
+
+            $this->createThread( $this->sSlug, $oRoutine, $_aThreadOptions, array( 'system', 'internal' ) );
+            // @deprecated 1.5.0
+//            $_iThreadID = TaskScheduler_ThreadUtility::derive(
+//                $oRoutine->ID,
+//                $_aThreadOptions,
+//                array( 'system', 'internal' )
+//            );
             
         }    
     

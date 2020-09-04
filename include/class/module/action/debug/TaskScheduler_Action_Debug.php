@@ -11,6 +11,8 @@
 
 class TaskScheduler_Action_Debug extends TaskScheduler_Action_Base {
 
+    protected $sSlug = 'task_scheduler_action_debug';
+
     /**
      * The user constructor.
      * 
