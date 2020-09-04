@@ -165,6 +165,7 @@ abstract class TaskScheduler_ThreadUtility_Add extends TaskScheduler_ThreadUtili
             + $aThreadOptions
             + array(
                 'post_status'           => 'private',
+                'post_author'           => $_oOwnerTask->post_author, // 1.5.0
                 '_next_run_time'        => microtime( true ), // queue now
                 'tax_input'             => array( 
                     TaskScheduler_Registry::$aTaxonomies[ 'system' ] => $aSystemTaxonomyTerms
@@ -193,8 +194,8 @@ abstract class TaskScheduler_ThreadUtility_Add extends TaskScheduler_ThreadUtili
         );
                                                 
         // Add terms because the 'tax_input' argument does not take effect for some reasons when multiple terms are set.
-         $_aSystemInternalTerms = isset( $aThreadOptions['tax_input'][ TaskScheduler_Registry::$aTaxonomies[ 'system' ] ] )
-            ? $aThreadOptions['tax_input'][ TaskScheduler_Registry::$aTaxonomies[ 'system' ] ]
+         $_aSystemInternalTerms = isset( $aThreadOptions[ 'tax_input' ][ TaskScheduler_Registry::$aTaxonomies[ 'system' ] ] )
+            ? $aThreadOptions[ 'tax_input' ][ TaskScheduler_Registry::$aTaxonomies[ 'system' ] ]
             : array();
 
         if ( ! empty( $_aSystemInternalTerms ) ) {

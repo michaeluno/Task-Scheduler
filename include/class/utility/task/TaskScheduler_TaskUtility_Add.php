@@ -54,8 +54,7 @@ abstract class TaskScheduler_TaskUtility_Add extends TaskScheduler_TaskUtility_G
         if ( ! $bAllowDuplicate && self::hasSameRoutine( $aTaskOptions, array( __CLASS__, 'find' ) ) ) {
             return 0;
         }
-
-        return self::add( $aTaskOptions, $aSystemTaxonomyTerms, $bAllowDuplicate );
+        return self::add( $aTaskOptions, $aSystemTaxonomyTerms );
         
     }
 
@@ -78,6 +77,7 @@ abstract class TaskScheduler_TaskUtility_Add extends TaskScheduler_TaskUtility_G
             + array(
                 'post_status'       => 'private',
                 '_routine_status'   => 'ready',
+                'post_author'       => get_current_user_id(), // 1.5.0
                 'tax_input'         => array( 
                     TaskScheduler_Registry::$aTaxonomies[ 'system' ] => $aSystemTaxonomyTerms
                 ),    
@@ -91,13 +91,13 @@ abstract class TaskScheduler_TaskUtility_Add extends TaskScheduler_TaskUtility_G
         );
         
         // This allows a custom post type to be passed.
-        $_sPostType = isset( $aTaskOptions['post_type'] ) ? $aTaskOptions['post_type'] : TaskScheduler_Registry::$aPostTypes[ 'task' ];
-        unset( $aTaskOptions['post_type'] );
+        $_sPostType = isset( $aTaskOptions[ 'post_type' ] ) ? $aTaskOptions[ 'post_type' ] : TaskScheduler_Registry::$aPostTypes[ 'task' ];
+        unset( $aTaskOptions[ 'post_type' ] );
         $_iTaskID   = self::insertPost( $aTaskOptions, $_sPostType );
         
         // Add terms because the 'tax_input' argument does not take effect for some reasons when multiple terms are set.
-         $_aSystemInternalTerms = isset( $aTaskOptions['tax_input'][ TaskScheduler_Registry::$aTaxonomies[ 'system' ] ] )
-            ? $aTaskOptions['tax_input'][ TaskScheduler_Registry::$aTaxonomies[ 'system' ] ]
+         $_aSystemInternalTerms = isset( $aTaskOptions[ 'tax_input' ][ TaskScheduler_Registry::$aTaxonomies[ 'system' ] ] )
+            ? $aTaskOptions[ 'tax_input' ][ TaskScheduler_Registry::$aTaxonomies[ 'system' ] ]
             : array();
         if ( ! empty( $_aSystemInternalTerms ) ) {
             wp_set_object_terms( $_iTaskID, $_aSystemInternalTerms, TaskScheduler_Registry::$aTaxonomies[ 'system' ], true );

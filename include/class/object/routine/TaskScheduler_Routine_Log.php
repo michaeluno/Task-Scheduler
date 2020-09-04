@@ -52,7 +52,7 @@ abstract class TaskScheduler_Routine_Log extends TaskScheduler_Routine_Meta {
         if ( ! $iParentLogID && ! $this->isTask() ) {
             $iParentLogID = $this->parent_routine_log_id ? $this->parent_routine_log_id : 0;
         }
-    
+
         $_iLogID = TaskScheduler_LogUtility::log( $iParentLogID ? $iParentLogID : $this->ID , $asLog );
         if ( $bUpdateMeta ) {
             $this->setMeta( 'log_id', $_iLogID );
