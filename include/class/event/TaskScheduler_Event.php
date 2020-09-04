@@ -13,18 +13,28 @@ class TaskScheduler_Event {
         
     public function __construct() {
         
-        $this->_loadOccurrenceModules();
-        $this->_loadActionModules();
-        $this->_loadRoutines();
-        $this->_loadServerHeartbeat();
+        $this->___loadEvents();
+        $this->___loadOccurrenceModules();
+        $this->___loadActionModules();
+        $this->___loadRoutines();
+        $this->___loadServerHeartbeat();
         
     }
- 
+
+        /**
+         * Loads generic plugin events.
+         * @since   1.5.0
+         */
+        private function ___loadEvents() {
+            new TaskScheduler_Event_Action_DeleteThreads;
+            new TaskScheduler_Event_Action_DeleteRoutines;
+        }
+
         /**
          * Loads occurrence modules.
          * @since       1.0.1
          */
-        private function _loadOccurrenceModules() {
+        private function ___loadOccurrenceModules() {
             
             new TaskScheduler_Occurrence_FixedInterval( 
                 'fixed_interval', 
@@ -56,7 +66,7 @@ class TaskScheduler_Event {
          * Loads action modules.
          * @since       1.0.1
          */
-        private function _loadActionModules() {
+        private function ___loadActionModules() {
             
             new TaskScheduler_Action_PostDeleter( 
                 'task_scheduler_action_delete_post', 
@@ -97,7 +107,7 @@ class TaskScheduler_Event {
          * Routines (tasks and threads)
          * @since       1.0.1
          */
-        private function _loadRoutines() {
+        private function ___loadRoutines() {
             new TaskScheduler_Event_Routine;
             new TaskScheduler_Event_Thread;
             new TaskScheduler_Event_Log;
@@ -112,7 +122,7 @@ class TaskScheduler_Event {
          * 
          * @since       1.0.1
          */
-        private function _loadServerHeartbeat() {
+        private function ___loadServerHeartbeat() {
             TaskScheduler_ServerHeartbeat::pulsate();
             new TaskScheduler_Event_ServerHeartbeat_Option;
             new TaskScheduler_Event_ServerHeartbeat_Checker;
