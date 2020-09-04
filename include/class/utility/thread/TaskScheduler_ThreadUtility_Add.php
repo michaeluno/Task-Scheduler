@@ -37,7 +37,8 @@ abstract class TaskScheduler_ThreadUtility_Add extends TaskScheduler_ThreadUtili
      * Note that it does not check taxonomy terms. Only the post title and the meta keys-values.
      * 
      * @since     1.0.0
-     * @remark    It is similar as the TaskScheduler_TaskUtility's create() method. 
+     * @remark    It is similar to the `TaskScheduler_TaskUtility::create()` method.
+     * @return    integer    The thread ID.
      */
     static public function derive( $iOwnerRoutineID, array $aThreadOptions, array $aSystemTaxonomyTerms=array(), $bAllowDuplicate=false ) {
         
