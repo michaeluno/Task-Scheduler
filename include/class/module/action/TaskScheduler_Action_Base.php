@@ -69,6 +69,7 @@ abstract class TaskScheduler_Action_Base extends TaskScheduler_Module_Factory {
             'post_title'            => sprintf( __( 'Thread of %1$s', 'task-scheduler' ), $oRoutine->post_title ),
             'parent_routine_log_id' => $oRoutine->log_id,
             '_next_run_time'        => microtime( true ),
+            '_max_root_log_count'   => $oRoutine->_max_root_log_count,
         );
         return TaskScheduler_ThreadUtility::derive( $oRoutine->ID, $aThreadOptions, $aSystemTaxonomyTerms, $bAllowDuplicate );
     }
