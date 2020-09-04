@@ -36,45 +36,16 @@ class TaskScheduler_Action_Debug extends TaskScheduler_Action_Base {
     
     /**
      * Defines the behavior of the action.
+     *
+     * @param integer|string $isExitCode
+     * @param TaskScheduler_Routine $oRoutine
+     * @return  integer|string
      */
-    public function doAction( $isExitCode, $oTask ) {
+    public function doAction( $isExitCode, $oRoutine ) {
 
-        static $_iPageLoadID;
-        $_iPageLoadID = $_iPageLoadID 
-            ? $_iPageLoadID 
-            : uniqid();        
-        
-        $_oCallerInfo     = debug_backtrace();
-        $_sCallerFunction = isset( $_oCallerInfo[ 1 ]['function'] ) 
-            ? $_oCallerInfo[ 1 ]['function'] 
-            : '';
-        $_sCallerClasss   = isset( $_oCallerInfo[ 1 ]['class'] ) 
-            ? $_oCallerInfo[ 1 ]['class'] 
-            : '';
+        TaskScheduler_Debug::log( $oRoutine->getMeta() );
+        return 1; // Exit Code
 
-        file_put_contents( 
-            WP_CONTENT_DIR . DIRECTORY_SEPARATOR . get_class() . '_' . date( "Ymd" ) . '.log', 
-            date( "Y/m/d H:i:s", current_time( 'timestamp' ) ) . ' ' . "{$_iPageLoadID} {$_sCallerClasss}::{$_sCallerFunction} " . self::getCurrentURL() . PHP_EOL    
-            . print_r( $oTask->getMeta(), true ) . PHP_EOL . PHP_EOL,
-            FILE_APPEND 
-        );                    
-        
-        // sleep( 60 )    ; // simulate being hung
-        
-        // Exit Code
-        return 1;    
     }
-        /**
-         * Retrieves the currently loaded page url.
-         */
-        static public function getCurrentURL() {
-            $sSSL = ( !empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on' ) ? true:false;
-            $sServerProtocol = strtolower( $_SERVER['SERVER_PROTOCOL'] );
-            $sProtocol = substr( $sServerProtocol, 0, strpos( $sServerProtocol, '/' ) ) . ( ( $sSSL ) ? 's' : '' );
-            $sPort = $_SERVER['SERVER_PORT'];
-            $sPort = ( ( !$sSSL && $sPort=='80' ) || ( $sSSL && $sPort=='443' ) ) ? '' : ':' . $sPort;
-            $sHost = isset( $_SERVER['HTTP_X_FORWARDED_HOST'] ) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
-            return $sProtocol . '://' . $sHost . $sPort . $_SERVER['REQUEST_URI'];
-        }        
-            
+
 }
