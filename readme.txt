@@ -229,6 +229,7 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 == Changelog ==
 
 = 1.5.0 =
+- Tweaked the setting UI regarding redundant visible fields.
 - Fixed an incompatibility issue with form button icons in WordPress 5.3 or above.
 
 = 1.4.9 - 2020/08/19 =
