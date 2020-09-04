@@ -15,19 +15,16 @@
  * @since      1.4.0
  */
 class TaskScheduler_Action_PHPScript extends TaskScheduler_Action_Base {
-        
+
+    protected $sSlug = 'task_scheduler_action_php';
+
     /**
      * The user constructor.
      * 
      * This method is automatically called at the end of the class constructor.
      */
     public function construct() {
-                                    
-        new TaskScheduler_Action_PHPScript_Thread(
-            'task_scheduler_action_run_individual_php_script',
-            array() // internal, no wizard
-        );
-        
+        new TaskScheduler_Action_PHPScript_Thread( '', array() ); // // internal, no wizard
     }
     
     /**
@@ -70,22 +67,22 @@ class TaskScheduler_Action_PHPScript extends TaskScheduler_Action_Base {
             $_iCount++;
             
             $_aThreadOptions = array(
-            
-                // Required
-                'routine_action'        => 'task_scheduler_action_run_individual_php_script',
+
+                // Overriding
                 'post_title'            => sprintf( __( 'Thread %1$s of %2$s', 'task-scheduler' ), $_iCount + 1, $oRoutine->post_title ),
-                'parent_routine_log_id' => $oRoutine->log_id,        // the log_id key is set when a routine starts
-                                           
-                // internal options        
                 '_next_run_time'        => microtime( true ) + $_iCount,    // add an offset so that they will be loaded with a delay of a second each.            
                 
                 // Routine specific options
                 'php_script_path' => $_sPath,
                 
             );
-            
-            $_iThreadTaskID = TaskScheduler_ThreadUtility::derive( $oRoutine->ID, $_aThreadOptions );
-            $_iThreads      = $_iThreadTaskID ? ++$_iThreads : $_iThreads;            
+
+            $_iThreadTaskID = $this->createThread(
+                'task_scheduler_action_run_individual_php_script',
+                $oRoutine,
+                $_aThreadOptions
+            );
+            $_iThreads      = $_iThreadTaskID ? ++$_iThreads : $_iThreads;
 
         }
         

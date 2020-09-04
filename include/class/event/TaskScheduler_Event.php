@@ -95,11 +95,8 @@ class TaskScheduler_Event {
             );
             
             // 1.4.0+
-            new TaskScheduler_Action_PHPScript(
-                'task_scheduler_action_php', 
-                'TaskScheduler_Action_PHPScript_Wizard' // wizard class name            
-            );
-            
+            new TaskScheduler_Action_PHPScript( '', 'TaskScheduler_Action_PHPScript_Wizard' );
+
         }
         
         /**

@@ -17,7 +17,9 @@
   * @since      1.4.0
   */
 class TaskScheduler_Action_PHPScript_Thread extends TaskScheduler_Action_Base {
-        
+
+    protected $sSlug = 'task_scheduler_action_run_individual_php_script';
+
     /**
      * The user constructor.
      * 
