@@ -20,7 +20,7 @@ final class TaskScheduler_AdminPage_Setting extends TaskScheduler_AdminPage_Sett
 
     public function setUp() {
     
-        $this->setRootMenuPageBySlug( TaskScheduler_Registry::$aAdminPages['root'] );
+        $this->setRootMenuPageBySlug( TaskScheduler_Registry::$aAdminPages[ 'root' ] );
         $this->addSubMenuItems(
             array(
                 'title'            => __( 'Settings', 'task-scheduler' ),    // page and menu title
@@ -43,9 +43,12 @@ final class TaskScheduler_AdminPage_Setting extends TaskScheduler_AdminPage_Sett
         $this->setPageTitleVisibility( false );
         $this->setInPageTabTag( 'h2' );                
         $this->enqueueStyle( TaskScheduler_Registry::getPluginURL( '/asset/css/admin_settings.css' ) );
+        if ( version_compare( $GLOBALS[ 'wp_version' ], '5.3', '>=' ) ) {
+            $this->enqueueStyle( TaskScheduler_Registry::getPluginURL( '/asset/css/wp53.css' ) );
+        }
         $this->setDisallowedQueryKeys( 'settings-notice' );
         $this->setDisallowedQueryKeys( 'transient_key' );
-        
+
     }
     
     /**

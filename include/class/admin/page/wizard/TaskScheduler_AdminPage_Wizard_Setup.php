@@ -97,6 +97,9 @@ abstract class TaskScheduler_AdminPage_Wizard_Setup extends TaskScheduler_AdminP
             // $this->setPageTitleVisibility( false );
             $this->setInPageTabTag( 'h2' );                
             $this->enqueueStyle( TaskScheduler_Registry::getPluginURL( '/asset/css/admin_wizard.css' ) );
+            if ( version_compare( $GLOBALS[ 'wp_version' ], '5.3', '>=' ) ) {
+                $this->enqueueStyle( TaskScheduler_Registry::getPluginURL( '/asset/css/wp53.css' ) );
+            }
             $this->setDisallowedQueryKeys( 'settings-notice' );
             $this->setDisallowedQueryKeys( 'transient_key' );
         

@@ -1,0 +1,4 @@
+/* Fix button dash-icon position */
+.task-scheduler-sectionset .task-scheduler-field .button.button-small.dashicons:before {
+	top: -5px;
+}
