@@ -10,7 +10,12 @@
  */
 
 abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Start {
-    
+
+    /**
+     * @var TaskScheduler_ListTable
+     */
+    protected $_oTaskListTable;
+
     /**
      * The callback function triggered when the page loads.
      */
@@ -23,7 +28,7 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
         $this->_oTaskListTable->process_bulk_action();            // do this before fetching posts
 
         // the 'status' key can be either 'enabled', 'disabled', or 'thread'.
-        $_sStatus    = isset( $_GET['status'] ) ? $_GET['status'] : 'enabled';    
+        $_sStatus    = isset( $_GET[ 'status' ] ) ? $_GET[ 'status' ] : 'enabled';
         $_oEnabled   = $this->_getRoutines( 'enabled' );
         $_oDisabled  = $this->_getRoutines( 'disabled' );
         $_oSystem    = $this->_getRoutines( 'system' );
@@ -66,9 +71,9 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
         private function _getRoutines( $sLabel ) {
             
             $_aQueryArgs = array();
-            if ( isset( $_GET['orderby'], $_GET['order'] ) ) {
-                $_aQueryArgs['meta_key'] = $_GET['orderby'];
-                $_aQueryArgs['order']    = strtoupper( $_GET['order'] );
+            if ( isset( $_GET[ 'orderby' ], $_GET[ 'order' ] ) ) {
+                $_aQueryArgs[ 'meta_key' ] = $_GET[ 'orderby' ];
+                $_aQueryArgs[ 'order' ]    = strtoupper( $_GET[ 'order' ] );
             }                
             
             switch( strtolower( $sLabel ) ) {
@@ -122,12 +127,77 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
                         + $_aQueryArgs 
                     );
                 case 'thread':
-                    return TaskScheduler_ThreadUtility::find( $_aQueryArgs );
-            
+                    $this->___checkOrphanedThreads();
+                    return $this->___getAliveThreads( $_aQueryArgs );
             }
             return TaskScheduler_TaskUtility::find( $_aQueryArgs );        
 
         }
+            /**
+             * Returns a WP_QUery object with a result of found threads having an owner routine.
+             * @return WP_Query
+             */
+            private function ___getAliveThreads( array $aQueryArgs ) {
+                $_sPostTypeSlug = TaskScheduler_Registry::$aPostTypes[ 'thread' ];
+                $_sPosts        = $GLOBALS[ 'wpdb' ]->posts;
+                $_sPostMeta     = $GLOBALS[ 'wpdb' ]->postmeta;
+                $_sQuery        = <<<SQL
+SELECT {$_sPosts}.ID FROM {$_sPosts}
+LEFT JOIN {$_sPostMeta} AS mt ON ( {$_sPosts}.ID = mt.post_id AND mt.meta_key = 'owner_routine_id' )
+LEFT JOIN {$_sPosts}    AS p2 ON ( mt.meta_key = 'owner_routine_id' AND mt.meta_value = p2.ID )
+WHERE 1=1  
+AND (
+    mt.meta_key IS NOT NULL
+    AND                 
+    p2.ID IS NOT NULL
+)
+AND {$_sPosts}.post_type = '{$_sPostTypeSlug}'
+AND ( ( {$_sPosts}.post_status <> 'trash' AND {$_sPosts}.post_status <> 'auto-draft' ) )
+GROUP BY {$_sPosts}.ID
+SQL;
+                $_oQuery                = new WP_Query();
+                $_aResult               = $GLOBALS[ 'wpdb' ]->get_results( $_sQuery, 'ARRAY_A' );
+                $_aThreadIDs            = wp_list_pluck( $_aResult, 'ID' );
+                $_oQuery->posts         = array_unique( $_aThreadIDs );
+                $_oQuery->found_posts   = count( $_aThreadIDs );
+                return $_oQuery;
+
+            }
+            /**
+             * Checks orphan threads, meaning the owner routine does not exist.
+             *
+             * When a routine is deleted, its threads will be deleted. However, if the number of them is too big,
+             * there are cases that some threads become a zombie.
+             */
+            private function ___checkOrphanedThreads() {
+                $_sPostTypeSlug = TaskScheduler_Registry::$aPostTypes[ 'thread' ];
+                $_sPosts        = $GLOBALS[ 'wpdb' ]->posts;
+                $_sPostMeta     = $GLOBALS[ 'wpdb' ]->postmeta;
+                $_sQuery        = <<<SQL
+SELECT {$_sPosts}.ID FROM {$_sPosts}
+LEFT JOIN {$_sPostMeta} AS mt ON ( {$_sPosts}.ID = mt.post_id AND mt.meta_key = 'owner_routine_id' )
+LEFT JOIN {$_sPosts}    AS p2 ON ( mt.meta_key = 'owner_routine_id' AND mt.meta_value = p2.ID )
+WHERE 1=1  
+AND (
+    mt.meta_key IS NOT NULL
+    AND                 
+    p2.ID IS NULL
+)
+AND {$_sPosts}.post_type = '{$_sPostTypeSlug}'
+AND ( ( {$_sPosts}.post_status <> 'trash' AND {$_sPosts}.post_status <> 'auto-draft' ) )
+GROUP BY {$_sPosts}.ID
+SQL;
+                $_aThreadIDs = $GLOBALS[ 'wpdb' ]->get_results( $_sQuery, 'ARRAY_A' );
+                $_aThreadIDs = wp_list_pluck( $_aThreadIDs, 'ID' );
+                $_aChunks    = array_chunk( $_aThreadIDs, 100 );
+                foreach( $_aChunks as $_aChunk ) {
+                    wp_schedule_single_event( time(), 'task_scheduler_action_delete_threads', array( $_aChunk ) );
+                }
+                if ( ! TaskScheduler_PluginUtility::hasBeenCalled( 'check_wp_cron' ) ) {
+                    TaskScheduler_ServerHeartbeat::loadPage( '', array(), 'beat' );
+                }
+
+            }
     
     /**
      * Creates a form so that the task list form will be embedded.

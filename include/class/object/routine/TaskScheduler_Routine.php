@@ -75,22 +75,7 @@ final class TaskScheduler_Routine extends TaskScheduler_Routine_Taxonomy {
      * Deletes the task.
      */
     public function delete() {
-
-        /**
-         * Delete belonging threads.
-         * It could be thousands of them so do it in the background.
-         * @since   1.5.0
-         */
-        $_oWPQuery = TaskScheduler_ThreadUtility::getThreadsByOwnerID( $this->ID );
-        if ( ! empty( $_oWPQuery->posts ) ) {
-            wp_schedule_single_event( time(), 'task_scheduler_action_delete_threads', array( $_oWPQuery->posts ) );
-            if ( ! TaskScheduler_PluginUtility::hasBeenCalled( 'check_wp_cron' ) ) {
-                TaskScheduler_ServerHeartbeat::loadPage( '', array(), 'beat' );
-            }
-        }
-
         return wp_delete_post( $this->ID, true );    // true: force delete, false : trash
-
     }
         
     /**

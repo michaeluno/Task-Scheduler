@@ -13,16 +13,56 @@
  *
  * @since   1.5.0
  */
-class TaskScheduler_Event_Action_DeleteThreads extends TaskScheduler_Event_Action_Base {
+class TaskScheduler_Event_Action_DeleteThreads extends TaskScheduler_Event_Action_DeleteRoutines {
 
     protected $_sActionHookName = 'task_scheduler_action_delete_threads';
 
-    protected function _doAction() {
-        $_aParams  = func_get_args();
-        $_aThreads = $this->getElementAsArray( $_aParams, array( 0 ) );
-        foreach( $_aThreads as $_iThreadID ) {
-            wp_delete_post( $_iThreadID, true );    // true: force delete, false : trash
+    /**
+     * @param WP_Post $oPost
+     * @return bool
+     * @since   1.5.0
+     */
+    protected function _shouldDelete( WP_Post $oPost ) {
+        return in_array(
+            $oPost->post_type,
+            array(
+                TaskScheduler_Registry::$aPostTypes[ 'routine' ],
+                TaskScheduler_Registry::$aPostTypes[ 'thread' ],  // it's possible that there is a user who creates threads from a thread.
+            ),
+            true
+        );
+    }
+
+    /**
+     * Deletes belonging threads to the routine.
+     * It could be thousands of them so do it in the background.
+     * @param WP_Post $oPost
+     * @since   1.5.0
+     */
+    protected function _scheduleDeletingPosts( WP_Post $oPost ) {
+
+        $_oWPQuery = TaskScheduler_ThreadUtility::getThreadsByOwnerID( $oPost->ID );
+        if ( empty( $_oWPQuery->posts ) ) {
+            return;
         }
+
+        $_aChunks = array_chunk( $_oWPQuery->posts, 100 );
+        foreach( $_aChunks as $_aChunk ) {
+            wp_schedule_single_event( time(), 'task_scheduler_action_delete_threads', array( $_aChunk ) );
+        }
+
+        if ( ! $this->hasBeenCalled( 'check_wp_cron' ) ) {
+            TaskScheduler_ServerHeartbeat::loadPage( '', array(), 'beat' );
+        }
+
+    }
+
+    /**
+     * @callback action task_scheduler_action_delete_threads
+     * @return void
+     */
+    protected function _doAction() {
+        parent::_doAction();
     }
 
 }

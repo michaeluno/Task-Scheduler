@@ -13,7 +13,7 @@
  *
  * @since   1.5.0
  */
-class TaskScheduler_Event_Action_DeleteRoutines extends TaskScheduler_Event_Action_DeleteThreads {
+class TaskScheduler_Event_Action_DeleteRoutines extends TaskScheduler_Event_Action_Base {
 
     protected $_sActionHookName = 'task_scheduler_action_delete_routines';
 
@@ -32,40 +32,64 @@ class TaskScheduler_Event_Action_DeleteRoutines extends TaskScheduler_Event_Acti
     public function replyToDeletePosts( $iPostID ) {
 
         $_oPost = get_post( $iPostID );
-        if ( $_oPost->post_type !== TaskScheduler_Registry::$aPostTypes[ 'task' ] ) {
+        if ( ! ( $_oPost instanceof WP_Post ) ) {
             return;
         }
-        $_aQuery = array(
-            'post_type'         => array(
-                TaskScheduler_Registry::$aPostTypes[ 'routine' ],
-            ),
-            'meta_query'        => array(
-                array(
-                    'key'       => 'owner_task_id',
-                    'value'     => $iPostID,
-                    'compare' => '=',
-                )
-            ),
-        );
-        $_oWPQuery = TaskScheduler_RoutineUtility::find( $_aQuery );
-        if ( ! empty( $_oWPQuery->posts ) ) {
-            wp_schedule_single_event( time(), 'task_scheduler_action_delete_routines', array( $_oWPQuery->posts ) );
+        if ( ! $this->_shouldDelete( $_oPost ) ) {
+            return;
+        }
+        $this->_scheduleDeletingPosts( $_oPost );
+
+    }
+        /**
+         * Only allows the ts_task post type.
+         * @param WP_Post $oPost
+         * @return bool
+         * @since   1.5.0
+         */
+        protected function _shouldDelete( WP_Post $oPost ) {
+            return $oPost->post_type === TaskScheduler_Registry::$aPostTypes[ 'task' ];
+        }
+        /**
+         * @param WP_Post $oPost
+         * @since   1.5.0
+         */
+        protected function _scheduleDeletingPosts( WP_Post $oPost ) {
+            $_aQuery = array(
+                'post_type'         => array(
+                    TaskScheduler_Registry::$aPostTypes[ 'routine' ],
+                ),
+                'meta_query'        => array(
+                    array(
+                        'key'       => 'owner_task_id',
+                        'value'     => $oPost->ID,
+                        'compare'   => '=',
+                    )
+                ),
+            );
+            $_oWPQuery = TaskScheduler_RoutineUtility::find( $_aQuery );
+            if ( empty( $_oWPQuery->posts ) ) {
+                return;
+            }
+            $_aChunks = array_chunk( $_oWPQuery->posts, 100 );
+            foreach( $_aChunks as $_aChunk ) {
+                wp_schedule_single_event( time(), 'task_scheduler_action_delete_routines', array( $_aChunk ) );
+            }
             if ( ! $this->hasBeenCalled( 'check_wp_cron' ) ) {
                 TaskScheduler_ServerHeartbeat::loadPage( '', array(), 'beat' );
             }
-        }
 
-    }
+        }
 
     /**
      * @callback action task_scheduler_action_delete_routines
+     * @return void
      */
     protected function _doAction() {
-        $_aParams   = func_get_args();
-        $_aRoutines = $this->getElementAsArray( $_aParams, array( 0 ) );
-        foreach( $_aRoutines as $_iRoutineID ) {
-            $_oRoutine = TaskScheduler_Routine::getInstance( $_iRoutineID );
-            $_oRoutine->delete();
+        $_aParams   = func_get_args() + array( array() );
+        $_aPosts    = $this->getAsArray( $_aParams[ 0 ] );
+        foreach( $_aPosts as $_iPostID ) {
+            wp_delete_post( $_iPostID, true );    // true: force delete, false : trash
         }
     }
 
