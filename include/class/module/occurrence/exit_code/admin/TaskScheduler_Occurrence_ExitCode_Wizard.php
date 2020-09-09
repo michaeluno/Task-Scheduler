@@ -46,7 +46,7 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
                     'hintText'          => __( 'Type a task name.', 'task-scheduler' ),
                     'theme'             => 'admin_page_framework',    
                     'searchDelay'       => 5,    // 50 milliseconds. Default: 300
-                ),                
+                ),
             ),                        
         );
         
@@ -65,16 +65,16 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
         $_bIsValid = true;
         $_aErrors = array();
             
-        if ( ! isset( $aInput['exit_code'] ) || '' == $aInput['exit_code'] ) {
+        if ( ! isset( $aInput[ 'exit_code' ] ) || '' == $aInput[ 'exit_code' ] ) {
 
-            // $aVariable[ 'sectioni_id' ]['field_id']
+            // $aVariable[ 'section_id' ][ 'field_id' ]
             $_aErrors[ $this->_sSectionID ][ 'exit_code' ] = __( 'An exit code need to be set.', 'task-scheduler' );
             $_bIsValid = false;            
             
         } 
-        if ( ! isset( $aInput['task_ids'] ) || '' == $aInput['task_ids'] ) {
+        if ( ! isset( $aInput[ 'task_ids' ] ) || '' == $aInput[ 'task_ids' ] ) {
 
-            // $aVariable[ 'sectioni_id' ]['field_id']
+            // $aVariable[ 'section_id' ][ 'field_id' ]
             $_aErrors[ $this->_sSectionID ][ 'task_ids' ] = __( 'Task IDs are required.', 'task-scheduler' );
             $_bIsValid = false;            
             
