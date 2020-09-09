@@ -40,6 +40,10 @@ class TaskScheduler_Action_WebCheck extends TaskScheduler_Action_Base {
         
     /**
      * Defines the behavior of the task action.
+     *
+     * @param   integer|string $isExitCode
+     * @param   TaskScheduler_Routine $oRoutine
+     * @return  integer|string|double
      */
     public function doAction( $isExitCode, $oRoutine ) {
         

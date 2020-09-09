@@ -137,8 +137,8 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
             if ( ! $sJSONTaskIDs ) { 
                 return array(); 
             }
-            $_aJSONTaskIDs = json_decode( $sJSONTaskIDs, true );
-            $_aTaskIDs = array();
+            $_aJSONTaskIDs = TaskScheduler_PluginUtility::getAsArray( json_decode( $sJSONTaskIDs, true ) );
+            $_aTaskIDs     = array();
             foreach( $_aJSONTaskIDs as $_aTaskID ) {
                 if ( ! isset( $_aTaskID[ 'id' ] ) ) { 
                     continue; 
