@@ -96,6 +96,12 @@ abstract class TaskScheduler_Wizard_Base {
      * Indicates whether the current page is the Add New wizard page or not.
      */
     protected $_bIsAddNew;
+
+    /**
+     * @var TaskScheduler_AdminPageFramework
+     */
+    protected $_oAdminPage;
+
     
     /**
      * Stets up hooks and properties.
@@ -137,16 +143,26 @@ abstract class TaskScheduler_Wizard_Base {
             $this->sNextTabSlug          = $this->_bIsAddNew
                 ? $this->sNextTabSlug
                 : 'update_module';        // for the edit wizard
-            
+
+            add_action( "start_TaskScheduler_AdminPage_Wizard", array( $this, 'replyToCaptureFrameworkObject' ) );
+            add_action( "start_TaskScheduler_AdminPage_EditModule", array( $this, 'replyToCaptureFrameworkObject' ) );
+
         }
-        
+        /**
+         * @param $oAdminPage
+         * @since   1.5.0
+         */
+        public function replyToCaptureFrameworkObject( $oAdminPage ) {
+            $this->_oAdminPage = $oAdminPage;
+        }
+
     /**
      * Sets up callback functions.
      * 
      * @remark    Should be re-defined in the extended class.
      */
     protected function _setCallbacks() {
-        
+
         // For the framework hooks 
         /// The Add New wizard
         add_filter( "tabs_{$this->_sMainAdminPageClassName}_{$this->_sMainAdminPageSlug}", array( $this, '_replyToAddInPageTab' ) );
@@ -314,12 +330,13 @@ abstract class TaskScheduler_Wizard_Base {
     public function _replyToAddFormFields( $aAllFields ) {
 
         // Format the array - must give the field id as the key; otherwise (if it's numerically indexed), the framework thinks it is a repeatable section.
-         $_aFields = array();
-        foreach( ( array ) $this->getFields() as $_aField ) {
+        $_aFields = array();
+
+        foreach( ( array ) call_user_func_array( array( $this, 'getFields' ), array( $this->_oAdminPage ) ) as $_aField ) {
             if ( ! isset( $_aField[ 'field_id' ] ) ) {
                 continue;
             }
-            $_aField['section_id'] = $this->_sSectionID;
+            $_aField[ 'section_id' ] = $this->_sSectionID;
             $_aFields[ $_aField[ 'field_id' ] ] = $_aField;
         }
         
@@ -531,7 +548,7 @@ abstract class TaskScheduler_Wizard_Base {
      * Extensible methods.
      */
     
-    public function getFields() { 
+    public function getFields( /* $oAdminPage */ ) {
         return array(); 
     }
     

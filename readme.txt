@@ -431,6 +431,8 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 == Changelog ==
 
 = 1.5.0 =
+- Added the ability to accept multiple exit codes for the `Exit Code` occurrence type.
+- Added the `Negate` option for the `Exit Code` occurrence type allows the user choose whether the action gets triggered when the routine returns none of the set exit codes.
 - Added the behavior to clean up threads when their owner routine is deleted.
 - Added the behavior to clean up routines when their owner task is deleted.
 - Added the options for the Email action to set the name and address of the from field.

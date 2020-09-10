@@ -43,14 +43,21 @@ class TaskScheduler_Event_Exit {
      * Called when a task exits.
      * 
      * Retrieves tasks registered with the 'Exit Code' occurrence type and spawns the task that matches the criteria.
+     *
+     * @param TaskScheduler_Routine $oRoutine
+     * @param integer|string $isExitCode
      */
     public function _replyToHandleRoutineExits( $oRoutine, $isExitCode ) {
 
-        if ( ! $oRoutine->isRoutine() ) { return; }
+        if ( ! $oRoutine->isRoutine() ) {
+            return;
+        }
 
         $this->_doExitCode( $isExitCode, $oRoutine );
         
-        if ( $oRoutine->hasTerm( 'internal' ) ) { return; }
+        if ( $oRoutine->hasTerm( 'internal' ) ) {
+            return;
+        }
                     
         $this->_doTasksOnExitCode( $isExitCode, $oRoutine );
         
@@ -60,7 +67,9 @@ class TaskScheduler_Event_Exit {
      * Performs pre-defined exit code commands.
      * 
      * Currently there is only the 'DELETE' command.
-     * 
+     *
+     * @param integer|string $isExitCode
+     * @param TaskScheduler_Routine $oRoutine
      */
     private function _doExitCode( $isExitCode, $oRoutine ) {
         
@@ -72,6 +81,8 @@ class TaskScheduler_Event_Exit {
     
     /**
      * Performs the tasks registered for the given exit code.
+     * @param integer|string $isExitCode
+     * @param TaskScheduler_Routine $oRoutine
      */
     private function _doTasksOnExitCode( $isExitCode, $oRoutine ) {
         
@@ -80,8 +91,7 @@ class TaskScheduler_Event_Exit {
             return;             
         }        
 
-        $_aFoundTasks = $this->_getTasksOnExitCode( $isExitCode, $_oTask->ID );
-            
+        $_aFoundTasks = $this->___getTasksOnExitCode( $isExitCode, $_oTask->ID );
         foreach( $_aFoundTasks as $_iTaskID ) {
             do_action( 
                 'task_scheduler_action_spawn_routine', 
@@ -92,31 +102,87 @@ class TaskScheduler_Event_Exit {
         }        
         
     }
-        private function _getTasksOnExitCode( $isExitCode, $iSubjectRoutineID ) {
+        private function ___getTasksOnExitCode( $isExitCode, $iSubjectTaskID ) {
 
+            $_aWP38CompatValue = version_compare( $GLOBALS[ 'wp_version' ], '3.9', '>=' )
+                ? array()
+                : array(
+                    'value' => 'WHATEVER_VALUE_FOR_WP38_OR_BELOW'
+                );
             $_oResult = TaskScheduler_TaskUtility::find(
                 array(
-                    'post__not_in'  => array( $iSubjectRoutineID ),
+                    'post__not_in'  => array( $iSubjectTaskID ),
                     'meta_query'    => array(
+                        'relation'  => 'AND',
                         array(
                             'key'        => 'occurrence',
                             'value'      => 'on_exit_code',
-                        ),                  
-                        array(              
-                            'key'        => '__on_exit_code',
-                            'value'      => $isExitCode,
                         ),
-                        // It is saved like this 'a:1:{i:0;i:405;}'
                         array(
-                            'key'        => '__on_exit_code_task_ids',
-                            'value'      => ':' . $iSubjectRoutineID . ';',    // searches the value of a serialized array 
-                            'compare'    => 'LIKE',
-                        ),                        
-                    )
-                )
-            );
+                            'relation'  => 'OR',
+                            // 1.5.0 or below
+                            array(
+                                'relation'  => 'AND',
+                                array(
+                                    // Searches the value of a serialized array. It is saved like this 'a:1:{i:0;i:405;}'
+                                    'key'        => '__on_exit_code_task_ids',
+                                    'value'      => ':' . $iSubjectTaskID . ';',
+                                    'compare'    => 'LIKE',
+                                ),
+                                array(
+                                    'key'        => '__on_exit_code',
+                                    'value'      => $isExitCode,
+                                    'compare'    => '=',
+                                ),
+                            ),
+                            // 1.5.0 or above
+                            array(
+                                'relation'  => 'AND',
+                                array(
+                                    'key'        => '__on_exit_code_task_ids',
+                                    'value'      => '|' . $iSubjectTaskID . '|',
+                                    'compare'    => 'LIKE',
+                                ),
+                                array(
+                                    'key'        => '__on_exit_code_negate',
+                                    'compare'    => 'EXISTS'
+                                ) + $_aWP38CompatValue,
+                                array(
+                                    'relation'  => 'OR',
+                                    array(
+                                        'relation'  => 'AND',
+                                        array(
+                                            // Searches the value of a serialized array. It is saved like this 'a:1:{i:0;i:405;}'
+                                            'key'        => '__on_exit_code',
+                                            'value'      => '|' . $isExitCode . '|',
+                                            'compare'    => 'LIKE',
+                                        ),
+                                        array(
+                                            'key'        => '__on_exit_code_negate',
+                                            'value'      => false,
+                                        ),
+                                    ),
+                                    array(
+                                        'relation'  => 'AND',
+                                        array(
+                                            // Searches the value of a serialized array. It is saved like this 'a:1:{i:0;i:405;}'
+                                            'key'        => '__on_exit_code',
+                                            'value'      => '|' . $isExitCode . '|',
+                                            'compare'    => 'NOT LIKE',
+                                        ),
+                                        array(
+                                            'key'        => '__on_exit_code_negate',
+                                            'value'      => true,
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ), // 'meta_query'
+                ) // find() 1st param
+            ); // TaskScheduler_TaskUtility::find()
             return $_oResult->posts;
-            
+
         }
-    
+
 }
