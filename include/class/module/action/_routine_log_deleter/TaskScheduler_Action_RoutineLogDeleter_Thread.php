@@ -14,7 +14,9 @@
  * 
  */
 class TaskScheduler_Action_RoutineLogDeleter_Thread extends TaskScheduler_Action_Base {
-        
+
+    protected $sSlug = 'task_scheduler_action_delete_each_task_log';
+
     /**
      * The user constructor.
      * 
@@ -61,7 +63,7 @@ class TaskScheduler_Action_RoutineLogDeleter_Thread extends TaskScheduler_Action
         foreach( $_aRootLogIDs as $_iIndex => $_iRootLogID ) {
             
             // Delete the root log and its children.
-            $_iDeleted = $_iDeleted + TaskScheduler_LogUtility::deleteChildLogs( $_iRootLogID, $oThread->_target_task_id );
+            $_iDeleted = $_iDeleted + TaskScheduler_LogUtility::deleteChildLogs( $_iRootLogID );
             if ( TaskScheduler_LogUtility::doesPostExist( $_iRootLogID ) ) {
                 $_vDelete   = wp_delete_post( $_iRootLogID, true );                        
                 $_iDeleted  = $_vDelete ? $_iDeleted + 1 : $_iDeleted;

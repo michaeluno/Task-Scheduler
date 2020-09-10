@@ -78,10 +78,7 @@ class TaskScheduler_Event {
             );
             new TaskScheduler_Action_Debug;
             new TaskScheduler_Action_Email( '', 'TaskScheduler_Action_Email_Wizard' ); // wizard class name
-            new TaskScheduler_Action_RoutineLogDeleter( 
-                'task_scheduler_action_delete_task_log', 
-                array()     // internal, no wizard
-            );
+            new TaskScheduler_Action_RoutineLogDeleter( '', array() );
             
             // 1.1.0+
             new TaskScheduler_Action_TransientCleaner(

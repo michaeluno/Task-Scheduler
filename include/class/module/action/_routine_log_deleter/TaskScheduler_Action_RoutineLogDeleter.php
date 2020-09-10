@@ -13,7 +13,9 @@
  *
  */
 class TaskScheduler_Action_RoutineLogDeleter extends TaskScheduler_Action_Base {
-        
+
+    protected $sSlug  = 'task_scheduler_action_delete_task_log';
+
     /**
      * The user constructor.
      * 
@@ -21,10 +23,7 @@ class TaskScheduler_Action_RoutineLogDeleter extends TaskScheduler_Action_Base {
      */
     public function construct() {
             
-        new TaskScheduler_Action_RoutineLogDeleter_Thread( 
-            'task_scheduler_action_delete_each_task_log',
-            array() // internal, no wizard
-        );
+        new TaskScheduler_Action_RoutineLogDeleter_Thread( '', array() );
                     
     }
     
