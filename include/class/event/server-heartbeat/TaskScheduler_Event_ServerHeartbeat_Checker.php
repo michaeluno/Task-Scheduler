@@ -42,7 +42,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         // If this is not a server-heartbeat background page load or a page load to check scheduled actions manually
         if ( 
             ! ( TaskScheduler_ServerHeartbeat::isBackground() 
-            || $this->_isManualPageLoad() )
+            || $this->___isManualPageLoad() )
         ) {
             return;
         }
@@ -56,9 +56,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         // Letting the site load and wait till the 'wp_loaded' hook is required to load the custom taxonomy that the plugin uses.
         add_action( 'wp_loaded', array( $this, '_replyToSpawnRoutines' ), 1 );    // set the high priority because the sleep sub-routine also hooks the same action.
         return;
-        
-    
-        
+
     }    
     
         /**
@@ -67,9 +65,9 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
          * When the user disables the server heartbeat and uses own Cron jobs to check actions, 
          * the user accesses the site with the 'task_scheduler_checking_actions' key in the request url.
          */
-        private function _isManualPageLoad() {
+        private function ___isManualPageLoad() {
 
-            if ( isset( $GLOBALS['pagenow'] ) && in_array( $GLOBALS['pagenow'], array( 'wp-cron.php' ) ) ) {
+            if ( isset( $GLOBALS[ 'pagenow' ] ) && in_array( $GLOBALS[ 'pagenow' ], array( 'wp-cron.php' ) ) ) {
                 return false;
             }
             
@@ -77,7 +75,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
             if ( TaskScheduler_Option::get( array( 'server_heartbeat', 'power' ) ) ) {
                 return false;
             }            
-            return isset( $_REQUEST['task_scheduler_checking_actions'] ) && $_REQUEST['task_scheduler_checking_actions'];
+            return isset( $_REQUEST[ 'task_scheduler_checking_actions' ] ) && $_REQUEST[ 'task_scheduler_checking_actions' ];
             
         }
 
@@ -113,7 +111,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
             }
 
             // If it is a thread and the owner task does not exist, delete the thread and skip the iteration.
-            if ( $this->_isThreadWithoutOwnerTask( $_oTask ) ) {
+            if ( $this->___isThreadWithoutOwnerTask( $_oTask ) ) {
                 $_oTask->delete();
                 continue;
             }
@@ -141,8 +139,9 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
          * 
          * @since       1.1.1
          * @return      boolean
+         * @param       TaskScheduler_Routine $oTask
          */
-        private function _isThreadWithoutOwnerTask( $oTask ) {
+        private function ___isThreadWithoutOwnerTask( $oTask ) {
             
             if ( ! $oTask->isThread() ) {
                 return false;
@@ -154,24 +153,24 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
     /**
      * Spawns the given routine.
      * 
-     * @param    integer    $iRoutineID         The task/routine ID
-     * @param    numeric    $nScheduledTime     The scheduled run time. 
-     * @param    boolean    $bUpdateNextRunTime Whether to schedule the next run.
-     * @callback action     task_scheduler_action_spawn_routine
+     * @param    integer        $iRoutineID         The task/routine ID
+     * @param    integer|float  $nScheduledTime     The scheduled run time.
+     * @param    boolean        $bUpdateNextRunTime Whether to schedule the next run.
+     * @callback action         task_scheduler_action_spawn_routine
      * @return   void
      */
     public function _replyToSpawnTheRoutine( $iRoutineID, $nScheduledTime, $bUpdateNextRunTime=true ) {
 
         // First check if it is a task  
         $_oRoutine = TaskScheduler_Routine::getInstance( $iRoutineID );
-        if ( ! is_object( $_oRoutine ) ) { 
+        if ( ! ( $_oRoutine instanceof TaskScheduler_Routine ) ) {
             return;
         }
 
         // For tasks, create a routine object.
         if ( $_oRoutine->isTask() ) {
-            $this->_updateTaskStatus( $_oRoutine, $nScheduledTime, $bUpdateNextRunTime );
-            $_oRoutine = $this->_getRoutineFromTask( $_oRoutine );
+            $this->___updateTaskStatus( $_oRoutine, $nScheduledTime, $bUpdateNextRunTime );
+            $_oRoutine = $this->___getRoutineFromTask( $_oRoutine );
             if ( ! isset( $_oRoutine->ID ) ) {
                 return;
             }
@@ -180,8 +179,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 
         // For routine instances,
         if ( $_oRoutine->isRoutine() ) {
-            $this->_updateRoutineStatus( $_oRoutine );
-      
+            $this->___updateRoutineStatus( $_oRoutine );
         }
         
         // Let other subroutines update routine meta such as `_is_spawned` etc.
@@ -215,9 +213,10 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         /**
          * Create a routine object from a task.
          * @since       1.1.1
-         * @return      object|null
+         * @param       TaskScheduler_Routine $oTask
+         * @return      TaskScheduler_Routine|null
          */
-        private function _getRoutineFromTask( $oTask ) {
+        private function ___getRoutineFromTask( $oTask ) {
             
             // Create a routine to spawn.
             $_iRoutineID = TaskScheduler_RoutineUtility::derive( 
@@ -231,11 +230,15 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
             return TaskScheduler_Routine::getInstance( $_iRoutineID );
         
         }
-        
+
         /**
          * Updates the task meta data.
+         *
+         * @param TaskScheduler_Routine $oTask
+         * @param integer|double        $nScheduledTime
+         * @param boolean               $bUpdateNextRunTime
          */
-        private function _updateTaskStatus( $oTask, $nScheduledTime, $bUpdateNextRunTime ) {
+        private function ___updateTaskStatus( $oTask, $nScheduledTime, $bUpdateNextRunTime ) {
             
             $oTask->deleteMeta( '_exit_code' );
             $_sPreviousTaskStatus     = $oTask->_routine_status;
@@ -269,18 +272,20 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
             );
 
         }
-        
+
         /**
          * Updates the routine meta data
+         *
+         * @param TaskScheduler_Routine $oRoutine
          */
-        private function _updateRoutineStatus( $oRoutine ) {
-            
+        private function ___updateRoutineStatus( $oRoutine ) {
+
             $oRoutine->setMeta( '_count_call',     $oRoutine->getMeta( '_count_call' ) + 1 );
-            $oRoutine->setMeta( '_last_run_time',  microtime( true ) );        
-            $_iNextRunTime = apply_filters( 
-                "task_scheduler_filter_next_run_time_{$oRoutine->occurrence}", 
-                microtime( true ), 
-                $oRoutine 
+            $oRoutine->setMeta( '_last_run_time',  microtime( true ) );
+            $_iNextRunTime = apply_filters(
+                "task_scheduler_filter_next_run_time_{$oRoutine->occurrence}",
+                microtime( true ),
+                $oRoutine
             );
             $oRoutine->setMeta( '_next_run_time',  $_iNextRunTime );
 
@@ -288,18 +293,18 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 
     /**
      * Checks scheduled actions in a background page load.
-     * 
+     *
      * If there are scheduled ones and reach the scheduled time, they will be spawned.
-     * 
+     *
      */
     public function _replyToCheckScheduledActions() {
-        
+
         if ( TaskScheduler_WPUtility::getTransient( self::$sCheckActionTransientKey ) ) {
             TaskScheduler_WPUtility::setTransient( self::$sRecheckActionTransientKey, microtime( true ), 60 );
             return;
         }
         TaskScheduler_ServerHeartbeat::beat();
-        
+
     }
-    
+
 }

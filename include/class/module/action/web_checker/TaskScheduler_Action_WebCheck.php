@@ -52,7 +52,7 @@ class TaskScheduler_Action_WebCheck extends TaskScheduler_Action_Base {
             ! isset( 
                 $_aTaskMeta[ $this->sSlug ],
                 $_aTaskMeta[ $this->sSlug ][ 'url' ],
-                $_aTaskMeta[ $this->sSlug ][ 'sslverify'],
+                $_aTaskMeta[ $this->sSlug ][ 'sslverify' ],
                 $_aTaskMeta[ $this->sSlug ][ 'timeout' ],
                 $_aTaskMeta[ $this->sSlug ][ 'http_method' ],
                 $_aTaskMeta[ $this->sSlug ][ 'queries' ],
