@@ -111,7 +111,7 @@ if ( ! class_exists( 'TaskScheduler_AutoCompleteCustomFieldType' ) ) :
  * @since       1.0.0
  * @package     TaskScheduler_AdminPageFrameworkFieldTypePack
  * @subpackage  CustomFieldType
- * @version     1.0.1
+ * @version     1.0.2
  */
 class TaskScheduler_AutoCompleteCustomFieldType extends TaskScheduler_AdminPageFramework_FieldType {
         
@@ -533,7 +533,7 @@ class TaskScheduler_AutoCompleteCustomFieldType extends TaskScheduler_AdminPageF
                     . "<div class='repeatable-field-buttons'></div>"    // the repeatable field buttons will be replaced with this element.
                 . "</label>"
             . "</div>"
-            . $this->getAutocompletEnablerScript( $aField['input_id'], $aField['settings'], $aField['settings2'], $aInputAttributes['value'] )
+            . $this->getAutocompleteEnablerScript( $aField['input_id'], $aField['settings'], $aField['settings2'], $aInputAttributes['value'] )
             . $aField['after_label'];
         
     }    
@@ -563,7 +563,7 @@ class TaskScheduler_AutoCompleteCustomFieldType extends TaskScheduler_AdminPageF
             
         }
         
-        private function getAutocompletEnablerScript( $sInputID, $asParam1, $aParam2, $sValue='' ) {
+        private function getAutocompleteEnablerScript( $sInputID, $asParam1, $aParam2, $sValue='' ) {
             
             $sParam1 = $this->_formatSettings( $asParam1, $sValue );
             $sParam2 = $this->_formatSettings( $aParam2, $sValue );
@@ -576,10 +576,10 @@ class TaskScheduler_AutoCompleteCustomFieldType extends TaskScheduler_AdminPageF
             {$sParam1}, 
             jQuery.extend( true, {$sParam2}, {
                 onAdd: function ( item ) {
-                    jQuery( '#{$sInputID}' ).attr( 'value', JSON.stringify( jQuery( '#{$sInputID}' ).tokenInput( 'get' ) ) );
+                    jQuery( '#{$sInputID}' ).val( JSON.stringify( jQuery( '#{$sInputID}' ).tokenInput( 'get' ) ) );
                 },
                 onDelete: function ( item ) {
-                    jQuery( '#{$sInputID}' ).attr( 'value', JSON.stringify( jQuery( '#{$sInputID}' ).tokenInput( 'get' ) ) );
+                    jQuery( '#{$sInputID}' ).val( JSON.stringify( jQuery( '#{$sInputID}' ).tokenInput( 'get' ) ) );
                 },
             })
         );

@@ -125,10 +125,10 @@ class TaskScheduler_RevealerCustomFieldType extends TaskScheduler_AdminPageFrame
      * Defines the field type slugs used for this field type.
      */
     public $aFieldTypeSlugs = array( 'revealer', );
-    
+
     /**
-     * Defines the default key-values of this field type. 
-     * 
+     * Defines the default key-values of this field type.
+     *
      * @remark            $_aDefaultKeys holds shared default key-values defined in the base class.
      */
     protected $aDefaultKeys = array(
@@ -140,56 +140,56 @@ class TaskScheduler_RevealerCustomFieldType extends TaskScheduler_AdminPageFrame
                 'size'          => 1,
                 'autofocusNew'  => null,
                 'multiple'      => null,    // set 'multiple' for multiple selections. If 'is_multiple' is set, it takes the precedence.
-                'required'      => null,        
+                'required'      => null,
             ),
             'optgroup'  => array(),
             'option'    => array(),
-        ),        
+        ),
     );
-    
+
     /**
      * Indicates whether the JavaScirpt script is inserted or not.
      */
     private static $_bIsLoaded = false;
-    
+
     /**
      * Loads the field type necessary components.
-     */ 
+     */
     protected function setUp() {
-                
+
         if ( ! self::$_bIsLoaded ) {
             wp_enqueue_script( 'jquery' );
             self::$_bIsLoaded = add_action( 'admin_print_footer_scripts', array( $this, '_replyToAddRevealerjQueryPlugin' ) );
         }
-        
+
         $this->_checkFrameworkVersion();
-        
-    }    
-    
+
+    }
+
         /**
          * @return      void
          */
         private function _checkFrameworkVersion() {
-                        
+
             // Requires Admin Page Framework 3.7.1+
-            if ( 
-                method_exists( $this, 'getFrameworkVersion' ) 
-                && version_compare( '3.7.1', $this->_getSuffixRemoved( $this->getFrameworkVersion(), '.dev'  ), '<=' ) 
+            if (
+                method_exists( $this, 'getFrameworkVersion' )
+                && version_compare( '3.7.1', $this->_getSuffixRemoved( $this->getFrameworkVersion(), '.dev'  ), '<=' )
             ) {
                 return;
             }
-            
+
             trigger_error(
-                $this->getFrameworkName() . ': ' 
-                . sprintf( 
+                $this->getFrameworkName() . ': '
+                . sprintf(
                     __( 'This revealer field type version requires Admin Page Framework %1$s to function properly.', 'task-scheduler' )
                     . ' ' . __( 'You are using the framework version %2$s.', 'task-scheduler' ),
                     '3.7.1',
                     $this->getFrameworkVersion()
                 ),
-                E_USER_WARNING 
-            );                
-            
+                E_USER_WARNING
+            );
+
         }
         /**
          * @return  string
@@ -199,32 +199,32 @@ class TaskScheduler_RevealerCustomFieldType extends TaskScheduler_AdminPageFrame
             $_iLength = strlen( $sSuffix );
             if ( substr( $sString, $_iLength * -1 ) !== $sSuffix ) {
                 return $sString;
-            } 
+            }
             return substr( $sString, 0, $_iLength * - 1 );
 
-        }        
+        }
 
     /**
      * Returns an array holding the urls of enqueuing scripts.
      */
-    protected function getEnqueuingScripts() { 
+    protected function getEnqueuingScripts() {
         return array(
             // array( 'src'    => dirname( __FILE__ ) . '/js/jquery.knob.js', 'dependencies'    => array( 'jquery' ) ),
         );
     }
-    
+
     /**
      * Returns an array holding the urls of enqueuing styles.
      */
-    protected function getEnqueuingStyles() { 
+    protected function getEnqueuingStyles() {
         return array();
-    }            
+    }
 
 
     /**
      * Returns the field type specific JavaScript script.
-     */ 
-    protected function getScripts() { 
+     */
+    protected function getScripts() {
         $_aJSArray      = json_encode( $this->aFieldTypeSlugs );
         $_sDoubleQuote  = '\"';
         return <<<JAVASCRIPTS
@@ -255,32 +255,32 @@ JAVASCRIPTS;
 
     /**
      * Returns the field type specific CSS rules.
-     */ 
+     */
     protected function getStyles() {
         return "";
     }
 
-    
+
     /**
      * Returns the output of the geometry custom field type.
-     * 
+     *
      */
     /**
      * Returns the output of the field type.
      */
-    protected function getField( $aField ) { 
-                
-        $_aOutput   = array();        
+    protected function getField( $aField ) {
+
+        $_aOutput   = array();
         $aField     = $this->_sanitizeInnerFieldArray( $aField );
         $_aOutput[] = $this->getFieldOutput( $aField );
         $_aOutput[] = $this->_getRevealerScript( $aField[ 'input_id' ] );
         $_aLabels   = empty( $aField[ 'selectors' ] )
-            ? $aField[ 'label' ] 
+            ? $aField[ 'label' ]
             : array_flip( $this->getAsArray( $aField[ 'selectors' ] ) );
         switch( $aField[ 'select_type' ] ) {
             default:
             case 'select':
-            case 'radio':                          
+            case 'radio':
                 $_aOutput[] = $this->_getConcealerScript( $aField[ 'input_id' ], $_aLabels, $aField[ 'value' ] );
                 break;
             case 'checkbox':
@@ -297,24 +297,24 @@ JAVASCRIPTS;
                 break;
         }
         return implode( PHP_EOL, $_aOutput );
-        
+
     }
-        
+
         /**
          * Sanitize (re-format) the field definition array to get the field output by the select type.
-         * 
+         *
          * @since       3.4.0
          */
         private function _sanitizeInnerFieldArray( array $aField ) {
-            
+
             // The revealer field type has its own description element.
-            unset( 
+            unset(
                 $aField[ 'description' ],
-                $aField[ 'title' ] 
+                $aField[ 'title' ]
             );
-            
-            // The revealer script of check boxes needs the reference of the selector to reveal. 
-            // For radio and select input types, the key of the label array can be used but for the checkbox input type, 
+
+            // The revealer script of check boxes needs the reference of the selector to reveal.
+            // For radio and select input types, the key of the label array can be used but for the checkbox input type,
             // the value attribute needs to be always 1 (for cases of key of zero '0') so the selector needs to be separately stored.
             $_aSelectors = $this->getAsArray( $aField[ 'selectors' ] );
             switch( $aField[ 'select_type' ] ) {
@@ -328,11 +328,11 @@ JAVASCRIPTS;
                         );
                         $aField[ 'attributes' ][ 'option' ][ $_sKey ] = array(
                                 'data-reveal'   => $_sSelector,
-                            ) 
+                            )
                             + $this->getElementAsArray( $aField[ 'attributes' ], array( 'option', $_sKey ) );
-                    }                
+                    }
                     break;
-                case 'radio': 
+                case 'radio':
                 case 'checkbox':
                     // for a single item
                     if ( is_string( $aField[ 'label' ] ) ) {
@@ -348,22 +348,22 @@ JAVASCRIPTS;
                         $_sSelector = $this->getElement( $_aSelectors, array( $_sKey ), $_sKey );
                         $aField[ 'attributes' ][ $_sKey ] = array(
                                 'data-reveal'   => $_sSelector,
-                            ) 
+                            )
                             + $this->getElementAsArray( $aField[ 'attributes' ], $_sKey );
                     }
                     break;
-      
+
             }
 
             // Set the select_type to the type argument.
-            return array( 
-                    'type' => $aField[ 'select_type' ] 
+            return array(
+                    'type' => $aField[ 'select_type' ]
                 ) + $aField;
-            
+
         }
-        
+
         private function _getRevealerScript( $sInputID ) {
-            return 
+            return
                 "<script type='text/javascript' >"
                     . '/* <![CDATA[ */ '
                     . "jQuery( document ).ready( function(){
@@ -371,23 +371,23 @@ JAVASCRIPTS;
                             .setTaskScheduler_AdminPageFrameworkRevealer();
                     });"
                     . ' /* ]]> */'
-                . "</script>";    
-        }        
+                . "</script>";
+        }
         private function _getConcealerScript( $sSelectorID, $aLabels, $asCurrentSelection ) {
 
             $aLabels            = $this->getAsArray( $aLabels );
             $_aCurrentSelection = $this->getAsArray( $asCurrentSelection );
-            unset( $_aCurrentSelection[ 'undefined' ] );    // an internal reserved key    
+            unset( $_aCurrentSelection[ 'undefined' ] );    // an internal reserved key
             if( ( $_sKey = array_search( 'undefined' , $_aCurrentSelection ) ) !== false ) {
                 unset( $_aCurrentSelection[ $_sKey ] );
-            }            
-            $_sCurrentSelection = json_encode( $_aCurrentSelection );            
-            
+            }
+            $_sCurrentSelection = json_encode( $_aCurrentSelection );
+
             unset( $aLabels[ 'undefined' ] );
             $aLabels        = array_keys( $aLabels );
             $_sJSONLabels   = json_encode( $aLabels );    // encode it to be usable in JavaScript
             $_sSelectors    = implode( ',', $aLabels );
-            return 
+            return
                 "<script type='text/javascript' class='task-scheduler-revealer-field-type-concealer-script'>"
                     . '/* <![CDATA[ */ '
                     . "jQuery( document ).ready( function(){
@@ -414,7 +414,7 @@ JAVASCRIPTS;
                     });"
                     . ' /* ]]> */'
                 . "</script>";
-                
+
         }
 
     /**
@@ -422,7 +422,7 @@ JAVASCRIPTS;
      * @since            3.0.0
      */
     public function _replyToAddRevealerjQueryPlugin() {
-                
+
         $_sScript = "
 ( function ( $ ) {
     
@@ -473,14 +473,14 @@ JAVASCRIPTS;
     };
                 
 }( jQuery ));";
-        
+
         echo "<script type='text/javascript' class='task-scheduler-revealer-jQuery-plugin'>"
                 . '/* <![CDATA[ */ '
                 . $_sScript
                 . ' /* ]]> */'
             . "</script>";
-        
-    }        
+
+    }
     
 }
 endif;
