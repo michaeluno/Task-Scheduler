@@ -49,16 +49,16 @@ class TaskScheduler_Event_Routine {
         }
         $oRoutine->deleteMeta( '_exit_code' );
         $_sPreviousTaskStatus     = $oRoutine->_routine_status;
-        $_iMaxTaskExecutionTime   = ( int ) $oRoutine->_max_execution_time;
+        $_iMaxTaskExecutionTime   = ( integer ) $oRoutine->_max_execution_time;
         
         // Store the previous task status in a transient. This is used to cancel the routine.
         $_sLoadID = TaskScheduler_Registry::TRANSIENT_PREFIX . md5( $nSpawnedTime );
         TaskScheduler_WPUtility::setTransient( $_sLoadID, $_sPreviousTaskStatus, $_iMaxTaskExecutionTime ? $_iMaxTaskExecutionTime : 30 );    // avoid setting 0 for the expiration duration.
         
-        $oRoutine->setMeta( '_routine_status',  'awaiting' );    // the 'Force Execution' task option will ignore this status if enabled. Otherwise, it is used to determine scheduled routines.
-        $oRoutine->setMeta( '_is_spawned',      true );            // used to determine scheduled routines
-        $oRoutine->setMeta( '_spawned_time',    $nSpawnedTime );    // used to cancel the routine and to detect the hung 
-        $oRoutine->setMeta( '_count_call',      $oRoutine->getMeta( '_count_call' ) + 1 );
+        $oRoutine->setMeta( '_routine_status', 'awaiting' );     // the 'Force Execution' task option will ignore this status if enabled. Otherwise, it is used to determine scheduled routines.
+        $oRoutine->setMeta( '_is_spawned', true );               // used to determine scheduled routines
+        $oRoutine->setMeta( '_spawned_time', $nSpawnedTime );    // used to cancel the routine and to detect the hung
+        $oRoutine->setMeta( '_count_call', ( ( integer ) $oRoutine->getMeta( '_count_call' ) ) + 1 );
 
         if ( $oRoutine->isRoutine() && $oRoutine->getMeta( '_hung_routine_handle_type' ) ) {
             do_action( 'task_scheduler_action_add_hung_routine_handler_thread', $oRoutine );
@@ -148,6 +148,9 @@ class TaskScheduler_Event_Routine {
      * Updates the routine status and meta data and leave log items for the routine.
      * 
      * This method gets triggered right after the routine action is performed.
+     *
+     * @param TaskScheduler_Routine $oRoutine
+     * @param integer|string    $sExitCode
      */
     public function _replyToDoAfterRoutineAction( $oRoutine, $sExitCode ) {
 
@@ -164,10 +167,10 @@ class TaskScheduler_Event_Routine {
             return;
         }
         
-        // Regardless of the occurrence type, if there are threads, keeps the status 'processing', leave the log and goback.
+        // Regardless of the occurrence type, if there are threads, keeps the status to be 'processing', leave the log and go back.
         if ( $_bHasThreads ) {
             $_aLog[] = __( 'Still have threads.', 'task-scheduler' );
-            $_sLog[] = null !== $sExitCode ? ' ' . __( 'Exit Code', 'task-scheduler' ) . ': ' . $sExitCode : '';
+            $_aLog[] = null !== $sExitCode ? ' ' . __( 'Exit Code', 'task-scheduler' ) . ': ' . $sExitCode : '';
             $oRoutine->log( $_aLog, $oRoutine->parent_routine_log_id );
             return;
         }
