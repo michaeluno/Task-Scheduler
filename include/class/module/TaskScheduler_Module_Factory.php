@@ -38,6 +38,8 @@ abstract class TaskScheduler_Module_Factory extends TaskScheduler_PluginUtility 
      * Stores the wizard pages used for this module.
      */
     public $aWizardScreens = array();
+
+    protected $_sClassName = '';
     
     /**
      * Sets up necessary hooks and properties.
