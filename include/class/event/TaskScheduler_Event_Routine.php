@@ -29,7 +29,7 @@ class TaskScheduler_Event_Routine {
     public function __construct() {
 
         add_action( 'task_scheduler_action_before_calling_routine', array( $this, '_replyToDoBeforeSpawnRoutine' ), 10, 2 );
-        add_action( 'task_scheduler_action_cancel_routine',         array( $this, '_replyToCancelRoutine' ), 10, 2);
+        add_action( 'task_scheduler_action_cancel_routine',         array( $this, '_replyToCancelRoutine' ), 10, 2 );
         add_action( 'task_scheduler_action_before_doing_routine',   array( $this, '_replyToDoBeforeRoutine' ) );
         add_action( 'task_scheduler_action_do_routine',             array( $this, '_replyToDoRoutine' ) );
         add_action( 'task_scheduler_action_after_doing_action',     array( $this, '_replyToDoAfterRoutineAction' ), 10, 2 );
@@ -40,6 +40,8 @@ class TaskScheduler_Event_Routine {
     /**
      * Called when the task is about to be spawned.
      * @callback    add_action      task_scheduler_action_before_calling_routine
+     * @param       TaskScheduler_Routine   $oRoutine
+     * @param       integer|double  $nSpawnedTime
      * @return      void
      */
     public function _replyToDoBeforeSpawnRoutine( $oRoutine, $nSpawnedTime ) {
@@ -60,10 +62,6 @@ class TaskScheduler_Event_Routine {
         $oRoutine->setMeta( '_spawned_time', $nSpawnedTime );    // used to cancel the routine and to detect the hung
         $oRoutine->setMeta( '_count_call', ( ( integer ) $oRoutine->getMeta( '_count_call' ) ) + 1 );
 
-        if ( $oRoutine->isRoutine() && $oRoutine->getMeta( '_hung_routine_handle_type' ) ) {
-            do_action( 'task_scheduler_action_add_hung_routine_handler_thread', $oRoutine );
-        }
-        
     }
     
     /**
@@ -89,13 +87,19 @@ class TaskScheduler_Event_Routine {
     
     /**
      * Do some preparation before stating the routine.
+     *
+     * @param TaskScheduler_Routine $oRoutine
      */
     public function _replyToDoBeforeRoutine( $oRoutine ) {
 
         $oRoutine->setMeta( '_routine_status', 'processing' );
         $oRoutine->setMeta( '_last_run_time', microtime( true ) );
         $oRoutine->deleteMeta( '_is_spawned' );    
-    
+
+        if ( $oRoutine->isRoutine() && $oRoutine->getMeta( '_hung_routine_handle_type' ) ) {
+            do_action( 'task_scheduler_action_add_hung_routine_handler_thread', $oRoutine );
+        }
+
     }
 
     /**

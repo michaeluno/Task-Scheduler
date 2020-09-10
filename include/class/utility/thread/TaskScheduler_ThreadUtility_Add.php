@@ -39,6 +39,10 @@ abstract class TaskScheduler_ThreadUtility_Add extends TaskScheduler_ThreadUtili
      * @since     1.0.0
      * @remark    It is similar to the `TaskScheduler_TaskUtility::create()` method.
      * @return    integer    The thread ID.
+     * @param integer $iOwnerRoutineID
+     * @param array   $aThreadOptions
+     * @param array   $aSystemTaxonomyTerms
+     * @param boolean $bAllowDuplicate
      */
     static public function derive( $iOwnerRoutineID, array $aThreadOptions, array $aSystemTaxonomyTerms=array(), $bAllowDuplicate=false ) {
         

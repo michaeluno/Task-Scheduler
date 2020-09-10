@@ -436,9 +436,11 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 - Added the behavior to clean up threads when their owner routine is deleted.
 - Added the behavior to clean up routines when their owner task is deleted.
 - Added the options for the Email action to set the name and address of the from field.
+- Change the behaviour of the `Run` action link from normally triggering an action from forcing it.
 - Tweaked the setting UI regarding redundant visible fields.
 - Removed unnecessary action links in the task listing table.
-- Changed the form session length to be longer.
+- Changed t- Fixed a bug that Hung Routine Handler threads were often duplicated.he form session length to be longer.
+
 - Fixed a bug with the Email action that sending Emails failed due to the invalid email address set for the from field.
 - Fixed an incompatibility issue with WordPress 5.5 which includes jQuery 1.12.4 that causes the auto-complete field to not storing proper values.
 - Fixed an incompatibility issue with form button icons in WordPress 5.3 or above.

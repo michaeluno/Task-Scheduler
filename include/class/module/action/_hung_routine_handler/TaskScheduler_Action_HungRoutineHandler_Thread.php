@@ -24,15 +24,12 @@ class TaskScheduler_Action_HungRoutineHandler_Thread extends TaskScheduler_Actio
      * This method is automatically called at the end of the class constructor.
      */
     public function construct() {        
-        add_action( 
-            'task_scheduler_action_add_hung_routine_handler_thread', 
-            array( $this, '_replyToAddHungRoutineHandlerThread' ) 
-       );
+        add_action( 'task_scheduler_action_add_hung_routine_handler_thread', array( $this, '_replyToAddHungRoutineHandlerThread' ) );
     }
         /**
          * This is called when a routine is going to be spawned.
          * 
-         * @callback        action      task_scheduler_action_add_hung_routine_handler_thread
+         * @callback        add_action      task_scheduler_action_add_hung_routine_handler_thread
          */
         public function _replyToAddHungRoutineHandlerThread( $oRoutine ) {
             

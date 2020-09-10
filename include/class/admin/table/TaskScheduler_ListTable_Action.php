@@ -102,7 +102,7 @@ class TaskScheduler_ListTable_Action extends TaskScheduler_ListTable_Base {
                     if ( ! ( $_oTaskOrRoutine instanceof TaskScheduler_Routine ) ) {
                         continue;
                     }
-                    $_oTaskOrRoutine->start( microtime( true ) + ++$_iApplied );
+                    $_oTaskOrRoutine->start( microtime( true ) + ++$_iApplied, true );
                 }
                 if ( $_iApplied ) {
                     $this->setAdminNotice( __( 'The task has been called.', 'task-scheduler' ), 'updated' );

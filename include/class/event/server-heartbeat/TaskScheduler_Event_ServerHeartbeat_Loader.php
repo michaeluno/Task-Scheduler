@@ -31,19 +31,11 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
         if ( ! self::isCallingAction() ) { 
             return; 
         }
-            
+
         // Tell WordPress this is a background routine by setting the Cron flag.
-        if ( ! defined( 'DOING_CRON' ) ) { 
-            define( 'DOING_CRON', true );
-        }
-        if ( ! defined( 'WP_USE_THEMES' ) ) {
-            define( 'WP_USE_THEMES', false );
-        }
-        ignore_user_abort( true );
-    
-        // Let other third-party scripts load their necessary components by hooking the 'init' action instead of calling the method right here.
-        // Also the Admin Page Framework library adds user defined custom posts and custom taxonomies at the 'init' hook.
-        // So executing the routine earlier than that will result on not having those components including their hooks, callbacks, and settings.
+        TaskScheduler_Utility::setCronFlag();
+
+
         add_action( 'init', array( $this, '_replyToDoRoutineAndExit' ), 9999 );
         
         // Keep loading WordPress...
@@ -75,7 +67,12 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
         }
 
         do_action( 'task_scheduler_action_after_calling_routine', $_oRoutine );
-        $this->_doRoutine( $_oRoutine, $this->___getScheduledTime() );
+
+        $this->___doRoutine(
+            $_oRoutine,
+            $this->___getScheduledTime(),
+            isset( $_COOKIE[ 'server_heartbeat_force_spawn' ] ) && $_COOKIE[ 'server_heartbeat_force_spawn' ]
+        );
         exit();
     
     }
@@ -91,10 +88,13 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
 
     /**
      * Do the routine
-     * 
+     *
+     * @param TaskScheduler_Routine $oRoutine
+     * @param integer|float $nScheduledTime
+     * @param boolean $bForce       Whether to ignore the lock. This is needed when the routine is spawned manually such as via the Run action link.
      * @return    void
      */    
-    private function _doRoutine( $oRoutine, $nScheduledTime ) {
+    private function ___doRoutine( $oRoutine, $nScheduledTime, $bForce ) {
 
         // Set the max execution time and wait until the exact time.
         $_dSleepSeconds            = $this->_getRequiredSleepSeconds( $oRoutine, $nScheduledTime );
@@ -109,7 +109,7 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
     
         // Check the action lock.
         $_sActionLockKey = $this->_sTransientPrefix . $oRoutine->ID;
-        if ( TaskScheduler_WPUtility::getTransient( $_sActionLockKey ) ) { 
+        if ( ! $bForce && TaskScheduler_WPUtility::getTransient( $_sActionLockKey ) ) {
             // The task is locked.
             do_action( 'task_scheduler_action_cancel_routine', $oRoutine, 'TASK_LOCKED' );
             return; 

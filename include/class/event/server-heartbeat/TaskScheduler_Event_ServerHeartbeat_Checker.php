@@ -26,7 +26,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
      */
     public function __construct() {
 
-        add_action( 'task_scheduler_action_spawn_routine', array( $this, '_replyToSpawnTheRoutine' ), 10, 3 );
+        add_action( 'task_scheduler_action_spawn_routine', array( $this, '_replyToSpawnTheRoutine' ), 10, 4 );
         add_action( 'task_scheduler_action_check_scheduled_actions', array( $this, '_replyToCheckScheduledActions' ) );
         
         // If doing actions, return.
@@ -39,10 +39,12 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
             return;
         }
         
-        // If this is not a server-heartbeat background page load or a page load to check scheduled actions manually
+        // If this is not a server-heartbeat background page load or a page load to check scheduled actions manually, do nothing
         if ( 
-            ! ( TaskScheduler_ServerHeartbeat::isBackground() 
-            || $this->___isManualPageLoad() )
+            ! (
+                TaskScheduler_ServerHeartbeat::isBackground()
+                || $this->___isManualPageLoad()
+            )
         ) {
             return;
         }
@@ -51,14 +53,15 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         if ( TaskScheduler_WPUtility::getTransientWithoutCache( self::$sCheckActionTransientKey ) ) {
             return;
         }
-        
-        // At this point, the page load deserves spawning routines.        
+
+        TaskScheduler_Utility::setCronFlag();
+
+        // At this point, the page load can spawn routines.
         // Letting the site load and wait till the 'wp_loaded' hook is required to load the custom taxonomy that the plugin uses.
         add_action( 'wp_loaded', array( $this, '_replyToSpawnRoutines' ), 1 );    // set the high priority because the sleep sub-routine also hooks the same action.
         return;
 
-    }    
-    
+    }
         /**
          * Checks if the page is loaded by manually to check actions.
          * 
@@ -81,6 +84,9 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 
     /**
      * Spawns scheduled tasks.
+     *
+     * @callback    add_action      wp_loaded
+     * @return      void
      */
     public function _replyToSpawnRoutines() {
 
@@ -103,24 +109,25 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         // If it is a task, update the next scheduled time, create a routine and return.
         // If it is a routine, spawn it.
         // If it is a thread, check if the owner routine exists or not. If not, delete itself; otherwise, spawn it.        
-        foreach ( $_aScheduledRoutines as $_iTaskID ) {        
+        foreach ( $_aScheduledRoutines as $_iItemID ) {
         
-            $_oTask = TaskScheduler_Routine::getInstance( $_iTaskID );
+            $_oTask = TaskScheduler_Routine::getInstance( $_iItemID );
             if ( ! is_object( $_oTask ) ) { 
                 continue; 
             }
 
             // If it is a thread and the owner task does not exist, delete the thread and skip the iteration.
-            if ( $this->___isThreadWithoutOwnerTask( $_oTask ) ) {
+            if ( $this->___isThreadWithoutOwnerRoutine( $_oTask ) ) {
                 $_oTask->delete();
                 continue;
             }
             
             do_action( 
                 'task_scheduler_action_spawn_routine', 
-                $_iTaskID, 
+                $_iItemID,
                 $_oTask->_next_run_time, // 1.1.1+ this next run time value is still the one used for the database query above.
-                true // update the next run time
+                true, // update the next run time
+                false // force
             );
 
         }
@@ -131,7 +138,10 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         if ( TaskScheduler_WPUtility::getTransientWithoutCache( self::$sRecheckActionTransientKey ) ) {
             TaskScheduler_WPUtility::deleteTransient( self::$sRecheckActionTransientKey );
             TaskScheduler_ServerHeartbeat::beat();
-        }        
+        }
+
+        // This is a background page load so do not let anything else especially for the front-end happen.
+        exit();
         
     }   
         /**
@@ -139,14 +149,14 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
          * 
          * @since       1.1.1
          * @return      boolean
-         * @param       TaskScheduler_Routine $oTask
+         * @param       TaskScheduler_Routine $oRoutine
          */
-        private function ___isThreadWithoutOwnerTask( $oTask ) {
+        private function ___isThreadWithoutOwnerRoutine( $oRoutine ) {
             
-            if ( ! $oTask->isThread() ) {
+            if ( ! $oRoutine->isThread() ) {
                 return false;
             }
-            return ! is_object( TaskScheduler_Routine::getInstance( $oTask->owner_routine_id ) );
+            return ! is_object( TaskScheduler_Routine::getInstance( $oRoutine->owner_routine_id ) );
             
         }
         
@@ -156,10 +166,11 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
      * @param    integer        $iRoutineID         The task/routine ID
      * @param    integer|float  $nScheduledTime     The scheduled run time.
      * @param    boolean        $bUpdateNextRunTime Whether to schedule the next run.
+     * @param    boolean        $bForce             Whether to spawn the routine by ignoring the action lock.
      * @callback action         task_scheduler_action_spawn_routine
      * @return   void
      */
-    public function _replyToSpawnTheRoutine( $iRoutineID, $nScheduledTime, $bUpdateNextRunTime=true ) {
+    public function _replyToSpawnTheRoutine( $iRoutineID, $nScheduledTime, $bUpdateNextRunTime=true, $bForce=false ) {
 
         // First check if it is a task  
         $_oRoutine = TaskScheduler_Routine::getInstance( $iRoutineID );
@@ -198,10 +209,12 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
             add_query_arg( $_aDebugInfo, trailingslashit( site_url() ) ),    // the Apache log indicates that if a trailing slash misses, it redirects to the url WITH it.
             array( // cookies
                 'server_heartbeat_id'                => '',    // do not set the id so that the server heartbeat does not think it is a background call.
-                // [1.3.2+] Cast string for the bug in WordPress v4.6 https://core.trac.wordpress.org/ticket/37768
+                // 1.3.2+ Cast string for the bug in WordPress v4.6 https://core.trac.wordpress.org/ticket/37768
                 'server_heartbeat_action'            => ( string ) $iRoutineID,
                 'server_heartbeat_scheduled_time'    => ( string ) $nScheduledTime,
                 'server_heartbeat_spawned_time'      => ( string ) $_nCurrentMicrotime,
+                // 1.5.0
+                'server_heartbeat_force_spawn'       => ( string ) $bForce,
             ),
             'spawn_routine' // context
         );        

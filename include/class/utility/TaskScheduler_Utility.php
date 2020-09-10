@@ -14,7 +14,24 @@
  * @since        1.0.0
  */
 abstract class TaskScheduler_Utility extends TaskScheduler_AdminPageFramework_FrameworkUtility {
-    
+
+    /**
+     * Tell WordPress this is a background routine by setting the Cron flag.
+     * @return void
+     * @since 1.5.0
+     */
+    static public function setCronFlag() {
+
+        if ( ! defined( 'DOING_CRON' ) ) {
+            define( 'DOING_CRON', true );
+        }
+        if ( ! defined( 'WP_USE_THEMES' ) ) {
+            define( 'WP_USE_THEMES', false );
+        }
+        ignore_user_abort( true );
+
+    }
+
     /**
      * Checks if a string is JSON encoded.
      */

@@ -84,12 +84,13 @@ final class TaskScheduler_Routine extends TaskScheduler_Routine_Taxonomy {
      * Called from the task listing table page with the `Run Now` action link.
      * @return      void
      */
-    public function start( $nTargetTime=null ) {
+    public function start( $nTargetTime=null, $bForce=false ) {
         do_action( 
             'task_scheduler_action_spawn_routine', 
             $this->ID, 
             $nTargetTime ? $nTargetTime : microtime( true ),   // scheduled time time
-            false   // whether to update the next run time
+            false,   // whether to update the next run time
+            $bForce
         );
     }
     

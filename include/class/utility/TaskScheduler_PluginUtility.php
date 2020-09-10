@@ -17,7 +17,7 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
      * @return      boolean
      */
     static protected function hasSameRoutine( $aTaskMeta, $hWPQueryCallback ) {
-                        
+        
         // The top level arguments
         $_aCheckingTopLevelArguments = array(
             'post_title',    //     => [ <string> ] // The title of your post.
@@ -26,15 +26,15 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
         $_aNotCheckingTopLevelArguments = array_merge( 
             array(
                 'ID',               // [ <post id> ] // Are you updating an existing post?
-                'tax_input',        // => [ array( <taxonomy> => <array | string> ) ] // For custom taxonomies. Default empty.
-                'post_type',        //     => [ 'post' | 'page' | 'link' | 'nav_menu_item' | custom post type ] // Default 'post'.
-                'post_author',      //    => [ <user ID> ] // The user ID number of the author. Default is the current user ID.
-                'post_status',      //   => [ 'draft' | 'publish' | 'pending'| 'future' | 'private' | custom registered status ] // Default 'draft'.
+                'tax_input',        // [ array( <taxonomy> => <array | string> ) ] // For custom taxonomies. Default empty.
+                'post_type',        // [ 'post' | 'page' | 'link' | 'nav_menu_item' | custom post type ] // Default 'post'.
+                'post_author',      // [ <user ID> ] // The user ID number of the author. Default is the current user ID.
+                'post_status',      // [ 'draft' | 'publish' | 'pending'| 'future' | 'private' | custom registered status ] // Default 'draft'.
                 'post_content',     // [ <string> ] // The full text of the post.
                 'post_name',        // [ <string> ] // The name (slug) for your post            
                 'post_parent',      // [ <post ID> ] // Sets the parent of the new post, if any. Default 0.
                 'menu_order',       // [ <order> ] // If new post is a page, sets the order in which it should appear in supported menus. Default 0.
-                'ping_status',      //    => [ 'closed' | 'open' ] // Pingbacks or trackbacks allowed. Default is the option 'default_ping_status'.
+                'ping_status',      // [ 'closed' | 'open' ] // Pingbacks or trackbacks allowed. Default is the option 'default_ping_status'.
                 'to_ping',          // Space or carriage return-separated list of URLs to ping. Default empty string.
                 'pinged',           // Space or carriage return-separated list of URLs that have been pinged. Default empty string.
                 'post_password',    // [ <string> ] // Password for post, if any. Default empty string.
@@ -67,7 +67,7 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
             )
         );
         $_aQueryArguments = array();
-        // Extract the top level argument elements and remvoe them from the meta array.
+        // Extract the top level argument elements and remove them from the meta array.
         foreach ( $_aCheckingTopLevelArguments as $_sCheckingKey ) {
             if ( isset( $aTaskMeta[ $_sCheckingKey ] ) ) {
                 $_aQueryArguments[ $_sCheckingKey ] = $aTaskMeta[ $_sCheckingKey ];

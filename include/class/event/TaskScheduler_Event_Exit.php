@@ -26,16 +26,24 @@ class TaskScheduler_Event_Exit {
 
     /**
      * Called when a thread exits.
+     * @param TaskScheduler_Routine $oThread
+     * @param integer|string $isExitCode
+     * @callback    add_action  task_scheduler_action_after_doing_action
+     * @return void
      */
     public function _replyToHandleThreadExits( $oThread, $isExitCode ) {
         
-        if ( ! is_object( $oThread ) ) { return; }
+        if ( ! is_object( $oThread ) ) {
+            return;
+        }
         
         // For internal threads, do not add any log.
-        if ( $oThread->hasTerm( 'internal' ) ) { return; }
+        if ( $oThread->hasTerm( 'internal' ) ) {
+            return;
+        }
         
         // Do what the exit code tells if it is one of the pre-defined ones.
-        $this->_doExitCode( $isExitCode, $oThread );
+        $this->___doOnExit( $isExitCode, $oThread );
         
     }
     
@@ -46,6 +54,8 @@ class TaskScheduler_Event_Exit {
      *
      * @param TaskScheduler_Routine $oRoutine
      * @param integer|string $isExitCode
+     * @callback    add_action  task_scheduler_action_after_doing_action
+     * @return void
      */
     public function _replyToHandleRoutineExits( $oRoutine, $isExitCode ) {
 
@@ -53,13 +63,13 @@ class TaskScheduler_Event_Exit {
             return;
         }
 
-        $this->_doExitCode( $isExitCode, $oRoutine );
+        $this->___doOnExit( $isExitCode, $oRoutine );
         
         if ( $oRoutine->hasTerm( 'internal' ) ) {
             return;
         }
                     
-        $this->_doTasksOnExitCode( $isExitCode, $oRoutine );
+        $this->___doTasksOnExitCode( $isExitCode, $oRoutine );
         
     }
 
@@ -71,7 +81,7 @@ class TaskScheduler_Event_Exit {
      * @param integer|string $isExitCode
      * @param TaskScheduler_Routine $oRoutine
      */
-    private function _doExitCode( $isExitCode, $oRoutine ) {
+    private function ___doOnExit( $isExitCode, $oRoutine ) {
         
         if ( 'DELETE' === $isExitCode ) {
             $oRoutine->delete();    
@@ -84,12 +94,12 @@ class TaskScheduler_Event_Exit {
      * @param integer|string $isExitCode
      * @param TaskScheduler_Routine $oRoutine
      */
-    private function _doTasksOnExitCode( $isExitCode, $oRoutine ) {
+    private function ___doTasksOnExitCode( $isExitCode, $oRoutine ) {
         
         $_oTask     = $oRoutine->getOwner();
         if ( ! is_object( $_oTask ) ) { 
             return;             
-        }        
+        }
 
         $_aFoundTasks = $this->___getTasksOnExitCode( $isExitCode, $_oTask->ID );
         foreach( $_aFoundTasks as $_iTaskID ) {
@@ -97,11 +107,20 @@ class TaskScheduler_Event_Exit {
                 'task_scheduler_action_spawn_routine', 
                 $_iTaskID, 
                 microtime( true ),  // scheduled time - current time
-                false   // whether to update next run time
+                false,   // whether to update next run time
+                false
             );
         }        
         
     }
+
+        /**
+         * @remark  Including `OR` and with deeply nested items, the query takes very long so separate it
+         * @param   $isExitCode
+         * @param   $iSubjectTaskID
+         *
+         * @return array
+         */
         private function ___getTasksOnExitCode( $isExitCode, $iSubjectTaskID ) {
 
             $_aWP38CompatValue = version_compare( $GLOBALS[ 'wp_version' ], '3.9', '>=' )
@@ -109,6 +128,78 @@ class TaskScheduler_Event_Exit {
                 : array(
                     'value' => 'WHATEVER_VALUE_FOR_WP38_OR_BELOW'
                 );
+            $_oResult = TaskScheduler_TaskUtility::find(
+                array(
+                    'post__not_in'  => array( $iSubjectTaskID ),
+                    'meta_query'    => array(
+                        'relation'  => 'AND',
+                        array(
+                            'key'        => 'occurrence',
+                            'value'      => 'on_exit_code',
+                        ),
+                        array(
+                            // Searches the value of a serialized array. It is saved like this 'a:1:{i:0;i:405;}'
+                            'key'        => '__on_exit_code_task_ids',
+                            'value'      => ':' . $iSubjectTaskID . ';',
+                            'compare'    => 'LIKE',
+                        ),
+                        array(
+                            'key'        => '__on_exit_code',
+                            'value'      => $isExitCode,
+                        ),
+                    ),
+                )
+            );
+            $_aPosts  = $_oResult->posts;
+            $_oResult = TaskScheduler_TaskUtility::find(
+                array(
+                    'post__not_in'  => array( $iSubjectTaskID ),
+                    'meta_query'    => array(
+                        'relation'  => 'AND',
+                        array(
+                            'key'        => 'occurrence',
+                            'value'      => 'on_exit_code',
+                        ),
+                        array(
+                            'key'        => '__on_exit_code_task_ids',
+                            'value'      => '|' . $iSubjectTaskID . '|',
+                            'compare'    => 'LIKE',
+                        ),
+                        array(
+                            'relation'  => 'OR',
+                            array(
+                                'relation'  => 'AND',
+                                array(
+                                    // Searches the value of a serialized array. It is saved like this 'a:1:{i:0;i:405;}'
+                                    'key'        => '__on_exit_code',
+                                    'value'      => '|' . $isExitCode . '|',
+                                    'compare'    => 'LIKE',
+                                ),
+                                array(
+                                    'key'        => '__on_exit_code_negate',
+                                    'value'      => false,
+                                ),
+                            ),
+                            array(
+                                'relation'  => 'AND',
+                                array(
+                                    // Searches the value of a serialized array. It is saved like this 'a:1:{i:0;i:405;}'
+                                    'key'        => '__on_exit_code',
+                                    'value'      => '|' . $isExitCode . '|',
+                                    'compare'    => 'NOT LIKE',
+                                ),
+                                array(
+                                    'key'        => '__on_exit_code_negate',
+                                    'value'      => true,
+                                ),
+                            ),
+                        ),
+                    ), // 'meta_query'
+                ) // find() 1st param
+            ); // TaskScheduler_TaskUtility::find()
+            return array_unique( array_merge( $_aPosts, $_oResult->posts ) );
+
+/*          Somehow this is too heavy
             $_oResult = TaskScheduler_TaskUtility::find(
                 array(
                     'post__not_in'  => array( $iSubjectTaskID ),
@@ -143,10 +234,10 @@ class TaskScheduler_Event_Exit {
                                     'value'      => '|' . $iSubjectTaskID . '|',
                                     'compare'    => 'LIKE',
                                 ),
-                                array(
-                                    'key'        => '__on_exit_code_negate',
-                                    'compare'    => 'EXISTS'
-                                ) + $_aWP38CompatValue,
+//                                array(
+//                                    'key'        => '__on_exit_code_negate',
+//                                    'compare'    => 'EXISTS'
+//                                ) + $_aWP38CompatValue,
                                 array(
                                     'relation'  => 'OR',
                                     array(
@@ -181,6 +272,8 @@ class TaskScheduler_Event_Exit {
                     ), // 'meta_query'
                 ) // find() 1st param
             ); // TaskScheduler_TaskUtility::find()
+*/
+
             return $_oResult->posts;
 
         }
