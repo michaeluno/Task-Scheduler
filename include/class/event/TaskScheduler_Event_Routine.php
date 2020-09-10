@@ -29,7 +29,7 @@ class TaskScheduler_Event_Routine {
     public function __construct() {
 
         add_action( 'task_scheduler_action_before_calling_routine', array( $this, '_replyToDoBeforeSpawnRoutine' ), 10, 2 );
-        add_action( 'task_scheduler_action_cancel_routine',         array( $this, '_replyToCancelRoutine' ) );
+        add_action( 'task_scheduler_action_cancel_routine',         array( $this, '_replyToCancelRoutine' ), 10, 2);
         add_action( 'task_scheduler_action_before_doing_routine',   array( $this, '_replyToDoBeforeRoutine' ) );
         add_action( 'task_scheduler_action_do_routine',             array( $this, '_replyToDoRoutine' ) );
         add_action( 'task_scheduler_action_after_doing_action',     array( $this, '_replyToDoAfterRoutineAction' ), 10, 2 );
@@ -68,9 +68,13 @@ class TaskScheduler_Event_Routine {
     
     /**
      * Gets triggered when a routine is cancelled.
+     *
+     * @param TaskScheduler_Routine $oRoutine
+     * @param string $sContext Tells why the routine is cancelled.
+     * @callback add_action task_scheduler_action_cancel_routine
      */
-    public function _replyToCancelRoutine( $oRoutine ) {
-    
+    public function _replyToCancelRoutine( $oRoutine, $sContext ) {
+
         // Check the previous task status.
         $_nSpawnedMicrotime      = $oRoutine->getMeta( '_spawned_time' );
         $_sTransientKey          = TaskScheduler_Registry::TRANSIENT_PREFIX . md5( $_nSpawnedMicrotime );
@@ -102,6 +106,7 @@ class TaskScheduler_Event_Routine {
      * 
      * @callback    action      task_scheduler_action_do_routine
      * @return      void
+     * @param       TaskScheduler_Routine $oRoutine
      */
     public function _replyToDoRoutine( $oRoutine ) {
 
@@ -181,7 +186,7 @@ class TaskScheduler_Event_Routine {
             // Update the routine status.
             $oRoutine->setMeta( '_count_run',     ( int ) $_oTask->_count_run + 1 );
             $oRoutine->setMeta( '_routine_status', 'queued' );  // restore to the default status
-            
+
             // Update the task status.
             if ( ! $_bIsInternal ) {
                 $_oTask->setMeta( '_exit_code',     $sExitCode );
@@ -201,7 +206,7 @@ class TaskScheduler_Event_Routine {
         if ( ! $oRoutine->hasTerm( 'delete_log' ) && $_oTask->getRootLogCount() > ( int ) $_oTask->_max_root_log_count ) {
             do_action( 'task_scheduler_action_add_log_deletion_task', $_oTask );
         }
-        
+
         // If the next scheduled time is very close, check the actions in the background.
         $_iHeartbeatInterval    = ( int ) TaskScheduler_Option::get( array( 'server_heartbeat', 'interval' ) );
         $_nSum                  = microtime( true ) + $_iHeartbeatInterval;

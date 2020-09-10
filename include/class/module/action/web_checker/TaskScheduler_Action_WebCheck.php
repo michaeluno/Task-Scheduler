@@ -46,7 +46,7 @@ class TaskScheduler_Action_WebCheck extends TaskScheduler_Action_Base {
      * @return  integer|string|double
      */
     public function doAction( $isExitCode, $oRoutine ) {
-        
+TaskScheduler_Debug::log( $oRoutine->getMeta() );
         $_aTaskMeta = $oRoutine->getMeta();
         if ( 
             ! isset( 

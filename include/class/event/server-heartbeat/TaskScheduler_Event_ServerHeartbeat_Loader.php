@@ -101,7 +101,7 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
         $_dServerheartbeatInterval = ( double ) TaskScheduler_Option::get( array( 'server_heartbeat', 'interval' ) );
         if ( $_dSleepSeconds > $_dServerheartbeatInterval ) {
             // The sleep duration is too long.
-            do_action( "task_scheduler_action_cancel_routine" , $oRoutine );
+            do_action( 'task_scheduler_action_cancel_routine' , $oRoutine, 'TOO_LONG_SLEEP_DURATION' );
             return;             
         }
         $_iActionLockDuration    = $this->_setMaxExecutionTime( $oRoutine, $_dSleepSeconds );
@@ -111,12 +111,12 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
         $_sActionLockKey = $this->_sTransientPrefix . $oRoutine->ID;
         if ( TaskScheduler_WPUtility::getTransient( $_sActionLockKey ) ) { 
             // The task is locked.
-            do_action( "task_scheduler_action_cancel_routine" , $oRoutine );
+            do_action( 'task_scheduler_action_cancel_routine', $oRoutine, 'TASK_LOCKED' );
             return; 
         }
     
         // Lock the action.
-        do_action( "task_scheduler_action_before_doing_routine", $oRoutine );
+        do_action( 'task_scheduler_action_before_doing_routine', $oRoutine );
         TaskScheduler_WPUtility::setTransient( $_sActionLockKey, time(), $_iActionLockDuration );
     
         // Do the action
