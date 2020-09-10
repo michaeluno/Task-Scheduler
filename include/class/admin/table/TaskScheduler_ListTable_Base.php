@@ -17,6 +17,12 @@ class TaskScheduler_ListTable_Base extends WP_List_Table {
     public $aData = array();
 
     /**
+     * @var TaskScheduler_AdminPageFramework
+     * @since   1.5.0
+     */
+    public $oAdminPage;
+
+    /**
      * The array stores the table settings.
      */
     public $aArgs = array();
@@ -65,20 +71,18 @@ class TaskScheduler_ListTable_Base extends WP_List_Table {
      * Sets the given admin notice.
      */
     public function setAdminNotice( $sMessage, $sType='error' )    {
-        new TaskScheduler_AdminPageFramework_AdminNotice( $sMessage, array( 'class' => $sType ) );
+        $this->oAdminPage->setSettingNotice( $sMessage, $sType );
     }
 
     /**
      * Returns the modified url with the query keys.
      */
     public function getQueryURL( array $aKeyValues, $sURL=null ) {
-
         $sURL                   = $sURL
             ? $sURL
-            : $_SERVER['REQUEST_URI'];
+            : $_SERVER[ 'REQUEST_URI' ];
         $_sModifiedURL          = add_query_arg( $aKeyValues, $sURL );
         $_aDisallowedQueryKeys  = array_diff( $this->_aDisallowedQueryKeys, array_keys( $aKeyValues ) );
-
         return remove_query_arg( $_aDisallowedQueryKeys, $_sModifiedURL );
 
     }

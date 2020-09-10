@@ -97,11 +97,15 @@ class TaskScheduler_ListTable_Action extends TaskScheduler_ListTable_Base {
                 }                
                 break;
             case 'run':
-                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
-                    $_oTask = TaskScheduler_Routine::getInstance( $_sTaskPostID );
-                    $_oTask->start( microtime( true ) + $_iApplied );                    
+                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sPostID ) {
+                    $_oTaskOrRoutine = TaskScheduler_Routine::getInstance( $_sPostID );
+                    if ( ! ( $_oTaskOrRoutine instanceof TaskScheduler_Routine ) ) {
+                        continue;
+                    }
+                    $_oTaskOrRoutine->start( microtime( true ) + ++$_iApplied );
+                }
+                if ( $_iApplied ) {
                     $this->setAdminNotice( __( 'The task has been called.', 'task-scheduler' ), 'updated' );
-                    $_iApplied++;
                 }
                 break;
             case 'reset_status':

@@ -24,7 +24,7 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
         // Define the form.
         $this->_setTaskListingTableForm();
     
-        $this->_oTaskListTable = new TaskScheduler_ListTable;
+        $this->_oTaskListTable = new TaskScheduler_ListTable( array(), $this );
         $this->_oTaskListTable->process_bulk_action();            // do this before fetching posts
 
         // the 'status' key can be either 'enabled', 'disabled', or 'thread'.

@@ -15,10 +15,14 @@ class TaskScheduler_ListTable extends TaskScheduler_ListTable_Views {
 
     /**
      * Sets up properties and hooks.
+     *
+     * @param array $aData
+     * @param TaskScheduler_AdminPageFramework $oAdminPage
      */
-    public function __construct( array $aData=array() ){
+    public function __construct( array $aData, $oAdminPage ){
 
         $this->aData = $aData;
+        $this->oAdminPage = $oAdminPage;
         $this->setNonce();
         
         // Set parent defaults
