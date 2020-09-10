@@ -27,16 +27,16 @@ final class TaskScheduler_Debug extends TaskScheduler_AdminPageFramework_Debug{
      *
      * @return string
      */
-    static public function get( $v, $sFilePath=null, $bEscape=true ) {
+    static public function get( $v, $sFilePath=null, $bEscape=true, $iStringLengthLimit=0, $iArrayDepthLimit=0 ) {
         
         if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
             return '';
         }
-        return parent::get( $v, $sFilePath, $bEscape );
+        return parent::get( $v, $sFilePath, $bEscape, $iStringLengthLimit, $iArrayDepthLimit );
         
     }
                     
-    static public function log( $v, $sFilePath=null ) {
+    static public function log( $v, $sFilePath=null, $iTrace=0, $iStringLengthLimit=99999, $iArrayDepthLimit=50 ) {
         
         if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
             return;
@@ -51,7 +51,7 @@ final class TaskScheduler_Debug extends TaskScheduler_AdminPageFramework_Debug{
                 : $sFilePath
             );
 
-        parent::log( $v, $sFilePath );
+        parent::log( $v, $sFilePath, $iTrace, $iStringLengthLimit, $iArrayDepthLimit );
 
     }
     
