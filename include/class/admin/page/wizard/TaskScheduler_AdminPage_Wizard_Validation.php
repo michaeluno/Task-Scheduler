@@ -64,7 +64,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
             TaskScheduler_WPUtility::setTransient( 
                 $_GET[ 'transient_key' ], 
                 $aWizardOptions, 
-                30*60 
+                60*60*24*2  // 2 days
             );
 
             return $aWizardOptions;
