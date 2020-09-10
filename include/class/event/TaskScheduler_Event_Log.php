@@ -29,36 +29,48 @@ class TaskScheduler_Event_Log {
     /**
      * Creates a system internal task that deletes all the logs associated with the task.
      * 
-     * @remark    Triggered when a post gets deleted with the 'before_delete_post' hook.
+     * @remark  Triggered when a post gets deleted with the 'before_delete_post' hook.
+     * @param   integer $iPostID
      */
     public function _replyToDeleteLog( $iPostID ) {
         
-        if ( TaskScheduler_Registry::$aPostTypes[ 'task' ] != get_post_type( $iPostID ) ) { return; }        
+        if ( get_post_type( $iPostID ) !== TaskScheduler_Registry::$aPostTypes[ 'task' ] ) {
+            return;
+        }
         
         // If the task itself is the delete log task, do not create the same task again.
-        if ( has_term( array( 'delete_log' ), TaskScheduler_Registry::$aTaxonomies[ 'system' ], $iPostID ) ) { return; }
+        if ( has_term( array( 'delete_log' ), TaskScheduler_Registry::$aTaxonomies[ 'system' ], $iPostID ) ) {
+            return;
+        }
         
         // if the task does not have any log, do not create the log deletion task.
-        if ( ! TaskScheduler_LogUtility::getLogCount( $iPostID ) ) { return; }
+        if ( ! TaskScheduler_LogUtility::getLogCount( $iPostID ) ) {
+            return;
+        }
         
         $this->_addLogDeleteTask( $iPostID, 0 );    // 0: delete all log entries.
         
     }
     
     /**
-     * 
+     *
+     * @callback    add_action  task_scheduler_action_add_log_deletion_task
+     * @param   integer|TaskScheduler_Routine   $ioTask
      */
     public function _replyToAddLogDeletionTask( $ioTask ) {
         
         $_oTask = is_object( $ioTask ) ? $ioTask : TaskScheduler_Routine::getInstance( $ioTask );
         if ( is_object( $_oTask ) ) {
-            $this->_addLogDeleteTask( $_oTask->ID, $_oTask->_max_root_log_count );            
+            $this->_addLogDeleteTask( $_oTask->ID, $_oTask->_max_root_log_count );
         }
         
     }
     
         /**
          * Adds a system internal task that deletes logs.
+         *
+         * @param integer   $iTargetTaskID
+         * @param integer   $iMaxRootLogCountOfTheSubjectTask
          */
         private function _addLogDeleteTask( $iTargetTaskID, $iMaxRootLogCountOfTheSubjectTask=0 ) {
 

@@ -1,6 +1,5 @@
 <?php
 /**
- * Handles the list table of Task Scheduler tasks. 
  *    
  * @package     Task Scheduler
  * @copyright   Copyright (c) 2014-2016, Michael Uno
@@ -9,14 +8,16 @@
  * @since       1.0.0 
 */
 
-
+/**
+ * Handles the list table of Task Scheduler tasks.
+ */
 class TaskScheduler_ListTable extends TaskScheduler_ListTable_Views {
 
     /**
      * Sets up properties and hooks.
      */
     public function __construct( array $aData=array() ){
-              
+
         $this->aData = $aData;
         
         // Set parent defaults
