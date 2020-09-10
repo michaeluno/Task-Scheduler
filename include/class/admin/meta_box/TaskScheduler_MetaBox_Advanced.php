@@ -97,7 +97,7 @@ class TaskScheduler_MetaBox_Advanced extends TaskScheduler_MetaBox_Base {
             );
         }        
         
-        $this->_checkLogs( $aInput['_max_root_log_count'] );
+        $this->___checkLogs( $aInput[ '_max_root_log_count' ] );
         
         return $aInput;
         
@@ -105,13 +105,14 @@ class TaskScheduler_MetaBox_Advanced extends TaskScheduler_MetaBox_Base {
         
         /**
          * Checks the routine logs.
+         * @param integer $iMaxRootLogCount
          */
-        private function _checkLogs( $iMaxRootLogCount ) {
+        private function ___checkLogs( $iMaxRootLogCount ) {
 
-            if ( ! isset( $_REQUEST['post_ID'] ) ) { 
+            if ( ! isset( $_REQUEST[ 'post_ID' ] ) ) {
                 return; 
             }
-            $_iTaskID    = $_REQUEST['post_ID'];
+            $_iTaskID    = $_REQUEST[ 'post_ID' ];
             $_oTask      = TaskScheduler_Routine::getInstance( $_iTaskID );
             if ( ! is_object( $_oTask ) ) { 
                 return; 
