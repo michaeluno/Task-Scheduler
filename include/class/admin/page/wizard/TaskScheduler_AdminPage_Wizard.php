@@ -83,6 +83,7 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
      * @since       unknown
      * @since       1.4.0       Changed the visibility scope to `public` from `protected` as this is accessed from the wizard base class.
      * @since       1.4.0       Renamed from `_getWizardOptions()`.
+     * @return      mixed|null|array
      */
     public function getWizardOptions( $sKey='' ) {
         
