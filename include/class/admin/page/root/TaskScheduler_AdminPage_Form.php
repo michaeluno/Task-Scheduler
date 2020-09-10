@@ -244,18 +244,16 @@ SQL;
      * 
      * @callback    filter      content_{page slug}
      */
-    public function content_ts_task_list( $sHTML ) {    
-
-        return $this->_getHeartbeatStatus()
-            . $this->_getTableOutput()
+    public function content_ts_task_list( $sHTML ) {
+        return $this->___getHeartbeatStatus()
+            . $this->___getTableOutput()
             . $sHTML;    // $sHTML this includes the output of framework form fields.
-        
     }    
 
         /**
          * Returns the heartbeat status.
          */
-        private function _getHeartbeatStatus() {
+        private function ___getHeartbeatStatus() {
             
             $_fIsAlive = TaskScheduler_Option::get( array( 'server_heartbeat', 'power' ) ) && TaskScheduler_ServerHeartbeat::isAlive(); 
             $_sStatus = $_fIsAlive
@@ -276,12 +274,11 @@ SQL;
         /**
          * Returns the output buffer of the task listing table.
          */
-        private function _getTableOutput() {
-                
+        private function ___getTableOutput() {
+
+            $_sNonce = $this->_oTaskListTable->getNonce();
             $this->_oTaskListTable->prepare_items();
-                
-            $_sNonce = $this->_oTaskListTable->setNonce();
-            
+
             ob_start(); // Start buffer.
             $this->_oTaskListTable->views();
             $this->_oTaskListTable->display();

@@ -19,12 +19,13 @@ class TaskScheduler_ListTable extends TaskScheduler_ListTable_Views {
     public function __construct( array $aData=array() ){
 
         $this->aData = $aData;
+        $this->setNonce();
         
         // Set parent defaults
         $this->aArgs = array(
             'singular'  => 'task_scheduler_task',        // singular name of the listed items
-            'plural'    => 'task_scheduler_tasks',        // plural name of the listed items
-            'ajax'      => false,        // does this table support ajax?
+            'plural'    => 'task_scheduler_tasks',       // plural name of the listed items
+            'ajax'      => false,       // does this table support ajax?
             'screen'    => null,        // not sure what this is for... 
         );
         if ( ! headers_sent() ) {

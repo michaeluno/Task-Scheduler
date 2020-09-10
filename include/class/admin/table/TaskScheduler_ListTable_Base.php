@@ -24,7 +24,7 @@ class TaskScheduler_ListTable_Base extends WP_List_Table {
     /**
      * Stores the nonce for the actions.
      */
-    public $sNonce;
+    public $sNonce = '';
 
     /**
      * Stores admin notification messages.
@@ -48,39 +48,24 @@ class TaskScheduler_ListTable_Base extends WP_List_Table {
      * Set a nonce transient.
      *
      * This is used for actions to prevent multiple calls or unexpected calls from external sources.
+     *
      */
     public function setNonce() {
-
-        $this->sNonce = uniqid();
-        TaskScheduler_WPUtility::setTransient( TaskScheduler_Registry::TRANSIENT_PREFIX . $this->sNonce, $this->sNonce, 60*10 );
-        return $this->sNonce;
-
+        $this->sNonce = wp_create_nonce( 'task_scheduler_list_table_action' );
     }
 
     /**
      * Returns the set nonce.
      */
-    public function getNonce( $sNonce ) {
-
-        return TaskScheduler_WPUtility::getTransient( TaskScheduler_Registry::TRANSIENT_PREFIX . $sNonce );
-
-    }
-
-    /**
-     * Deletes the specified nonce.
-     */
-    public function deleteNonce( $sNonnce ) {
-        TaskScheduler_WPUtility::deleteTransient( TaskScheduler_Registry::TRANSIENT_PREFIX . $sNonnce );
+    public function getNonce() {
+        return $this->sNonce;
     }
 
     /**
      * Sets the given admin notice.
      */
     public function setAdminNotice( $sMessage, $sType='error' )    {
-        new TaskScheduler_AdminPageFramework_AdminNotice(
-            $sMessage,
-            array( 'class' => $sType )
-        );
+        new TaskScheduler_AdminPageFramework_AdminNotice( $sMessage, array( 'class' => $sType ) );
     }
 
     /**

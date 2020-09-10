@@ -60,14 +60,13 @@ class TaskScheduler_ListTable_Action extends TaskScheduler_ListTable_Base {
         if ( ! isset( $_REQUEST[ 'task_scheduler_task' ], $_REQUEST[ 'task_scheduler_nonce' ] ) ) { 
             return; 
         }
-            
-        if ( false === $this->getNonce( $_REQUEST[ 'task_scheduler_nonce' ] ) ) {
+
+        if ( ! wp_verify_nonce( $_REQUEST[ 'task_scheduler_nonce' ], 'task_scheduler_list_table_action' ) ) {
             $this->setAdminNotice( __( 'The action has been already done or is invalid.', 'task-scheduler' ) );
             return;
         }
 
         $_iApplied     = 0;
-        $_sAdminNotice = '';
         switch( strtolower( $this->current_action() ) ) {
             case 'enable':
                 foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
@@ -138,11 +137,14 @@ class TaskScheduler_ListTable_Action extends TaskScheduler_ListTable_Base {
             default:
                 break;    // do nothing.
                 
-        }   
-        
-        // Remove the nonce
-        $this->deleteNonce( $_REQUEST['task_scheduler_nonce'] );
-        
+        }
+
+        $_sCurrentURL = remove_query_arg(
+            array( 'action', 'task_scheduler_task' ),
+            TaskScheduler_PluginUtility::getCurrentURL()
+        );
+        exit( wp_redirect( $_sCurrentURL ) );
+
     }
     
 }
