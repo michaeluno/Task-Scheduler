@@ -14,6 +14,7 @@ abstract class TaskScheduler_Routine_Thread extends TaskScheduler_Routine_Log {
 
     /**
      * Checks whether the object is a thread.
+     * @return boolean
      */
     public function isThread() {
         return ( TaskScheduler_Registry::$aPostTypes[ 'thread' ] == $this->post_type );
@@ -38,7 +39,7 @@ abstract class TaskScheduler_Routine_Thread extends TaskScheduler_Routine_Log {
     /**
      * Returns an task object instance of the owner.
      * 
-     * @return    false|object        If failed, false; otherwise, the owner task object.
+     * @return    false|TaskScheduler_Routine        If failed, false; otherwise, the owner task object.
      */
     public function getOwner() {        
         return $this->isThread() || $this->isRoutine() ? TaskScheduler_Routine::getInstance( $this->getOwnerID() ) : false;

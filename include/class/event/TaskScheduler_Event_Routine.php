@@ -39,7 +39,7 @@ class TaskScheduler_Event_Routine {
 
     /**
      * Called when the task is about to be spawned.
-     * @callback    action      task_scheduler_action_before_calling_routine
+     * @callback    add_action      task_scheduler_action_before_calling_routine
      * @return      void
      */
     public function _replyToDoBeforeSpawnRoutine( $oRoutine, $nSpawnedTime ) {
@@ -150,7 +150,7 @@ class TaskScheduler_Event_Routine {
      * This method gets triggered right after the routine action is performed.
      *
      * @param TaskScheduler_Routine $oRoutine
-     * @param integer|string    $sExitCode
+     * @param integer|string        $sExitCode
      */
     public function _replyToDoAfterRoutineAction( $oRoutine, $sExitCode ) {
 
@@ -213,6 +213,9 @@ class TaskScheduler_Event_Routine {
 
     /**
      * Deals with cleaning up the routine.
+     *
+     * @param TaskScheduler_Routine $oRoutine
+     * @callback add_action task_scheduler_action_after_doing_routine
      */
     public function _replyToCompleteRoutine( $oRoutine ) {
 

@@ -34,20 +34,30 @@ class TaskScheduler_Event_Thread {
     
     /**
      * Do clean-ups when a thread completes.
+     * @param   TaskScheduler_Routine $oThread
+     * @param   integer|string
+     * @callback    add_action  task_scheduler_action_after_doing_thread
+     * @return void
      */
     public function _replyToCompleteThread( $oThread, $isExitCode ) {
                 
-        if ( ! is_object( $oThread ) ) { return; }
+        if ( ! is_object( $oThread ) ) {
+            return;
+        }
         
         // Threads also can be constant, in that case the routine status needs to be reset. For volatile threads, they will be deleted anyway.
         $oThread->setMeta( '_routine_status', 'queued' );  // restore the default status.
         
         // The owner task may have been deleted especially if it is a system internal task.
         $_oRoutine = $oThread->getOwner();
-        if ( ! is_object( $_oRoutine ) ) { return; }
+        if ( ! is_object( $_oRoutine ) ) {
+            return;
+        }
                 
         // For internal threads, do not add any log.
-        if ( has_term( array( 'internal', ), TaskScheduler_Registry::$aTaxonomies[ 'system' ], $oThread->ID ) ) { return; }
+        if ( has_term( array( 'internal', ), TaskScheduler_Registry::$aTaxonomies[ 'system' ], $oThread->ID ) ) {
+            return;
+        }
                 
         $_oRoutine->log( sprintf( __( 'Finished the thread: %1$s', 'task-scheduler' ), $oThread->ID ), $oThread->parent_routine_log_id );
         
@@ -58,7 +68,9 @@ class TaskScheduler_Event_Thread {
         }
         
         // If no thread is found besides this thread instance, it means this is the last thread.
-        if ( 1 < $_oRoutine->getThreadCount() ) { return; }        
+        if ( 1 < $_oRoutine->getThreadCount() ) {
+            return;
+        }
         
 // @TODO: make sure if this is necessary and if it should be done to the routine object and task object.
 $oThread->deleteMeta( '_spawned_time' );
