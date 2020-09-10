@@ -58,6 +58,7 @@ abstract class TaskScheduler_ListTable_Column extends TaskScheduler_ListTable_Ac
     /**
      * 
      * @remark      column_ + 'name'
+     * @param   TaskScheduler_Routine $oRoutine
      */
     public function column_name( $oRoutine ) {    
                                    
@@ -77,7 +78,7 @@ abstract class TaskScheduler_ListTable_Column extends TaskScheduler_ListTable_Ac
             'clone'     => sprintf( '<a href="%s">' . __( 'Clone', 'task-scheduler' ) . '</a>', add_query_arg( array( 'action' => 'clone', 'task_scheduler_task' => $oRoutine->ID, 'task_scheduler_nonce' => $this->sNonce ) ) ),
         );
         if ( ! $oRoutine->isTask() ) {
-            unset( $_aActions[ 'clone' ] );
+            unset( $_aActions[ 'clone' ], $_aActions[ 'edit' ], $_aActions[ 'view' ], $_aActions[ 'disable' ] );
         }
         if ( isset( $_GET[ 'status' ] ) && 'disabled' === $_GET[ 'status' ] ) {
             unset( $_aActions[ 'disable' ], $_aActions[ 'run' ] );
