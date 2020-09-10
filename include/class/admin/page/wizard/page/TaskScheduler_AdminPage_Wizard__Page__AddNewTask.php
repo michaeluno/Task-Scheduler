@@ -73,7 +73,7 @@ class TaskScheduler_AdminPage_Wizard__Page__AddNewTask extends TaskScheduler_Adm
         
         echo "<h3>" . __( 'Debug Info', 'task-scheduler' ) . "</h3>";
         echo "<h4>" . __( 'Saved Wizard Options', 'task-scheduler' ) . "</h4>";
-        echo "<pre>" . TaskScheduler_Debug::get( $oFactory->oProp->aOptions ) . "</pre>";
+        echo "<pre>" . TaskScheduler_Debug::getDetails( $oFactory->oProp->aOptions ) . "</pre>";
         
     }    
 
