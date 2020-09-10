@@ -160,6 +160,7 @@ class TaskScheduler_Event_Routine {
      *
      * @param TaskScheduler_Routine $oRoutine
      * @param integer|string        $sExitCode
+     * @callback add_action task_scheduler_action_after_doing_action
      */
     public function _replyToDoAfterRoutineAction( $oRoutine, $sExitCode ) {
 
@@ -207,9 +208,10 @@ class TaskScheduler_Event_Routine {
         $oRoutine->log( $_aLog, $oRoutine->parent_routine_log_id );
         
         // Check the number of logs and if exceeded, create a task to remove them.
-        if ( ! $oRoutine->hasTerm( 'delete_log' ) && $_oTask->getRootLogCount() > ( int ) $_oTask->_max_root_log_count ) {
+        // @deprecated 1.5.0    Multiple duplicated instances were created sometimes so do this on routine deletion.
+        /*if ( ! $oRoutine->hasTerm( 'delete_log' ) && $_oTask->getRootLogCount() > ( int ) $_oTask->_max_root_log_count ) {
             do_action( 'task_scheduler_action_add_log_deletion_task', $_oTask );
-        }
+        }*/
 
         // If the next scheduled time is very close, check the actions in the background.
         $_iHeartbeatInterval    = ( int ) TaskScheduler_Option::get( array( 'server_heartbeat', 'interval' ) );

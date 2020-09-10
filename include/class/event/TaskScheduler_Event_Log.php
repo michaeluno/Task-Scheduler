@@ -20,7 +20,7 @@ class TaskScheduler_Event_Log {
      * Sets up hooks and properties.
      */
     public function __construct() {
-        
+
         add_action( 'before_delete_post', array( $this, '_replyToDeleteLog' ) );
         add_action( 'task_scheduler_action_add_log_deletion_task', array( $this, '_replyToAddLogDeletionTask' ) );
         
@@ -33,24 +33,46 @@ class TaskScheduler_Event_Log {
      * @param   integer $iPostID
      */
     public function _replyToDeleteLog( $iPostID ) {
-        
-        if ( get_post_type( $iPostID ) !== TaskScheduler_Registry::$aPostTypes[ 'task' ] ) {
+
+        if ( ! in_array( get_post_type( $iPostID ), array( TaskScheduler_Registry::$aPostTypes[ 'task' ], TaskScheduler_Registry::$aPostTypes[ 'routine' ] ), true ) ) {
             return;
         }
-        
+
         // If the task itself is the delete log task, do not create the same task again.
         if ( has_term( array( 'delete_log' ), TaskScheduler_Registry::$aTaxonomies[ 'system' ], $iPostID ) ) {
             return;
         }
-        
-        // if the task does not have any log, do not create the log deletion task.
-        if ( ! TaskScheduler_LogUtility::getLogCount( $iPostID ) ) {
-            return;
+
+        $_oProcess = TaskScheduler_Routine::getInstance( $iPostID );
+        if ( $_oProcess->isTask() ) {
+            $this->___doForTask( $iPostID );
         }
-        
-        $this->_addLogDeleteTask( $iPostID, 0 );    // 0: delete all log entries.
+
+        // At this point, it is the routine type
+        $this->___doForRoutine( $_oProcess );
         
     }
+        /**
+         * @param TaskScheduler_Routine $oRoutine
+         */
+        private function ___doForRoutine( $oRoutine ) {
+
+            if ( $oRoutine->hasTerm( 'delete_log' ) ) {
+                return;
+            }
+            $_oTask = $oRoutine->getOwner();
+            if ( $_oTask->getRootLogCount() > ( int ) $_oTask->_max_root_log_count ) {
+                do_action( 'task_scheduler_action_add_log_deletion_task', $_oTask );
+            }
+        }
+
+        private function ___doForTask( $iPostID ) {
+            // if the task does not have any log, do not create the log deletion task.
+            if ( ! TaskScheduler_LogUtility::getLogCount( $iPostID ) ) {
+                return;
+            }
+            $this->___addLogDeleteTask( $iPostID, 0 );    // 0: delete all log entries.
+        }
     
     /**
      *
@@ -60,19 +82,20 @@ class TaskScheduler_Event_Log {
     public function _replyToAddLogDeletionTask( $ioTask ) {
         
         $_oTask = is_object( $ioTask ) ? $ioTask : TaskScheduler_Routine::getInstance( $ioTask );
-        if ( is_object( $_oTask ) ) {
-            $this->_addLogDeleteTask( $_oTask->ID, $_oTask->_max_root_log_count );
+        if ( ! is_object( $_oTask ) ) {
+            return;
         }
+        $this->___addLogDeleteTask( $_oTask->ID, $_oTask->_max_root_log_count );
         
     }
-    
         /**
          * Adds a system internal task that deletes logs.
          *
          * @param integer   $iTargetTaskID
          * @param integer   $iMaxRootLogCountOfTheSubjectTask
+         * @return void
          */
-        private function _addLogDeleteTask( $iTargetTaskID, $iMaxRootLogCountOfTheSubjectTask=0 ) {
+        private function ___addLogDeleteTask( $iTargetTaskID, $iMaxRootLogCountOfTheSubjectTask=0 ) {
 
             // Create a task that deletes the logs of the task
             $_iRoutineID = TaskScheduler_RoutineUtility::derive( 

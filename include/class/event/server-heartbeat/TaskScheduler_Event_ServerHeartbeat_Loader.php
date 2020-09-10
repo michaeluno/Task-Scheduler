@@ -109,7 +109,7 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
     
         // Check the action lock.
         $_sActionLockKey = $this->_sTransientPrefix . $oRoutine->ID;
-        if ( ! $bForce && TaskScheduler_WPUtility::getTransient( $_sActionLockKey ) ) {
+        if ( ! $bForce && TaskScheduler_WPUtility::getTransientWithoutCache( $_sActionLockKey ) ) {
             // The task is locked.
             do_action( 'task_scheduler_action_cancel_routine', $oRoutine, 'TASK_LOCKED' );
             return; 
