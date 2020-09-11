@@ -3,7 +3,7 @@ Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
 Tested up to:       5.5.1
-Stable tag:         1.4.9
+Stable tag:         1.5.0
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               tool, utility, background, backend, task, system, event, scheduler, email, delete posts, cron, automation, routine
@@ -430,17 +430,17 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.5.0 =
+= 1.5.0 - 2020/09/11 =
 - Added the ability to accept multiple exit codes for the `Exit Code` occurrence type.
 - Added the `Negate` option for the `Exit Code` occurrence type allows the user choose whether the action gets triggered when the routine returns none of the set exit codes.
 - Added the behavior to clean up threads when their owner routine is deleted.
 - Added the behavior to clean up routines when their owner task is deleted.
 - Added the options for the Email action to set the name and address of the from field.
-- Change the behaviour of the `Run` action link from normally triggering an action from forcing it.
 - Tweaked the setting UI regarding redundant visible fields.
 - Removed unnecessary action links in the task listing table.
-- Changed t- Fixed a bug that Hung Routine Handler threads were often duplicated.he form session length to be longer.
-
+- Changed the behaviour of the `Run` action link from normally triggering an action from forcing it.
+- Changed the form session length to be longer.
+- Fixed a bug that Hung Routine Handler and Log Deletion threads were often duplicated.
 - Fixed a bug with the Email action that sending Emails failed due to the invalid email address set for the from field.
 - Fixed an incompatibility issue with WordPress 5.5 which includes jQuery 1.12.4 that causes the auto-complete field to not storing proper values.
 - Fixed an incompatibility issue with form button icons in WordPress 5.3 or above.
