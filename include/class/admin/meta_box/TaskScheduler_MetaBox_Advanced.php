@@ -120,7 +120,7 @@ class TaskScheduler_MetaBox_Advanced extends TaskScheduler_MetaBox_Base {
             
             // Check the number of logs and if exceeded, create a task to remove them.
             if ( $_oTask->getRootLogCount() > ( int ) $iMaxRootLogCount ) {
-                wp_schedule_single_event( time(), 'task_scheduler_action_add_log_deletion_task', array( $_iTaskID ) );
+                TaskScheduler_PluginUtility::scheduleSingleWPCronTask( 'task_scheduler_action_delete_log_items_of_task', array( $_iTaskID ) );
             }                
             
         }

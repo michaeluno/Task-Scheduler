@@ -28,6 +28,7 @@ class TaskScheduler_Event {
         private function ___loadEvents() {
             new TaskScheduler_Event_Action_DeleteThreads;
             new TaskScheduler_Event_Action_DeleteRoutines;
+            new TaskScheduler_Event_Action_DeleteLogItems;
         }
 
         /**
@@ -78,8 +79,7 @@ class TaskScheduler_Event {
             );
             new TaskScheduler_Action_Debug;
             new TaskScheduler_Action_Email( '', 'TaskScheduler_Action_Email_Wizard' ); // wizard class name
-            new TaskScheduler_Action_RoutineLogDeleter( '', array() );
-            
+
             // 1.1.0+
             new TaskScheduler_Action_TransientCleaner(
                 'task_scheduler_action_clean_transients',
@@ -107,7 +107,6 @@ class TaskScheduler_Event {
         private function ___loadRoutines() {
             new TaskScheduler_Event_Routine;
             new TaskScheduler_Event_Thread;
-            new TaskScheduler_Event_Log;
             new TaskScheduler_Event_Exit;            
         }
         

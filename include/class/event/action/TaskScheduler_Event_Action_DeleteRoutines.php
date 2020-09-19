@@ -73,10 +73,7 @@ class TaskScheduler_Event_Action_DeleteRoutines extends TaskScheduler_Event_Acti
             }
             $_aChunks = array_chunk( $_oWPQuery->posts, 100 );
             foreach( $_aChunks as $_aChunk ) {
-                wp_schedule_single_event( time(), 'task_scheduler_action_delete_routines', array( $_aChunk ) );
-            }
-            if ( ! $this->hasBeenCalled( 'check_wp_cron' ) ) {
-                TaskScheduler_ServerHeartbeat::loadPage( '', array(), 'beat' );
+                $this->scheduleSingleWPCronTask( 'task_scheduler_action_delete_routines', array( $_aChunk ) );
             }
 
         }

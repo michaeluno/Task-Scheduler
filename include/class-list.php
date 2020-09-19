@@ -1,6 +1,6 @@
 <?php 
 /**
-	Task Scheduler v1.5.0b02 by miunosoft (Michael Uno) 
+	Task Scheduler v1.5.0 by miunosoft (Michael Uno) 
 	Provides an enhanced task management system for WordPress.
 	<http://en.michaeluno.jp/>
 	Copyright (c) 2014-2016, Michael Uno; Licensed under GPL v2 or later */
@@ -55,10 +55,10 @@ $_aClassFiles = array(
 	"TaskScheduler_ListTable_Views"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/admin/table/TaskScheduler_ListTable_Views.php", 
 	"TaskScheduler_Event"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/event/TaskScheduler_Event.php", 
 	"TaskScheduler_Event_Exit"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/event/TaskScheduler_Event_Exit.php", 
-	"TaskScheduler_Event_Log"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/event/TaskScheduler_Event_Log.php", 
 	"TaskScheduler_Event_Routine"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/event/TaskScheduler_Event_Routine.php", 
 	"TaskScheduler_Event_Thread"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/event/TaskScheduler_Event_Thread.php", 
 	"TaskScheduler_Event_Action_Base"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/event/action/TaskScheduler_Event_Action_Base.php", 
+	"TaskScheduler_Event_Action_DeleteLogItems"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/event/action/TaskScheduler_Event_Action_DeleteLogItems.php", 
 	"TaskScheduler_Event_Action_DeleteRoutines"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/event/action/TaskScheduler_Event_Action_DeleteRoutines.php", 
 	"TaskScheduler_Event_Action_DeleteThreads"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/event/action/TaskScheduler_Event_Action_DeleteThreads.php", 
 	"TaskScheduler_Event_ServerHeartbeat_Checker"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/event/server-heartbeat/TaskScheduler_Event_ServerHeartbeat_Checker.php", 
@@ -88,8 +88,6 @@ $_aClassFiles = array(
 	"TaskScheduler_Action_WebCheck"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/web_checker/TaskScheduler_Action_WebCheck.php", 
 	"TaskScheduler_Action_WebCheck_Wizard"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/web_checker/admin/TaskScheduler_Action_WebCheck_Wizard.php", 
 	"TaskScheduler_Action_HungRoutineHandler_Thread"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/_hung_routine_handler/TaskScheduler_Action_HungRoutineHandler_Thread.php", 
-	"TaskScheduler_Action_RoutineLogDeleter"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/_routine_log_deleter/TaskScheduler_Action_RoutineLogDeleter.php", 
-	"TaskScheduler_Action_RoutineLogDeleter_Thread"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/action/_routine_log_deleter/TaskScheduler_Action_RoutineLogDeleter_Thread.php", 
 	"TaskScheduler_Occurrence_Base"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/occurrence/TaskScheduler_Occurrence_Base.php", 
 	"TaskScheduler_Wizard_Occurrence_Base"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/occurrence/TaskScheduler_Wizard_Occurrence_Base.php", 
 	"TaskScheduler_Wizard_Occurrence_Default"	=>	TaskScheduler_Registry::$sDirPath . "/include/class/module/occurrence/TaskScheduler_Wizard_Occurrence_Default.php", 

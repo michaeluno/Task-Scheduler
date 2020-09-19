@@ -431,6 +431,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 == Changelog ==
 
 = 1.5.1 =
+- Changed the behavior of truncating task log items not to create internal routines and threads.
+- Fixed an incompatibility issue with PHP 7.4 regarding usage of curly braces on array elements.
+- Fixed a bug that orphaned threads were not deleted properly.
 - Fixed a bug that a routine lock transient was not properly retrieved.
 
 = 1.5.0 - 2020/09/11 =
