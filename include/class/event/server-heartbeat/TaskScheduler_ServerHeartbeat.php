@@ -45,7 +45,7 @@ final class TaskScheduler_ServerHeartbeat {
      * @return      string      The cookie value is always string.
      */
     static public function getID() {        
-        return isset( $_COOKIE{'server_heartbeat_id'} ) ? $_COOKIE{'server_heartbeat_id'} : '';
+        return isset( $_COOKIE[ 'server_heartbeat_id' ] ) ? $_COOKIE[ 'server_heartbeat_id' ] : '';
     }            
 
     /**
@@ -80,8 +80,7 @@ final class TaskScheduler_ServerHeartbeat {
         
         $_iLastBeatTime    = self::getLastBeatTime();
         $_iInterval        = self::getInterval();
-        $_bIsAlive = ( $_iLastBeatTime + $_iInterval > microtime( true ) );
-        return $_bIsAlive;        
+        return ( $_iLastBeatTime + $_iInterval > microtime( true ) );
         
     }    
     
@@ -112,11 +111,15 @@ final class TaskScheduler_ServerHeartbeat {
     }
         /**
          * Returns the settings of the heart beat.
+         * @param string $sKey
+         * @return mixed
          */
         static private function _getInfo( $sKey='' ) {
             
             $_aInfo = TaskScheduler_WPUtility::getTransient( self::$sTransientKey );
-            if ( false === $_aInfo ) { return false; }
+            if ( false === $_aInfo ) {
+                return false;
+            }
             
             $_aInfo = is_array( $_aInfo ) ? $_aInfo : array();
             if ( ! $sKey ) {
@@ -127,13 +130,14 @@ final class TaskScheduler_ServerHeartbeat {
         }    
         /**
          * Saves the heartbeat settings into a transient.
-         * 
+         *
+         * @param     array $aSettings
          * @remark    This is called in the both background and foreground.
          */
         static private function _saveInfo( array $aSettings=array() ) {
             
             $_aInfo = array(
-                'interval'            => self::getInterval(),
+                'interval' => self::getInterval(),
             ) + ( array ) self::_getInfo();
             
             if ( self::isBackground() ) {
@@ -157,6 +161,7 @@ final class TaskScheduler_ServerHeartbeat {
      *  array(
      *         'interval'    =>    30
      *  )
+     * @param     array      $aSettings
      * @return    boolean    true if it started; otherwise, false.
      */
     static public function run( $aSettings=array() ) {
@@ -343,6 +348,8 @@ final class TaskScheduler_ServerHeartbeat {
              * Sleeps.
              *
              * Give the interval - for example, to wait for 2 seconds, pass 2000000.
+             *
+             * @param integer|float $nSleepDuration
              */
             static private function _sleep( $nSleepDuration ) {
 
