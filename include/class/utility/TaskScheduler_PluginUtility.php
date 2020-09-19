@@ -10,7 +10,33 @@
  */
 
 class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
-        
+
+    /**
+     * Schedules a WP Cron single event.
+     * @since   1.5.1
+     * @param   string  $sActionName
+     * @param   array   $aArguments
+     * @param   integer $iTime
+     * @return  boolean True if scheduled, false otherwise.
+     */
+    static public function scheduleSingleWPCronTask( $sActionName, array $aArguments, $iTime=0 ) {
+
+        if ( wp_next_scheduled( $sActionName, $aArguments ) ) {
+            return false;
+        }
+        $_bCancelled = wp_schedule_single_event(
+            $iTime ? $iTime : time(), // now
+            $sActionName,   // an action hook name which gets executed with WP Cron.
+            $aArguments     // must be enclosed in an array.
+        );
+        $_bScheduled = false !== $_bCancelled;  // backward-compatibility for WP below 5.1.
+        if ( $_bScheduled && ! self::hasBeenCalled( 'check_wp_cron' ) ) {
+            TaskScheduler_ServerHeartbeat::loadPage( '', array(), 'beat' );
+        }
+        return $_bScheduled;
+
+    }
+
     /**
      * Checks if the same routine exists.
      * 

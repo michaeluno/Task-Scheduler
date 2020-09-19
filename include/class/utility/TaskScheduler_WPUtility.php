@@ -172,5 +172,6 @@ class TaskScheduler_WPUtility extends TaskScheduler_WPUtility_Option {
         }
         _set_cron_array( $_aCronEvents );
     }        
-    
+
+
 }
