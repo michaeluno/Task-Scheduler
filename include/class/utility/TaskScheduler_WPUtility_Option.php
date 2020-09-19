@@ -98,27 +98,54 @@ abstract class TaskScheduler_WPUtility_Option extends TaskScheduler_WPUtility_Po
     }
  
     /**
-     * Retrieve the transient value directly from the database.
-     * 
-     * Similar to the built-in get_transient() method but this one does not use the stored cache in the memory.
+     * @param $sTransientKey
+     * @param null $mDefault
+     * @return array
+     * @since 1.5.1
      */
-    static public function getTransientWithoutCache( $sTransientKey ) {
-    
-        if ( wp_using_ext_object_cache() ) {
-            // Skip local cache and force re-fetch of doing_cron transient in case
-            // another processes updated the cache
-            return wp_cache_get( $sTransientKey, 'transient', true );
-        }             
-    
-        global $wpdb;            
-        $_oRow = $wpdb->get_row( 
-            $wpdb->prepare( 
-                "SELECT option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1",
-                '_transient_' . $sTransientKey
-            ) 
+    static public function getTransientWithoutCacheAsArray( $sTransientKey, $mDefault=null ) {
+        return self::getAsArray(
+            self::getTransientWithoutCache( $sTransientKey, $mDefault )
         );
-        return is_object( $_oRow ) ? $_oRow->option_value: false;
-        
     }
+
+    /**
+     * Retrieve the transient value directly from the database.
+     *
+     * Similar to the built-in get_transient() method but this one does not use the stored cache in the memory.
+     * Used for checking a lock in a sub-routine that should not run simultaneously.
+     *
+     * @param   string  $sTransientKey
+     * @param   mixed   $mDefault
+     * @sicne   1.5.0
+     * @since   1.5.1   Added the `$mDefault` parameter.
+     * @return  mixed
+     */
+    static public function getTransientWithoutCache( $sTransientKey, $mDefault=null ) {
+
+        /**
+         * @var wpdb $_oWPDB
+         */
+        $_oWPDB         = $GLOBALS[ 'wpdb' ];
+        $_sTableName    = $_oWPDB->options;
+        $_sSQLQuery     = "SELECT o1.option_value FROM `{$_sTableName}` o1"
+            . " INNER JOIN `{$_sTableName}` o2"
+            . " WHERE o1.option_name = %s "
+            . " AND o2.option_name = %s "
+            . " AND o2.option_value >= UNIX_TIMESTAMP() " // timeout value >= current time
+            . " LIMIT 1";
+        $_mData = $_oWPDB->get_var(
+            $_oWPDB->prepare(
+                $_sSQLQuery,
+                '_transient_' . $sTransientKey,
+                '_transient_timeout_' . $sTransientKey
+            )
+        );
+        return is_null( $_mData )
+            ? $mDefault
+            : maybe_unserialize( $_mData );
+
+    }
+
     
 }

@@ -430,6 +430,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
+= 1.5.1 =
+- Fixed a bug that a routine lock transient was not properly retrieved.
+
 = 1.5.0 - 2020/09/11 =
 - Added the ability to accept multiple exit codes for the `Exit Code` occurrence type.
 - Added the `Negate` option for the `Exit Code` occurrence type allows the user choose whether the action gets triggered when the routine returns none of the set exit codes.
