@@ -68,6 +68,7 @@ class TaskScheduler_Event_Action_DeleteLogItems extends TaskScheduler_Event_Acti
          * @param TaskScheduler_Routine $oRoutine
          * @return integer The number of scheduled items.
          */
+
         private function ___scheduleForRoutine( $oRoutine ) {
 
             $_oTask            = $oRoutine->getOwner();
@@ -75,11 +76,7 @@ class TaskScheduler_Event_Action_DeleteLogItems extends TaskScheduler_Event_Acti
             if ( 0 === $_iMaxRootLogCount ) {
                 return $$this->___scheduleForTask( $_oTask->ID );   // delete them all
             }
-            if ( $_oTask->getRootLogCount() <= $_iMaxRootLogCount ) {
-                return 0;
-            }
-            $_iRootLogCount   = TaskScheduler_LogUtility::getRootLogCount( $_oTask->ID );
-            $_iNumberToDelete = $_iRootLogCount - $_iMaxRootLogCount;
+            $_iNumberToDelete  = $_oTask->getRootLogCount() - $_iMaxRootLogCount;
             if ( $_iNumberToDelete < 1 ) {
                 return 0;
             }
