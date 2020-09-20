@@ -3,7 +3,7 @@ Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
 Tested up to:       5.5.1
-Stable tag:         1.5.0
+Stable tag:         1.5.1
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               tool, utility, background, backend, task, system, event, scheduler, email, delete posts, cron, automation, routine
@@ -430,7 +430,7 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.5.1 =
+= 1.5.1 - 2020/09/20 =
 - Changed the behavior of truncating task log items not to create internal routines and threads.
 - Fixed an incompatibility issue with PHP 7.4 regarding usage of curly braces on array elements.
 - Fixed a bug that orphaned threads were not deleted properly.
