@@ -16,7 +16,10 @@
  * @action        do          task_scheduler_action_after_loading_plugin        Triggered when all the plugin components are loaded. Extension plugins should use this hook to add modules.
  */
 final class TaskScheduler_Bootstrap {
-    
+
+    private $_sFilePath;
+    private $_bIsAdmin;
+
     public function __construct( $sPluginFilePath ) {
         
         // 0. The class properties.
@@ -58,18 +61,14 @@ final class TaskScheduler_Bootstrap {
     
     /**
      * Register classes to be auto-loaded.
-     * 
+     * @param string $sFilePath
      */
     private function _loadClasses( $sFilePath ) {
-
-        $_aClassFiles        = array();
-        include( dirname( $sFilePath ) . '/include/class-list.php' );
         new TaskScheduler_AdminPageFramework_RegisterClasses( 
             array(), 
             array(), 
-            $_aClassFiles 
+            include( dirname( $sFilePath ) . '/include/class-map.php' )
         );
-                
     }
 
     /**
@@ -170,7 +169,7 @@ final class TaskScheduler_Bootstrap {
         if ( $this->_bIsAdmin ) {
 
             // 3.1. Root
-            $this->oAdminPage = new TaskScheduler_AdminPage( '', $this->_sFilePath );
+            new TaskScheduler_AdminPage( '', $this->_sFilePath );
 
             // 3.2. Add New
             new TaskScheduler_AdminPage_Wizard( 
