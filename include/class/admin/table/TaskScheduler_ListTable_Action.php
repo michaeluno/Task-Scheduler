@@ -145,7 +145,7 @@ class TaskScheduler_ListTable_Action extends TaskScheduler_ListTable_Base {
 
         $_sCurrentURL = remove_query_arg(
             array( 'action', 'task_scheduler_task' ),
-            TaskScheduler_PluginUtility::getCurrentURL()
+            TaskScheduler_PluginUtility::getCurrentAdminURL()
         );
         exit( wp_redirect( $_sCurrentURL ) );
 
