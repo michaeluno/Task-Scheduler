@@ -430,6 +430,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
+= 1.5.2 =
+- Fixed a bug of a PHP syntax error.
+
 = 1.5.1 - 2020/09/20 =
 - Changed the behavior of truncating task log items not to create internal routines and threads.
 - Fixed an incompatibility issue with PHP 7.4 regarding usage of curly braces on array elements.

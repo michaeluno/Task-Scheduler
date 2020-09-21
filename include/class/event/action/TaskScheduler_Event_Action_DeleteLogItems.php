@@ -74,7 +74,7 @@ class TaskScheduler_Event_Action_DeleteLogItems extends TaskScheduler_Event_Acti
             $_oTask            = $oRoutine->getOwner();
             $_iMaxRootLogCount = ( integer ) $_oTask->_max_root_log_count;
             if ( 0 === $_iMaxRootLogCount ) {
-                return $$this->___scheduleForTask( $_oTask->ID );   // delete them all
+                return $this->___scheduleForTask( $_oTask->ID );   // delete them all
             }
             $_iNumberToDelete  = $_oTask->getRootLogCount() - $_iMaxRootLogCount;
             if ( $_iNumberToDelete < 1 ) {
