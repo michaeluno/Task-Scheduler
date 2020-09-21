@@ -16,6 +16,33 @@
 abstract class TaskScheduler_Utility extends TaskScheduler_AdminPageFramework_FrameworkUtility {
 
     /**
+     * Overrides the ancestor method.
+     * @remark Fixes the bug of the parent method that extra port is added.
+     * @return string
+     * @since 1.5.2 
+     */
+    static public function getCurrentURL() {
+        $_bSSL = self::isSSL();
+        $_sServerProtocol = strtolower($_SERVER['SERVER_PROTOCOL']);
+        $_aProtocolSuffix = array(0 => '', 1 => 's',);
+        $_sProtocol = substr($_sServerProtocol, 0, strpos($_sServerProtocol, '/'))
+            . $_aProtocolSuffix[( int )$_bSSL];
+        $_sPort = self::___getURLPortSuffix($_bSSL);
+        $_sHost = isset($_SERVER['HTTP_X_FORWARDED_HOST'])
+            ? $_SERVER['HTTP_X_FORWARDED_HOST']
+            : (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']);
+        $_sHost = preg_replace( '/:.+/', '', $_sHost ); // remove the port part in case it is added.
+        return $_sProtocol . '://' . $_sHost . $_sPort . $_SERVER['REQUEST_URI'];
+    }
+    static private function ___getURLPortSuffix($_bSSL) {
+        $_sPort = isset( $_SERVER['SERVER_PORT'] ) ? ( string )$_SERVER['SERVER_PORT'] : '';
+        $_aPort = array(0 => ':' . $_sPort, 1 => '',);
+        $_bPortSet = (!$_bSSL && '80' === $_sPort) || ($_bSSL && '443' === $_sPort);
+        return $_aPort[( int )$_bPortSet];
+    }
+    
+    
+    /**
      * Tell WordPress this is a background routine by setting the Cron flag.
      * @return void
      * @since 1.5.0

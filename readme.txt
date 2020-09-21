@@ -431,6 +431,7 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 == Changelog ==
 
 = 1.5.2 =
+- Fixed a bug that the redirected URLs of action links had an extra port indication on some servers.
 - Fixed a bug of a PHP syntax error.
 
 = 1.5.1 - 2020/09/20 =
