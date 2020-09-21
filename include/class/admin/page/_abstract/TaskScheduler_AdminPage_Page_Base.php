@@ -23,17 +23,20 @@ abstract class TaskScheduler_AdminPage_Page_Base extends TaskScheduler_AdminPage
     /**
      * Stores the associated page slug with the adding section.
      */
-    public $sPageSlug;    
+    public $sPageSlug;
 
     /**
      * Sets up hooks and properties.
+     * @param TaskScheduler_AdminPageFramework $oFactory
+     * @param array $aPageArguments
      */
-    public function __construct( $oFactory, array $aPageArguments ) {
+    public function __construct( TaskScheduler_AdminPageFramework $oFactory, array $aPageArguments=array() ) {
         
         $this->oFactory     = $oFactory;
-        $this->sPageSlug    = $aPageArguments['page_slug'];
+        $aPageArguments     = $aPageArguments + $this->_getArguments();
+        $this->sPageSlug    = $aPageArguments[ 'page_slug' ];
         $this->_addPage( $aPageArguments );
-        $this->construct( $oFactory );
+        $this->_construct( $oFactory );
                 
     }
     
@@ -54,11 +57,12 @@ abstract class TaskScheduler_AdminPage_Page_Base extends TaskScheduler_AdminPage
         add_filter( "validation_{$this->sPageSlug}", array( $this, 'validate' ), 10, 4 );
         
     }
-    
+
     /**
      * @callback    action      load_{page slug}
+     * @param TaskScheduler_AdminPageFramework $oFactory
      */
-    public function replyToSetResources( $oFactory ) {
+    public function replyToSetResources( TaskScheduler_AdminPageFramework $oFactory ) {
         
         $this->oFactory->enqueueStyle( 
             TaskScheduler_Registry::getPluginURL( 'asset/css/' . $this->sPageSlug . '.css' ),
@@ -69,12 +73,20 @@ abstract class TaskScheduler_AdminPage_Page_Base extends TaskScheduler_AdminPage
     
     /**
      * Called when the page loads.
-     * 
-     * @remark      This method should be overridden in each extended class.
      */
-    // public function replyToLoadPage( $oFactory ) {}
-    // public function replyToDoPage( $oFactory ) {}
-    // public function replyToDoAfterPage( $oFactory ) {}
-    // public function validate( $aInput, $aOldInput, $oFactory, $aSubmitInfo ){}
-    
+     public function replyToLoadPage( $oFactory ) {
+         $this->_loadPage( $oFactory );
+     }
+     public function replyToDoPage( $oFactory ) {
+         $this->_doPage( $oFactory );
+     }
+     public function replyToDoAfterPage( $oFactory ) {
+         $this->_doAfterPage( $oFactory );
+     }
+     public function validate( $aInputs, $aOldInputs, $oFactory, $aSubmitInfo ){}
+
+     protected function _loadPage( $oFactory ) {}
+     protected function _doPage( $oFactory ) {}
+     protected function _doAfterPage( $oFactory ) {}
+
 }

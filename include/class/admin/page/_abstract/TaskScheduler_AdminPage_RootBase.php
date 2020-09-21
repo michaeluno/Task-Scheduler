@@ -33,6 +33,8 @@ abstract class TaskScheduler_AdminPage_RootBase extends TaskScheduler_PluginUtil
      * Handles callback methods.
      * @since       1.4.0
      * @return      mixed
+     * @param       string $sMethodName
+     * @param       array  $aArguments
      */
     public function __call( $sMethodName, $aArguments ) {
         
@@ -50,12 +52,22 @@ abstract class TaskScheduler_AdminPage_RootBase extends TaskScheduler_PluginUtil
             E_USER_WARNING 
         );        
     }
-   
+
     /**
      * A user constructor.
-     * @since       1.4.0
+     * @param TaskScheduler_AdminPageFramework $oFactory
      * @return      void
+     * @since       1.4.0
+     * @since       1.5.2   Renamed from `construct()` (added an underscore prefix).
      */
-    protected function construct( $oFactory ) {}
+    protected function _construct( $oFactory ) {}
+
+    /**
+     * @since  1.5.21
+     * @return array
+     */
+    protected function _getArguments() {
+        return array();
+    }
     
 }

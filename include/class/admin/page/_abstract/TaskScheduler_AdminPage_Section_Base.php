@@ -17,6 +17,7 @@ abstract class TaskScheduler_AdminPage_Section_Base extends TaskScheduler_AdminP
 
     /**
      * Stores the factory object.
+     * @var TaskScheduler_AdminPageFramework
      */
     public $oFactory;
 
@@ -33,31 +34,39 @@ abstract class TaskScheduler_AdminPage_Section_Base extends TaskScheduler_AdminP
     /**
      * Stores the section ID.
      */
-    public $sSectionID;    
-    
+    public $sSectionID;
+
     /**
      * Sets up hooks and properties.
+     * @param TaskScheduler_AdminPageFramework $oFactory
+     * @param $sPageSlug
+     * @param array $aSectionDefinition
      */
-    public function __construct( $oFactory, $sPageSlug, array $aSectionDefinition ) {
+    public function __construct( TaskScheduler_AdminPageFramework $oFactory, $sPageSlug, array $aSectionDefinition=array() ) {
         
         $this->oFactory     = $oFactory;
         $this->sPageSlug    = $sPageSlug;
-        $aSectionDefinition = $aSectionDefinition + array(
+        $aSectionDefinition = $aSectionDefinition + $this->_getArguments() + array(
             'tab_slug'      => '',
             'section_id'    => '',
         );
-        $this->sTabSlug     = $aSectionDefinition['tab_slug'];
-        $this->sSectionID   = $aSectionDefinition['section_id'];
-        
+        $this->sTabSlug     = $aSectionDefinition[ 'tab_slug' ];
+        $this->sSectionID   = $aSectionDefinition[ 'section_id' ];
+
         if ( ! $this->sSectionID ) {
             return;
         }
         $this->_addSection( $oFactory, $sPageSlug, $aSectionDefinition );
         
-        $this->construct( $oFactory );
+        $this->_construct( $oFactory );
         
     }
-    
+
+    /**
+     * @param TaskScheduler_AdminPageFramework $oFactory
+     * @param $sPageSlug
+     * @param array $aSectionDefinition
+     */
     private function _addSection( $oFactory, $sPageSlug, array $aSectionDefinition ) {
         
         add_action( 
@@ -85,15 +94,22 @@ abstract class TaskScheduler_AdminPage_Section_Base extends TaskScheduler_AdminP
     /**
      * Called when adding fields.
      * @remark      This method should be overridden in each extended class.
+     * @param TaskScheduler_AdminPageFramework $oFactory
+     * @param $sSectionID
      */
     public function addFields( $oFactory, $sSectionID ) {}
- 
+
     /**
      * Called upon form validation.
-     * 
+     *
      * @callback        filter      'validation_{class name}_{section id}'
+     * @param array $aInputs
+     * @param array $aOldInputs
+     * @param TaskScheduler_AdminPageFramework $oAdminPage
+     * @param array $aSubmitInfo
+     * @return array
      */
-    public function validate( $aInput, $aOldInput, $oAdminPage, $aSubmitInfo ) {
+    public function validate( $aInputs, $aOldInputs, $oAdminPage, $aSubmitInfo ) {
     
         $_bVerified = true;
         $_aErrors   = array();
@@ -102,10 +118,10 @@ abstract class TaskScheduler_AdminPage_Section_Base extends TaskScheduler_AdminP
         if ( ! $_bVerified ) {
             $oAdminPage->setFieldErrors( $_aErrors );     
             $oAdminPage->setSettingNotice( __( 'There was something wrong with your input.', 'task-scheduler' ) );
-            return $aOldInput;
+            return $aOldInputs;
         }
                 
-        return $aInput;     
+        return $aInputs;
         
     }        
 

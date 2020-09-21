@@ -42,11 +42,15 @@ abstract class TaskScheduler_AdminPage_Tab_Base extends TaskScheduler_AdminPage_
 
     /**
      * Sets up hooks and properties.
+     * @param TaskScheduler_AdminPageFramework $oFactory
+     * @param string $sPageSlug
+     * @param array $aTabDefinition
      */
-    public function __construct( $oFactory, $sPageSlug, array $aTabDefinition ) {
+    public function __construct( $oFactory, $sPageSlug='', array $aTabDefinition=array() ) {
         
         $this->oFactory     = $oFactory;
-        $this->sPageSlug    = $sPageSlug;
+        $aTabDefinition     = $aTabDefinition + $this->_getArguments();
+        $this->sPageSlug    = $sPageSlug ? $sPageSlug : $aTabDefinition[ 'page_slug' ];
         $this->sTabSlug     = isset( $aTabDefinition[ 'tab_slug' ] ) 
             ? $aTabDefinition[ 'tab_slug' ] 
             : '';
@@ -56,8 +60,8 @@ abstract class TaskScheduler_AdminPage_Tab_Base extends TaskScheduler_AdminPage_
         }
                   
         $this->_addTab( $this->sPageSlug, $aTabDefinition );
-        $this->construct( $oFactory );
-        
+        $this->_construct( $oFactory );
+
     }
     
     private function _addTab( $sPageSlug, $aTabDefinition ) {
@@ -100,10 +104,20 @@ abstract class TaskScheduler_AdminPage_Tab_Base extends TaskScheduler_AdminPage_
      * 
      * @remark      This method should be overridden in each extended class.
      */
-    // public function replyToLoadTab( $oFactory ) {}
-    // public function replyToDoTab( $oFactory ) {}
-    // public function replyToDoAfterTab( $oFactory ) {}
-        
+    public function replyToLoadTab( $oFactory ) {
+        $this->_loadTab( $oFactory );
+    }
+    public function replyToDoTab( $oFactory ) {
+        $this->_doTab( $oFactory );
+    }
+    public function replyToDoAfterTab( $oFactory ) {
+        $this->_doAfterTab( $oFactory );
+    }
+
+    protected function _loadTab( $oFactory ) {}
+    protected function _doTab( $oFactory ) {}
+    protected function _doAfterTab( $oFactory ) {}
+
         
     public function validate( $aInput, $aOldInput, $oFactory, $aSubmitInfo ) {
         return $aInput;
