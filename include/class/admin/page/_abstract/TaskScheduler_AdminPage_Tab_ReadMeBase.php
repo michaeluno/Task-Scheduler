@@ -5,7 +5,7 @@
  * Provides an enhanced task management system for WordPress.
  * 
  * http://en.michaeluno.jp/amazon-auto-inks/
- * Copyright (c) 2014-2016 Michael Uno; Licensed GPLv2
+ * Copyright (c) 2014-2020 Michael Uno; Licensed GPLv2
  * 
  */
 
