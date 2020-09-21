@@ -187,7 +187,10 @@ final class TaskScheduler_Bootstrap {
             new TaskScheduler_AdminPage_Setting( TaskScheduler_Registry::$aOptionKeys['main'], $this->_sFilePath );
             
             // 3.5. System - will be implemented at some point in the future.
-            // new TaskScheduler_AdminPage_System( TaskScheduler_Registry::$aOptionKeys['main'], $this->_sFilePath );    
+            // new TaskScheduler_AdminPage_System( TaskScheduler_Registry::$aOptionKeys['main'], $this->_sFilePath );
+
+            // 3.5. Tests
+            new TaskScheduler_AdminPage_Test_Loader;
             
             // 3.6. Meta Boxes for task editing page (post.php).
             $this->_registerMetaBoxes();

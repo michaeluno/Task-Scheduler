@@ -16,6 +16,69 @@
 abstract class TaskScheduler_Utility extends TaskScheduler_AdminPageFramework_FrameworkUtility {
 
     /**
+     * Converts the given string with delimiters to a multi-dimensional array.
+     *
+     * Parameters:
+     * 1: haystack string
+     * 2, 3, 4...: delimiter
+     * e.g. $arr = getStringIntoArray( 'a-1,b-2,c,d|e,f,g', "|", ',', '-' );
+     * @since   1.5.2
+     */
+    static public function getStringIntoArray() {
+
+        $intArgs      = func_num_args();
+        $arrArgs      = func_get_args();
+        $strInput     = $arrArgs[ 0 ];
+        $strDelimiter = $arrArgs[ 1 ];
+
+        if ( ! is_string( $strDelimiter ) || $strDelimiter == '' ) {
+            return $strInput;
+        }
+        if ( is_array( $strInput ) ) {
+            return $strInput;    // note that is_string( 1 ) yields false.
+        }
+
+        $arrElems = preg_split( "/[{$strDelimiter}]\s*/", trim( $strInput ), 0, PREG_SPLIT_NO_EMPTY );
+        if ( ! is_array( $arrElems ) ) {
+            return array();
+        }
+
+        foreach( $arrElems as &$strElem ) {
+
+            $arrParams = $arrArgs;
+            $arrParams[0] = $strElem;
+            unset( $arrParams[ 1 ] );    // remove the used delimiter.
+            // now `$strElem` becomes an array.
+            // if the delimiters are gone,
+            if ( count( $arrParams ) > 1 ) {
+                $strElem = call_user_func_array(
+                    array( __CLASS__, 'getStringIntoArray' ),
+                    $arrParams
+                );
+            }
+
+            // Added this because the function was not trimming the elements sometimes... not fully tested with multi-dimensional arrays.
+            if ( is_string( $strElem ) ) {
+                $strElem = trim( $strElem );
+            }
+
+        }
+        return $arrElems;
+
+    }
+
+    /**
+     * Checks if the given value is empty or not.
+     *
+     * @remark      This is useful when PHP throws an error ' Fatal error: Can't use method return value in write context.'.
+     * @since       1.5.2
+     * @retuen      boolean
+     */
+    static public function isEmpty( $mValue ) {
+        return ( boolean ) empty( $mValue );
+    }
+
+    /**
      * Overrides the ancestor method.
      * @remark Fixes the bug of the parent method that extra port is added.
      * @return string

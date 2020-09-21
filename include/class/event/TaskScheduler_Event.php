@@ -14,6 +14,7 @@ class TaskScheduler_Event {
     public function __construct() {
         
         $this->___loadEvents();
+        $this->___loadAjaxEvents();
         $this->___loadOccurrenceModules();
         $this->___loadActionModules();
         $this->___loadRoutines();
@@ -29,6 +30,11 @@ class TaskScheduler_Event {
             new TaskScheduler_Event_Action_DeleteThreads;
             new TaskScheduler_Event_Action_DeleteRoutines;
             new TaskScheduler_Event_Action_DeleteLogItems;
+        }
+
+        private function ___loadAjaxEvents() {
+            new TaskScheduler_Test_Event_Ajax_Tests;
+            new TaskScheduler_Test_Event_Ajax_Scratches;
         }
 
         /**

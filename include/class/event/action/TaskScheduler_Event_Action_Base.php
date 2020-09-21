@@ -20,11 +20,36 @@ abstract class TaskScheduler_Event_Action_Base extends TaskScheduler_PluginUtili
     protected $_iPriority       = 10;
 
     /**
+     * Stores action hook names for multiple actions.
+     * @var array
+     * @since   4.3.0
+     */
+    protected $_aActionHookNames    = array();
+
+    /**
      * TaskScheduler_Event_Action_DeleteThreads constructor.
      */
     public function __construct() {
-        add_action( $this->_sActionHookName, array( $this, 'replyToDoAction' ), $this->_iPriority, $this->_iNumberOfParams );
+
+        if ( $this->_sActionHookName ) {
+            add_action(
+                $this->_sActionHookName,
+                array( $this, 'replyToDoAction' ),
+                $this->_iPriority,
+                $this->_iNumberOfParams
+            );
+        }
+
+        foreach( $this->_aActionHookNames as $_sActionHookName ) {
+            add_action(
+                $_sActionHookName,
+                array( $this, 'replyToDoAction' ),
+                $this->_iPriority,
+                $this->_iNumberOfParams
+            );
+        }
         $this->_construct();
+
     }
 
     /**
@@ -38,10 +63,22 @@ abstract class TaskScheduler_Event_Action_Base extends TaskScheduler_PluginUtili
     protected function _doAction() {}
 
     /**
+     * @return bool
+     * @since 1.5.2
+     */
+    protected function _shouldProceed( /* $aArguments */ ) {
+        return true;
+    }
+
+    /**
      * @callback action $this->_sActionHookName
      */
     public function replyToDoAction() {
-        call_user_func_array( array( $this, '_doAction' ), func_get_args() );
+        $_aParameters = func_get_args();
+        if ( ! call_user_func_array( array( $this, '_shouldProceed' ), $_aParameters ) ) {
+            return;
+        }
+        call_user_func_array( array( $this, '_doAction' ), $_aParameters );
     }
 
 }

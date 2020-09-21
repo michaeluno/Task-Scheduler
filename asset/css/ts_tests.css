@@ -1,0 +1,67 @@
+/*
+	@name Tests
+	@version 1.0.1
+ */
+.test-success {
+    color: green;
+}
+.test-error {
+    color: red;
+}
+.bold {
+    font-weight: bold;
+}
+.item-select-error {
+    margin-left: 1em;
+    color: red;
+}
+.error {
+    color: red;
+}
+
+h4 {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+#fieldrow-_buttons > td {
+    padding-bottom: 0;
+}
+#fieldrow-_buttons .amazon-auto-links-input-button-container,
+#fieldrow-_buttons input
+{
+    margin: 0;
+}
+#fieldrow-_results > td {
+    padding-top: 0;
+}
+.results-title {
+    margin-top: 0;
+}
+
+.result-header {
+    font-size: 1em;
+    background-color: #fff;
+    margin: 0.4em 0 0;
+    padding: 0.4em 1em;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+.results .result-body {
+    margin: 0 0 0.4em;
+    padding: 1em;
+    background-color: #fff;
+}
+.results .result-body p {
+    margin: 0;
+}
+
+.results .ui-state-focus,
+.results .ui-accordion-header {
+    outline: none;
+}
+
+/* Buttons */
+.button {
+    margin-right: 0.4em;
+}

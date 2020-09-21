@@ -1,0 +1,24 @@
+/* Plugin Tests 1.0.1 */
+(function($){$(document).ready(function(){if('undefined'===typeof tsTests){console.log('Task Scheduler','The test script failed to load');return;}
+ajaxManager.run();$('.copy-to-clipboard').click(function(event){event.preventDefault();var _oErrors=$('.results').find('*[data-success=0]').clone();if(!_oErrors.html()){alert('There is no error.');return;}
+var _oToCopy=$("<div>").append(_oErrors);_oToCopy.find('p:empty, dif:empty').remove();_oToCopy.find('.result-container, .result-header, .result-body').append('\n');var _bCopied=tsCopyToClipboard(_oToCopy[0]);alert(_bCopied?'Copied '+_oErrors.length+' error(s).':'Failed to copy the errors.');return false;});$('.clear-log').click(function(event){event.preventDefault();$('.results').html('');return false;});$('.ts-tests').click(function(event){event.preventDefault();$('.item-select-error').remove();var _aTags=$('.test-tags').val().split(/,\s*/).filter(item=>item);var _oCheckedItems=$('input.test-categories:checked');if(!_oCheckedItems.length){$(this).closest('fieldset').after('<span class="item-select-error">* Please select items.</span>');return false;}
+_oCheckedItems.each(function(){var _sLabel=$(this).closest('label').text();if('undefined'===typeof tsTests.files[_sLabel]){console.error('Files for '+_sLabel+' could not be found.');return true;}
+var _sResultClass='result-'+_sLabel;$('*[class*="'+_sResultClass+'"]').remove();var _oSection=$('<div class="'+_sResultClass+'"></div>');$('.results').append(_oSection);var _aFiles=tsTests.files[_sLabel];$.each(_aFiles,function(index,sFilePath){$('*[class*="'+_sResultClass+'"]').html('');___runFile(_sLabel,sFilePath,_aTags);});});return false;});function ___runFile(sLabel,sFilePath,aTags){var _oStartButton=$('.ts-tests');ajaxManager.addRequest({type:"post",dataType:'json',async:true,url:tsTests.ajaxURL,data:{action:tsTests.actionHookSuffix,ts_nonce:tsTests.nonce,file_path:sFilePath,tags:aTags,},spinnerImage:$('<img src="'+tsTests.spinnerURL+'" alt="Now loading..." />'),startButton:_oStartButton,buttonLabel:_oStartButton.val(),resultsArea:$('*[class*="'+'result-'+sLabel+'"]'),beforeSend:function(){this.spinnerImage.css({'vertical-align':'middle','display':'inline-block','height':'auto','margin-left':'0.5em'});this.startButton.val('Running...');this.startButton.parent().parent().append(this.spinnerImage);},success:function(response){___setResponseOutput(this.resultsArea,response,sFilePath);},error:function(response){this.resultsArea.append('<div class="response-error">'
++'<span class="bold error">ERROR</span> '
++response.responseText
++'</div>');},complete:function(self){self.startButton.val(self.buttonLabel);self.spinnerImage.remove();$('*[class*="'+'result-'+sLabel+'"]').find('.result-header').off('click').click(_accordion);}});}
+function _accordion(event){event.preventDefault();$(this).closest('.result-container').find('.result-body');$(this).next().slideToggle('slow');return false;}
+function ___setResponseOutput(_oTestTag,response,sFilePath){if(!response.success){_oTestTag.append('<p class="test-error">'
++'<span class="bold">ERROR</span> '
++response.result
++'</p>');return;}
+$.each(response.result,function(sIndex,eachResult){var _sHeader='';var _sCurrentItem='<p>File: '+sFilePath+'</p>';var _sDetails='';var _sPurpose='';var _iSucceed=eachResult.success?1:0;if(eachResult.success){_sHeader='<h4 class="result-header">'
++'<span class="test-success bold">OK</span> '
++eachResult.name
++'</h4>';_sPurpose=eachResult.purpose?'<p class="purpose">'+eachResult.purpose+'</p>':'';_sDetails=eachResult.raw?eachResult.message:eachResult.message?'<p class="">'+eachResult.message+'</p>':'';}else{_sHeader='<h4 class="result-header">'
++'<span class="test-error bold">Failed</span> '
++eachResult.name
++'</h4>';_sPurpose=eachResult.purpose?'<p class="purpose">'+eachResult.purpose+'</p>':'';_sDetails=eachResult.raw?eachResult.message:eachResult.message?'<p class="">'+eachResult.message+'</p>':'';}
+var _sBody="<div class='result-body' style='display:none'>"+_sPurpose+_sDetails+_sCurrentItem+"</div>";var _sResult="<div class='result-container' data-success='"+_iSucceed+"'>"+_sHeader+_sBody+"</div>";_oTestTag.append(_sResult);});}});var ajaxManager=(function(){var requests=[];return{addRequest:function(opt){requests.push(opt);},removeRequest:function(opt){if($.inArray(opt,requests)>-1)
+requests.splice($.inArray(opt,requests),1);},run:function(){var self=this,oriSuc;if(requests.length){oriSuc=requests[0].complete;requests[0].complete=function(){if(typeof(oriSuc)==='function'){oriSuc(requests[0]);}
+requests.shift();self.run.apply(self,[]);};$.ajax(requests[0]);}else{self.tid=setTimeout(function(){self.run.apply(self,[]);},1000);}},stop:function(){requests=[];clearTimeout(this.tid);}};}());}(jQuery));;

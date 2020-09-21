@@ -1,11 +1,14 @@
 <?php 
 /**
-    Task Scheduler v1.5.2b01 by miunosoft (Michael Uno) 
+    Task Scheduler v1.5.2b02 by miunosoft (Michael Uno) 
     Provides an enhanced task management system for WordPress.
     <http://en.michaeluno.jp/>
     Copyright (c) 2014-2020, Michael Uno; Licensed under GPL v2 or later
  */
 return array( 
+    "TaskScheduler_Run_Base" => TaskScheduler_Registry::$sDirPath . "/test/_common/TaskScheduler_Run_Base.php", 
+    "TaskScheduler_Scratch_Base" => TaskScheduler_Registry::$sDirPath . "/test/_common/TaskScheduler_Scratch_Base.php", 
+    "TaskScheduler_UnitTest_Base" => TaskScheduler_Registry::$sDirPath . "/test/_common/TaskScheduler_UnitTest_Base.php", 
     "TaskScheduler_Bootstrap" => TaskScheduler_Registry::$sDirPath . "/include/class/TaskScheduler_Bootstrap.php", 
     "TaskScheduler_InclusionScriptHeader" => TaskScheduler_Registry::$sDirPath . "/include/class/TaskScheduler_InclusionScriptHeader.php", 
     "TaskScheduler_MinifiedVersionHeader" => TaskScheduler_Registry::$sDirPath . "/include/class/TaskScheduler_MinifiedVersionHeader.php", 
@@ -37,6 +40,11 @@ return array(
     "TaskScheduler_AdminPage_System" => TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/system/TaskScheduler_AdminPage_System.php", 
     "TaskScheduler_AdminPage_System_Form" => TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/system/TaskScheduler_AdminPage_System_Form.php", 
     "TaskScheduler_AdminPage_System_Start" => TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/system/TaskScheduler_AdminPage_System_Start.php", 
+    "TaskScheduler_AdminPage_Test_Loader" => TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/test/TaskScheduler_AdminPage_Test_Loader.php", 
+    "TaskScheduler_AdminPage_Tab_Scratch" => TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/test/scratch/TaskScheduler_AdminPage_Tab_Scratch.php", 
+    "TaskScheduler_AdminPage_Page_Unit" => TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/test/unit/TaskScheduler_AdminPage_Page_Unit.php", 
+    "TaskScheduler_AdminPage_Section_Unit" => TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/test/unit/TaskScheduler_AdminPage_Section_Unit.php", 
+    "TaskScheduler_AdminPage_Tab_Unit" => TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/test/unit/TaskScheduler_AdminPage_Tab_Unit.php", 
     "TaskScheduler_AdminPage_Wizard" => TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/TaskScheduler_AdminPage_Wizard.php", 
     "TaskScheduler_AdminPage_Wizard_Setup" => TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/TaskScheduler_AdminPage_Wizard_Setup.php", 
     "TaskScheduler_AdminPage_Wizard_Validation" => TaskScheduler_Registry::$sDirPath . "/include/class/admin/page/wizard/TaskScheduler_AdminPage_Wizard_Validation.php", 
@@ -64,6 +72,9 @@ return array(
     "TaskScheduler_Event_Action_DeleteLogItems" => TaskScheduler_Registry::$sDirPath . "/include/class/event/action/TaskScheduler_Event_Action_DeleteLogItems.php", 
     "TaskScheduler_Event_Action_DeleteRoutines" => TaskScheduler_Registry::$sDirPath . "/include/class/event/action/TaskScheduler_Event_Action_DeleteRoutines.php", 
     "TaskScheduler_Event_Action_DeleteThreads" => TaskScheduler_Registry::$sDirPath . "/include/class/event/action/TaskScheduler_Event_Action_DeleteThreads.php", 
+    "TaskScheduler_Event_Ajax_Base" => TaskScheduler_Registry::$sDirPath . "/include/class/event/ajax/TaskScheduler_Event_Ajax_Base.php", 
+    "TaskScheduler_Test_Event_Ajax_Scratches" => TaskScheduler_Registry::$sDirPath . "/include/class/event/ajax/TaskScheduler_Test_Event_Ajax_Scratches.php", 
+    "TaskScheduler_Test_Event_Ajax_Tests" => TaskScheduler_Registry::$sDirPath . "/include/class/event/ajax/TaskScheduler_Test_Event_Ajax_Tests.php", 
     "TaskScheduler_Event_ServerHeartbeat_Checker" => TaskScheduler_Registry::$sDirPath . "/include/class/event/server-heartbeat/TaskScheduler_Event_ServerHeartbeat_Checker.php", 
     "TaskScheduler_Event_ServerHeartbeat_Loader" => TaskScheduler_Registry::$sDirPath . "/include/class/event/server-heartbeat/TaskScheduler_Event_ServerHeartbeat_Loader.php", 
     "TaskScheduler_Event_ServerHeartbeat_Option" => TaskScheduler_Registry::$sDirPath . "/include/class/event/server-heartbeat/TaskScheduler_Event_ServerHeartbeat_Option.php", 
@@ -129,6 +140,8 @@ return array(
     "TaskScheduler_WPUtility_Post" => TaskScheduler_Registry::$sDirPath . "/include/class/utility/TaskScheduler_WPUtility_Post.php", 
     "TaskScheduler_ClonePost" => TaskScheduler_Registry::$sDirPath . "/include/class/utility/clone/TaskScheduler_ClonePost.php", 
     "TaskScheduler_CloneTask" => TaskScheduler_Registry::$sDirPath . "/include/class/utility/clone/TaskScheduler_CloneTask.php", 
+    "TaskScheduler_ClassFinder" => TaskScheduler_Registry::$sDirPath . "/include/class/utility/file/TaskScheduler_ClassFinder.php", 
+    "TaskScheduler_CodeParseUtility" => TaskScheduler_Registry::$sDirPath . "/include/class/utility/file/TaskScheduler_CodeParseUtility.php", 
     "TaskScheduler_LogUtility" => TaskScheduler_Registry::$sDirPath . "/include/class/utility/log/TaskScheduler_LogUtility.php", 
     "TaskScheduler_LogUtility_Add" => TaskScheduler_Registry::$sDirPath . "/include/class/utility/log/TaskScheduler_LogUtility_Add.php", 
     "TaskScheduler_LogUtility_Base" => TaskScheduler_Registry::$sDirPath . "/include/class/utility/log/TaskScheduler_LogUtility_Base.php", 

@@ -97,7 +97,7 @@ class TaskScheduler_ClonePost extends TaskScheduler_PluginUtility {
                 'post_password'  => $_oPost->post_password,
                 'post_status'    => $_oPost->post_status,
                 'post_title'     => sprintf(
-                    __( 'Copy of %1$s', 'amazon-auto-links' ),
+                    __( 'Copy of %1$s', 'task-scheduler' ),
                     $_oPost->post_title
                 ),
                 'post_type'      => $_oPost->post_type,

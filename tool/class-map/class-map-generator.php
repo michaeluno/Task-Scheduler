@@ -31,7 +31,7 @@ echo 'Started...' . $sCarriageReturn;
 
 $_oGenerator = new \PHPClassMapGenerator\PHPClassMapGenerator(
     $sTargetBaseDir,
-    [ $sTargetBaseDir . '/include/class/' ],
+    [ $sTargetBaseDir . '/include/class/', $sTargetBaseDir . '/test' ],
     $sResultFilePath,
     [
         'output_buffer'     => true,
