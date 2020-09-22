@@ -3,7 +3,7 @@ Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
 Tested up to:       5.5.1
-Stable tag:         1.5.1
+Stable tag:         1.5.2
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               tool, utility, background, backend, task, system, event, scheduler, email, delete posts, cron, automation, routine
@@ -430,7 +430,8 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
-= 1.5.2 =
+= 1.5.2 - 2020/09/22=
+- Added a test component which is visible when the site debug mode is turned on.
 - Fixed a bug that the redirected URLs of action links had an extra port indication on some servers.
 - Fixed a bug of a PHP syntax error.
 
