@@ -119,7 +119,7 @@ abstract class TaskScheduler_AdminPage_Tab_Base extends TaskScheduler_AdminPage_
     protected function _doAfterTab( $oFactory ) {}
 
         
-    public function validate( $aInput, $aOldInput, $oFactory, $aSubmitInfo ) {
-        return $aInput;
+    public function validate( $aInputs, $aOldInputs, $oFactory, $aSubmitInfo ) {
+        return $aInputs;
     }
 }

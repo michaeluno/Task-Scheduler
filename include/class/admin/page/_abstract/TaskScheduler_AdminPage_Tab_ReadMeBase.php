@@ -142,6 +142,5 @@ abstract class TaskScheduler_AdminPage_Tab_ReadMeBase extends TaskScheduler_Admi
             : $_aContents;
         
     }
-     
-    
+
 }

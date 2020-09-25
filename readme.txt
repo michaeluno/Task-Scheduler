@@ -430,6 +430,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 == Changelog ==
 
+= 1.5.3 =
+- Fixed a bug that caused a PHP error saying "Fatal error: Uncaught TypeError: Argument 1 passed" during creating and editing a task.
+
 = 1.5.2 - 2020/09/22=
 - Added a test component which is visible when the site debug mode is turned on.
 - Fixed a bug that the redirected URLs of action links had an extra port indication on some servers.

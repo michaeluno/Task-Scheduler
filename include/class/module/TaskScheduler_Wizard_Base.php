@@ -468,7 +468,7 @@ abstract class TaskScheduler_Wizard_Base {
      * @callback        filter      validation_{page slug}_{tab slug}
      */
     public function _replyToValidateTabSettings( $aInput, $aOldInput, $oAdminPage, $aSubmitInfo ) {
-        
+
         $_aWizardOptions = array( 
             'previous_urls' => apply_filters( 
                 'task_scheduler_admin_filter_get_wizard_options', 

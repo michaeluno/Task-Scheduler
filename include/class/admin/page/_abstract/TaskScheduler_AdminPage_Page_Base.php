@@ -83,7 +83,9 @@ abstract class TaskScheduler_AdminPage_Page_Base extends TaskScheduler_AdminPage
      public function replyToDoAfterPage( $oFactory ) {
          $this->_doAfterPage( $oFactory );
      }
-     public function validate( $aInputs, $aOldInputs, $oFactory, $aSubmitInfo ){}
+     public function validate( $aInputs, $aOldInputs, $oFactory, $aSubmitInfo ){
+         return $aInputs;
+     }
 
      protected function _loadPage( $oFactory ) {}
      protected function _doPage( $oFactory ) {}
