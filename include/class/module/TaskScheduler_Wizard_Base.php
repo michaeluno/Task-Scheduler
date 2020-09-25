@@ -170,7 +170,7 @@ abstract class TaskScheduler_Wizard_Base {
         add_filter( "fields_{$this->_sMainAdminPageClassName}", array( $this, '_replyToAddFormFields' ), 1, 1 );
         add_filter( "field_definition_{$this->_sMainAdminPageClassName}_{$this->_sSectionID}_prevnext", array( $this, '_replyToRedefinePrevNextButtonField' ), 10, 1 );   // 1.4.0+        
         add_filter( "validation_{$this->_sMainAdminPageClassName}_{$this->_sSectionID}", array( $this, 'validateSettings' ), 10, 4 );
-        add_filter( "validation_{$this->_sMainAdminPageSlug}_{$this->sSlug}", array( $this, '_replytToValidateTabSettings' ), 10, 4 ); // sSlug is also used as the tab slug
+        add_filter( "validation_{$this->_sMainAdminPageSlug}_{$this->sSlug}", array( $this, '_replyToValidateTabSettings' ), 10, 4 ); // sSlug is also used as the tab slug
         add_filter( "validation_saved_options_{$this->_sMainAdminPageSlug}_{$this->sSlug}", array( $this, '_replyToModifySavedTabOptions' ), 10, 2 );
         add_filter( "options_{$this->_sMainAdminPageClassName}", array( $this, '_replyToModifyOptions' ), 100 ); // low priority to let the options set by the page class
         
@@ -181,7 +181,7 @@ abstract class TaskScheduler_Wizard_Base {
         add_filter( "fields_{$this->_sEditAdminPageClassName}", array( $this, '_replyToAddFormFields' ), 1, 1 );
         add_filter( "field_definition_{$this->_sEditAdminPageClassName}_{$this->_sSectionID}_prevnext", array( $this, '_replyToRedefinePrevNextButtonField' ), 10, 1 );   // 1.4.0+
         add_filter( "validation_{$this->_sEditAdminPageClassName}_{$this->_sSectionID}", array( $this, 'validateSettings' ), 10, 4 );
-        add_filter( "validation_{$this->_sEditAdminPageSlug}_{$this->sSlug}", array( $this, '_replytToValidateTabSettings' ), 10, 4 );    // sSlug is used as the tab slug also.
+        add_filter( "validation_{$this->_sEditAdminPageSlug}_{$this->sSlug}", array( $this, '_replyToValidateTabSettings' ), 10, 4 );    // sSlug is used as the tab slug also.
         add_filter( "validation_saved_options_{$this->_sEditAdminPageSlug}_{$this->sSlug}", array( $this, '_replyToModifySavedTabOptions' ), 10, 2 );
         add_filter( "options_{$this->_sEditAdminPageClassName}", array( $this, '_replyToModifyOptions' ), 100 ); // low priority to let the options set by the page class
         
@@ -467,7 +467,7 @@ abstract class TaskScheduler_Wizard_Base {
      * 
      * @callback        filter      validation_{page slug}_{tab slug}
      */
-    public function _replytToValidateTabSettings( $aInput, $aOldInput, $oAdminPage, $aSubmitInfo ) {
+    public function _replyToValidateTabSettings( $aInput, $aOldInput, $oAdminPage, $aSubmitInfo ) {
         
         $_aWizardOptions = array( 
             'previous_urls' => apply_filters( 
