@@ -246,7 +246,7 @@ class TaskScheduler_SampleActionModule extends TaskScheduler_Action_Base {
             $this->createThread( 'task_scheduler_my_thread', $oRoutine, $_aArguments );
         }
 
-        // Do not close this routine by returning `null`. When all the threads are done, this routine will be automatically closed.
+        // Do not close this routine by returning 'null'. When all the threads are done, this routine will be automatically closed.
         return null;
 
     }
@@ -269,7 +269,7 @@ class TaskScheduler_SampleActionModule_Thread extends TaskScheduler_Action_Base 
 
         // Do your stuff
         $_aArguments = $oThread->getMeta();
-        $_sFoo       = $_aArguments[ 'foo' ];  // is `bar`
+        $_sFoo       = $_aArguments[ 'foo' ];  // is 'bar'
         $_aDatum     =  $_aArguments[ 'datum' ]; // is either array(  'a', 'b', 'c' ), array(  'd', 'e', 'f', 'g' ), or array(  'h', 'i' )
 
         TaskScheduler_Debug::log( $_aArguments );
@@ -283,6 +283,7 @@ class TaskScheduler_SampleActionModule_Thread extends TaskScheduler_Action_Base 
 The entire code will look like this.
 
 Action Module Class:
+
 `
 class TaskScheduler_SampleActionModule extends TaskScheduler_Action_Base {
 
@@ -329,13 +330,14 @@ class TaskScheduler_SampleActionModule extends TaskScheduler_Action_Base {
             $this->createThread( 'task_scheduler_my_thread', $oRoutine, $_aArguments );
         }
 
-        // Do not close this routine by returning `null`. When all the threads are done, this routine will be automatically closed.
+        // Do not close this routine by returning 'null'. When all the threads are done, this routine will be automatically closed.
         return null;
 
     }
 
 }
 `
+
 Thread Class:
 `
 class TaskScheduler_SampleActionModule_Thread extends TaskScheduler_Action_Base {
@@ -356,7 +358,7 @@ class TaskScheduler_SampleActionModule_Thread extends TaskScheduler_Action_Base 
 
         // Do your stuff
         $_aArguments = $oThread->getMeta();
-        $_sFoo       = $_aArguments[ 'foo' ];  // is `bar`
+        $_sFoo       = $_aArguments[ 'foo' ];  // is `bar'
         $_aDatum     =  $_aArguments[ 'datum' ]; // is either array(  'a', 'b', 'c' ), array(  'd', 'e', 'f', 'g' ), or array(  'h', 'i' )
 
         TaskScheduler_Debug::log( $_aArguments );
@@ -433,7 +435,7 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 = 1.5.3 =
 - Fixed a bug that caused a PHP error saying "Fatal error: Uncaught TypeError: Argument 1 passed" during creating and editing a task.
 
-= 1.5.2 - 2020/09/22=
+= 1.5.2 - 2020/09/22 =
 - Added a test component which is visible when the site debug mode is turned on.
 - Fixed a bug that the redirected URLs of action links had an extra port indication on some servers.
 - Fixed a bug of a PHP syntax error.
