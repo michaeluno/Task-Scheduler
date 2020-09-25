@@ -25,14 +25,7 @@ abstract class TaskScheduler_AdminPage_EditModule_Setup extends TaskScheduler_Ad
             
         $this->setRootMenuPageBySlug( TaskScheduler_Registry::$aAdminPages[ 'root' ] );
         
-        new TaskScheduler_AdminPage_EditModule__Page__EditOptions(
-            $this, 
-            array(
-                'title'         => __( 'Edit Module Options', 'task-scheduler' ),    // page and menu title
-                'page_slug'     => TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],    // page slug
-                'show_in_menu'  => false,        // do not add in the sub menu
-            )
-        );        
+        new TaskScheduler_AdminPage_EditModule__Page__EditOptions( $this );
 
         // add_action( 
             // "load_" . TaskScheduler_Registry::$aAdminPages[ 'edit_module' ], 

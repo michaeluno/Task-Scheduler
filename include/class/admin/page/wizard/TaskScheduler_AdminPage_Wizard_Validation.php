@@ -38,7 +38,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
         }
 
         // The wizard options are stored in the '_wizard_options' element
-        $_aSavedValues = $this->_saveValidatedWizardOptions( $_aWizardOptions );
+        $this->_saveValidatedWizardOptions( $_aWizardOptions );
 
         // Passing a dummy value will prevent the framework from displaying an admin notice.
         return array( 'dummy value' );
@@ -49,11 +49,13 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
          * Saves validated wizard options.
          * 
          * @remark    The scope is 'protected' because the extending edit module class will use this method.
+         * @param  array $aWizardOptions
+         * @return array
          */
         protected function _saveValidatedWizardOptions( array $aWizardOptions ) {
 
             if ( ! isset( $_GET[ 'transient_key' ] ) ) {
-                return;
+                return array();
             }    
 
             $aWizardOptions = apply_filters( 

@@ -19,6 +19,18 @@
 class TaskScheduler_AdminPage_EditModule__Page__EditOptions extends TaskScheduler_AdminPage_Page_Base {
 
     /**
+     * @return array
+     * @since 1.5.3
+     */
+    protected function _getArguments() {
+         return array(
+            'title'         => __( 'Edit Module Options', 'task-scheduler' ),    // page and menu title
+            'page_slug'     => TaskScheduler_Registry::$aAdminPages[ 'edit_module' ],    // page slug
+            'show_in_menu'  => false,        // do not add in the sub menu
+        );
+    }
+
+    /**
      * @callback    action      load_{page slug}
      * @since       1.4.0
      * @return      void

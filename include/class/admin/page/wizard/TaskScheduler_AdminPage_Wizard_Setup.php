@@ -57,13 +57,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Setup extends TaskScheduler_AdminP
             
         $this->setRootMenuPageBySlug( TaskScheduler_Registry::$aAdminPages[ 'root' ] );
         
-        new TaskScheduler_AdminPage_Wizard__Page__AddNewTask(
-            $this, 
-            array(
-                'title'     => __( 'Add New Task', 'task-scheduler' ),
-                'page_slug' => TaskScheduler_Registry::$aAdminPages[ 'add_new' ],
-            )
-        );
+        new TaskScheduler_AdminPage_Wizard__Page__AddNewTask( $this );
         
         $this->setPluginSettingsLinkLabel( '' );
         

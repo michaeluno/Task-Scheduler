@@ -19,6 +19,17 @@
 class TaskScheduler_AdminPage_Wizard__Page__AddNewTask extends TaskScheduler_AdminPage_Page_Base {
 
     /**
+     * @return array
+     * @sicne  1.5.3
+     */
+    protected function _getArguments() {
+        return array(
+            'title'     => __( 'Add New Task', 'task-scheduler' ),
+            'page_slug' => TaskScheduler_Registry::$aAdminPages[ 'add_new' ],
+        );
+    }
+
+    /**
      * @callback    action      load_{page slug}
      * @since       1.4.0
      * @return      void
