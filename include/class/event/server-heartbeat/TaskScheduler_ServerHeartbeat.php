@@ -375,7 +375,7 @@ final class TaskScheduler_ServerHeartbeat {
             static private function _deleteSleepTransient() {                
             
                 // If the transient ID is different, it means another different heartbeat is pulsating.
-                $_sSleepID = TaskScheduler_WPUtility::getTransientWithoutCache( self::$sTransientKey_Sleep );
+                $_sSleepID = TaskScheduler_WPUtility::getTransient( self::$sTransientKey_Sleep );
                 if ( false !== $_sSleepID && self::getID() !== $_sSleepID ) {
                     self::$_bStop = true;
                     return;

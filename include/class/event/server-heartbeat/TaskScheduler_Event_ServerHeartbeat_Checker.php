@@ -50,7 +50,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         }
         
         // Check a check-action lock - this prevents that while checking and spawning routines, another page load do the same and triggers the same tasks at the same time.
-        if ( TaskScheduler_WPUtility::getTransientWithoutCache( self::$sCheckActionTransientKey ) ) {
+        if ( TaskScheduler_WPUtility::getTransient( self::$sCheckActionTransientKey ) ) {
             return;
         }
 
@@ -133,7 +133,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         TaskScheduler_WPUtility::deleteTransient( self::$sCheckActionTransientKey );
         
         // If the transient value is different from the set one right before the loop, it means that another process has requested a check.
-        if ( TaskScheduler_WPUtility::getTransientWithoutCache( self::$sRecheckActionTransientKey ) ) {
+        if ( TaskScheduler_WPUtility::getTransient( self::$sRecheckActionTransientKey ) ) {
             TaskScheduler_WPUtility::deleteTransient( self::$sRecheckActionTransientKey );
             TaskScheduler_ServerHeartbeat::beat();
         }
