@@ -54,12 +54,10 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
             return;
         }
 
-        TaskScheduler_Utility::setCronFlag();
-
         // At this point, the page load can spawn routines.
         // Letting the site load and wait till the 'wp_loaded' hook is required to load the custom taxonomy that the plugin uses.
         add_action( 'wp_loaded', array( $this, '_replyToSpawnRoutines' ), 1 );    // set the high priority because the sleep sub-routine also hooks the same action.
-        return;
+
 
     }
         /**
@@ -140,8 +138,6 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
             TaskScheduler_ServerHeartbeat::beat();
         }
 
-        // This is a background page load so do not let anything else especially for the front-end happen.
-        exit();
         
     }   
         /**

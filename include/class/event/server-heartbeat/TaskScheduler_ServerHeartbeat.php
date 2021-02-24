@@ -45,7 +45,7 @@ final class TaskScheduler_ServerHeartbeat {
      * @return      string      The cookie value is always string.
      */
     static public function getID() {        
-        return isset( $_COOKIE{'server_heartbeat_id'} ) ? $_COOKIE{'server_heartbeat_id'} : '';
+        return isset( $_COOKIE[ 'server_heartbeat_id' ] ) ? $_COOKIE[ 'server_heartbeat_id' ] : '';
     }            
 
     /**
