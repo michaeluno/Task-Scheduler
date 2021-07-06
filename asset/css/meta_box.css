@@ -58,6 +58,13 @@ textarea[readonly] {
 }
  
 
+/* 1.6.0 */
+.task-scheduler-admin-list {
+	margin-left: 1em;
+    list-style-type: disc;
+    padding-left: 1em;
+}
+
 .task-scheduler-daily-module-days,
 .task-scheduler-daily-module-times
 {

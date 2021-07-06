@@ -59,12 +59,12 @@ class TaskScheduler_Action_Email extends TaskScheduler_Action_Base {
         ) {
             return 0;    // failed
         }
-        
+
         // Handle each email per thread (spawn the subroutine in the background each)
         $_iThreads = 0;
         $_iCount   = 0;
         $_aEmailOptions = $_aTaskMeta[ $this->sSlug ];
-        foreach( $_aEmailOptions[ 'email_addresses' ] as $_sEmailSet ) {
+        foreach( $this->___getEmailAddresses( $_aEmailOptions ) as $_sEmailSet ) {
             
             foreach( preg_split( "/([\n\r](\s+)?)+/", $_sEmailSet ) as $_sEmailAddress ) {
                 
@@ -105,5 +105,34 @@ class TaskScheduler_Action_Email extends TaskScheduler_Action_Base {
         return null;    // exit code: do not log; it will be, when the threads finish.
         
     }
-            
+        /**
+         * @since  1.6.0
+         * @return array
+         */
+        private function ___getEmailAddresses( array $aEmailOptions ) {
+            return array_unique(
+                array_merge(
+                    array_filter( $this->getElementAsArray( $aEmailOptions, array( 'email_addresses' ) ) ),
+                    $this->___getEmailsByUserRoles( $this->getElementAsArray( $aEmailOptions, array( 'user_roles' ) ) )
+                )
+            );
+        }
+            /**
+             * @param  array $aUserRoles
+             * @since  1.6.0
+             * @return array
+             */
+            private function ___getEmailsByUserRoles( array $aUserRoles ) {
+                $_aUserRoleEmails = array();
+                $_aRoles          = array_filter( array_values( $aUserRoles ) );
+                if ( ! empty( $_aRoles ) ) {
+                    $_aUsers = get_users( array( 'role__in' => $_aRoles ) );
+                    // Array of WP_User objects.
+                    foreach( $_aUsers as $_oUser ) {
+                        $_aUserRoleEmails[] = $_oUser->user_email;
+                    }
+                }
+                return array_values( $_aUserRoleEmails );
+            }
+
 }

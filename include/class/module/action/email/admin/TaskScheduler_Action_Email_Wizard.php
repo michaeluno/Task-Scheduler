@@ -30,7 +30,21 @@ final class TaskScheduler_Action_Email_Wizard extends TaskScheduler_Wizard_Actio
                 'type'               => 'textarea',
                 'repeatable'         => true,
                 'description'        => __( 'Set an address per line.', 'task-scheduler' ),
-            ),            
+            ),
+            array(
+                'field_id'           => 'user_roles',
+                'title'              => __( 'User Roles', 'task-scheduler' ),
+                'type'               => 'select',
+                'is_multiple'        => true,
+                'label'              => $this->___getUserRoleLabels(),
+                'description'        => __( 'Select user roles to send Emails.', 'task-scheduler' )
+                    . ' ' . __( 'To deselect items, press the <code>Control</code> key and click the item.', 'task-scheduler' ),
+                'attributes'         => array(
+                    'select' => array(
+                        'style' => 'min-height: 100px;',
+                    ),
+                ),
+            ),
             array(    
                 'field_id'           => 'email_title',
                 'title'              => __( 'Email Title', 'task-scheduler' ),
@@ -85,7 +99,20 @@ final class TaskScheduler_Action_Email_Wizard extends TaskScheduler_Wizard_Actio
             ),
         );
         
-    }    
+    }
+        /**
+         * @return array
+         * @since  1.6.0
+         */
+        private function ___getUserRoleLabels() {
+            $_aRoleLabels = array();
+            $_aRoles      = array_reverse( get_editable_roles() );
+            foreach ( $_aRoles as $_sRole => $_aDetails ) {
+                $_sNameTranslated = translate_user_role( $_aDetails[ 'name' ] );
+                $_aRoleLabels[ $_sRole ] = $_sNameTranslated;
+            }
+            return $_aRoleLabels;
+        }
 
     public function validateSettings( /* $aInputs, $aOldInput, $oAdminPage, $aSubmitInfo */ ) { 
 
@@ -95,14 +122,14 @@ final class TaskScheduler_Action_Email_Wizard extends TaskScheduler_Wizard_Actio
         $aInputs     = $_aParams[ 0 ];
         $aOldInputs  = $_aParams[ 1 ];
         $oAdminPage  = $_aParams[ 2 ];
-        $aSubmitInfo = $_aParams[ 3 ];      
-    
+        $aSubmitInfo = $_aParams[ 3 ];
+
         $_bIsValid   = true;
         $_aErrors    = array();
                 
         $aInputs[ 'email_addresses' ] = $this->___getEmailAddressesSanitized( $aInputs[ 'email_addresses' ] );
         
-        if ( empty( $aInputs[ 'email_addresses' ] ) ) {
+        if ( empty( $aInputs[ 'email_addresses' ] ) && empty( $aInputs[ 'user_roles' ] ) ) {
             
             // $aVariable[ 'section_id' ]['field_id']
             $_aErrors[ $this->_sSectionID ][ 'email_addresses' ] = __( 'At least one item needs to be set.', 'task-scheduler' );
@@ -168,6 +195,18 @@ final class TaskScheduler_Action_Email_Wizard extends TaskScheduler_Wizard_Actio
         foreach( $_aOptions[ 'email_addresses' ] as $_aEmailSet ) {
             $_aOutputs[] = "<textarea readonly='readonly' style='width:80%;'>" . esc_textarea( $_aEmailSet ) . "</textarea>";
         }
+
+        $_aRoles     = get_editable_roles();
+        $_aSelected  = TaskScheduler_Utility::getElementAsArray( $_aOptions, array( 'user_roles' ) );
+        $_aOutputs[] = "<h4>" . __( 'User Roles', 'task-scheduler' ) . ":</h4>";
+        $_aOutputs[] = "<ul class='task-scheduler-admin-list'>";
+        foreach( $_aSelected as $_sUserRole ) {
+            $_aOutputs[] = "<li>" . translate_user_role( $_aRoles[ $_sUserRole ][ 'name' ] ) . "</li>";
+        }
+        if ( empty( $_aSelected ) ) {
+            $_aOutputs[] = "<li>" . __( 'Unselected', 'task-scheduler' ) . "</li>";
+        }
+        $_aOutputs[] = '</ul>';
         
         $_aOutputs[] = "<h4>" . __( 'Email Subject', 'task-scheduler' ) . ":</h4>";
         $_aOutputs[] = "<input type='text' readonly='readonly' value='" . esc_attr( $_aOptions[ 'email_title' ] ) . "' style='width:80%;' />";
