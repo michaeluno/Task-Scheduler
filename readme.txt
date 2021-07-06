@@ -2,8 +2,8 @@
 Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
-Tested up to:       5.6.2
-Stable tag:         1.5.4
+Tested up to:       5.7.2
+Stable tag:         1.6.0
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               tool, utility, background, backend, task, system, event, scheduler, email, delete posts, cron, automation, routine
@@ -218,6 +218,7 @@ class TaskScheduler_SampleActionModule extends TaskScheduler_Action_Base {
 In the `doAction()` method of your action module class, create a thread with the `createThread()` method. The parameters are:
 
 `createThread( $sThreadActionHookName, $oRoutine, array $aThreadOptions, array $aSystemTaxonomyTerms=array(), $bAllowDuplicate )`
+
     1. `$sThreadActionHookName` - (string, required) the slug that serves as an action hook name
     2. `$oRoutine` - (object, required) the routine object that is passed to the second parameter of `doAction()`` method.
     3. `$aThreadOptions` - (array, required) an associative array holding arguments to pass to the thread.
@@ -431,6 +432,9 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 
 == Changelog ==
+
+= 1.6.0 - 2021/07/07 =
+- Added the `User Roles` option for the `Email` action
 
 = 1.5.4 - 2021/02/24 =
 - Fixed a bug that the server heartbeat did not function, started since v1.5.0.
