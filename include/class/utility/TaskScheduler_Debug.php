@@ -10,33 +10,30 @@
  */
 
 final class TaskScheduler_Debug extends TaskScheduler_AdminPageFramework_Debug{
-    
-    static public function dump( $v, $sFilePath=null ) {
+
+    static public function dump( $asArray, $sFilePath=null, $bStackTrace=false, $iStringLengthLimit=0, $iArrayDepthLimit=0 ) {
         
         if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
             return;
         }
-        parent::dump( $v, $sFilePath );
+        parent::dump( $asArray, $sFilePath );
         
     }
 
     /**
-     * @param $v
-     * @param null $sFilePath
-     * @param bool $bEscape
-     *
      * @return string
      */
-    static public function get( $v, $sFilePath=null, $bEscape=true, $iStringLengthLimit=0, $iArrayDepthLimit=0 ) {
+    static public function get( $asArray, $sFilePath=null, $bEscape=true, $bStackTrace=false, $iStringLengthLimit=0, $iArrayDepthLimit=0 ) {
         
         if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
             return '';
         }
-        return parent::get( $v, $sFilePath, $bEscape, $iStringLengthLimit, $iArrayDepthLimit );
+
+        return parent::get( $asArray, $sFilePath, $bEscape, $bStackTrace, $iStringLengthLimit, $iArrayDepthLimit );
         
     }
                     
-    static public function log( $v, $sFilePath=null, $iTrace=0, $iStringLengthLimit=99999, $iArrayDepthLimit=50 ) {
+    static public function log( $v, $sFilePath=null, $bStackTrace=false, $iTrace=0, $iStringLengthLimit=99999, $iArrayDepthLimit=50 ) {
         
         if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
             return;
@@ -51,7 +48,7 @@ final class TaskScheduler_Debug extends TaskScheduler_AdminPageFramework_Debug{
                 : $sFilePath
             );
 
-        parent::log( $v, $sFilePath, $iTrace, $iStringLengthLimit, $iArrayDepthLimit );
+        parent::log( $v, $sFilePath, $bStackTrace, $iTrace, $iStringLengthLimit, $iArrayDepthLimit );
 
     }
     
