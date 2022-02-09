@@ -158,15 +158,12 @@ abstract class TaskScheduler_MetaBox_Base extends TaskScheduler_AdminPageFramewo
      * @since       1.0.0
      */
     protected function _getChangeButton( $sTabSlug ) {
-        
         $_sModuleEditPageURL = esc_url(
             TaskScheduler_PluginUtility::getModuleEditPageURL(
                 array(
                     'transient_key'  => TaskScheduler_Registry::TRANSIENT_PREFIX . uniqid(),
                     'tab'            => $sTabSlug,
-                    'post'           => isset( $_GET['post'] )
-                        ? $_GET['post'] 
-                        : 0,
+                    'post'           => absint( TaskScheduler_Utility::getHTTPQueryGET( 'post' ) ),
                 )
             )
         );            

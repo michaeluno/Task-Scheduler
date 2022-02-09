@@ -11,18 +11,17 @@ class TaskScheduler_MetaBox_Action extends TaskScheduler_MetaBox_Base {
      * 
      */ 
     public function setUp() {
-        
-        $this->oTask = isset( $_GET['post'] )
-            ? TaskScheduler_Routine::getInstance( $_GET['post'] )
+
+        $_iPostID    = absint( TaskScheduler_PluginUtility::getHTTPQueryGET( 'post' ) );
+        $this->oTask = $_iPostID
+            ? TaskScheduler_Routine::getInstance( $_iPostID )
             : null;        
 
         $_sModuleEditPageURL = TaskScheduler_PluginUtility::getModuleEditPageURL(
             array(
                 'transient_key'  => TaskScheduler_Registry::TRANSIENT_PREFIX . uniqid(),
                 'tab'            => 'edit_action',
-                'post'           => isset( $_GET['post'] )
-                    ? $_GET['post'] 
-                    : 0,
+                'post'           => $_iPostID,
             )
         );
             

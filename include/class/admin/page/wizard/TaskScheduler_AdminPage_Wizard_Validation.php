@@ -54,7 +54,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
          */
         protected function _saveValidatedWizardOptions( array $aWizardOptions ) {
 
-            if ( ! isset( $_GET[ 'transient_key' ] ) ) {
+            if ( ! isset( $_GET[ 'transient_key' ] ) ) {    // sanitization unnecessary as just checking
                 return array();
             }    
 
@@ -64,7 +64,7 @@ abstract class TaskScheduler_AdminPage_Wizard_Validation extends TaskScheduler_A
             );
 
             TaskScheduler_WPUtility::setTransient( 
-                $_GET[ 'transient_key' ], 
+                sanitize_text_field( $_GET[ 'transient_key' ] ), // sanitization done
                 $aWizardOptions, 
                 60*60*24*2  // 2 days
             );

@@ -58,7 +58,7 @@ final class TaskScheduler_Occurrence_ExitCode_Wizard extends TaskScheduler_Wizar
                         'request'       => 'autocomplete',
                         'post_types'    => TaskScheduler_Registry::$aPostTypes[ 'task' ],
                         'post_status'   => 'private',
-                    ) + $_GET,
+                    ) + TaskScheduler_AdminPageFramework_WPUtility::getHTTPQueryGET(),
                     admin_url( TaskScheduler_AdminPageFramework_WPUtility::getPageNow() )
                 ),
                 'settings2'           => array(    // equivalent to the second parameter of the tokenInput() method

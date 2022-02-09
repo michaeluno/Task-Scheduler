@@ -30,9 +30,9 @@ class TaskScheduler_MetaBox_Main extends TaskScheduler_MetaBox_Base {
      * Redefines the 'excerpt' field.
      */
     public function field_definition_TaskScheduler_MetaBox_Main_excerpt( $aField ) {
-        if ( isset( $_GET['post'] ) ) {
-            $_oPost = get_post( $_GET['post'] );
-            $aField['value'] = $_oPost->post_excerpt;
+        if ( isset( $_GET[ 'post' ] ) ) {   // sanitization unnecessary
+            $_oPost = get_post( absint( $_GET[ 'post' ] ) );    // sanitization done
+            $aField[ 'value' ] = $_oPost->post_excerpt;
         }
         return $aField;
     }

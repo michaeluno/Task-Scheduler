@@ -133,13 +133,13 @@ abstract class TaskScheduler_Wizard_Base {
             $this->sMainWizardSlug       = $sMainWizardSlug 
                 ? $sMainWizardSlug 
                 : $sSlug;            
-            $this->_sTransientKey        = isset( $_GET[ 'transient_key' ] )
-                ? $_GET[ 'transient_key' ] 
+            $this->_sTransientKey        = isset( $_GET[ 'transient_key' ] )    // sanitization unnecessary
+                ? sanitize_text_field( $_GET[ 'transient_key' ] )   // sanitization done
                 : '';
             $this->_sSectionID           = $this->sSlug;
             $this->_sMainAdminPageSlug   = TaskScheduler_Registry::$aAdminPages[ 'add_new' ];
             $this->_sEditAdminPageSlug   = TaskScheduler_Registry::$aAdminPages[ 'edit_module' ];
-            $this->_bIsAddNew            = isset( $_GET[ 'page' ] ) && $this->_sMainAdminPageSlug === $_GET[ 'page' ];
+            $this->_bIsAddNew            = isset( $_GET[ 'page' ] ) && $this->_sMainAdminPageSlug === $_GET[ 'page' ];  // sanitization unnecessary
             $this->sNextTabSlug          = $this->_bIsAddNew
                 ? $this->sNextTabSlug
                 : 'update_module';        // for the edit wizard

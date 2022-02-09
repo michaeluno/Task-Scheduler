@@ -31,17 +31,17 @@ class TaskScheduler_MetaBox_Submit extends TaskScheduler_MetaBox_Base {
                 'side'
             );
         }    
-    
-    
+
+    protected $_iRoutineID = 0;
+    protected $_oRoutine;
+
     /**
      * Adds form fields for the basic options.
      * 
      */ 
     public function setUp() {
-        
-        $this->_iRoutineID = isset( $_GET['post'] ) 
-            ? $_GET['post'] 
-            : 0;
+
+        $this->_iRoutineID = absint( TaskScheduler_Utility::getHTTPQueryGET( 'post' ) );
         
         $this->addSettingFields(
             array(
@@ -90,7 +90,7 @@ class TaskScheduler_MetaBox_Submit extends TaskScheduler_MetaBox_Base {
         );    
             
     }
-    
+
     /**
      * Redefines fields.
      */
@@ -139,10 +139,10 @@ class TaskScheduler_MetaBox_Submit extends TaskScheduler_MetaBox_Base {
         $_sEnableOrDisable  = $aInput['_is_enabled'] ? 'enable' : 'disable';
         unset( $aInput[ '_is_enabled' ], $aInput['task_submit'] );
 
-        $_iRoutineID    = isset( $_POST[ 'post_ID' ] )
-            ? absint( $_POST[ 'post_ID' ] )
-            : ( isset( $_POST[ 'ID' ] )
-                ? absint( $_POST[ 'ID' ] )
+        $_iRoutineID    = isset( $_POST[ 'post_ID' ] )  // sanitization unnecessary
+            ? absint( $_POST[ 'post_ID' ] )             // sanitization done
+            : ( isset( $_POST[ 'ID' ] )                 // sanitization unnecessary
+                ? absint( $_POST[ 'ID' ] )              // sanitization done
                 : 0
             );
         $_oRoutine      = TaskScheduler_Routine::getInstance( $_iRoutineID );
@@ -175,12 +175,10 @@ class TaskScheduler_MetaBox_Submit extends TaskScheduler_MetaBox_Base {
          * 
          */
         public function replyToModifyThePostStatus( $aPostData, $aUnmodified ) {
-            
             if ( $this->_sNewPostStatus ) {
-                $aPostData['post_status'] = $this->_sNewPostStatus;
+                $aPostData[ 'post_status' ] = $this->_sNewPostStatus;
             }
             return $aPostData;
-            
         }
     
 }

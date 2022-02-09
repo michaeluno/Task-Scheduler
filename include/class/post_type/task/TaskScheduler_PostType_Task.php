@@ -47,7 +47,7 @@ final class TaskScheduler_PostType_Task extends TaskScheduler_PostType_Task_Base
                 return;
             }
             
-            if ( ! isset( $_GET['orderby'], $_GET['order'] ) ) {
+            if ( ! isset( $_GET[ 'orderby' ], $_GET[ 'order' ] ) ) {    // sanitization unnecessary
                 $oQuery->set( 'orderby', 'ID' );
                 $oQuery->set( 'order', 'DESC' );
             }

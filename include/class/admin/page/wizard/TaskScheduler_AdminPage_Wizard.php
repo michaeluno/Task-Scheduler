@@ -88,46 +88,30 @@ class TaskScheduler_AdminPage_Wizard extends TaskScheduler_AdminPage_Wizard_Setu
     public function getWizardOptions( $sKey='' ) {
         
         static $_aWizardOptions;
-        $_sTransientKey = isset( $_GET[ 'transient_key' ] ) 
-            ? $_GET[ 'transient_key' ]
-            : '';
-        
+
         // If already retrieved, use it.
         $_aWizardOptions = isset( $_aWizardOptions ) && false !== $_aWizardOptions
             ? $_aWizardOptions
-            : TaskScheduler_WPUtility::getTransient( $_sTransientKey );
+            : TaskScheduler_WPUtility::getTransient( TaskScheduler_Utility::getHTTPQueryGET( 'transient_key', '' ) );
 
         // If the key is not set, return the entire array.
         if ( empty( $sKey ) ) {
-            return is_array( $_aWizardOptions )
-                ? $_aWizardOptions
-                : array();
+            return is_array( $_aWizardOptions ) ? $_aWizardOptions : array();
         }
         // Otherwise, return the element specified with the key.
-        return isset( $_aWizardOptions[ $sKey ] )
-            ? $_aWizardOptions[ $sKey ]
-            : null;
+        return isset( $_aWizardOptions[ $sKey ] ) ? $_aWizardOptions[ $sKey ] : null;
         
     }    
     
     /**
      * Deletes the wizard option transients.
      * 
-     * @since       1.4.0       Changed the visibility scope to `public` from `protected` as delegatin classes access it.
-     * @since       1.4.0       Renamed from `_deleteWizardOptions()`.
-     * @return      void
+     * @since 1.4.0 Changed the visibility scope to `public` from `protected` as delegatin classes access it.
+     * @since 1.4.0 Renamed from `_deleteWizardOptions()`.
      */
     public function deleteWizardOptions( $sTransientKey='' ) {
-        
-        $sTransientKey = $sTransientKey 
-            ? $sTransientKey
-            : ( 
-                isset( $_GET[ 'transient_key' ] ) 
-                    ? $_GET[ 'transient_key' ] 
-                    : '' 
-            );
+        $sTransientKey = $sTransientKey ? $sTransientKey : TaskScheduler_Utility::getHTTPQueryGET( 'transient_key', '' );
         TaskScheduler_WPUtility::deleteTransient( $sTransientKey );
-        
     }
        
     /**

@@ -11,9 +11,9 @@ class TaskScheduler_MetaBox_Occurrence extends TaskScheduler_MetaBox_Base {
      * 
      */ 
     public function setUp() {
-        
-        $this->oTask = isset( $_GET['post'] )
-            ? TaskScheduler_Routine::getInstance( $_GET['post'] )
+
+        $this->oTask = isset( $_GET[ 'post' ] ) // sanitization unnecessary
+            ? TaskScheduler_Routine::getInstance( absint( $_GET[ 'post' ] ) )   // sanitization done
             : null;
         
         $this->addSettingFields(

@@ -71,8 +71,8 @@ abstract class TaskScheduler_AdminPage_Wizard_Setup extends TaskScheduler_AdminP
      */
     public function load() {
         
-        $this->_sTransientKey = isset( $_GET[ 'transient_key' ] ) && $_GET[ 'transient_key' ]
-            ? $_GET[ 'transient_key' ] 
+        $this->_sTransientKey = ! empty( $_GET[ 'transient_key' ] ) // sanitization unnecessary
+            ? sanitize_text_field( $_GET[ 'transient_key' ] )       // sanitization done
             : TaskScheduler_Registry::TRANSIENT_PREFIX . uniqid();        
         $this->sTransientKey = $this->_sTransientKey;
                                 

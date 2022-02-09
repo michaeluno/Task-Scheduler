@@ -80,13 +80,13 @@ abstract class TaskScheduler_ListTable_Column extends TaskScheduler_ListTable_Ac
         if ( ! $oRoutine->isTask() ) {
             unset( $_aActions[ 'clone' ], $_aActions[ 'edit' ], $_aActions[ 'view' ], $_aActions[ 'disable' ] );
         }
-        if ( isset( $_GET[ 'status' ] ) && 'disabled' === $_GET[ 'status' ] ) {
+        if ( isset( $_GET[ 'status' ] ) && 'disabled' === $_GET[ 'status' ] ) { // sanitization unnecessary
             unset( $_aActions[ 'disable' ], $_aActions[ 'run' ] );
         }
-        if ( ! isset( $_GET[ 'status' ] ) || 'enabled' === $_GET[ 'status' ] ) {    // the default Enabled view
+        if ( ! isset( $_GET[ 'status' ] ) || 'enabled' === $_GET[ 'status' ] ) {    // the default Enabled view     // sanitization unnecessary
             unset( $_aActions[ 'enable' ], $_aActions[ 'delete' ]  );
         }
-        if ( isset( $_GET[ 'status' ] ) && in_array( $_GET[ 'status' ], array( 'system', 'thread' ) ) ) {
+        if ( isset( $_GET[ 'status' ] ) && in_array( $_GET[ 'status' ], array( 'system', 'thread' ), true ) ) { // sanitization unnecessary
             unset( $_aActions[ 'edit' ], $_aActions[ 'view' ] );    
         }
         if ( $oRoutine->isEnabled() ) {

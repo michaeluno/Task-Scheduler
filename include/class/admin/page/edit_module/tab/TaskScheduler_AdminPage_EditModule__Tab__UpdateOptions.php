@@ -26,15 +26,14 @@ class TaskScheduler_AdminPage_EditModule__Tab__UpdateOptions extends TaskSchedul
      * @callback        action      load_{page slug}_{tab slug}
      */ 
     public function replyToLoadTab( $oFactory ) {
-        
 
         $_aWizardOptions = $oFactory->getWizardOptions();
         $oFactory->deleteWizardOptions();
 
-        // Check the required keys - the user may comeback to the page from the browser's Back button.
-        if ( ! isset( $_GET[ 'post' ] ) ) {
+        // Check the required keys - the user may come back to the page from the browser's Back button.
+        if ( ! isset( $_GET[ 'post' ] ) ) { // sanitization unnecessary
             $_bDebugInfo = $oFactory->oUtil->isDebugMode()
-                ? '<h4>$_GET</h4><pre>' . print_r( $_GET, true ) . '</pre>'
+                ? '<h4>$_GET</h4><pre>' . print_r( $this->getHTTPQueryGET(), true ) . '</pre>'
                     . '<h4>$_aWizardOptions' . __METHOD__ . '</h4><pre>' . print_r( $_aWizardOptions, true ) . '</pre>'
                 : '';
             $oFactory->setSettingNotice( 
@@ -45,15 +44,14 @@ class TaskScheduler_AdminPage_EditModule__Tab__UpdateOptions extends TaskSchedul
         }
 
         // Drop unnecessary form elements. The method is defined in the base class.
-        $_bUpdateSchedule   = isset( $_aWizardOptions['_update_next_schedule'] ) 
-            ? $_aWizardOptions[ '_update_next_schedule' ]
-            : false;
+        $_bUpdateSchedule   = ! empty( $_aWizardOptions[ '_update_next_schedule' ] );
         $_aWizardOptions    = $oFactory->dropUnnecessaryWizardOptions( $_aWizardOptions );
 
         // Update the meta.
-        TaskScheduler_WPUtility::updatePostMeta( $_GET[ 'post' ], $_aWizardOptions );        
+        $_iPostID = absint( TaskScheduler_Utility::getHTTPQueryGET( 'post' ) );    // sanitization done
+        TaskScheduler_WPUtility::updatePostMeta( $_iPostID, $_aWizardOptions );
         if ( $_bUpdateSchedule ) {            
-            $_oTask         = TaskScheduler_Routine::getInstance( $_GET[ 'post' ] );
+            $_oTask         = TaskScheduler_Routine::getInstance( $_iPostID );
             $_nLastRunTime  = $_oTask->_last_run_time;
             $_oTask->deleteMeta( '_last_run_time' );    // The Fixed Interval occurrence type uses the last run time meta data.
             $_oTask->setNextRunTime();

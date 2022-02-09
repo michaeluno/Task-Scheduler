@@ -20,7 +20,7 @@ class TaskScheduler_ListTable_Action extends TaskScheduler_ListTable_Base {
      */ 
     public function get_bulk_actions() {
         
-        $_aGET = $_GET + array(
+        $_aGET = TaskScheduler_Utility::getHTTPQueryGET() + array(
             'status' => '',
         );
         switch( $_aGET[ 'status' ] ) {

@@ -23,9 +23,9 @@ final class TaskScheduler_AdminPage_EditModule extends TaskScheduler_AdminPage_E
         
         $_aWizardOptions = $this->getWizardOptions();
         
-        // If the wizard options are empty, assume it it is the first page of the editing module wizard screen.
-        if ( empty( $_aWizardOptions ) && isset( $_GET['transient_key'] ) ) {
-            $_aWizardOptions = $this->_setWizardOptions( $_GET['transient_key'] );
+        // If the wizard options are empty, assume it is the first page of the editing module wizard screen.
+        if ( empty( $_aWizardOptions ) && isset( $_GET[ 'transient_key' ] ) ) { // sanitization unnecessary
+            $_aWizardOptions = $this->_setWizardOptions( TaskScheduler_Utility::getHTTPQueryGET( 'transient_key' ) );
         }
         
         // This filter lets multiple wizard screens set their options.
@@ -44,11 +44,11 @@ final class TaskScheduler_AdminPage_EditModule extends TaskScheduler_AdminPage_E
          */
         private function _setWizardOptions( $sTransientKey ) {
             
-            if ( ! isset( $_GET['post'] ) ) {
+            if ( ! isset( $_GET[ 'post' ] ) ) { // sanitization unnecessary
                 return array();
             }
             
-            $_aPostMeta = TaskScheduler_WPUtility::getPostMetas( $_GET['post'] );
+            $_aPostMeta = TaskScheduler_WPUtility::getPostMetas( absint( $_GET[ 'post' ] ) );       // sanitization done
             TaskScheduler_WPUtility::setTransient( $sTransientKey, $_aPostMeta, 30*60 );    // 30 minutes
             return $_aPostMeta;
             

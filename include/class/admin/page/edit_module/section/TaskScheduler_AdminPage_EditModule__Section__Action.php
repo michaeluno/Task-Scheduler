@@ -103,14 +103,11 @@ class TaskScheduler_AdminPage_EditModule__Section__Action extends TaskScheduler_
          * @return      string
          */
         private function _getActionSlug() {
-            
-            if ( ! isset( $_GET[ 'post' ] ) ) {
+
+            if ( empty( $_GET[ 'post' ] ) ) { // sanitization unnecessary
                 return '';
             }
-            if ( ! $_GET[ 'post' ] ) {
-                return '';
-            }
-            $_oTask = TaskScheduler_Routine::getInstance( $_GET[ 'post' ] );
+            $_oTask = TaskScheduler_Routine::getInstance( absint( $_GET[ 'post' ] ) );  // sanitization done
             return isset( $_oTask->routine_action )
                 ? $_oTask->routine_action
                 : '';

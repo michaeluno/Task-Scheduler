@@ -28,7 +28,7 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
         $this->_oTaskListTable->process_bulk_action();            // do this before fetching posts
 
         // the 'status' key can be either 'enabled', 'disabled', or 'thread'.
-        $_sStatus    = isset( $_GET[ 'status' ] ) ? $_GET[ 'status' ] : 'enabled';
+        $_sStatus    = TaskScheduler_Utility::getHTTPQueryGET( 'status', 'enabled' );
         $_oEnabled   = $this->_getRoutines( 'enabled' );
         $_oDisabled  = $this->_getRoutines( 'disabled' );
         $_oSystem    = $this->_getRoutines( 'system' );
@@ -72,8 +72,8 @@ abstract class TaskScheduler_AdminPage_Form extends TaskScheduler_AdminPage_Star
             
             $_aQueryArgs = array();
             if ( isset( $_GET[ 'orderby' ], $_GET[ 'order' ] ) ) {
-                $_aQueryArgs[ 'meta_key' ] = $_GET[ 'orderby' ];
-                $_aQueryArgs[ 'order' ]    = strtoupper( $_GET[ 'order' ] );
+                $_aQueryArgs[ 'meta_key' ] = sanitize_text_field( $_GET[ 'orderby' ] );
+                $_aQueryArgs[ 'order' ]    = strtoupper( sanitize_text_field( $_GET[ 'order' ] ) );
             }                
             
             switch( strtolower( $sLabel ) ) {

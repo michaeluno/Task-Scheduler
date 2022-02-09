@@ -45,11 +45,11 @@ abstract class TaskScheduler_ListTable_Views extends TaskScheduler_ListTable_Col
             unset( $_aBaseKeys[ 'thread' ] );
         }
 
-        $_aViews = array();        
+        $_snStatus = TaskScheduler_Utility::getHTTPQueryGET( 'status' );
+        $_aViews   = array();
         foreach ( $_aBaseKeys as $_sKey => $_sLabel ) {
-            
             $_sSelfURL_StatusQuery = esc_url( $this->getQueryURL( array( 'status' => $_sKey ) ) );
-            $_sCurrent = ( ! isset( $_GET['status'] ) && 'enabled' == $_sKey ) || ( isset( $_GET['status'] ) && $_sKey == $_GET['status'] ) 
+            $_sCurrent = ( ! isset( $_snStatus ) && 'enabled' === $_sKey ) || ( isset( $_snStatus ) && $_sKey === $_snStatus )
                 ? 'current' 
                 : '';
             $_aViews[ $_sKey ] = "<a href='{$_sSelfURL_StatusQuery}' class='{$_sCurrent}'>"

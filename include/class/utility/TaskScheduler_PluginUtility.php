@@ -176,8 +176,8 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
     public static function getEditTaskPageURL() {
         return add_query_arg(
             array( 
-                'post'   => isset( $_GET['post'] ) 
-                    ? $_GET['post'] 
+                'post'   => isset( $_GET[ 'post' ] )    // sanitization unnecessary
+                    ? absint( $_GET[ 'post' ] )         // sanitization done
                     : '',
                 'action' => 'edit',
             ),
