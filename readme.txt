@@ -2,8 +2,8 @@
 Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
-Tested up to:       5.7.2
-Stable tag:         1.6.0
+Tested up to:       5.9
+Stable tag:         1.6.1
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               tool, utility, background, backend, task, system, event, scheduler, email, delete posts, cron, automation, routine
@@ -432,6 +432,12 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 
 == Changelog ==
+
+= 1.6.1 - 2022/02/10 =
+- Fixed a bug that unnecessary routines were spawned per task.
+- Fixed a bug that Run Count was not updated when a routine had a thread.
+- Fixed non-sanitized HTTP request values.
+- Refined some input fields due to a dependency replacement.
 
 = 1.6.0 - 2021/07/07 =
 - Added the `User Roles` option for the `Email` action
