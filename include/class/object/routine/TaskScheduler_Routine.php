@@ -219,11 +219,11 @@ final class TaskScheduler_Routine extends TaskScheduler_Routine_Taxonomy {
         
         // At this point, the meta key does not exist. Since the parent __get() method will return false if not key is set,
         // Specify keys that should not return false but null.
-        if ( in_array( $sName, array( '_exit_code', '_is_spawned', '_spawned_time' ) ) ) {
+        if ( in_array( $sName, array( '_exit_code', '_is_spawned', '_spawned_time' ), true ) ) {
             $this->$sName = null;
             return null;
         }
-        if ( in_array( $sName, array( 'parent_routine_log_id', '_count_exit', '_count_run', '_count_call', '_count_hung' ) ) ) {
+        if ( in_array( $sName, array( 'parent_routine_log_id', '_count_exit', '_count_run', '_count_call', '_count_hung' ), true ) ) {
             $this->$sName = 0;
             return 0;
         }
