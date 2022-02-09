@@ -94,6 +94,11 @@ abstract class TaskScheduler_RoutineUtility_Get extends TaskScheduler_RoutineUti
                     'value'     => '0',
                     'compare'   => '=',
                 ),
+                array(
+                    'key'       => 'owner_task_id',
+                    'value'     => $iTaskID,
+                    'compare'   => '=',
+                ),
             ),
         );
         $_oResults = self::find( $_aArguments );
