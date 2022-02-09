@@ -283,7 +283,7 @@ SQL;
             $this->_oTaskListTable->views();
             $this->_oTaskListTable->display();
             echo "<input type='hidden' name='task_scheduler_task_table' value='1' />";
-            echo "<input type='hidden' name='task_scheduler_nonce' value='{$_sNonce}' />";
+            echo "<input type='hidden' name='task_scheduler_nonce' value='" . esc_attr( $_sNonce ) . "' />";
             $_sContent = ob_get_contents(); // Assign the content buffer to a variable.
             ob_end_clean(); // End buffer and remove the buffer.
             return $_sContent;            

@@ -94,8 +94,8 @@ class TaskScheduler_AdminPage_EditModule__Page__EditOptions extends TaskSchedule
             return;
         }
         
-        echo "<h3>" . __( 'Debug Info', 'task-scheduler' ) . "</h3>";
-        echo "<h4>" . __( 'Saved Wizard Options', 'task-scheduler' ) . "</h4>";
+        echo "<h3>" . esc_html__( 'Debug Info', 'task-scheduler' ) . "</h3>";
+        echo "<h4>" . esc_html__( 'Saved Wizard Options', 'task-scheduler' ) . "</h4>";
         echo "<pre>" . TaskScheduler_Debug::getDetails( $oFactory->oProp->aOptions ) . "</pre>";
         
     }    
