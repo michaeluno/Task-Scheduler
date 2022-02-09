@@ -1,0 +1,19 @@
+/*! Admin Page Framework - Form for WordPress 3.8 or above 1.0.0 */
+/* Repeatable field buttons */
+.task-scheduler-repeatable-field-buttons {
+  margin: 2px 0 0 0.3em;
+}
+
+.task-scheduler-repeatable-field-buttons.disabled > .repeatable-field-button {
+  color: #edd;
+  border-color: #edd;
+}
+
+/* Fix Sortable fields drag&drop problem in MP6 */
+@media screen and (max-width: 782px) {
+  .task-scheduler-fieldset {
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+}
+/*# sourceMappingURL=form_3_8_or_above.css.map */

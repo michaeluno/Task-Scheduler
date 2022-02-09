@@ -117,7 +117,7 @@ if ( ! class_exists( 'TaskScheduler_RevealerCustomFieldType' ) ) :
  * @since       1.0.0
  * @package     TaskScheduler_AdminPageFrameworkFieldTypePack
  * @subpackage  CustomFieldType
- * @version     1.0.5
+ * @version     1.1.1
  */
 class TaskScheduler_RevealerCustomFieldType extends TaskScheduler_AdminPageFramework_FieldType {
         
@@ -135,6 +135,7 @@ class TaskScheduler_RevealerCustomFieldType extends TaskScheduler_AdminPageFrame
         'select_type'   => 'select',        // accepts 'radio', 'checkbox'
         'is_multiple'   => false,
         'selectors'     => array(),
+        'is_global'     => false,            // When true, the show/hide action will be applied to the global DOM structure. Otherwise (foe false), the selector will be applied withing the residing section.
         'attributes'    => array(
             'select'    => array(
                 'size'          => 1,
@@ -147,34 +148,30 @@ class TaskScheduler_RevealerCustomFieldType extends TaskScheduler_AdminPageFrame
         ),
     );
 
-    /**
-     * Indicates whether the JavaScirpt script is inserted or not.
-     */
-    private static $_bIsLoaded = false;
+
 
     /**
      * Loads the field type necessary components.
      */
     protected function setUp() {
 
-        if ( ! self::$_bIsLoaded ) {
-            wp_enqueue_script( 'jquery' );
-            self::$_bIsLoaded = add_action( 'admin_print_footer_scripts', array( $this, '_replyToAddRevealerjQueryPlugin' ) );
-        }
+        add_action( 'admin_footer', array( $this, 'replyToEnqueueScripts' ), 1 );
 
-        $this->_checkFrameworkVersion();
+        // for front-end forms
+        add_action( 'wp_footer', array( $this, 'replyToEnqueueScripts' ), 1 );
+        add_action( 'embed_footer', array( $this, 'replyToEnqueueScripts' ), 1 );
+
+        $this->___checkFrameworkVersion();
 
     }
-
         /**
-         * @return      void
          */
-        private function _checkFrameworkVersion() {
+        private function ___checkFrameworkVersion() {
 
             // Requires Admin Page Framework 3.7.1+
             if (
                 method_exists( $this, 'getFrameworkVersion' )
-                && version_compare( '3.7.1', $this->_getSuffixRemoved( $this->getFrameworkVersion(), '.dev'  ), '<=' )
+                && version_compare( '3.7.1', $this->___getSuffixRemoved( $this->getFrameworkVersion(), '.dev'  ), '<=' )
             ) {
                 return;
             }
@@ -191,26 +188,48 @@ class TaskScheduler_RevealerCustomFieldType extends TaskScheduler_AdminPageFrame
             );
 
         }
-        /**
-         * @return  string
-         */
-        private function _getSuffixRemoved( $sString, $sSuffix ) {
-
-            $_iLength = strlen( $sSuffix );
-            if ( substr( $sString, $_iLength * -1 ) !== $sSuffix ) {
-                return $sString;
+            /**
+             * @return  string
+             */
+            private function ___getSuffixRemoved( $sString, $sSuffix ) {
+                $_iLength = strlen( $sSuffix );
+                if ( substr( $sString, $_iLength * -1 ) !== $sSuffix ) {
+                    return $sString;
+                }
+                return substr( $sString, 0, $_iLength * - 1 );
             }
-            return substr( $sString, 0, $_iLength * - 1 );
 
-        }
+    /**
+     * @var array
+     * @since 1.1.0
+     * @remark This is static to support more than one revealer instances in one page.
+     */
+    static public $aAddedFields = array();
+
+    /**
+     * @callback admin_footer
+     * @since 1.1.0
+     */
+    public function replyToEnqueueScripts() {
+        $_aData = array(
+            'fieldTypeSlugs' => $this->aFieldTypeSlugs,
+            'fields'         => self::$aAddedFields,
+            'debugMode'    => $this->isDebugMode(),
+        );
+        wp_enqueue_script(
+            'apfRevealerFieldType',
+            $this->getResolvedSRC( dirname( __FILE__ ) . '/js/revealer.js' ),
+            array( 'jquery' ),
+            false
+        );
+        wp_localize_script( 'apfRevealerFieldType', 'apfRevealerFieldType', $_aData );
+    }
 
     /**
      * Returns an array holding the urls of enqueuing scripts.
      */
     protected function getEnqueuingScripts() {
-        return array(
-            // array( 'src'    => dirname( __FILE__ ) . '/js/jquery.knob.js', 'dependencies'    => array( 'jquery' ) ),
-        );
+        return array();
     }
 
     /**
@@ -220,32 +239,11 @@ class TaskScheduler_RevealerCustomFieldType extends TaskScheduler_AdminPageFrame
         return array();
     }
 
-
     /**
      * Returns the field type specific JavaScript script.
      */
     protected function getScripts() {
-        $_aJSArray      = json_encode( $this->aFieldTypeSlugs );
-        $_sDoubleQuote  = '\"';
-        return <<<JAVASCRIPTS
-
-/* The below function will be triggered when a new repeatable field is added. Since the APF repeater script does not
-    renew the color piker element (while it does on the input tag value), the renewal task must be dealt here separately. */
-jQuery( document ).ready( function(){
-    
-    jQuery().registerTaskScheduler_AdminPageFrameworkCallbacks( {     
-        /**
-         * Called when a field of this field type gets repeated.
-         */
-        repeated_field: function( oCloned, aModel ) {
-            oCloned.find( 'select[data-reveal],input[type=\"checkbox\"][data-reveal],input[type=\"radio\"][data-reveal]' )
-                .setTaskScheduler_AdminPageFrameworkRevealer();          
-        },
-    },
-    {$_aJSArray}
-    );
-});
-JAVASCRIPTS;
+        return '';
     }
 
     /**
@@ -270,42 +268,35 @@ JAVASCRIPTS;
      */
     protected function getField( $aField ) {
 
-        $_aOutput   = array();
-        $aField     = $this->_sanitizeInnerFieldArray( $aField );
-        $_aOutput[] = $this->getFieldOutput( $aField );
-        $_aOutput[] = $this->_getRevealerScript( $aField[ 'input_id' ] );
-        $_aLabels   = empty( $aField[ 'selectors' ] )
-            ? $aField[ 'label' ]
-            : array_flip( $this->getAsArray( $aField[ 'selectors' ] ) );
-        switch( $aField[ 'select_type' ] ) {
-            default:
-            case 'select':
-            case 'radio':
-                $_aOutput[] = $this->_getConcealerScript( $aField[ 'input_id' ], $_aLabels, $aField[ 'value' ] );
-                break;
-            case 'checkbox':
-                if ( is_string( $aField[ 'label' ] ) ) {
-                    $_aSelections = empty( $aField[ 'value' ] )
-                        ? array()
-                        : $this->getAsArray( $aField[ 'selectors' ] );
-                } else {
-                    $_aSelections = is_array( $aField[ 'value' ] )
-                        ? array_keys( array_filter( $aField[ 'value' ] ) )
-                        : $aField[ 'label' ];
-                }
-                $_aOutput[] = $this->_getConcealerScript( $aField[ 'input_id' ], $_aLabels, $_aSelections );
-                break;
-        }
+        $_aOutput    = array();
+        $_aSelectors = $this->___getSelectors( $aField );
+        $aField      = $this->___getInnerFieldArraySanitized( $aField, $_aSelectors );
+        $_aOutput[]  = $this->getFieldOutput( $aField );
+        $_aSelected  = array(); // the selected values
+
+        // Store the field information to pass to the revealer JavaScript script.
+        self::$aAddedFields[ $aField[ 'input_id' ] ] = array(
+            'isGlobal'  => $aField[ 'is_global' ],
+            'inputID'   => $aField[ 'input_id' ],
+            'selectors' => $_aSelectors,
+            'selected'  => $_aSelected,
+            'type'      => $aField[ 'select_type' ],
+        );
         return implode( PHP_EOL, $_aOutput );
 
     }
-
+        private function ___getSelectors( array $aField ) {
+            if ( ! empty( $aField[ 'selectors' ] ) ) {
+                return $this->getAsArray( $aField[ 'selectors' ] );
+            }
+            return array_keys( $this->getAsArray( $aField[ 'label' ] ) );
+        }
         /**
          * Sanitize (re-format) the field definition array to get the field output by the select type.
          *
          * @since       3.4.0
          */
-        private function _sanitizeInnerFieldArray( array $aField ) {
+        private function ___getInnerFieldArraySanitized( array $aField, array $aSelectors ) {
 
             // The revealer field type has its own description element.
             unset(
@@ -313,21 +304,29 @@ JAVASCRIPTS;
                 $aField[ 'title' ]
             );
 
+            // When the `hidden` argument is turned on, the outer field row should be hidden.
+            // If the inner fieldset is hidden, it cannot be revealed.
+            $aField[ 'hidden' ] = false;
+
             // The revealer script of check boxes needs the reference of the selector to reveal.
             // For radio and select input types, the key of the label array can be used but for the checkbox input type,
             // the value attribute needs to be always 1 (for cases of key of zero '0') so the selector needs to be separately stored.
-            $_aSelectors = $this->getAsArray( $aField[ 'selectors' ] );
+            $_sSelectors = implode( ',', $aSelectors );
             switch( $aField[ 'select_type' ] ) {
                 default:
                 case 'select':
                     foreach( $this->getAsArray( $aField[ 'label' ] ) as $_sKey => $_sLabel ) {
                         // If the user sets the 'selectors' argument, its value will be used; otherwise, the label key will be used.
-                        $_sSelector = $this->getElement( $_aSelectors, array( $_sKey ), $_sKey );
+                        $_sSelector = $this->getElement( $aSelectors, array( $_sKey ), $_sKey );
                         $aField[ 'attributes' ][ 'select' ] = array(
                             'data-reveal' => $_sSelector, // this is only for identifying the select element is of the revealer field type, not for referencing.
+                            // Embed all the selectors for the field so that the other members can be referred when showing an item.
+                            // This is especially needed for repeatable sections.
+                            'data-selectors' => $_sSelectors,
                         );
                         $aField[ 'attributes' ][ 'option' ][ $_sKey ] = array(
                                 'data-reveal'   => $_sSelector,
+                                'data-global'   => ( integer ) $aField[ 'is_global' ],
                             )
                             + $this->getElementAsArray( $aField[ 'attributes' ], array( 'option', $_sKey ) );
                     }
@@ -336,18 +335,22 @@ JAVASCRIPTS;
                 case 'checkbox':
                     // for a single item
                     if ( is_string( $aField[ 'label' ] ) ) {
-                        $_sSelector = $this->getElement( $_aSelectors, array( 0 ), '0' );
+                        $_sSelector = $this->getElement( $aSelectors, array( 0 ), '0' );
                         $aField[ 'attributes' ] = array(
-                            'data-reveal'   => $_sSelector,
+                            'data-reveal'    => $_sSelector,
+                            'data-global'    => ( integer ) $aField[ 'is_global' ],
+                            'data-selectors' => $_sSelectors,
                         ) + $aField[ 'attributes' ];
                         break;
                     }
                     // for multiple items
                     foreach( $this->getAsArray( $aField[ 'label' ] ) as $_sKey => $_sLabel ) {
                         // If the user sets the 'selectors' argument, its value will be used; otherwise, the label key will be used.
-                        $_sSelector = $this->getElement( $_aSelectors, array( $_sKey ), $_sKey );
+                        $_sSelector = $this->getElement( $aSelectors, array( $_sKey ), $_sKey );
                         $aField[ 'attributes' ][ $_sKey ] = array(
-                                'data-reveal'   => $_sSelector,
+                                'data-reveal'    => $_sSelector,
+                                'data-global'    => ( integer ) $aField[ 'is_global' ],
+                                'data-selectors' => $_sSelectors,
                             )
                             + $this->getElementAsArray( $aField[ 'attributes' ], $_sKey );
                     }
@@ -362,125 +365,5 @@ JAVASCRIPTS;
 
         }
 
-        private function _getRevealerScript( $sInputID ) {
-            return
-                "<script type='text/javascript' >"
-                    . '/* <![CDATA[ */ '
-                    . "jQuery( document ).ready( function(){
-                        jQuery('select[data-id=\"{$sInputID}\"][data-reveal],input[data-id=\"{$sInputID}\"][data-reveal]')
-                            .setTaskScheduler_AdminPageFrameworkRevealer();
-                    });"
-                    . ' /* ]]> */'
-                . "</script>";
-        }
-        private function _getConcealerScript( $sSelectorID, $aLabels, $asCurrentSelection ) {
-
-            $aLabels            = $this->getAsArray( $aLabels );
-            $_aCurrentSelection = $this->getAsArray( $asCurrentSelection );
-            unset( $_aCurrentSelection[ 'undefined' ] );    // an internal reserved key
-            if( ( $_sKey = array_search( 'undefined' , $_aCurrentSelection ) ) !== false ) {
-                unset( $_aCurrentSelection[ $_sKey ] );
-            }
-            $_sCurrentSelection = json_encode( $_aCurrentSelection );
-
-            unset( $aLabels[ 'undefined' ] );
-            $aLabels        = array_keys( $aLabels );
-            $_sJSONLabels   = json_encode( $aLabels );    // encode it to be usable in JavaScript
-            $_sSelectors    = implode( ',', $aLabels );
-            return
-                "<script type='text/javascript' class='task-scheduler-revealer-field-type-concealer-script'>"
-                    . '/* <![CDATA[ */ '
-                    . "jQuery( document ).ready( function(){
-
-                        jQuery.each( {$_sJSONLabels}, function( iIndex, sValue ) {
-                        
-                            /* If it is the selected item, show it */
-                            if ( jQuery.inArray( sValue, {$_sCurrentSelection} ) !== -1 ) { 
-                                jQuery( sValue ).fadeIn();
-                                return true;    // continue
-                            }
-                            jQuery( sValue ).hide();
-                                
-                        });
-                        
-                        // Embed all the selectors for the field so that the other members can be referred when showing an item. 
-                        // This is especially needed for repeatable sections.
-                        jQuery( 'select[data-id=\"{$sSelectorID}\"][data-reveal], input[type=radio][data-id=\"{$sSelectorID}\"], input[type=checkbox][data-id=\"{$sSelectorID}\"][data-reveal]' )
-                            .attr( 'data-selectors', '{$_sSelectors}' );
-                            
-                        // Trigger  the reveler event.
-                        jQuery( 'select[data-id=\"{$sSelectorID}\"][data-reveal], input:checked[type=radio][data-id=\"{$sSelectorID}\"], input:checked[type=checkbox][data-id=\"{$sSelectorID}\"][data-reveal]' )
-                            .trigger( 'change' );
-                    });"
-                    . ' /* ]]> */'
-                . "</script>";
-
-        }
-
-    /**
-     * Adds the revealer jQuery plugin.
-     * @since            3.0.0
-     */
-    public function _replyToAddRevealerjQueryPlugin() {
-
-        $_sScript = "
-( function ( $ ) {
-    
-    /**
-     * Binds the revealer event to the element.
-     */
-    $.fn.setTaskScheduler_AdminPageFrameworkRevealer = function() {
-        apfRevealerOnChange = function() {
-            
-            var _sTargetSelector        = $( this ).is( 'select' )
-                ? $( this ).children( 'option:selected' ).data( 'reveal' )
-                : $( this ).data( 'reveal' );
-                        
-            // For check-boxes       
-            if ( $( this ).is( ':checkbox' ) ) {
-                var _oElementToReveal       = $( _sTargetSelector );
-                if ( $( this ).is( ':checked' ) ) {
-                    _oElementToReveal.fadeIn();
-                } else {
-                    _oElementToReveal.hide();    
-                }                      
-                return;
-            }
-            
-            // For other types (select and radio).
-            var _oElementToReveal       = $( _sTargetSelector );
-
-            // Elements to hide
-            var _sSelectors = $( this ).data( 'selectors' );            
-            $( _sSelectors ).not( ':selected, :checked' ).hide();
-
-            // Hide the previously hidden element.
-            $( _sLastRevealedSelector ).hide();    
-                                
-            // Store the last revealed item in the local and the outer local variables.
-            _sLastRevealedSelector = _sTargetSelector;
-            
-            if ( 'undefined' === _sTargetSelector ) { 
-                return; 
-            }
-            _oElementToReveal.fadeIn();                                       
-            
-        }
-        var _sLastRevealedSelector;
-        this.unbind( 'change', apfRevealerOnChange ); // for repeatable fields               
-        this.change( apfRevealerOnChange );
-        
-    };
-                
-}( jQuery ));";
-
-        echo "<script type='text/javascript' class='task-scheduler-revealer-jQuery-plugin'>"
-                . '/* <![CDATA[ */ '
-                . $_sScript
-                . ' /* ]]> */'
-            . "</script>";
-
-    }
-    
 }
 endif;

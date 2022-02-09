@@ -1,0 +1,6 @@
+/*! Admin Page Framework - Form for WordPress 4.7 or above 1.0.0 */
+/* Fixes that the section tabs' bottom borders are not aligned */
+.task-scheduler-content ul.task-scheduler-section-tabs > li.task-scheduler-section-tab {
+  margin-bottom: -2px;
+}
+/*# sourceMappingURL=form_4_7_or_above.css.map */

@@ -1,11 +1,30 @@
+
+= 1.1.1 - 07/09/2021 =
+- Fixed a bug that caused a syntax error in PHP below 7.3.
+
+= 1.1.0 - 07/08/2021 =
+- Added the `is_global` argument to decide whether to apply the selector within the field residing section or the global DOM structure.
+- Changed the behavior to apply show/hide actions within the section by default. To apply globally, use `is_global` argument and set it to `true`.
+- Fixed a bug that in repeatable sections, the original field of cloned one lost the ability to show/hide elements.
+- Fixed a bug that in repeatable sections with other select type inputs, the revealer action could not be bound to the input change event.
+
+= 1.0.7 - 07/07/2021 =
+- Fix a bug that the when the `hidden` field argument is given, the field could not be revealed due to the inner `fieldset` element being hidden and unhandled.
+
+= 1.0.6 - 07/07/2021 =
+- Fix JQMIGRATE warnings in the browser console.
+
 = 1.0.5 - 08/27/2020 =
 - Added the ability for the checkbox type to have a single value, not an array of multiple select items.
 - Fixed a bug that even binding to input changes from other scripts got unbound.
+
 = 1.0.4 =
 - Supported repeatable sections.
 - Made the repeatable handling mechanism compatible with Admin Page Framework v3.8.10.
 - Fixed a bug with the `selectors` argument witch caused hiding unnecessary elements.
+
 = 1.0.3 =
 - Supported repeatable sections.
+
 = 1.0.2 =
 - Fixed a bug with the `revealer` field type that a field title got duplicated.
