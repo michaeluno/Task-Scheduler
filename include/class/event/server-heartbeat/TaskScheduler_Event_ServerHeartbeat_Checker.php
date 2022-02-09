@@ -298,7 +298,10 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
          */
         private function ___updateRoutineStatus( $oRoutine ) {
 
-            $oRoutine->setMeta( '_count_call',     $oRoutine->getMeta( '_count_call' ) + 1 );
+            $_inCallCount = $oRoutine->getMeta( '_count_call' );
+            if ( strlen( $_inCallCount ) ) {
+                $oRoutine->setMeta( '_count_call', $oRoutine->getMeta( '_count_call' ) + 1 );
+            }
             $oRoutine->setMeta( '_last_run_time',  microtime( true ) );
             $_iNextRunTime = apply_filters(
                 "task_scheduler_filter_next_run_time_{$oRoutine->occurrence}",
