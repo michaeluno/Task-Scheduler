@@ -112,31 +112,54 @@ abstract class TaskScheduler_Module_Factory extends TaskScheduler_PluginUtility 
                 
                 if ( ! is_admin() ) {
                     return false;
-                }                
+                }
+                $_aQuery = $this->___getURLQuery(); // this also allows ajax requests referred from those pages. This is needed to allow Ajax requests for some custom field types, such as `path`.
                 if ( 
-                    isset( $_GET['page'] ) 
+                    isset( $_aQuery[ 'page' ] )
                     && in_array( 
-                        $_GET['page'], 
+                        $_aQuery[ 'page' ],
                         array( 
                             TaskScheduler_Registry::$aAdminPages[ 'add_new' ],
                             TaskScheduler_Registry::$aAdminPages[ 'edit_module' ]
-                        )
+                        ),
+                        true
                     )
                 ) {
                     return true;
                 }
-                if (
-                    isset( $GLOBALS['pagenow'] )
-                    && in_array( 
-                        $GLOBALS['pagenow'], 
-                        array( 'post.php' ) 
-                    )
-                ) {
+                if ( isset( $GLOBALS[ 'pagenow' ] ) && 'post.php' === $GLOBALS[ 'pagenow' ] ) {
                     return true;
                 }
                 return false;
              
             }
+
+                /**
+                 * @return false|string
+                 * @since  1.6.1
+                 */
+                private function ___getReferrer() {
+                    static $_sCachedReferrer;
+                    if ( isset( $_sCachedReferrer ) ) {
+                        return $_sCachedReferrer;
+                    }
+                    $_sCachedReferrer = wp_get_referer();;
+                    return $_sCachedReferrer;
+                }
+                /**
+                 * @since  1.6.1
+                 * @return array
+                 */
+                private function ___getURLQuery() {
+                    if ( ! $this->isDoingAjax() ) {
+                        return $this->getHTTPQueryGET( array(), array() );
+                    }
+                    parse_str(
+                        parse_url( $this->___getReferrer(), PHP_URL_QUERY ), // query string such as `foo=bar&abc=xyz`
+                        $_aQuery
+                    );
+                    return $this->getHTTPQueryGET( array(), array() ) + $_aQuery;
+                }
             
         /**
          * Returns the slugs used for the wizard group.
