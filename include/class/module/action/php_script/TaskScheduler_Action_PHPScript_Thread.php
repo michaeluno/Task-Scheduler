@@ -52,8 +52,8 @@ class TaskScheduler_Action_PHPScript_Thread extends TaskScheduler_Action_Base {
             return 0;    // failed
         }
         
-        $_sPath = $this->_getPathFormatted( $_aThreadMeta[ 'php_script_path' ] );
-        
+        $_sPath = $this->___getPathFormatted( $_aThreadMeta[ 'php_script_path' ] );
+
         if ( ! file_exists( $_sPath ) ) {
             return 0;   // file not found
         }
@@ -65,10 +65,8 @@ class TaskScheduler_Action_PHPScript_Thread extends TaskScheduler_Action_Base {
          * @since       1.4.0
          * @return      string
          */
-        private function _getPathFormatted( $sRelativePath ) {
-            
-            return $_SERVER[ 'DOCUMENT_ROOT' ] . $sRelativePath;
-            
+        private function ___getPathFormatted( $sRelativePath ) {
+            return wp_normalize_path( trailingslashit( $_SERVER[ 'DOCUMENT_ROOT' ]  ) . trim( $sRelativePath, '\\/' ) );
         }
             
 }
