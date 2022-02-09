@@ -139,7 +139,12 @@ class TaskScheduler_MetaBox_Submit extends TaskScheduler_MetaBox_Base {
         $_sEnableOrDisable  = $aInput['_is_enabled'] ? 'enable' : 'disable';
         unset( $aInput[ '_is_enabled' ], $aInput['task_submit'] );
 
-        $_iRoutineID    = isset( $_POST['post_ID'] ) ? $_POST['post_ID'] : ( isset( $_POST['ID'] ) ? $_POST['ID'] : 0 );
+        $_iRoutineID    = isset( $_POST[ 'post_ID' ] )
+            ? absint( $_POST[ 'post_ID' ] )
+            : ( isset( $_POST[ 'ID' ] )
+                ? absint( $_POST[ 'ID' ] )
+                : 0
+            );
         $_oRoutine      = TaskScheduler_Routine::getInstance( $_iRoutineID );
         $_bisEnabled    = ( bool ) $_oRoutine->isEnabled();
         if ( $_bisEnabled !== $_bShouldBeEnabled ) {

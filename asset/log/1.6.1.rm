@@ -1,1 +1,2 @@
+- Fixed non-sanitized HTTP request values. 
 - Refined some input fields due to a dependency replacement. 

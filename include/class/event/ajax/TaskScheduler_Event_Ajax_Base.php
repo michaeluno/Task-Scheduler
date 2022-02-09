@@ -81,7 +81,8 @@ abstract class TaskScheduler_Event_Ajax_Base extends TaskScheduler_Event_Action_
             if ( ! $_iUserID ) {
                 throw new Exception( __( 'Could not get a user ID.', 'task-scheduler' ) );
             }
-            $_asMessage = $this->_getResponse( $_POST );
+            $_aPost     = $this->getArrayMappedRecursive('sanitize_text_field', $_POST );
+            $_asMessage = $this->_getResponse( $_aPost );
 
         } catch ( Exception $_oException ) {
 
