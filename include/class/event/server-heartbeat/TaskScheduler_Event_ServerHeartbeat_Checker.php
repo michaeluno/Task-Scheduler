@@ -76,7 +76,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
             if ( TaskScheduler_Option::get( array( 'server_heartbeat', 'power' ) ) ) {
                 return false;
             }            
-            return isset( $_REQUEST[ 'task_scheduler_checking_actions' ] ) && $_REQUEST[ 'task_scheduler_checking_actions' ];
+            return isset( $_REQUEST[ 'task_scheduler_checking_actions' ] ) && $_REQUEST[ 'task_scheduler_checking_actions' ];   // sanitization unnecessary
             
         }
 

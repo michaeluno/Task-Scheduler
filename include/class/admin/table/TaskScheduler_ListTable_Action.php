@@ -56,12 +56,12 @@ class TaskScheduler_ListTable_Action extends TaskScheduler_ListTable_Base {
      */
     public function process_bulk_action() {
             
-        // the key is defined as the singular slug and inserted in the input check boxes of the cb column.
-        if ( ! isset( $_REQUEST[ 'task_scheduler_task' ], $_REQUEST[ 'task_scheduler_nonce' ] ) ) { 
+        // the key is defined as the singular slug and inserted in the input checkboxes of the cb column.
+        if ( ! isset( $_REQUEST[ 'task_scheduler_task' ], $_REQUEST[ 'task_scheduler_nonce' ] ) ) { // sanitization unnecessary
             return; 
         }
 
-        if ( ! wp_verify_nonce( $_REQUEST[ 'task_scheduler_nonce' ], 'task_scheduler_list_table_action' ) ) {
+        if ( ! wp_verify_nonce( $_REQUEST[ 'task_scheduler_nonce' ], 'task_scheduler_list_table_action' ) ) {   // sanitization unnecessary as just checking
             $this->setAdminNotice( __( 'The action has been already done or is invalid.', 'task-scheduler' ) );
             return;
         }
@@ -69,27 +69,27 @@ class TaskScheduler_ListTable_Action extends TaskScheduler_ListTable_Base {
         $_iApplied     = 0;
         switch( strtolower( $this->current_action() ) ) {
             case 'enable':
-                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
-                    $_oTask = TaskScheduler_Routine::getInstance( $_sTaskPostID );
+                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {   // sanitization done
+                    $_oTask = TaskScheduler_Routine::getInstance( absint( $_sTaskPostID ) ); // sanitization done
                     $_oTask->enable();                            
                     $this->setAdminNotice( __( 'The task has been enabled.', 'task-scheduler' ), 'updated' );
                 }
                 break;            
             case 'disable':
-                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
-                    $_oTask = TaskScheduler_Routine::getInstance( $_sTaskPostID );
+                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {      // sanitization done
+                    $_oTask = TaskScheduler_Routine::getInstance( absint( $_sTaskPostID ) );    // sanitization done
                     $_oTask->disable();                
                     $this->setAdminNotice( __( 'The task has been disabled.', 'task-scheduler' ), 'updated' );                    
                 }
                 break;
             case 'delete':
-                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
+                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {      // sanitization done
                     
                     $_sKey = array_search( $_sTaskPostID, $this->aData );
                     if ( false !== $_sKey ) {
                         unset( $this->aData[ $_sKey ] );
                     }        
-                    $_oTask = TaskScheduler_Routine::getInstance( $_sTaskPostID );
+                    $_oTask = TaskScheduler_Routine::getInstance( absint( $_sTaskPostID ) );    // sanitization done
                     if ( is_object( $_oTask ) ) {    // sometimes the routine is already deleted by a different process
                         $_oTask->delete();
                     }
@@ -97,8 +97,8 @@ class TaskScheduler_ListTable_Action extends TaskScheduler_ListTable_Base {
                 }                
                 break;
             case 'run':
-                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sPostID ) {
-                    $_oTaskOrRoutine = TaskScheduler_Routine::getInstance( $_sPostID );
+                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sPostID ) {              // sanitization done
+                    $_oTaskOrRoutine = TaskScheduler_Routine::getInstance( absint( $_sPostID ) );   // sanitization done
                     if ( ! ( $_oTaskOrRoutine instanceof TaskScheduler_Routine ) ) {
                         continue;
                     }
@@ -109,24 +109,24 @@ class TaskScheduler_ListTable_Action extends TaskScheduler_ListTable_Base {
                 }
                 break;
             case 'reset_status':
-                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
-                    $_oTask = TaskScheduler_Routine::getInstance( $_sTaskPostID );
+                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {      // sanitization done
+                    $_oTask = TaskScheduler_Routine::getInstance( absint( $_sTaskPostID ) );    // sanitization done
                     $_oTask->resetStatus();
                     $_iApplied++;
                     $this->setAdminNotice( __( 'Reset the status.', 'task-scheduler' ), 'updated' );
                 }                    
                 break;    
             case 'reset_counts':
-                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
-                    $_oTask = TaskScheduler_Routine::getInstance( $_sTaskPostID );
+                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {      // sanitization done
+                    $_oTask = TaskScheduler_Routine::getInstance( absint( $_sTaskPostID ) );    // sanitization done
                     $_oTask->resetCounts();
                     $_iApplied++;
                     $this->setAdminNotice( __( 'Reset the counts.', 'task-scheduler' ), 'updated' );
                 }                                
                 break;
             case 'clone':
-                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {
-                    $_oCloneTask = new TaskScheduler_CloneTask( $_sTaskPostID );
+                foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {  // sanitization done
+                    $_oCloneTask = new TaskScheduler_CloneTask( absint( $_sTaskPostID ) );  // sanitization done
                     $_ioTask      = $_oCloneTask->perform();
                     if ( is_wp_error( $_ioTask ) ) {
                        $this->setAdminNotice( $_ioTask->get_error_message() );

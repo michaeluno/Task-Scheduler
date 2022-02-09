@@ -109,10 +109,10 @@ class TaskScheduler_MetaBox_Advanced extends TaskScheduler_MetaBox_Base {
          */
         private function ___checkLogs( $iMaxRootLogCount ) {
 
-            if ( ! isset( $_REQUEST[ 'post_ID' ] ) ) {
+            if ( ! isset( $_REQUEST[ 'post_ID' ] ) ) {  // sanitization unnecessary
                 return; 
             }
-            $_iTaskID    = $_REQUEST[ 'post_ID' ];
+            $_iTaskID    = absint( $_REQUEST[ 'post_ID' ] );    // sanitization done
             $_oTask      = TaskScheduler_Routine::getInstance( $_iTaskID );
             if ( ! is_object( $_oTask ) ) { 
                 return; 

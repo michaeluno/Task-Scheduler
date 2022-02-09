@@ -117,11 +117,11 @@ class TaskScheduler_ListTable extends TaskScheduler_ListTable_Views {
          */
         public function usort_reorder( $a, $b ) {
             
-            $_sOrderBy = ! empty( $_REQUEST[ 'orderby' ] ) 
-                ? $_REQUEST[ 'orderby' ] 
+            $_sOrderBy = ! empty( $_REQUEST[ 'orderby' ] )      // sanitization unnecessary
+                ? sanitize_text_field( $_REQUEST[ 'orderby' ] ) // sanitization done
                 : 'post_date'; 
-            $_sOrder   = ! empty( $_REQUEST[ 'order' ] )
-                ? $_REQUEST[ 'order' ]   
+            $_sOrder   = ! empty( $_REQUEST[ 'order' ] )        // sanitization unnecessary
+                ? sanitize_text_field( $_REQUEST[ 'order' ] )   // sanitization done
                 : 'desc'; // desc: largest to smaller            
             $_iResult  = 1;
             if ( is_array( $a ) && is_array( $b ) ) {
