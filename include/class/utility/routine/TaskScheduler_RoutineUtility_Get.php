@@ -45,9 +45,9 @@ abstract class TaskScheduler_RoutineUtility_Get extends TaskScheduler_RoutineUti
      * Returns the count of processing routines.
      */
     static public function getProcessingCount( $iLimit=-1 ) {
-        
+
         return count( self::getProcessing( $iLimit ) );
-        
+
     }
     
     /**
@@ -56,7 +56,7 @@ abstract class TaskScheduler_RoutineUtility_Get extends TaskScheduler_RoutineUti
      * @return        array        An array holding the found routine(post) IDs.
      */
     static public function getProcessing( $iLimit=-1 ) {
-        
+
         $_aArgs = array(
             'posts_per_page'    => $iLimit,    // -1 for all            
             'meta_query'        => array(
@@ -69,10 +69,37 @@ abstract class TaskScheduler_RoutineUtility_Get extends TaskScheduler_RoutineUti
             ),
         );        
         $_oResults = self::find( $_aArgs );
-        return $_oResults->posts;            
-        
+        return $_oResults->posts;
+
     }
-            
+
+    /**
+     * @return integer[]
+     */
+    static public function getSpawnedByHeartbeatByID( $iTaskID ) {
+        $_aArguments = array(
+            'post_type'         => array(
+                TaskScheduler_Registry::$aPostTypes[ 'routine' ],
+            ),
+            'posts_per_page'    => -1,    // -1 for all
+            'meta_query'        => array(
+                'relation'      => 'AND',    // or 'OR' can be specified
+                array(
+                    'key'       => '_routine_status',
+                    'value'     => array( 'ready', 'inactive' ),    // inactive is for backward-compatibility
+                    'compare'   => 'NOT IN',
+                ),
+                array(
+                    'key'       => '_spawned_by_force',
+                    'value'     => '0',
+                    'compare'   => '=',
+                ),
+            ),
+        );
+        $_oResults = self::find( $_aArguments );
+        return $_oResults->posts;
+    }
+
     /**
      * Returns the array of holding routine(task/thread) IDs that have a next scheduled time.
      * 
