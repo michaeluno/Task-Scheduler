@@ -119,7 +119,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
                 $_oTask->delete();
                 continue;
             }
-            
+
             do_action( 
                 'task_scheduler_action_spawn_routine', 
                 $_iItemID,
@@ -148,12 +148,12 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
          * @param       TaskScheduler_Routine $oRoutine
          */
         private function ___isThreadWithoutOwnerRoutine( $oRoutine ) {
-            
+
             if ( ! $oRoutine->isThread() ) {
                 return false;
             }
             return ! is_object( TaskScheduler_Routine::getInstance( $oRoutine->owner_routine_id ) );
-            
+
         }
         
     /**
@@ -175,12 +175,21 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         }
 
         // For tasks, create a routine object.
-        if ( $_oRoutine->isTask() ) {
+        $_bIsTask = $_oRoutine->isTask();
+        // [1.6.1+] If it is not called by force, check if there are already running routines by this task. If there are, do not create it.
+        if ( $_bIsTask && ! $bForce ) {
+           if ( count( TaskScheduler_RoutineUtility::getSpawnedByHeartbeatByID( $_oRoutine->ID ) ) ) {
+               return;
+           }
+        }
+        if ( $_bIsTask ) {
             $this->___updateTaskStatus( $_oRoutine, $nScheduledTime, $bUpdateNextRunTime );
             $_oRoutine = $this->___getRoutineFromTask( $_oRoutine );
             if ( ! isset( $_oRoutine->ID ) ) {
                 return;
             }
+            // [1.6.1+] Flag whether it is spawned forcefully to prevent unnecessary duplicated routines from spawning later.
+            $_oRoutine->setMeta( '_spawned_by_force', ( string ) ( integer ) $bForce ); // convert true to '1' and false to '0' of string value to be queried easily
             $iRoutineID = $_oRoutine->ID;
         }
 

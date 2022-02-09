@@ -135,7 +135,7 @@ final class TaskScheduler_Routine extends TaskScheduler_Routine_Taxonomy {
      * Checks if the task is enabled
      */
     public function isEnabled() {
-        return ( in_array( $this->post_status, array( 'publish', 'private' ) ) );
+        return ( in_array( $this->post_status, array( 'publish', 'private' ), true ) );
     }
     
     /**
@@ -143,14 +143,14 @@ final class TaskScheduler_Routine extends TaskScheduler_Routine_Taxonomy {
      * @return    boolean    True if it is a task.
      */
     public function isTask() {
-        return ( TaskScheduler_Registry::$aPostTypes[ 'task' ] == $this->post_type );
+        return ( TaskScheduler_Registry::$aPostTypes[ 'task' ] === $this->post_type );
     }
     
     /**
      * Checks whether the object is a routine.
      */
     public function isRoutine() {
-        return ( TaskScheduler_Registry::$aPostTypes[ 'routine' ] == $this->post_type );
+        return ( TaskScheduler_Registry::$aPostTypes[ 'routine' ] === $this->post_type );
     }
 
     /**
