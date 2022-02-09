@@ -1,3 +1,4 @@
 - Fixed a bug that unnecessary routines were spawned per task.
+- Fixed a bug that Run Count was not updated when a routine had a thread.
 - Fixed non-sanitized HTTP request values. 
 - Refined some input fields due to a dependency replacement.

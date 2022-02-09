@@ -78,7 +78,8 @@ $oThread->deleteMeta( '_spawned_time' );
         // Now update the owner task.
         $_oTask = $_oRoutine->getOwner();
         $_oTask->setMeta( '_exit_code',     $isExitCode );
-        $_oTask->setMeta( '_count_exit',    $_oTask->_count_exit + 1 );
+        $_oTask->setMeta( '_count_exit',    ( integer ) $_oTask->_count_exit + 1 );
+        $_oTask->setMeta( '_count_run', ( integer ) $_oTask->_count_run + 1 );
         $_oTask->log( 
             __( 'Completed all the threads.', 'task-scheduler' )
             . ' ' . sprintf( __( 'Exit Code: %1$s', 'task-scheduler' ), $isExitCode ),
