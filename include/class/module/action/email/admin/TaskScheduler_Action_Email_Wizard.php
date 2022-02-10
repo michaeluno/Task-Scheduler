@@ -162,8 +162,9 @@ final class TaskScheduler_Action_Email_Wizard extends TaskScheduler_Wizard_Actio
             // Drop non-email elements.
             foreach( array_filter( $_aEmailSets ) as $_iSetIndex => $_sEmailSet ) {
                 $_aEmailAddresses = preg_split( "/([\n\r](\s+)?)+/", $_sEmailSet );
-                foreach( $_aEmailAddresses as $_iIndex => $_sEmailAdderss ) {
-                    if ( ! filter_var( $_sEmailAdderss, FILTER_VALIDATE_EMAIL ) ) {
+                foreach( $_aEmailAddresses as $_iIndex => $_sEmailAddress ) {
+                    $_aEmailAddresses[ $_iIndex ] = sanitize_email( $_sEmailAddress );
+                    if ( ! filter_var( $_sEmailAddress, FILTER_VALIDATE_EMAIL ) ) {
                         unset( $_aEmailAddresses[ $_iIndex ] );
                     }
                 }
