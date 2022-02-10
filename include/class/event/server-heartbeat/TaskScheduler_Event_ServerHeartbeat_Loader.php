@@ -50,7 +50,7 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
      */
     public function _replyToDoRoutineAndExit() {
 
-        $_oRoutine = TaskScheduler_Routine::getInstance( absint( $_COOKIE[ 'server_heartbeat_action' ] ) );
+        $_oRoutine = TaskScheduler_Routine::getInstance( absint( $_COOKIE[ 'server_heartbeat_action' ] ) ); // sanitization done
         if ( ! is_object( $_oRoutine ) )  {
             exit();        
         }        
@@ -59,8 +59,8 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
         }
 
         // Check the spawned time in case simultaneous page loads triggered the same task.
-        $_nSpawnedTime = isset( $_COOKIE[ 'server_heartbeat_spawned_time' ] ) 
-            ? ( string ) $_COOKIE[ 'server_heartbeat_spawned_time' ] 
+        $_nSpawnedTime = isset( $_COOKIE[ 'server_heartbeat_spawned_time' ] )       // sanitization unnecessary
+            ? sanitize_text_field( $_COOKIE[ 'server_heartbeat_spawned_time' ] )    // sanitization done
             : null;
         if ( $_nSpawnedTime !== ( string ) $_oRoutine->_spawned_time ) {
             exit();
@@ -71,7 +71,7 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
         $this->___doRoutine(
             $_oRoutine,
             $this->___getScheduledTime(),
-            isset( $_COOKIE[ 'server_heartbeat_force_spawn' ] ) && $_COOKIE[ 'server_heartbeat_force_spawn' ]
+            ! empty( $_COOKIE[ 'server_heartbeat_force_spawn' ] )   // sanitization unnecessary
         );
         exit();
     
@@ -81,8 +81,8 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
          * @since       1.4.3
          */
         private function ___getScheduledTime() {
-            return isset( $_COOKIE[ 'server_heartbeat_scheduled_time' ] )
-                ? ( double ) $_COOKIE[ 'server_heartbeat_scheduled_time' ]
+            return isset( $_COOKIE[ 'server_heartbeat_scheduled_time' ] )   // sanitization unnecessary
+                ? ( double ) $_COOKIE[ 'server_heartbeat_scheduled_time' ]  // sanitization done
                 : ( double ) 0;
         }
 
@@ -220,7 +220,7 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
      * @remark    This class does not set the 'server_heartbeat_action' key but the action loader class. 
      */
     static public function isCallingAction() {
-        return isset( $_COOKIE[ 'server_heartbeat_action' ] ); 
+        return isset( $_COOKIE[ 'server_heartbeat_action' ] );  // sanitization unnecessary
     }
 
 }

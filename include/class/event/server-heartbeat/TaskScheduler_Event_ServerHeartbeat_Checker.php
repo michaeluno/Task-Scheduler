@@ -30,7 +30,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         add_action( 'task_scheduler_action_check_scheduled_actions', array( $this, '_replyToCheckScheduledActions' ) );
         
         // If doing actions, return.
-        if ( isset( $_COOKIE[ 'server_heartbeat_action' ] ) ) {
+        if ( isset( $_COOKIE[ 'server_heartbeat_action' ] ) ) { // sanitization unnecessary
             return;
         }
         
