@@ -39,14 +39,23 @@ class TaskScheduler_Action_Debug extends TaskScheduler_Action_Base {
     /**
      * Defines the behavior of the action.
      *
-     * @param integer|string $isExitCode
-     * @param TaskScheduler_Routine $oRoutine
-     * @return  integer|string
+     * @param  integer|string        $isExitCode
+     * @param  TaskScheduler_Routine $oRoutine
+     * @return integer
      */
     public function doAction( $isExitCode, $oRoutine ) {
 
-        TaskScheduler_Debug::log( 'Called from the Debug action.' );
-        TaskScheduler_Debug::log( $oRoutine->getMeta() );
+        $_aMeta = $oRoutine->getMeta();
+        TaskScheduler_Debug::log( 'Called from the Debug action.', 'debug_action.' . $_aMeta[ 'owner_task_id' ] );
+        TaskScheduler_Debug::log(
+            [
+                'Now'           => $this->getSiteReadableDate( time(), 'Y-m-d G:i:s', true ),
+                'Spawned Time'  => $this->getSiteReadableDate( $_aMeta[ '_spawned_time' ], 'Y-m-d G:i:s', true ),
+                'Last Run Time' => $this->getSiteReadableDate( isset( $_aMeta[ '_last_run_time' ] ) ? $_aMeta[ '_last_run_time' ] : 0, null, true ),
+                'Next Run Time' => $this->getSiteReadableDate( $_aMeta[ '_next_run_time' ], 'Y-m-d G:i:s', true ),
+            ] + $_aMeta,
+            'task_scheduler_action_debug_' . $_aMeta[ 'owner_task_id' ]
+        );
         return 1; // Exit Code
 
     }
