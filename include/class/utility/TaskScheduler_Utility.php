@@ -218,32 +218,32 @@ abstract class TaskScheduler_Utility extends TaskScheduler_AdminPageFramework_Fr
     } */
     
     /**
-     * Determines whether or not the ini_set() function can be used on the server.
+     * Determines whether the ini_set() function can be used on the server.
      */
     static public function canUseIniSet() {
-        
         static $_bCanUse;
         if ( isset( $_bCanUse ) ) {
             return $_bCanUse;
         }        
-        $_bCanUse = ! function_exists( 'ini_set' ) ? false : ( false === @ini_set( get_class(), get_class() ) );        
+        $_bCanUse = ! function_exists( 'ini_set' )
+            ? false
+            : ( false === @ini_set( get_class(), get_class() ) );
         return $_bCanUse;
-        
     }
     
     /**
      * Returns the server set max execution time in second.
+     * @param  integer $iDefault
+     * @return integer
      */
     static public function getServerAllowedMaxExecutionTime( $iDefault=30 ) {
-        
         if ( function_exists( 'ini_get' ) ) {
             $_iMaxExecutionTime = @ini_get( 'max_execution_time' );    // returns false on failure
             return ! $_iMaxExecutionTime && 0 !== $_iMaxExecutionTime
-                ? $iDefault
-                : $_iMaxExecutionTime;
+                ? ( integer ) $iDefault
+                : ( integer ) $_iMaxExecutionTime;
         }
-        return $iDefault;
-        
+        return ( integer ) $iDefault;
     }    
     
     /**
