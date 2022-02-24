@@ -74,9 +74,14 @@ final class TaskScheduler_Option {
          */
         private function ___getDefaultsFormatted( array $aDefaults ) {
             $_iServerAllowedMaxExecutionTime = TaskScheduler_Utility::getServerAllowedMaxExecutionTime( 30 );
-            $aDefaults[ 'server_heartbeat' ][ 'interval' ] = $_iServerAllowedMaxExecutionTime
-                ? round( $_iServerAllowedMaxExecutionTime * 8 / 10 )    // 80%
-                : $aDefaults[ 'server_heartbeat' ][ 'interval' ]; // 24
+            $_iDefaultInterval               = $_iServerAllowedMaxExecutionTime > 60
+                ? 60
+                : (
+                    $_iServerAllowedMaxExecutionTime
+                        ? round( $_iServerAllowedMaxExecutionTime * 8 / 10 )
+                        : 24
+                );
+            $aDefaults[ 'server_heartbeat' ][ 'interval' ] = $_iDefaultInterval;
             $aDefaults[ 'task_default' ][ 'max_execution_time' ] = 0 === $_iServerAllowedMaxExecutionTime
                 ? $aDefaults[ 'task_default' ][ 'max_execution_time' ]    // 30 ( 0 is not recommended )
                 : $_iServerAllowedMaxExecutionTime;
