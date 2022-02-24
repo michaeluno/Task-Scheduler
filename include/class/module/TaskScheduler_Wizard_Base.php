@@ -81,7 +81,7 @@ abstract class TaskScheduler_Wizard_Base {
     /**
      * Should be redefined in the extended class.
      * 
-     * This is used for filter names. Currently 'occurrence' or 'action' can be set.
+     * This is used for filter names. Currently, 'occurrence' or 'action' can be set.
      */
     protected $_sModuleType = 'base';    
     
@@ -324,8 +324,8 @@ abstract class TaskScheduler_Wizard_Base {
      *              [hidden] => 
      *              [_section_index] => 
      *          )
-     * @callback    filter      "field_definition_{class name}
-     * @return      array       An array holding field definitions.
+     * @callback add_filter()  field_definition_{class name}
+     * @return   array         An array holding field definitions.
      */
     public function _replyToAddFormFields( $aAllFields ) {
 
@@ -351,9 +351,8 @@ abstract class TaskScheduler_Wizard_Base {
     }
         
         /**
-         * Returns the submit field array which has the Back and Next buttons.
-         * 
-         * @return      array
+         * Returns the `submit` field array which has the Back and Next buttons.
+         * @return array
          */
         protected function _getSubmitButtonsField() {
             
@@ -401,8 +400,8 @@ abstract class TaskScheduler_Wizard_Base {
     
     /**
      * Set values of the stored wizard options to the wizard form fields.
-     * @since       1.4.0
-     * @return      array
+     * @since  1.4.0
+     * @return array
      */
     public function _replyToModifyOptions( $aOptions ) {
 
@@ -422,9 +421,9 @@ abstract class TaskScheduler_Wizard_Base {
     }
         
     /**
-     * @return      array
-     * @since       1.4.0
-     * @callback    filter      field_definition_{class name}_{section id}_{field id}"
+     * @return   array
+     * @since    1.4.0
+     * @callback add_filter() field_definition_{class name}_{section id}_{field id}"
      */
     public function _replyToRedefinePrevNextButtonField( $aFieldset ) {
         
@@ -444,8 +443,8 @@ abstract class TaskScheduler_Wizard_Base {
     /**
      * The callback function for adding in-page tabs.
      * 
-     * @callback        tabs_{class name}_{page slug}"
-     * @return          array
+     * @callback add_filter() tabs_{class name}_{page slug}"
+     * @return   array
      */
     public function _replyToAddInPageTab( $aTabs ) {
 
@@ -465,7 +464,7 @@ abstract class TaskScheduler_Wizard_Base {
     /**
      * Validates tab settings.
      * 
-     * @callback        filter      validation_{page slug}_{tab slug}
+     * @callback add_filter() validation_{page slug}_{tab slug}
      */
     public function _replyToValidateTabSettings( $aInput, $aOldInput, $oAdminPage, $aSubmitInfo ) {
 
@@ -515,23 +514,19 @@ abstract class TaskScheduler_Wizard_Base {
      * This is needed to preserve newly updated repeatable field values.
      */
     public function _replyToModifySavedTabOptions( $aSavedOptions, $oAdminPage ) {
-
         unset( $aSavedOptions[ '_wizard_options' ][ $this->sSlug ] );
         return $aSavedOptions;
-        
     }
         
     /**
      * Inserts a label item for this option.
      */
     public function _replyToAddActionLabel( $aLabels ) {
-        
         if ( ! $this->bAddToLabelList ) {
             return $aLabels;
         }
         $aLabels[ $this->sSlug ] = $this->getLabel();
         return $aLabels;
-        
     }    
     
     /**
@@ -556,8 +551,8 @@ abstract class TaskScheduler_Wizard_Base {
     /**
      * Validates section settings. An extended class should override this method.
      * 
-     * @callback    filter      validation_{class name}_{section ID}
-     * @return      array
+     * @callback add_filter() validation_{class name}_{section ID}
+     * @return   array
      */ 
     public function validateSettings( /* $aInput, $aOldInput, $oAdminPage, $aSubmitInfo */ ) { 
         $_aParams    = func_get_args() + array(
