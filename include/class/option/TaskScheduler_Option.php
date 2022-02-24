@@ -98,8 +98,7 @@ final class TaskScheduler_Option {
      * It will re-retrieve the options.
      */
     static public function refresh() {
-        
-        self::$oInstanc = null;
+        self::$oInstance = null;
         self::getInstance();
         
     }
