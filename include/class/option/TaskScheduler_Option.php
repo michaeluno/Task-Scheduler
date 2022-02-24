@@ -18,7 +18,12 @@ final class TaskScheduler_Option {
      * Stores the option key.
      */
     public $sOptionKey;
-    
+
+    /**
+     * @var array
+     */
+    public $aOptions = array();
+
     /**
      * Represents the option structure and the default values.
      */
