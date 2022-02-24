@@ -9,17 +9,16 @@
  * @since       1.0.0
  */
 
- /**
-  * 
-  * @action do  task_scheduler_action_before_calling_routine    Performed right before a routine is spanwed.
-  */
+/**
+ *
+ */
 class TaskScheduler_Event_ServerHeartbeat_Checker {
     
     /**
      * The check-action transient key.
      */
-    static public $sCheckActionTransientKey      = 'TS_checking_actions';
-    static public $sRecheckActionTransientKey    = 'TS_rechecking_actions';
+    static public $sCheckActionTransientKey   = 'TS_checking_actions';
+    static public $sRecheckActionTransientKey = 'TS_rechecking_actions';
     
     /**
      * Sets up hooks.
@@ -67,37 +66,33 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
          * the user accesses the site with the 'task_scheduler_checking_actions' key in the request url.
          */
         private function ___isManualPageLoad() {
-
             if ( isset( $GLOBALS[ 'pagenow' ] ) && in_array( $GLOBALS[ 'pagenow' ], array( 'wp-cron.php' ) ) ) {
                 return false;
             }
-            
             // Check if the server heartbeat is on.
             if ( TaskScheduler_Option::get( array( 'server_heartbeat', 'power' ) ) ) {
                 return false;
             }            
             return isset( $_REQUEST[ 'task_scheduler_checking_actions' ] ) && $_REQUEST[ 'task_scheduler_checking_actions' ];   // sanitization unnecessary
-            
         }
 
     /**
      * Spawns scheduled tasks.
      *
-     * @callback    add_action      wp_loaded
-     * @return      void
+     * @callback add_action() wp_loaded
      */
     public function _replyToSpawnRoutines() {
 
-        $_iSecondsFromNowToCheck        = TaskScheduler_Utility::canUseIniSet() 
+        $_iSecondsFromNowToCheck      = TaskScheduler_Utility::canUseIniSet()
             ? TaskScheduler_Option::get( array( 'server_heartbeat', 'interval' ) ) 
             : 0; // if the maximum execution time cannot be changed, only pick ones that exceeds the scheduled time.
 
-        $_iMaxAllowedNumberOfRoutines   = TaskScheduler_Option::get( array( 'routine', 'max_background_routine_count' ) );
-        $_aScheduledRoutines            = TaskScheduler_RoutineUtility::getScheduled( $_iSecondsFromNowToCheck, $_iMaxAllowedNumberOfRoutines );
-        $_iProcessingCount              = TaskScheduler_RoutineUtility::getProcessingCount();
-        $_iAllowedNumberOfRoutines      = $_iMaxAllowedNumberOfRoutines - $_iProcessingCount;
-        $_aScheduledRoutines            = array_slice( $_aScheduledRoutines, 0, $_iAllowedNumberOfRoutines );
-        $_nNow                          = microtime( true );
+        $_iMaxAllowedNumberOfRoutines = TaskScheduler_Option::get( array( 'routine', 'max_background_routine_count' ) );
+        $_aScheduledRoutines          = TaskScheduler_RoutineUtility::getScheduled( $_iSecondsFromNowToCheck, $_iMaxAllowedNumberOfRoutines );
+        $_iProcessingCount            = TaskScheduler_RoutineUtility::getProcessingCount();
+        $_iAllowedNumberOfRoutines    = $_iMaxAllowedNumberOfRoutines - $_iProcessingCount;
+        $_aScheduledRoutines          = array_slice( $_aScheduledRoutines, 0, $_iAllowedNumberOfRoutines );
+        $_nNow                        = microtime( true );
 
         // Set a check-action lock 
         TaskScheduler_WPUtility::deleteTransient( self::$sRecheckActionTransientKey );
@@ -138,22 +133,19 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
             TaskScheduler_ServerHeartbeat::beat();
         }
 
-        
     }   
         /**
          * Checks if the given object is a thread and its owner task exists or not. 
          * 
-         * @since       1.1.1
-         * @return      boolean
-         * @param       TaskScheduler_Routine $oRoutine
+         * @since  1.1.1
+         * @return boolean
+         * @param  TaskScheduler_Routine $oRoutine
          */
         private function ___isThreadWithoutOwnerRoutine( $oRoutine ) {
-
             if ( ! $oRoutine->isThread() ) {
                 return false;
             }
             return ! is_object( TaskScheduler_Routine::getInstance( $oRoutine->owner_routine_id ) );
-
         }
         
     /**
@@ -163,8 +155,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
      * @param    integer|float  $nScheduledTime     The scheduled run time.
      * @param    boolean        $bUpdateNextRunTime Whether to schedule the next run.
      * @param    boolean        $bForce             Whether to spawn the routine by ignoring the action lock.
-     * @callback action         task_scheduler_action_spawn_routine
-     * @return   void
+     * @callback add_action()   task_scheduler_action_spawn_routine
      */
     public function _replyToSpawnTheRoutine( $iRoutineID, $nScheduledTime, $bUpdateNextRunTime=true, $bForce=false ) {
 
@@ -230,12 +221,11 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
     }    
         /**
          * Create a routine object from a task.
-         * @since       1.1.1
-         * @param       TaskScheduler_Routine $oTask
-         * @return      TaskScheduler_Routine|null
+         * @since  1.1.1
+         * @param  TaskScheduler_Routine $oTask
+         * @return TaskScheduler_Routine|null
          */
         private function ___getRoutineFromTask( $oTask ) {
-            
             // Create a routine to spawn.
             $_iRoutineID = TaskScheduler_RoutineUtility::derive( 
                 $oTask->ID,  // the owner task id.
@@ -246,7 +236,6 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
                 $oTask->_force_execution   // allow duplicate
             );
             return TaskScheduler_Routine::getInstance( $_iRoutineID );
-        
         }
 
         /**
@@ -297,7 +286,6 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
          * @param TaskScheduler_Routine $oRoutine
          */
         private function ___updateRoutineStatus( $oRoutine ) {
-
             $_inCallCount = $oRoutine->getMeta( '_count_call' );
             if ( strlen( $_inCallCount ) ) {
                 $oRoutine->setMeta( '_count_call', $oRoutine->getMeta( '_count_call' ) + 1 );
@@ -309,23 +297,19 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
                 $oRoutine
             );
             $oRoutine->setMeta( '_next_run_time',  $_iNextRunTime );
-
         }
 
     /**
      * Checks scheduled actions in a background page load.
      *
      * If there are scheduled ones and reach the scheduled time, they will be spawned.
-     *
      */
     public function _replyToCheckScheduledActions() {
-
         if ( TaskScheduler_WPUtility::getTransient( self::$sCheckActionTransientKey ) ) {
             TaskScheduler_WPUtility::setTransient( self::$sRecheckActionTransientKey, microtime( true ), 60 );
             return;
         }
         TaskScheduler_ServerHeartbeat::beat();
-
     }
 
 }
