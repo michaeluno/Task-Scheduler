@@ -11,12 +11,6 @@
 
  /**
   * Creates a periodical background page loads.
-  * 
-  * @action        schedule        task_scheduler_action_check_server_heartbeat        This action will check if the heartbeat is alive and if not, it resumes it.
-  * @filter        apply            task_scheduler_filter_serverheartbeat_interval
-  * @filter        apply            task_scheduler_filter_serverheartbeat_target_url
-  * @filter        apply            task_scheduler_filter_serverheartbeat_cookies
-  * 
   */
 final class TaskScheduler_ServerHeartbeat {
             
@@ -42,7 +36,7 @@ final class TaskScheduler_ServerHeartbeat {
     
     /**
      * Returns the heartbeat ID.
-     * @return      string      Cookie values are always string.
+     * @return string      Cookie values are always string.
      */
     static public function getID() {        
         return isset( $_COOKIE[ 'server_heartbeat_id' ] ) ? sanitize_text_field( $_COOKIE[ 'server_heartbeat_id' ] ) : '';  // sanitization done
@@ -51,8 +45,8 @@ final class TaskScheduler_ServerHeartbeat {
     /**
      * Checks if the page load is in the background.
      * 
-     * @remark    If the ID is an empty string, this yields false.
-     * @return    boolean    
+     * @remark If the ID is an empty string, this yields false.
+     * @return boolean
      */
     static public function isBackground() {
         return self::getID() ? true : false;
@@ -98,7 +92,7 @@ final class TaskScheduler_ServerHeartbeat {
     }    
     /**
      * Retrieves the interval.
-     * @return      integer
+     * @return integer
      */
     static public function getInterval() {
             
@@ -111,7 +105,7 @@ final class TaskScheduler_ServerHeartbeat {
     }
         /**
          * Returns the settings of the heart beat.
-         * @param string $sKey
+         * @param  string $sKey
          * @return mixed
          */
         static private function _getInfo( $sKey='' ) {
@@ -131,8 +125,8 @@ final class TaskScheduler_ServerHeartbeat {
         /**
          * Saves the heartbeat settings into a transient.
          *
-         * @param     array $aSettings
-         * @remark    This is called in the both background and foreground.
+         * @param  array $aSettings
+         * @remark This is called in the both background and foreground.
          */
         static private function _saveInfo( array $aSettings=array() ) {
             
@@ -155,14 +149,14 @@ final class TaskScheduler_ServerHeartbeat {
     /**
      * Starts the background periodical calls.
      * 
-     * @remark    This method can be called both in the background and the foreground.
-     * @remark    array    $aSettings    The settings array. Currently accepts only one argument.
+     * @remark This method can be called both in the background and the foreground.
+     * @remark array    $aSettings    The settings array. Currently, accepts only one argument.
      *     Example:
      *  array(
      *         'interval'    =>    30
      *  )
-     * @param     array      $aSettings
-     * @return    boolean    true if it started; otherwise, false.
+     * @param  array      $aSettings
+     * @return boolean    true if it started; otherwise, false.
      */
     static public function run( $aSettings=array() ) {
         
@@ -242,7 +236,7 @@ final class TaskScheduler_ServerHeartbeat {
      *  
      * It is assumed that every page load calls this method so that the heartbeat keeps going.
      * 
-     * @remark    If this is called not in the background (the user opened a page), this does nothing. 
+     * @remark If this is called not in the background (the user opened a page), this does nothing.
      * However, if this is called in the background, meaning the class triggered the page load, it will re-trigger the background page load.
      */
     static public function pulsate() {
@@ -281,8 +275,7 @@ final class TaskScheduler_ServerHeartbeat {
     }
         /**
          * Tells WordPress this is a background task.
-         * @since   1.4.3
-         * @return  void
+         * @since 1.4.3
          */
         static private function ___setBackgroundFlags() {
             if ( ! defined( 'DOING_CRON' ) ) {
@@ -298,18 +291,16 @@ final class TaskScheduler_ServerHeartbeat {
          * Checks the heart beat.
          */
         static public function _replyToCheck() {
-            
             if ( ! self::getInterval() ) { 
                 return; 
             }
             self::run();
-            
         }        
         
         /**
          * Exits the script after sleeping the given interval.
          * 
-         * @remark        This method is only called from the beat() method so it is in the background.
+         * @remark This method is only called from the beat() method so it is in the background.
          */
         static public function _replyToSleepAndExit() {
                         
@@ -430,7 +421,7 @@ final class TaskScheduler_ServerHeartbeat {
      * @param    array    $aCookies    The cookie array to pass to the next page load.
      * @param    string    $sContext    Identifies why this method is called. If it is the server heartbeat automatically call, it will be 'pulsate'.
      * This gives a hint to the callback functions that they should modify the given url or not.
-     * Currently the following three slugs are used as the context.
+     * Currently, the following three slugs are used as the context.
      *  - start        : the heartbeat is starting
      *     - pulsate   : the recurrent heartbeat page load
      *     - beat      : an irregular background page load
