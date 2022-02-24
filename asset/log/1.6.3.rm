@@ -1,0 +1,1 @@
+- Fixed the PHP error, "Uncaught TypeError: round(): Argument #1 ($num) must be of type int|float" with PHP 8.

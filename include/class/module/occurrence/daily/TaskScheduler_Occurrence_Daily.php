@@ -66,7 +66,7 @@ class TaskScheduler_Occurrence_Daily extends TaskScheduler_Occurrence_Base {
          * @since       1.4.6
          */
         private function ___getLastRunTimeFormatted( $nLastRunTime ) {
-            $_iLastRunTime = round( $nLastRunTime );
+            $_iLastRunTime = round( ( integer ) $nLastRunTime );
             return $_iLastRunTime
                 ? $_iLastRunTime
                 : time();
