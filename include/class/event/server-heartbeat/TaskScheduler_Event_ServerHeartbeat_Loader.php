@@ -181,7 +181,7 @@ class TaskScheduler_Event_ServerHeartbeat_Loader {
             
             // If the server set max execution time is 0, the script can continue endlessly.
             $_iServerAllowedMaxExecutionTime    = TaskScheduler_Utility::getServerAllowedMaxExecutionTime( 30 );
-            if ( 0 === $_iServerAllowedMaxExecutionTime || '0' === $_iServerAllowedMaxExecutionTime ) {
+            if ( 0 === $_iServerAllowedMaxExecutionTime ) {
                 return ( integer ) $_iExpectedTaskExecutionTime;
             }
             
