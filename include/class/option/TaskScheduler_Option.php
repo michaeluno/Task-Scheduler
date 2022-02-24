@@ -58,11 +58,11 @@ final class TaskScheduler_Option {
     static public $oInstance;
     
     public function __construct( $sOptionKey ) {
-        
         $this->sOptionKey = $sOptionKey;
-        $_aDefaults = $this->_formatDefaults( self::$aDefaults );
-        $this->aOptions = TaskScheduler_Utility::uniteArrays( get_option( $this->sOptionKey, array() ), $_aDefaults );
-        
+        $this->aOptions   = TaskScheduler_Utility::uniteArrays(
+            get_option( $this->sOptionKey, array() ),
+            $this->___getDefaultsFormatted( self::$aDefaults )
+        );
     }
         
         /**
@@ -70,18 +70,16 @@ final class TaskScheduler_Option {
          * 
          * Some options are dynamic and those dynamic assignments cannot achieve in a property declaration. 
          * So this method takes care of it. e.g. PHP max execution time as a default option value.
+         * @return array
          */
-        private function _formatDefaults( array $aDefaults ) {
-            
+        private function ___getDefaultsFormatted( array $aDefaults ) {
             $_iServerAllowedMaxExecutionTime = TaskScheduler_Utility::getServerAllowedMaxExecutionTime( 30 );
-            $aDefaults['server_heartbeat']['interval'] = $_iServerAllowedMaxExecutionTime 
+            $aDefaults[ 'server_heartbeat' ][ 'interval' ] = $_iServerAllowedMaxExecutionTime
                 ? round( $_iServerAllowedMaxExecutionTime * 8 / 10 )    // 80%
-                : $aDefaults['server_heartbeat']['interval']; // 24
-                
-            $aDefaults['task_default']['max_execution_time'] = 0 === $_iServerAllowedMaxExecutionTime
-                ? $aDefaults['task_default']['max_execution_time']    // 30 ( 0 is not recommended )
+                : $aDefaults[ 'server_heartbeat' ][ 'interval' ]; // 24
+            $aDefaults[ 'task_default' ][ 'max_execution_time' ] = 0 === $_iServerAllowedMaxExecutionTime
+                ? $aDefaults[ 'task_default' ][ 'max_execution_time' ]    // 30 ( 0 is not recommended )
                 : $_iServerAllowedMaxExecutionTime;
-            
             return $aDefaults;
         }
     
@@ -91,10 +89,8 @@ final class TaskScheduler_Option {
      * This is to ensure only one instance exists.
      */
     static public function getInstance() {
-        
         self::$oInstance = self::$oInstance ? self::$oInstance : new TaskScheduler_Option( TaskScheduler_Registry::$aOptionKeys['main'] );
         return self::$oInstance;
-        
     }
     
     /**
@@ -105,7 +101,6 @@ final class TaskScheduler_Option {
     static public function refresh() {
         self::$oInstance = null;
         self::getInstance();
-        
     }
     
     /**
