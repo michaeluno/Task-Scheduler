@@ -35,7 +35,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         }
         
         // Do not check actions in certain pages.
-        if ( isset( $GLOBALS[ 'pagenow' ] ) && in_array( $GLOBALS[ 'pagenow' ], array( 'admin-ajax.php', ) ) ) {
+        if ( isset( $GLOBALS[ 'pagenow' ] ) && in_array( $GLOBALS[ 'pagenow' ], array( 'admin-ajax.php', ), true ) ) {
             return;
         }
         
