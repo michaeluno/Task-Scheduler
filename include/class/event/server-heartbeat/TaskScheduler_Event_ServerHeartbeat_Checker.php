@@ -187,7 +187,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
            }
         }
         if ( $_bIsTask ) {
-            $this->___updateTaskStatus( $_oRoutine, $nScheduledTime, $bUpdateNextRunTime );
+            $this->___updateTaskMeta( $_oRoutine, $nScheduledTime, $bUpdateNextRunTime );
             $_oRoutine = $this->___getRoutineFromTask( $_oRoutine );
             if ( ! isset( $_oRoutine->ID ) ) {
                 return;
@@ -199,7 +199,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
 
         // For routine instances,
         if ( $_oRoutine->isRoutine() ) {
-            $this->___updateRoutineStatus( $_oRoutine );
+            $this->___updateRoutineMeta( $_oRoutine );
         }
         
         // Let other subroutines update routine meta such as `_is_spawned` etc.
@@ -258,7 +258,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
          * @param integer|double        $nScheduledTime
          * @param boolean               $bUpdateNextRunTime
          */
-        private function ___updateTaskStatus( $oTask, $nScheduledTime, $bUpdateNextRunTime ) {
+        private function ___updateTaskMeta( $oTask, $nScheduledTime, $bUpdateNextRunTime ) {
             
             $oTask->deleteMeta( '_exit_code' );
             $_sPreviousTaskStatus     = $oTask->_routine_status;
@@ -286,7 +286,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
                 '_next_run_time', 
                 apply_filters( 
                     "task_scheduler_filter_next_run_time_{$oTask->occurrence}", 
-                    microtime( true ), // '', // @todo time()
+                    microtime( true ), 
                     $oTask 
                 ) 
             );
@@ -298,7 +298,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
          *
          * @param TaskScheduler_Routine $oRoutine
          */
-        private function ___updateRoutineStatus( $oRoutine ) {
+        private function ___updateRoutineMeta( $oRoutine ) {
             $_inCallCount = $oRoutine->getMeta( '_count_call' );
             if ( strlen( $_inCallCount ) ) {
                 $oRoutine->setMeta( '_count_call', $oRoutine->getMeta( '_count_call' ) + 1 );
