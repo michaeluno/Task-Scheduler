@@ -72,8 +72,8 @@ class TaskScheduler_Event_Thread {
             return;
         }
         
-// @TODO: make sure if this is necessary and if it should be done to the routine object and task object.
-$oThread->deleteMeta( '_spawned_time' );
+
+        $oThread->deleteMeta( '_spawned_time' );
 
         // Now update the owner task.
         $_oTask = $_oRoutine->getOwner();
