@@ -201,8 +201,13 @@ abstract class TaskScheduler_ListTable_Column extends TaskScheduler_ListTable_Ac
         $_sCallCountDescription   = __( 'Indicates how many times the action has been called.', 'task-scheduler' );
         $_sRunCountDescription    = __( 'Indicates how many times the action has run.', 'task-scheduler' )
             . ' &#10;' . __( 'This does not necessarily mean the action did the expected job.', 'task-scheduler' );
+        // The displayed Last Run Time in UI and the internally stored `_last_run_time` are different.
+        // `_last_run_time` is set immediately after a routine is spawned and is ahead of the time that the routine is spawned.
+        $_iuNextRunTimeForUI      = $oRoutine->_last_run_time > time()
+            ? $oRoutine->_last_run_time
+            : $oRoutine->_next_run_time;
         return "<p>" 
-                . $oRoutine->getReadableTime( $oRoutine->_next_run_time, 'Y/m/d G:i:s', true )
+                . $oRoutine->getReadableTime( $_iuNextRunTimeForUI, 'Y/m/d G:i:s', true )
             . "</p>"
             . "<p title='" . esc_attr( $_sCallCountDescription ) . "'>"
                 . "<span class='description-label'>" . __( 'Call Count', 'task-scheduler' ) . ":</span>"

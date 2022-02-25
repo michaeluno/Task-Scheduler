@@ -96,7 +96,9 @@ class TaskScheduler_MetaBox_Submit extends TaskScheduler_MetaBox_Base {
      */
     public function field_definition_TaskScheduler_MetaBox_Submit_label_last_run_time( $aField ) {
         
-        if ( ! $this->_iRoutineID ) { return $aField; }
+        if ( ! $this->_iRoutineID ) {
+            return $aField;
+        }
         $this->_oRoutine    = isset( $this->_oRoutine ) ? $this->_oRoutine : TaskScheduler_Routine::getInstance( $this->_iRoutineID );
         $aField[ 'value' ]  = $this->_oRoutine->getReadableTime( ( integer ) $this->_oRoutine->_last_complete_time, 'Y/m/d G:i:s', true );
         return $aField;
@@ -104,9 +106,14 @@ class TaskScheduler_MetaBox_Submit extends TaskScheduler_MetaBox_Base {
     }
     public function field_definition_TaskScheduler_MetaBox_Submit_label_next_run_time( $aField ) {
         
-        if ( ! $this->_iRoutineID ) { return $aField; }
-        $this->_oRoutine   = isset( $this->_oRoutine ) ? $this->_oRoutine : TaskScheduler_Routine::getInstance( $this->_iRoutineID );
-        $aField[ 'value' ] = $this->_oRoutine->getReadableTime( $this->_oRoutine->_next_run_time, 'Y/m/d G:i:s', true );
+        if ( ! $this->_iRoutineID ) {
+            return $aField;
+        }
+        $this->_oRoutine     = isset( $this->_oRoutine ) ? $this->_oRoutine : TaskScheduler_Routine::getInstance( $this->_iRoutineID );
+        $_iuNextRunTimeForUI = $this->_oRoutine->_last_run_time > time()
+            ? $this->_oRoutine->_last_run_time
+            : $this->_oRoutine->_next_run_time;
+        $aField[ 'value' ] = $this->_oRoutine->getReadableTime( $_iuNextRunTimeForUI, 'Y/m/d G:i:s', true );
         return $aField;
         
     }
