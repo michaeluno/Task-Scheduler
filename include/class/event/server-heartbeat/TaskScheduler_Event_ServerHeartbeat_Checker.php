@@ -299,17 +299,20 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
          * @param TaskScheduler_Routine $oRoutine
          */
         private function ___updateRoutineMeta( $oRoutine ) {
-            $_inCallCount = $oRoutine->getMeta( '_count_call' );
-            if ( strlen( $_inCallCount ) ) {
-                $oRoutine->setMeta( '_count_call', $oRoutine->getMeta( '_count_call' ) + 1 );
-            }
+            // @deprecated 1.6.3 The call count is incremented in TaskScheduler_Event_Routine::_replyToDoBeforeSpawnRoutine()
+            // $_inCallCount = $oRoutine->getMeta( '_count_call' );
+            // if ( strlen( $_inCallCount ) ) {
+            //     $oRoutine->setMeta( '_count_call', $oRoutine->getMeta( '_count_call' ) + 1 );
+            // }
+            $oRoutine->setMeta( '_count_call', ( ( integer ) $oRoutine->getMeta( '_count_call' ) ) + 1 );
+
             $oRoutine->setMeta( '_last_run_time',  microtime( true ) );
             $_iNextRunTime = apply_filters(
                 "task_scheduler_filter_next_run_time_{$oRoutine->occurrence}",
-                microtime( true ),
+                microtime( true ),    // 1.6.3 changed from microtime( true )
                 $oRoutine
             );
-            $oRoutine->setMeta( '_next_run_time',  $_iNextRunTime );
+            $oRoutine->setMeta( '_next_run_time', $_iNextRunTime );
         }
 
     /**

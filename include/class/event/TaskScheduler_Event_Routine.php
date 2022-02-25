@@ -57,7 +57,8 @@ class TaskScheduler_Event_Routine {
         $oRoutine->setMeta( '_routine_status', 'awaiting' );     // the 'Force Execution' task option will ignore this status if enabled. Otherwise, it is used to determine scheduled routines.
         $oRoutine->setMeta( '_is_spawned', true );               // used to determine scheduled routines
         $oRoutine->setMeta( '_spawned_time', $nSpawnedTime );    // used to cancel the routine and to detect the hung
-        $oRoutine->setMeta( '_count_call', ( ( integer ) $oRoutine->getMeta( '_count_call' ) ) + 1 );
+        // @deprecated 1.6.3 It is incremented in TaskScheduler_Event_Routine::___updateRoutineMeta()
+        // $oRoutine->setMeta( '_count_call', ( ( integer ) $oRoutine->getMeta( '_count_call' ) ) + 1 );
 
     }
     
