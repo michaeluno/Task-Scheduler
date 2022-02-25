@@ -77,6 +77,7 @@ class TaskScheduler_PluginUtility extends TaskScheduler_WPUtility {
                 // These plugin specific meta keys have dynamic values so it should not be compared.
                 '_next_run_time',
                 '_last_run_time',
+                '_last_complete_time', // 1.6.3
                 '_count_call',
                 '_count_exit',
                 '_count_run',

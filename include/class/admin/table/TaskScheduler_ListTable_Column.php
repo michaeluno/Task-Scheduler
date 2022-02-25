@@ -179,7 +179,7 @@ abstract class TaskScheduler_ListTable_Column extends TaskScheduler_ListTable_Ac
         $_sExitCodeDescription  = __( 'Indicates the last exit code returned from the action.', 'task-scheduler' );
         $_aOutput               = array();
         $_aOutput[]             = "<p>" 
-                . $oRoutine->getReadableTime( $oRoutine->_last_run_time, 'Y/m/d G:i:s', true )
+                . $oRoutine->getReadableTime( $oRoutine->_last_complete_time, 'Y/m/d G:i:s', true )
             . "</p>";
         if ( $oRoutine->isTask() ) {
             $_aOutput[] = "<p title='" . esc_attr( $_sExitCountDescription ) . "'>"

@@ -87,6 +87,7 @@ abstract class TaskScheduler_TaskUtility_Add extends TaskScheduler_TaskUtility_G
         unset( 
             $aTaskOptions[ '_is_spawned' ],          // if this is set, the action will not be loaded
             $aTaskOptions[ '_last_run_time' ],       // a new task should not have a last executed time
+            $aTaskOptions[ '_last_complete_time' ],  // 1.6.3
             $aTaskOptions[ '_exit_code' ]            // a new task should not have an exit code
         );
         

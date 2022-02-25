@@ -180,12 +180,15 @@ class TaskScheduler_Event_Routine {
             return;
         }
         
-        // If there are no more threads, update the owner task status and meta data.
+        // If there are no more threads, update the owner task status and meta-data.
         if ( null !== $sExitCode ) {
-            
+
+            $_dNow = microtime( true );
+
             // Update the routine status.
             $oRoutine->setMeta( '_count_run',     ( int ) $_oTask->_count_run + 1 );
             $oRoutine->setMeta( '_routine_status', 'queued' );  // restore to the default status
+            $oRoutine->setMeta( '_last_complete_time', $_dNow );   // 1.6.3
 
             // Update the task status.
             if ( ! $_bIsInternal ) {
@@ -193,6 +196,8 @@ class TaskScheduler_Event_Routine {
                 $_oTask->setMeta( '_count_exit',    ( int ) $_oTask->getMeta( '_count_exit' ) + 1 );
                 $_oTask->setMeta( '_count_run',     ( int ) $_oTask->_count_run + 1 );
             }
+
+            $_oTask->setMeta( '_last_complete_time', $_dNow );   // 1.6.3
             
         }            
          

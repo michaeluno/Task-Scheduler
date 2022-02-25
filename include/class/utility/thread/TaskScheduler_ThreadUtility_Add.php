@@ -181,6 +181,7 @@ abstract class TaskScheduler_ThreadUtility_Add extends TaskScheduler_ThreadUtili
         unset( 
             $aThreadOptions[ '_is_spawned' ],    // if this is set, the action will not be loaded
             $aThreadOptions[ '_last_run_time' ],        
+            $aThreadOptions[ '_last_complete_time' ],   // 1.6.3
             $aThreadOptions[ '_exit_code' ],     // a new task should not have an exit code
             $aThreadOptions[ '_count_exit' ],            
             $aThreadOptions[ '_count_hung' ]    
