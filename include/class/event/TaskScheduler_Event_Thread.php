@@ -85,7 +85,8 @@ class TaskScheduler_Event_Thread {
             . ' ' . sprintf( __( 'Exit Code: %1$s', 'task-scheduler' ), $isExitCode ),
             $_oRoutine->parent_routine_log_id 
         );
-        
+        $_oTask->setMeta( '_last_complete_time', microtime( true ) );   // 1.6.3
+
         do_action( 'task_scheduler_action_exit_routine', $_oRoutine, $isExitCode );
         $_oRoutine->delete();
         
