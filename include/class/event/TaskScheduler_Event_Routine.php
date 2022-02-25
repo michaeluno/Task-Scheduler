@@ -27,22 +27,19 @@ class TaskScheduler_Event_Routine {
      * Sets up hooks.
      */
     public function __construct() {
-
         add_action( 'task_scheduler_action_before_calling_routine', array( $this, '_replyToDoBeforeSpawnRoutine' ), 10, 2 );
         add_action( 'task_scheduler_action_cancel_routine',         array( $this, '_replyToCancelRoutine' ), 10, 2 );
         add_action( 'task_scheduler_action_before_doing_routine',   array( $this, '_replyToDoBeforeRoutine' ) );
         add_action( 'task_scheduler_action_do_routine',             array( $this, '_replyToDoRoutine' ) );
         add_action( 'task_scheduler_action_after_doing_action',     array( $this, '_replyToDoAfterRoutineAction' ), 10, 2 );
         add_action( 'task_scheduler_action_after_doing_routine',    array( $this, '_replyToCompleteRoutine' ) );
-        
     }
 
     /**
      * Called when the task is about to be spawned.
-     * @callback    add_action      task_scheduler_action_before_calling_routine
-     * @param       TaskScheduler_Routine   $oRoutine
-     * @param       integer|double  $nSpawnedTime
-     * @return      void
+     * @callback add_action()            task_scheduler_action_before_calling_routine
+     * @param    TaskScheduler_Routine   $oRoutine
+     * @param    integer|double          $nSpawnedTime
      */
     public function _replyToDoBeforeSpawnRoutine( $oRoutine, $nSpawnedTime ) {
         
@@ -67,15 +64,15 @@ class TaskScheduler_Event_Routine {
     /**
      * Gets triggered when a routine is cancelled.
      *
-     * @param TaskScheduler_Routine $oRoutine
-     * @param string $sContext Tells why the routine is cancelled.
-     * @callback add_action task_scheduler_action_cancel_routine
+     * @param    TaskScheduler_Routine $oRoutine
+     * @param    string $sContext Tells why the routine is cancelled.
+     * @callback add_action() task_scheduler_action_cancel_routine
      */
     public function _replyToCancelRoutine( $oRoutine, $sContext ) {
 
         // Check the previous task status.
-        $_nSpawnedMicrotime      = $oRoutine->getMeta( '_spawned_time' );
-        $_sTransientKey          = TaskScheduler_Registry::TRANSIENT_PREFIX . md5( $_nSpawnedMicrotime );
+        $_nSpawnedMicroTime      = $oRoutine->getMeta( '_spawned_time' );
+        $_sTransientKey          = TaskScheduler_Registry::TRANSIENT_PREFIX . md5( $_nSpawnedMicroTime );
         $_sPreviousTaskStatus    = TaskScheduler_WPUtility::getTransient( $_sTransientKey );
         if ( $_sPreviousTaskStatus ) {
             $oRoutine->setMeta( '_routine_status', $_sPreviousTaskStatus );
@@ -105,12 +102,10 @@ class TaskScheduler_Event_Routine {
     /**
      * Executes the action of the task.
      * 
-     * @remark      For convenience, the action of the task is called 'action' to imply it performs an action that needs for the task.
+     * @remark   For convenience, the action of the task is called 'action' to imply it performs an action that needs for the task.
      * However, technically speaking, it is performed as a WordPress filter to get the exit code to be returned.
-     * 
-     * @callback    action      task_scheduler_action_do_routine
-     * @return      void
-     * @param       TaskScheduler_Routine $oRoutine
+     * @callback add_action()          task_scheduler_action_do_routine
+     * @param    TaskScheduler_Routine $oRoutine
      */
     public function _replyToDoRoutine( $oRoutine ) {
 
@@ -154,13 +149,13 @@ class TaskScheduler_Event_Routine {
         }
     
     /**
-     * Updates the routine status and meta data and leave log items for the routine.
+     * Updates the routine status and meta-data and leave log items for the routine.
      * 
      * This method gets triggered right after the routine action is performed.
      *
-     * @param TaskScheduler_Routine $oRoutine
-     * @param integer|string        $sExitCode
-     * @callback add_action task_scheduler_action_after_doing_action
+     * @param    TaskScheduler_Routine $oRoutine
+     * @param    integer|string        $sExitCode
+     * @callback add_action()           task_scheduler_action_after_doing_action
      */
     public function _replyToDoAfterRoutineAction( $oRoutine, $sExitCode ) {
 
@@ -233,8 +228,8 @@ class TaskScheduler_Event_Routine {
         $oRoutine->setMeta( '_count_run',    $oRoutine->_count_run + 1 );
                 
         // Clean the previous status transient
-        $_nSpawnedMicrotime    = $oRoutine->getMeta( '_spawned_time' );
-        $_sTransientKey        = TaskScheduler_Registry::TRANSIENT_PREFIX . md5( $_nSpawnedMicrotime );        
+        $_nSpawnedMicroTime    = $oRoutine->getMeta( '_spawned_time' );
+        $_sTransientKey        = TaskScheduler_Registry::TRANSIENT_PREFIX . md5( $_nSpawnedMicroTime );
         TaskScheduler_WPUtility::deleteTransient( $_sTransientKey );
                 
     }
