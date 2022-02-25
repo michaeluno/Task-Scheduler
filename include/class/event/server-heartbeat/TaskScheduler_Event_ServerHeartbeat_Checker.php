@@ -28,37 +28,50 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         add_action( 'task_scheduler_action_spawn_routine', array( $this, '_replyToSpawnTheRoutine' ), 10, 4 );
         add_action( 'task_scheduler_action_check_scheduled_actions', array( $this, '_replyToCheckScheduledActions' ) );
         
-        // If doing actions, return.
-        if ( isset( $_COOKIE[ 'server_heartbeat_action' ] ) ) { // sanitization unnecessary
+        if ( ! $this->___shouldProceed() ) {
             return;
         }
         
-        // Do not check actions in certain pages.
-        if ( isset( $GLOBALS[ 'pagenow' ] ) && in_array( $GLOBALS[ 'pagenow' ], array( 'admin-ajax.php', ), true ) ) {
-            return;
-        }
-        
-        // If this is not a server-heartbeat background page load or a page load to check scheduled actions manually, do nothing
-        if ( 
-            ! (
-                TaskScheduler_ServerHeartbeat::isBackground()
-                || $this->___isManualPageLoad()
-            )
-        ) {
-            return;
-        }
-        
-        // Check a check-action lock - this prevents that while checking and spawning routines, another page load do the same and triggers the same tasks at the same time.
-        if ( TaskScheduler_WPUtility::getTransient( self::$sCheckActionTransientKey ) ) {
-            return;
-        }
-
         // At this point, the page load can spawn routines.
         // Letting the site load and wait till the 'wp_loaded' hook is required to load the custom taxonomy that the plugin uses.
         add_action( 'wp_loaded', array( $this, '_replyToSpawnRoutines' ), 1 );    // set the high priority because the sleep sub-routine also hooks the same action.
 
-
     }
+
+        /**
+         * @since  1.6.3
+         * @return boolean
+         */
+        private function ___shouldProceed() {
+            
+            // If doing actions, return.
+            if ( isset( $_COOKIE[ 'server_heartbeat_action' ] ) ) { // sanitization unnecessary
+                return false;
+            }
+            
+            // Do not check actions in certain pages.
+            if ( isset( $GLOBALS[ 'pagenow' ] ) && in_array( $GLOBALS[ 'pagenow' ], array( 'admin-ajax.php', ), true ) ) {
+                return false;
+            }
+            
+            // If this is not a server-heartbeat background page load or a page load to check scheduled actions manually, do nothing
+            if ( 
+                ! (
+                    TaskScheduler_ServerHeartbeat::isBackground()
+                    || $this->___isManualPageLoad()
+                )
+            ) {
+                return false;
+            }
+            
+            // Check a check-action lock - this prevents that while checking and spawning routines, another page load do the same and triggers the same tasks at the same time.
+            if ( TaskScheduler_WPUtility::getTransient( self::$sCheckActionTransientKey ) ) {
+                return false;
+            }
+            
+            return true;
+        
+        }
         /**
          * Checks if the page is loaded by manually to check actions.
          * 
@@ -88,10 +101,10 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
             : 0; // if the maximum execution time cannot be changed, only pick ones that exceeds the scheduled time.
 
         $_iMaxAllowedNumberOfRoutines = TaskScheduler_Option::get( array( 'routine', 'max_background_routine_count' ) );
-        $_aScheduledRoutines          = TaskScheduler_RoutineUtility::getScheduled( $_iSecondsFromNowToCheck, $_iMaxAllowedNumberOfRoutines );
+        $_aScheduledItems             = TaskScheduler_RoutineUtility::getScheduled( $_iSecondsFromNowToCheck, $_iMaxAllowedNumberOfRoutines );
         $_iProcessingCount            = TaskScheduler_RoutineUtility::getProcessingCount();
         $_iAllowedNumberOfRoutines    = $_iMaxAllowedNumberOfRoutines - $_iProcessingCount;
-        $_aScheduledRoutines          = array_slice( $_aScheduledRoutines, 0, $_iAllowedNumberOfRoutines );
+        $_aScheduledItems             = array_slice( $_aScheduledItems, 0, $_iAllowedNumberOfRoutines );
         $_nNow                        = microtime( true );
 
         // Set a check-action lock 
@@ -102,7 +115,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         // If it is a task, update the next scheduled time, create a routine and return.
         // If it is a routine, spawn it.
         // If it is a thread, check if the owner routine exists or not. If not, delete itself; otherwise, spawn it.        
-        foreach ( $_aScheduledRoutines as $_iItemID ) {
+        foreach ( $_aScheduledItems as $_iItemID ) {
         
             $_oTask = TaskScheduler_Routine::getInstance( $_iItemID );
             if ( ! is_object( $_oTask ) ) { 
