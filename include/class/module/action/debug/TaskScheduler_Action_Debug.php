@@ -44,9 +44,7 @@ class TaskScheduler_Action_Debug extends TaskScheduler_Action_Base {
      * @return integer
      */
     public function doAction( $isExitCode, $oRoutine ) {
-
         $_aMeta = $oRoutine->getMeta();
-        TaskScheduler_Debug::log( 'Called from the Debug action.', 'debug_action.' . $_aMeta[ 'owner_task_id' ] );
         TaskScheduler_Debug::log(
             array(
                 'Now'           => $this->getSiteReadableDate( time(), 'Y-m-d G:i:s', true ),
@@ -57,7 +55,6 @@ class TaskScheduler_Action_Debug extends TaskScheduler_Action_Base {
             'task_scheduler_action_debug_' . $_aMeta[ 'owner_task_id' ]
         );
         return 1; // Exit Code
-
     }
 
 }
