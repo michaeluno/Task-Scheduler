@@ -47,6 +47,8 @@ class TaskScheduler_Action_Debug extends TaskScheduler_Action_Base {
         $_aMeta = $oRoutine->getMeta();
         TaskScheduler_Debug::log(
             array(
+                'ID'            => $oRoutine->ID,
+                'Name'          => $oRoutine->post_title,
                 'Now'           => $this->getSiteReadableDate( time(), 'Y-m-d G:i:s', true ),
                 'Spawned Time'  => $this->getSiteReadableDate( $_aMeta[ '_spawned_time' ], 'Y-m-d G:i:s', true ),
                 'Last Run Time' => $this->getSiteReadableDate( isset( $_aMeta[ '_last_run_time' ] ) ? $_aMeta[ '_last_run_time' ] : 0, null, true ),
