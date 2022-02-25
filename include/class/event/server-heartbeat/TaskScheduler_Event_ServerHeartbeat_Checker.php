@@ -66,7 +66,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
          * the user accesses the site with the 'task_scheduler_checking_actions' key in the request url.
          */
         private function ___isManualPageLoad() {
-            if ( isset( $GLOBALS[ 'pagenow' ] ) && in_array( $GLOBALS[ 'pagenow' ], array( 'wp-cron.php' ) ) ) {
+            if ( isset( $GLOBALS[ 'pagenow' ] ) && in_array( $GLOBALS[ 'pagenow' ], array( 'wp-cron.php' ), true ) ) {
                 return false;
             }
             // Check if the server heartbeat is on.
