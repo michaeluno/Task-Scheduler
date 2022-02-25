@@ -1,3 +1,4 @@
 - Fixed incorrect call counts for routines.
 - Fixed the PHP error, "Uncaught TypeError: round(): Argument #1 ($num) must be of type int|float" with PHP 8.
+- Fixed an issue that future time was displayed for the Last Run time in UI.
 - Changed the log file name created by the Debug action module.
