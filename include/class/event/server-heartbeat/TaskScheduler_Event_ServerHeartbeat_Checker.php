@@ -34,7 +34,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         
         // At this point, the page load can spawn routines.
         // Letting the site load and wait till the 'wp_loaded' hook is required to load the custom taxonomy that the plugin uses.
-        add_action( 'wp_loaded', array( $this, '_replyToSpawnRoutines' ), 1 );    // set the high priority because the sleep sub-routine also hooks the same action.
+        add_action( 'wp_loaded', array( $this, 'replyToSpawnItems' ), 1 );    // set the high priority because the sleep sub-routine also hooks the same action.
 
     }
 
@@ -94,7 +94,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
      *
      * @callback add_action() wp_loaded
      */
-    public function _replyToSpawnRoutines() {
+    public function replyToSpawnItems() {
 
         $_iSecondsFromNowToCheck      = TaskScheduler_Utility::canUseIniSet()
             ? TaskScheduler_Option::get( array( 'server_heartbeat', 'interval' ) ) 
@@ -111,7 +111,7 @@ class TaskScheduler_Event_ServerHeartbeat_Checker {
         TaskScheduler_WPUtility::deleteTransient( self::$sRecheckActionTransientKey );
         TaskScheduler_WPUtility::setTransient( self::$sCheckActionTransientKey, $_nNow, 60 );
 
-        // Parse the retrieved routines.
+        // Parse the retrieved items.
         // If it is a task, update the next scheduled time, create a routine and return.
         // If it is a routine, spawn it.
         // If it is a thread, check if the owner routine exists or not. If not, delete itself; otherwise, spawn it.        
