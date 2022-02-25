@@ -11,12 +11,9 @@
 
 /**
  * Provides methods which deal with plugin options.
- * 
  */
 abstract class TaskScheduler_Routine_Option extends TaskScheduler_Routine_Base {
-    
 
-    
     /**
      * Returns a time in a readable format.
      */
