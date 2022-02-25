@@ -77,8 +77,10 @@ class TaskScheduler_ListTable_Action extends TaskScheduler_ListTable_Base {
                 break;            
             case 'disable':
                 foreach( ( array ) $_REQUEST[ 'task_scheduler_task' ] as $_sTaskPostID ) {      // sanitization done
-                    $_oTask = TaskScheduler_Routine::getInstance( absint( $_sTaskPostID ) );    // sanitization done
-                    $_oTask->disable();                
+                    $_iTaskPostID = absint( $_sTaskPostID );       // sanitization done
+                    $_oTask = TaskScheduler_Routine::getInstance( $_iTaskPostID );
+                    $_oTask->disable();
+                    $this->___deleteRoutinesOfTask( $_iTaskPostID );
                     $this->setAdminNotice( __( 'The task has been disabled.', 'task-scheduler' ), 'updated' );                    
                 }
                 break;
@@ -150,5 +152,31 @@ class TaskScheduler_ListTable_Action extends TaskScheduler_ListTable_Base {
         exit( wp_redirect( $_sCurrentURL ) );
 
     }
-    
+
+        /**
+         * Deletes routines that are awaiting.
+         * This is called when the user disables a task. And routines that haven't started are deleted with this method.
+         * @param integer $iTaskID
+         * @since 1.6.3
+         */
+        private function ___deleteRoutinesOfTask( $iTaskID ) {
+            $_oResults = TaskScheduler_RoutineUtility::find( array(
+                'post_type'         => array(
+                    TaskScheduler_Registry::$aPostTypes[ 'routine' ],
+                ),
+                'meta_query'        => array(
+                    'relation'      => 'AND',    // or 'OR' can be specified
+                    array(
+                        'key'       => '_routine_status',
+                        'value'     => array( 'ready', 'queued', 'awaiting' ),
+                        'compare'   => 'IN',
+                    ),
+                ),
+            ) );
+            $_aRoutineIDs = $_oResults->posts;
+            foreach( $_aRoutineIDs as $_iPostID ) {
+                wp_delete_post( $_iPostID, true );    // true: force delete, false : trash
+            }
+        }
+
 }
