@@ -359,7 +359,7 @@ class TaskScheduler_SampleActionModule_Thread extends TaskScheduler_Action_Base 
 
         // Do your stuff
         $_aArguments = $oThread->getMeta();
-        $_sFoo       = $_aArguments[ 'foo' ];  // is `bar'
+        $_sFoo       = $_aArguments[ 'foo' ];  // is 'bar'
         $_aDatum     =  $_aArguments[ 'datum' ]; // is either array(  'a', 'b', 'c' ), array(  'd', 'e', 'f', 'g' ), or array(  'h', 'i' )
 
         TaskScheduler_Debug::log( $_aArguments );
