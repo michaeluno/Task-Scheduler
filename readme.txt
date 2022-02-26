@@ -3,7 +3,7 @@ Contributors:       Michael Uno, miunosoft
 Donate link:        http://en.michaeluno.jp/donate
 Requires at least:  3.7
 Tested up to:       5.9
-Stable tag:         1.6.2
+Stable tag:         1.6.3
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
 Tags:               tool, utility, background, backend, task, system, event, scheduler, email, delete posts, cron, automation, routine
@@ -432,6 +432,13 @@ If you create a module plugin that can be shared by others, submit it to wordpre
 
 
 == Changelog ==
+
+= 1.6.3 - 2022/02/26 =
+- Fixed an issue that awaiting routines remained when a task is disabled.
+- Fixed incorrect call counts for routines.
+- Fixed the PHP error, "Uncaught TypeError: round(): Argument #1 ($num) must be of type int|float" with PHP 8.
+- Fixed an issue that future time was displayed for the Last Run time in UI.
+- Changed the log file name created by the Debug action module.
 
 = 1.6.2 - 2022/02/10 =
 - Fixed non-sanitized input and request values.
