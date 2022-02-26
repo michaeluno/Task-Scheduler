@@ -1,10 +1,10 @@
 <?php
 /** 
  *  Plugin Name:    Task Scheduler
- *  Plugin URI:     http://en.michaeluno.jp/
+ *  Plugin URI:     https://en.michaeluno.jp/
  *  Description:    Provides an enhanced task management system for WordPress.
  *  Author:         miunosoft (Michael Uno)
- *  Author URI:     http://michaeluno.jp
+ *  Author URI:     https://michaeluno.jp
  *  Version:        1.6.3
  */
 
@@ -21,7 +21,7 @@ class TaskScheduler_Registry_Base {
     const URI            = 'https://en.michaeluno.jp/';
     const AUTHOR         = 'miunosoft (Michael Uno)';
     const AUTHOR_URI     = 'https://en.michaeluno.jp/';
-    const COPYRIGHT      = 'Copyright (c) 2014-2021, Michael Uno';
+    const COPYRIGHT      = 'Copyright (c) 2014-2022, Michael Uno';
     const LICENSE        = 'GPL v2 or later';
     const CONTRIBUTORS   = '';
     
